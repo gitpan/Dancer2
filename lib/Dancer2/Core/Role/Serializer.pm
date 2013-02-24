@@ -1,8 +1,8 @@
-# ABSTRACT: TODO
+# ABSTRACT: Role for Serializer engines
 
 package Dancer2::Core::Role::Serializer;
 {
-  $Dancer2::Core::Role::Serializer::VERSION = '0.01';
+  $Dancer2::Core::Role::Serializer::VERSION = '0.02';
 }
 use Dancer2::Core::Types;
 
@@ -17,6 +17,7 @@ sub supported_hooks {
 }
 
 sub _build_type {'Serializer'}
+
 
 requires 'serialize';
 requires 'deserialize';
@@ -53,11 +54,16 @@ __END__
 
 =head1 NAME
 
-Dancer2::Core::Role::Serializer - TODO
+Dancer2::Core::Role::Serializer - Role for Serializer engines
 
 =head1 VERSION
 
-version 0.01
+version 0.02
+
+=head1 REQUIREMENTS
+
+Classes that consume that role must implement the following methods
+C<serialize>, C<deserialize> and C<loaded>.
 
 =head1 AUTHOR
 

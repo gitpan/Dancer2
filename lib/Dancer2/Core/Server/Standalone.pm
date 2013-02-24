@@ -1,8 +1,8 @@
-# ABSTRACT: TODO
+# ABSTRACT: Basic standalone HTTP server for Dancer2
 
 package Dancer2::Core::Server::Standalone;
 {
-  $Dancer2::Core::Server::Standalone::VERSION = '0.01';
+  $Dancer2::Core::Server::Standalone::VERSION = '0.02';
 }
 
 use Moo;
@@ -47,16 +47,18 @@ __END__
 
 =head1 NAME
 
-Dancer2::Core::Server::Standalone - TODO
+Dancer2::Core::Server::Standalone - Basic standalone HTTP server for Dancer2
 
 =head1 VERSION
 
-version 0.01
+version 0.02
 
 =head1 DESCRIPTION
 
 This is a server implementation for a stand-alone server. It contains all the
 code to start an L<HTTP::Server::Simple::PSGI> server and handle the requests.
+
+This class consumes the role L<Dancer2::Core::Server::Standalone>.
 
 =head1 ATTRIBUTES
 

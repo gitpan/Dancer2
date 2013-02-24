@@ -1,13 +1,15 @@
-# ABSTRACT: TODO
+# ABSTRACT: Role for handling headers
 
 package Dancer2::Core::Role::Headers;
 {
-  $Dancer2::Core::Role::Headers::VERSION = '0.01';
+  $Dancer2::Core::Role::Headers::VERSION = '0.02';
 }
+
 
 use Moo::Role;
 use Dancer2::Core::Types;
 use HTTP::Headers;
+
 
 has headers => (
     is     => 'rw',
@@ -36,6 +38,7 @@ sub header {
     }
 }
 
+
 sub push_header {
     my $self   = shift;
     my $header = shift;
@@ -49,6 +52,7 @@ sub push_header {
         return $self->headers->header($header);
     }
 }
+
 
 sub headers_to_array {
     my $self = shift;
@@ -74,19 +78,51 @@ __END__
 
 =head1 NAME
 
-Dancer2::Core::Role::Headers - TODO
+Dancer2::Core::Role::Headers - Role for handling headers
 
 =head1 VERSION
 
-version 0.01
+version 0.02
+
+=head1 DESCRIPTION
+
+When a class consumes this role, it gets a C<headers> attribute and all the
+helper methods to manipulate it.
+
+This logic is contained in this role in order to reuse the code between
+L<Dancer::Core::Response> and L<Dancer::Core::Request> objects.
+
+=head1 ATTRIBUTES
+
+=head2 headers
+
+The attribute that store the headers in a L<HTTP::Headers> object.
+
+That attribute coerces from ArrayRef and defaults to an empty L<HTTP::Headers>
+instance.
 
 =head1 METHODS
 
 =head2 header($name)
 
 Return the value of the given header, if present. If the header has multiple
-values, returns an the list of values if called in list context, the first one
-in scalar.
+values, returns the list of values if called in list context, the first one
+if in scalar context.
+
+=head2 push_header
+
+Add the header no matter if it already exists or not. 
+
+    $self->push_header( 'X-Wing' => '1' );
+
+It can also be called with multiple values to add many times the same header
+with different values:
+
+    $self->push_header( 'X-Wing' => 1, 2, 3 );
+
+=head2 headers_to_array
+
+Convert the C<headers> attribute to an ArrayRef.
 
 =head1 AUTHOR
 

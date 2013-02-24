@@ -1,13 +1,15 @@
-# ABSTRACT: TODO
+# ABSTRACT: Role for engines
 
 package Dancer2::Core::Role::Engine;
 {
-  $Dancer2::Core::Role::Engine::VERSION = '0.01';
+  $Dancer2::Core::Role::Engine::VERSION = '0.02';
 }
 use Moo::Role;
 use Dancer2::Core::Types;
 
+
 with 'Dancer2::Core::Role::Hookable';
+
 
 has type => (
     is      => 'ro',
@@ -15,8 +17,11 @@ has type => (
     builder => 1,
 );
 
+
 has environment => (is => 'ro');
+
 has location    => (is => 'ro');
+
 
 has context => (
     is        => 'rw',
@@ -24,6 +29,7 @@ has context => (
     clearer   => 'clear_context',
     predicate => 1,
 );
+
 
 has config => (
     is      => 'rw',
@@ -40,11 +46,36 @@ __END__
 
 =head1 NAME
 
-Dancer2::Core::Role::Engine - TODO
+Dancer2::Core::Role::Engine - Role for engines
 
 =head1 VERSION
 
-version 0.01
+version 0.02
+
+=head1 DESCRIPTION
+
+This role is intended to be consumed by all engine roles. It contains all the
+shared logic for engines.
+
+This role consumes the L<Dancer2::Core::Role::Hookable> role.
+
+=head1 ATTRIBUTES
+
+=head2 type
+
+An attribute to host the name of the engine, mandatory
+
+=head2 environment 
+
+The value of the current environment
+
+=head2 context
+
+A L<Dancer2::Core::Context> object
+
+=head2 config
+
+An HashRef that hosts the configuration bits for the engine.
 
 =head1 AUTHOR
 

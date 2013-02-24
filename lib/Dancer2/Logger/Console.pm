@@ -1,8 +1,8 @@
-# ABSTRACT: TODO
+# ABSTRACT: Console logger
 
 package Dancer2::Logger::Console;
 {
-  $Dancer2::Logger::Console::VERSION = '0.01';
+  $Dancer2::Logger::Console::VERSION = '0.02';
 }
 use Moo;
 with 'Dancer2::Core::Role::Logger';
@@ -19,11 +19,11 @@ __END__
 
 =head1 NAME
 
-Dancer2::Logger::Console - TODO
+Dancer2::Logger::Console - Console logger
 
 =head1 VERSION
 
-version 0.01
+version 0.02
 
 =head1 AUTHOR
 

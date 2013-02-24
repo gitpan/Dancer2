@@ -1,9 +1,9 @@
+# ABSTRACT: Class to ease manipulation of MIME types
+
 package Dancer2::Core::MIME;
 {
-  $Dancer2::Core::MIME::VERSION = '0.01';
+  $Dancer2::Core::MIME::VERSION = '0.02';
 }
-
-# ABSTRACT: TODO
 
 use strict;
 use warnings;
@@ -88,11 +88,11 @@ __END__
 
 =head1 NAME
 
-Dancer2::Core::MIME - TODO
+Dancer2::Core::MIME - Class to ease manipulation of MIME types
 
 =head1 VERSION
 
-version 0.01
+version 0.02
 
 =head1 AUTHOR
 

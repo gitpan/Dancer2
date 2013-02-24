@@ -1,8 +1,8 @@
-# ABSTRACT: TODO
+# ABSTRACT: Class for dispatching request to the appropriate route handler
 
 package Dancer2::Core::Dispatcher;
 {
-  $Dancer2::Core::Dispatcher::VERSION = '0.01';
+  $Dancer2::Core::Dispatcher::VERSION = '0.02';
 }
 use Moo;
 use Encode;
@@ -181,11 +181,11 @@ __END__
 
 =head1 NAME
 
-Dancer2::Core::Dispatcher - TODO
+Dancer2::Core::Dispatcher - Class for dispatching request to the appropriate route handler
 
 =head1 VERSION
 
-version 0.01
+version 0.02
 
 =head1 AUTHOR
 

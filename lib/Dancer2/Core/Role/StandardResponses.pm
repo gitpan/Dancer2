@@ -1,10 +1,11 @@
-# ABSTRACT: TODO
+# ABSTRACT: Role to provide commonly used responses 
 
 package Dancer2::Core::Role::StandardResponses;
 {
-  $Dancer2::Core::Role::StandardResponses::VERSION = '0.01';
+  $Dancer2::Core::Role::StandardResponses::VERSION = '0.02';
 }
 use Moo::Role;
+
 
 sub response {
     my ($self, $ctx, $code, $message) = @_;
@@ -13,15 +14,18 @@ sub response {
     return $message;
 }
 
+
 sub response_400 {
     my ($self, $ctx) = @_;
     $self->response($ctx, 400, 'Bad Request');
 }
 
+
 sub response_404 {
     my ($self, $ctx) = @_;
     $self->response($ctx, 404, 'Not Found');
 }
+
 
 sub response_403 {
     my ($self, $ctx) = @_;
@@ -35,11 +39,32 @@ __END__
 
 =head1 NAME
 
-Dancer2::Core::Role::StandardResponses - TODO
+Dancer2::Core::Role::StandardResponses - Role to provide commonly used responses 
 
 =head1 VERSION
 
-version 0.01
+version 0.02
+
+=head1 METHODS
+
+=head2 response
+
+Generic method that produces a response in the context given with a code and a
+message:
+
+    $self->response( $ctx, 404, "not found" );
+
+=head2 response_400
+
+Produces a 400 response in the context given.
+
+=head2 response_404
+
+Produces a 404 response in the context given.
+
+=head2 response_403
+
+Produces a 403 response in the context given.
 
 =head1 AUTHOR
 

@@ -1,8 +1,8 @@
-# ABSTRACT: TODO
+# ABSTRACT: Class for handling the AutoPage feature
 
 package Dancer2::Handler::AutoPage;
 {
-  $Dancer2::Handler::AutoPage::VERSION = '0.01';
+  $Dancer2::Handler::AutoPage::VERSION = '0.02';
 }
 use Moo;
 use Carp 'croak';
@@ -57,11 +57,11 @@ __END__
 
 =head1 NAME
 
-Dancer2::Handler::AutoPage - TODO
+Dancer2::Handler::AutoPage - Class for handling the AutoPage feature
 
 =head1 VERSION
 
-version 0.01
+version 0.02
 
 =head1 AUTHOR
 

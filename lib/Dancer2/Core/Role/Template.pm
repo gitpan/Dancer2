@@ -1,8 +1,8 @@
-# ABSTRACT: TODO
+# ABSTRACT: Role for template engines
 
 package Dancer2::Core::Role::Template;
 {
-  $Dancer2::Core::Role::Template::VERSION = '0.01';
+  $Dancer2::Core::Role::Template::VERSION = '0.02';
 }
 
 use Dancer2::Core::Types;
@@ -186,11 +186,11 @@ __END__
 
 =head1 NAME
 
-Dancer2::Core::Role::Template - TODO
+Dancer2::Core::Role::Template - Role for template engines
 
 =head1 VERSION
 
-version 0.01
+version 0.02
 
 =head1 AUTHOR
 

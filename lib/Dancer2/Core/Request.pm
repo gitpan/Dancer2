@@ -1,6 +1,6 @@
 package Dancer2::Core::Request;
 {
-  $Dancer2::Core::Request::VERSION = '0.01';
+  $Dancer2::Core::Request::VERSION = '0.02';
 }
 
 # ABSTRACT: Interface for accessing incoming requests
@@ -747,7 +747,7 @@ Dancer2::Core::Request - Interface for accessing incoming requests
 
 =head1 VERSION
 
-version 0.01
+version 0.02
 
 =head1 SYNOPSIS
 

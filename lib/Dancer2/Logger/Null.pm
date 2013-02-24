@@ -2,7 +2,7 @@
 
 package Dancer2::Logger::Null;
 {
-  $Dancer2::Logger::Null::VERSION = '0.01';
+  $Dancer2::Logger::Null::VERSION = '0.02';
 }
 use Moo;
 with 'Dancer2::Core::Role::Logger';
@@ -22,7 +22,7 @@ Dancer2::Logger::Null - Blackhole-like silent logging engine for Dancer2
 
 =head1 VERSION
 
-version 0.01
+version 0.02
 
 =head1 DESCRIPTION
 

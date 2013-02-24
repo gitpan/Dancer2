@@ -1,6 +1,6 @@
 package Dancer2::Core::Role::Config;
 {
-  $Dancer2::Core::Role::Config::VERSION = '0.01';
+  $Dancer2::Core::Role::Config::VERSION = '0.02';
 }
 
 # ABSTRACT: Config role for Dancer2 core objects
@@ -317,7 +317,7 @@ Dancer2::Core::Role::Config - Config role for Dancer2 core objects
 
 =head1 VERSION
 
-version 0.01
+version 0.02
 
 =head1 DESCRIPTION
 

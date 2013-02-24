@@ -1,6 +1,6 @@
 package Dancer2;
 {
-  $Dancer2::VERSION = '0.01';
+  $Dancer2::VERSION = '0.02';
 }
 
 # ABSTRACT: Lightweight yet powerful web application framework
@@ -15,22 +15,12 @@ use Dancer2::Core::App;
 use Dancer2::FileUtils;
 use Dancer2::ModuleLoader;
 
-#set version in dist.ini now
-# but we still need a basic version for
-# the tests
-$Dancer2::VERSION ||= '2.0001'; # 2.0.1
-
 our $AUTHORITY = 'SUKRIA';
 
-my $api_version = 0;
-
-sub VERSION {
-    my $class = shift;
-
-    $api_version = $_[0] if @_;
-
-    return $class->SUPER::VERSION(@_);
-}
+# set version in dist.ini now
+# but we still need a basic version for
+# the tests
+$Dancer2::VERSION ||= '0.01'; # 2.0.1
 
 #
 # private
@@ -99,10 +89,7 @@ sub import {
         location        => $runner->location,
         runner_config   => $runner->config,
         postponed_hooks => $runner->postponed_hooks,
-        (api_version => int $api_version) x !!$api_version,
     );
-
-    $api_version = 0;    # reset variable for next 'use Dancer2 X' call
 
     core_debug("binding import method to $caller");
     _set_import_method_to_caller($caller);
@@ -173,7 +160,7 @@ Dancer2 - Lightweight yet powerful web application framework
 
 =head1 VERSION
 
-version 0.01
+version 0.02
 
 =head1 DESCRIPTION
 

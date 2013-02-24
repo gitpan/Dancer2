@@ -12,7 +12,7 @@ Dancer2::Deployment - Common ways to put your Dancer2 app into use
 
 =head1 VERSION
 
-version 0.01
+version 0.02
 
 Dancer2 has been designed to be flexible, and this flexibility extends to your
 choices when deploying your Dancer2 app.

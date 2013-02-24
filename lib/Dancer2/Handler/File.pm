@@ -1,8 +1,8 @@
-# ABSTRACT: TODO
+# ABSTRACT: class for handling file content rendering
 
 package Dancer2::Handler::File;
 {
-  $Dancer2::Handler::File::VERSION = '0.01';
+  $Dancer2::Handler::File::VERSION = '0.02';
 }
 use Carp 'croak';
 use Moo;
@@ -133,11 +133,11 @@ __END__
 
 =head1 NAME
 
-Dancer2::Handler::File - TODO
+Dancer2::Handler::File - class for handling file content rendering
 
 =head1 VERSION
 
-version 0.01
+version 0.02
 
 =head1 AUTHOR
 

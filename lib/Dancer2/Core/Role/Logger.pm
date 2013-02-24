@@ -1,8 +1,8 @@
-# ABSTRACT: TODO
+# ABSTRACT: Role for logger engines
 
 package Dancer2::Core::Role::Logger;
 {
-  $Dancer2::Core::Role::Logger::VERSION = '0.01';
+  $Dancer2::Core::Role::Logger::VERSION = '0.02';
 }
 use Dancer2::Core::Types;
 
@@ -138,11 +138,11 @@ __END__
 
 =head1 NAME
 
-Dancer2::Core::Role::Logger - TODO
+Dancer2::Core::Role::Logger - Role for logger engines
 
 =head1 VERSION
 
-version 0.01
+version 0.02
 
 =head1 AUTHOR
 

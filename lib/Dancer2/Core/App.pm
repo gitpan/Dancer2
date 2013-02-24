@@ -1,9 +1,10 @@
-# ABSTRACT: TODO
+# ABSTRACT: encapsulation of Dancer2 packages
 
 package Dancer2::Core::App;
 {
-  $Dancer2::Core::App::VERSION = '0.01';
+  $Dancer2::Core::App::VERSION = '0.02';
 }
+
 
 use strict;
 use warnings;
@@ -36,11 +37,8 @@ has plugins => (
     default => sub { [] },
 );
 
-has api_version => (
-    is      => 'ro',
-    isa     => Num,
-    default => sub {2},
-);
+# FIXME not needed anymore, I suppose...
+sub api_version { 2 }
 
 
 sub register_plugin {
@@ -94,7 +92,7 @@ sub _build_default_config {
 
     return {
         %{$self->runner_config},
-        template => $self->api_version == 1 ? 'Simple' : 'Tiny',
+        template => 'Tiny',
         route_handlers => {
             File => {
                 public_dir => $ENV{DANCER_PUBLIC}
@@ -537,11 +535,23 @@ __END__
 
 =head1 NAME
 
-Dancer2::Core::App - TODO
+Dancer2::Core::App - encapsulation of Dancer2 packages
 
 =head1 VERSION
 
-version 0.01
+version 0.02
+
+=head1 DESCRIPTION
+
+Everything a package that uses Dancer2 does is encapsulated into a
+C<Dancer2::Core::App> instance. This class defines all that can be done in such
+objects.
+
+Mainly, it will contain all the route handlers, the configuration settings and
+the hooks that are defined in the calling package.
+
+Note that with Dancer2, everything that is done within a package is scoped to
+that package, thanks to that encapsulation.
 
 =head1 ATTRIBUTES
 

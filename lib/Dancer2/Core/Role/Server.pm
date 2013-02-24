@@ -1,8 +1,8 @@
-# ABSTRACT: TODO
+# ABSTRACT: Role for Server classes
 
 package Dancer2::Core::Role::Server;
 {
-  $Dancer2::Core::Role::Server::VERSION = '0.01';
+  $Dancer2::Core::Role::Server::VERSION = '0.02';
 }
 use Moo::Role;
 
@@ -111,16 +111,16 @@ __END__
 
 =head1 NAME
 
-Dancer2::Core::Role::Server - TODO
+Dancer2::Core::Role::Server - Role for Server classes
 
 =head1 VERSION
 
-version 0.01
+version 0.02
 
 =head1 DESCRIPTION
 
-This is a server role that helps define what servers need to implement and
-provide some helpful attributes and methods for server implementations.
+This role defines what servers need to implement and provide some helpful
+attributes and methods for server implementations.
 
 This role requires implementations that consume it to provide a C<name>
 subroutine.

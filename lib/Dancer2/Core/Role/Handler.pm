@@ -1,13 +1,15 @@
-# ABSTRACT: TODO
+# ABSTRACT: Role for Handlers
 
 package Dancer2::Core::Role::Handler;
 {
-  $Dancer2::Core::Role::Handler::VERSION = '0.01';
+  $Dancer2::Core::Role::Handler::VERSION = '0.02';
 }
 use Moo::Role;
 use Dancer2::Core::Types;
 
+
 requires 'register';
+
 
 has app => (
     is  => 'ro',
@@ -21,11 +23,21 @@ __END__
 
 =head1 NAME
 
-Dancer2::Core::Role::Handler - TODO
+Dancer2::Core::Role::Handler - Role for Handlers
 
 =head1 VERSION
 
-version 0.01
+version 0.02
+
+=head1 ATTRIBUTES
+
+=head2 app
+
+Contain an object of class L<Dancer2::Core::App>.
+
+=head1 REQUIRMENTS
+
+That role requires that the method C<register> is implemented.
 
 =head1 AUTHOR
 

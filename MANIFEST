@@ -106,7 +106,6 @@ t/00-compile.t
 t/00-report-prereqs.t
 t/ajax_plugin.t
 t/any.t
-t/api_versions.t
 t/app.t
 t/app/t1/bin/app.psgi
 t/app/t1/config.yml
@@ -188,6 +187,7 @@ t/sessions/8faa63c2111a76090ba896e5f9718bcb6a5585bc.yml
 t/sessions/90fc6f63edb1ae5862beb1edeb245056e01c8302.yml
 t/sessions/USZUuEFZ8lwjE5VK9XmAUsWEpkbjJKTU.yml
 t/sessions/USZVsy5fy78HShBXOMYrpH7xzYelurCT.yml
+t/sessions/USnoyAYCJRgUCme48tv1j_PFGEFpW8FA.yml
 t/sessions/a7e594f55071c9b02ce9869d9ffd9874313cef0f.yml
 t/sessions/a88a8aba55ad0cea3137210e3a79b99822351c97.yml
 t/sessions/a989c7b6b7e7d9308d29bef96b100e395baddd35.yml

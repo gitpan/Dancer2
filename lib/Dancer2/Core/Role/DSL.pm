@@ -1,8 +1,8 @@
-# ABSTRACT: TODO
+# ABSTRACT: Role for DSL
 
 package Dancer2::Core::Role::DSL;
 {
-  $Dancer2::Core::Role::DSL::VERSION = '0.01';
+  $Dancer2::Core::Role::DSL::VERSION = '0.02';
 }
 use Moo::Role;
 use Dancer2::Core::Types;
@@ -116,11 +116,11 @@ __END__
 
 =head1 NAME
 
-Dancer2::Core::Role::DSL - TODO
+Dancer2::Core::Role::DSL - Role for DSL
 
 =head1 VERSION
 
-version 0.01
+version 0.02
 
 =head1 AUTHOR
 
