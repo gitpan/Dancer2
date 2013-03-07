@@ -44,6 +44,7 @@ my @modules = qw(
   MIME::Types
   Math::Random::ISAAC::XS
   Module::Build
+  Module::Runtime
   Moo
   Moo::Role
   MooX::Types::MooseLike

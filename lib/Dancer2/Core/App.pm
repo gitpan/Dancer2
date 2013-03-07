@@ -2,7 +2,7 @@
 
 package Dancer2::Core::App;
 {
-  $Dancer2::Core::App::VERSION = '0.02';
+  $Dancer2::Core::App::VERSION = '0.03';
 }
 
 
@@ -38,7 +38,7 @@ has plugins => (
 );
 
 # FIXME not needed anymore, I suppose...
-sub api_version { 2 }
+sub api_version {2}
 
 
 sub register_plugin {
@@ -92,7 +92,7 @@ sub _build_default_config {
 
     return {
         %{$self->runner_config},
-        template => 'Tiny',
+        template       => 'Tiny',
         route_handlers => {
             File => {
                 public_dir => $ENV{DANCER_PUBLIC}
@@ -122,6 +122,12 @@ sub engine {
 sub session {
     my ($self, $key, $value) = @_;
 
+    # shortcut reads if no session exists, so we don't
+    # instantiate sessions for no reason
+    if (@_ == 2) {
+        return unless $self->context->has_session;
+    }
+
     my $session = $self->context->session;
     croak "No session available, a session engine needs to be set"
       if !defined $session;
@@ -145,9 +151,7 @@ sub template {
     my ($self) = shift;
     my $template = $self->engine('template');
 
-    $template->context($self->context);
     my $content = $template->process(@_);
-    $template->clear_context();
 
     return $content;
 }
@@ -353,7 +357,7 @@ sub _init_hooks {
 
                 if ($self->context->has_session) {
                     my $session = $self->context->session;
-                    $engine->flush(session => $session);
+                    $engine->flush(session => $session) if $session->is_dirty;
                     $engine->set_cookie_header(
                         response => $response,
                         session  => $session
@@ -418,7 +422,8 @@ sub compile_hooks {
             my $compiled = sub {
 
                 # don't run the filter if halt has been used
-                return if $self->context->response->is_halted;
+                return
+                  if ($self->context && $self->context->response->is_halted);
 
                 # TODO: log entering the hook '$position'
                 #warn "entering hook '$position'";
@@ -446,6 +451,11 @@ has context => (
     trigger => sub {
         my ($self, $ctx) = @_;
         $self->_init_for_context($ctx),;
+        for my $type (qw/logger serializer session template/) {
+            my $engine = $self->settings->{$type}
+              or next;
+            defined($ctx) ? $engine->context($ctx) : $engine->clear_context;
+        }
     },
 );
 
@@ -539,7 +549,7 @@ Dancer2::Core::App - encapsulation of Dancer2 packages
 
 =head1 VERSION
 
-version 0.02
+version 0.03
 
 =head1 DESCRIPTION
 

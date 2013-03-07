@@ -13,7 +13,7 @@ Dancer2::Manual - A gentle introduction to Dancer2
 
 =head1 VERSION
 
-version 0.02
+version 0.03
 
 =head1 DESCRIPTION
 
@@ -397,9 +397,7 @@ By default, the internal template engine is used (L<Dancer2::Template::Simple>)
 but you may want to upgrade to Template::Toolkit. If you do so, you have to
 enable this engine in your settings as explained in
 L<Dancer2::Template::TemplateToolkit>. If you do so, you'll also have to import
-the L<Template> module in your application code. Note that Dancer2 configures
-the Template::Toolkit engine to use <% %> brackets instead of its default
-[% %] brackets, although you can change this in your config file.
+the L<Template> module in your application code.
 
 All views must have a '.tt' extension. This may change in the future.
 
@@ -420,12 +418,12 @@ And the appdir/views/hello.tt view can contain the following code:
    <html>
     <head></head>
     <body>
-        <h1>Hello <% params.name %></h1>
-        <p>Your lucky number is <% number %></p>
-        <p>You are using <% request.user_agent %></p>
-        <% IF session.user %>
-            <p>You're logged in as <% session.user %></p>
-        <% END %>
+        <h1>Hello [% params.name %]</h1>
+        <p>Your lucky number is [% number %]</p>
+        <p>You are using [% request.user_agent %]</p>
+        [% IF session.user %]
+            <p>You're logged in as [% session.user %]</p>
+        [% END %]
     </body>
    </html>
 
@@ -443,14 +441,14 @@ etc.
 Here is an example of a layout: views/layouts/main.tt:
 
     <html>
-        <head><% page_title %></head>
+        <head>[% page_title %]</head>
         <body>
         <div id="header">
         ...
         </div>
 
         <div id="content">
-        <% content %>
+        [% content %]
         </div>
 
         </body>

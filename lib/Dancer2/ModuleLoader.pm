@@ -1,6 +1,6 @@
 package Dancer2::ModuleLoader;
 {
-  $Dancer2::ModuleLoader::VERSION = '0.02';
+  $Dancer2::ModuleLoader::VERSION = '0.03';
 }
 
 # ABSTRACT: Dynamic module loading helpers for Dancer2 core components
@@ -8,20 +8,13 @@ package Dancer2::ModuleLoader;
 use strict;
 use warnings;
 
+use Module::Runtime qw/ use_module /;
+
 
 sub load {
     my ($class, $module, $version) = @_;
 
-    # 0 is a valid version, so testing trueness of $version is not enough
-    if (defined $version && length $version) {
-        my ($res, $error) = $class->load_with_params($module);
-        $res or return wantarray ? (0, $error) : 0;
-        local $@;
-        eval { $module->VERSION($version) };
-        $error = $@;
-        $error and return wantarray ? (0, $error) : 0;
-        return 1;
-    }
+    $class->require( $module, $version );
 
     # normal 'use', can be done via require + import
     my ($res, $error) = $class->load_with_params($module);
@@ -30,14 +23,12 @@ sub load {
 
 
 sub require {
-    my ($class, $module) = @_;
-    local $@;
-    my $module_filename = $module;
-    $module_filename =~ s!::|'!/!g;
-    $module_filename .= '.pm';
-    eval { require $module_filename };
-    my $error = $@;
-    $error and return wantarray ? (0, $error) : 0;
+    my ($class, $module, $version) = @_;
+
+    eval { defined $version ? use_module( $module, $version ) 
+                            : use_module( $module ) } 
+        or return wantarray ? (0, $@) : 0;
+
     return 1;
 }
 
@@ -84,7 +75,7 @@ Dancer2::ModuleLoader - Dynamic module loading helpers for Dancer2 core componen
 
 =head1 VERSION
 
-version 0.02
+version 0.03
 
 =head1 DESCRIPTION
 
@@ -143,7 +134,7 @@ Runs a "C<require ModuleYouNeed>".
 If you are unsure what you need (C<require> or C<load>), learn the differences
 between C<require> and C<use>.
 
-Takes in arguments the module name.
+Takes in arguments the module name, and an optional version.
 
 In scalar context, returns 1 if successful, 0 if not.
 In list context, returns 1 if successful, C<(0, "error message")> if not.

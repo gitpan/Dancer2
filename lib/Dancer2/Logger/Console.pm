@@ -2,7 +2,7 @@
 
 package Dancer2::Logger::Console;
 {
-  $Dancer2::Logger::Console::VERSION = '0.02';
+  $Dancer2::Logger::Console::VERSION = '0.03';
 }
 use Moo;
 with 'Dancer2::Core::Role::Logger';
@@ -23,7 +23,7 @@ Dancer2::Logger::Console - Console logger
 
 =head1 VERSION
 
-version 0.02
+version 0.03
 
 =head1 AUTHOR
 

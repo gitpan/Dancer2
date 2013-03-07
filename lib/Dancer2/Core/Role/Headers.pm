@@ -2,7 +2,7 @@
 
 package Dancer2::Core::Role::Headers;
 {
-  $Dancer2::Core::Role::Headers::VERSION = '0.02';
+  $Dancer2::Core::Role::Headers::VERSION = '0.03';
 }
 
 
@@ -82,7 +82,7 @@ Dancer2::Core::Role::Headers - Role for handling headers
 
 =head1 VERSION
 
-version 0.02
+version 0.03
 
 =head1 DESCRIPTION
 
@@ -90,7 +90,7 @@ When a class consumes this role, it gets a C<headers> attribute and all the
 helper methods to manipulate it.
 
 This logic is contained in this role in order to reuse the code between
-L<Dancer::Core::Response> and L<Dancer::Core::Request> objects.
+L<Dancer2::Core::Response> and L<Dancer2::Core::Request> objects.
 
 =head1 ATTRIBUTES
 

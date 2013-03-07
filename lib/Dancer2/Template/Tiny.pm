@@ -1,6 +1,6 @@
 package Dancer2::Template::Tiny;
 {
-  $Dancer2::Template::Tiny::VERSION = '0.02';
+  $Dancer2::Template::Tiny::VERSION = '0.03';
 }
 
 # ABSTRACT: Template::Tiny engine for Dancer2
@@ -56,7 +56,7 @@ Dancer2::Template::Tiny - Template::Tiny engine for Dancer2
 
 =head1 VERSION
 
-version 0.02
+version 0.03
 
 =head1 SYNOPSIS
 

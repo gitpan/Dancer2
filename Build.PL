@@ -37,7 +37,7 @@ my %module_build_args = (
     "Dancer Core Developers"
   ],
   "dist_name" => "Dancer2",
-  "dist_version" => "0.02",
+  "dist_version" => "0.03",
   "license" => "perl",
   "module_name" => "Dancer2",
   "recommends" => {
@@ -73,6 +73,7 @@ my %module_build_args = (
     "List::Util" => 0,
     "MIME::Base64" => "3.13",
     "MIME::Types" => 0,
+    "Module::Runtime" => 0,
     "Moo" => "0.009014",
     "Moo::Role" => 0,
     "MooX::Types::MooseLike" => "0.16",

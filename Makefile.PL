@@ -63,6 +63,7 @@ my %WriteMakefileArgs = (
     "List::Util" => 0,
     "MIME::Base64" => "3.13",
     "MIME::Types" => 0,
+    "Module::Runtime" => 0,
     "Moo" => "0.009014",
     "Moo::Role" => 0,
     "MooX::Types::MooseLike" => "0.16",
@@ -83,7 +84,7 @@ my %WriteMakefileArgs = (
     "strict" => 0,
     "warnings" => 0
   },
-  "VERSION" => "0.02",
+  "VERSION" => "0.03",
   "test" => {
     "TESTS" => "t/*.t t/roles/*.t t/template_tiny/*.t"
   }

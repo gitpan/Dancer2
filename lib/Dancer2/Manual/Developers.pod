@@ -13,7 +13,7 @@ Dancer2::Manual::Developers - Steps to follow to hack on Dancer2
 
 =head1 VERSION
 
-version 0.02
+version 0.03
 
 This document is for developers. If you want to try out Dancer2, hack it
 a bit, fix bugs, improve documentations, provide patches, etc. , you need to be

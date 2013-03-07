@@ -2,7 +2,7 @@
 
 package Dancer2::Core::Role::Template;
 {
-  $Dancer2::Core::Role::Template::VERSION = '0.02';
+  $Dancer2::Core::Role::Template::VERSION = '0.03';
 }
 
 use Dancer2::Core::Types;
@@ -43,7 +43,7 @@ has charset => (
 has default_tmpl_ext => (
     is      => 'rw',
     isa     => Str,
-    default => sub {'tt'},
+    default => sub { shift->config->{extension} || 'tt' },
 );
 
 has views => (
@@ -190,7 +190,7 @@ Dancer2::Core::Role::Template - Role for template engines
 
 =head1 VERSION
 
-version 0.02
+version 0.03
 
 =head1 AUTHOR
 

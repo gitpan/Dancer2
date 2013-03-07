@@ -125,6 +125,7 @@ t/config_app2.t
 t/config_app3.t
 t/config_settings.t
 t/context.t
+t/context_trigger.t
 t/cookie.t
 t/corpus/pretty/505.tt
 t/corpus/pretty_public/404.html
@@ -140,6 +141,7 @@ t/error_template.t
 t/factory.t
 t/file_utils.t
 t/forward.t
+t/forward_test_tcp.t
 t/hooks.t
 t/http_methods.t
 t/lib/App1.pm
@@ -197,6 +199,7 @@ t/special_import.t
 t/splat.t
 t/template.t
 t/template_default_tokens.t
+t/template_ext.t
 t/template_name.t
 t/template_tiny/01_compile.t
 t/template_tiny/02_trivial.t

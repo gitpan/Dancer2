@@ -1,6 +1,6 @@
 package Dancer2::Plugin;
 {
-  $Dancer2::Plugin::VERSION = '0.02';
+  $Dancer2::Plugin::VERSION = '0.03';
 }
 
 # ABSTRACT: Extending Dancer2's DSL with plugins
@@ -14,6 +14,10 @@ use Dancer2::Core::DSL;
 # singleton for storing all keywords,
 # their code and the plugin they come from
 my $_keywords = {};
+
+# singleton for applying code-blocks at import time
+# so their code gets the callers DSL
+my $_on_import = {};
 
 sub register {
     my $plugin = caller;
@@ -42,6 +46,14 @@ sub register {
 
     $_keywords->{$plugin} ||= [];
     push @{$_keywords->{$plugin}}, [$keyword, $code, $options->{is_global}];
+}
+
+
+sub on_plugin_import(&) {
+    my $code = shift;
+    my $plugin = caller;
+    $_on_import->{$plugin} ||= [];
+    push @{$_on_import->{$plugin}}, $code;
 }
 
 
@@ -103,6 +115,10 @@ sub register_plugin {
         Moo::Role->apply_roles_to_object($caller->dsl, $plugin);
         $caller->dsl->export_symbols_to($caller);
         $caller->dsl->dancer_app->register_plugin($caller->dsl);
+
+        for my $sub (@{$_on_import->{$plugin}}) {
+            $sub->( $caller->dsl );
+        }
     };
 
     my $app_caller = caller();
@@ -188,6 +204,7 @@ sub import {
       register_hook
       register_plugin
       register
+      on_plugin_import
       plugin_setting
       plugin_args
     );
@@ -200,12 +217,12 @@ sub import {
     my $dsl = _get_dsl();
     return if !defined $dsl;
 
- # Support for Dancer2 1 syntax for plugin.
- # Then, compile Dancer2's DSL keywords into self-contained keywords for the
- # plugin (actually, we call all the symbols by giving them $caller->dsl as
- # their first argument).
- # These modified versions of the DSL are then exported in the namespace of the
- # plugin.
+    # Support for Dancer2 1 syntax for plugin.
+    # Then, compile Dancer2's DSL keywords into self-contained keywords for the
+    # plugin (actually, we call all the symbols by giving them $caller->dsl as
+    # their first argument).
+    # These modified versions of the DSL are then exported in the namespace of the
+    # plugin.
     for my $symbol ($dsl->dsl_keywords_as_list) {
 
         # get the original symbol from the real DSL
@@ -249,7 +266,7 @@ Dancer2::Plugin - Extending Dancer2's DSL with plugins
 
 =head1 VERSION
 
-version 0.02
+version 0.03
 
 =head1 DESCRIPTION
 
@@ -267,22 +284,30 @@ symbols exported by C<FooPlugin>.
 
 =head2 register
 
+    register 'my_keyword' => sub { ... } => \%options;
+
 Allows the plugin to define a keyword that will be exported to the caller's
 namespace.
 
 The first argument is the symbol name, the second one the coderef to execute
 when the symbol is called.
 
-The coderef receives as its first argument the Dancer2::Core::DSL object. Any
-Dancer2 keyword wrapped by the plugin should be called with the $dsl object like
-the following:
+The coderef receives as its first argument the Dancer2::Core::DSL object.
+
+Instead of importing C<use Dancer ':syntax'>, plugins B<must> use the DSL
+object to access application components and work with them directly.
 
     sub {
         my $dsl = shift;
         my @args = @_;
 
-        $dsl->some_dancer_thing;
-        ...
+        my $app = $dsl->app;
+        my $context = $app->context;
+        my $request = $context->request;
+
+        if ( $app->session( "logged_in" ) ) {
+            ...
+        }
     };
 
 As an optional third argument, it's possible to give a hash ref to C<register>
@@ -297,6 +322,24 @@ frome everywhere (eg: C<dancer_version> or C<setting>).
         # ... some code
     }, { is_global => 1} ;
 
+=head2 on_plugin_import
+
+Allows the plugin to take action each time it is imported.
+It is prototyped to take a single code block argument, which will be called
+with the DSL object of the package importing it.
+
+For example, here is a way to install a hook in the importing app:
+
+    on_plugin_import {
+        my $dsl = shift;
+        $dsl->app->add_hook(
+            Dancer2::Core::Hook->new(
+                name => 'before',
+                code => sub { ... },
+            );
+        );
+    };
+
 =head2 register_plugin
 
 A Dancer2 plugin must end with this statement. This lets the plugin register all
@@ -304,7 +347,7 @@ the symbols defined with C<register> as exported symbols.
 
 Since version 2, Dancer2 requires any plugin to declare explicitly which version
 of the core it supports. This is done for safer upgrade of major versions and
-allow Dancer2 2 to detect legacy plugins that have not been ported to the new
+allow Dancer2 to detect legacy plugins that have not been ported to the new
 core. To do so, the plugin must list the major versions of the core it supports
 in an arrayref, like the following:
 
@@ -314,22 +357,22 @@ in an arrayref, like the following:
     # Or if it only works for 2:
     register_plugin for_versions => [ 2 ];
 
-If the C<for_versions> option is omitted, it dfaults to C<[ 1 ]> meaning the
-plugin was written for Dancer2 1 and has not been ported to Dancer2 2. This is a
+If the C<for_versions> option is omitted, it defaults to C<[ 1 ]> meaning the
+plugin was written for Dancer 1 and has not been ported to Dancer 2. This is a
 rather violent convention but will help a lot the migration of the ecosystem.
 
 =head2 plugin_args
 
 Simple method to retrieve the parameters or arguments passed to a
-plugin-defined keyword. Although not relevant for Dancer2 1 only, or
-Dancer2 2 only, plugins, it is useful for universal plugins.
+plugin-defined keyword. Although not relevant for Dancer 1 only, or
+Dancer 2 only, plugins, it is useful for universal plugins.
 
   register foo => sub {
-     my ($self, @args) = plugin_args(@_);
+     my ($dsl, @args) = plugin_args(@_);
      ...
   }
 
-Note that Dancer2 1 will return undef as the object reference.
+Note that Dancer 1 will return undef as the DSL object.
 
 =head2 plugin_setting
 
@@ -375,21 +418,21 @@ The hook must have been registered by the plugin first, with C<register_hook>.
 
 =head1 EXAMPLE PLUGIN
 
-The following code is a dummy plugin that provides a keyword 'block_links_from'.
+The following code is a dummy plugin that provides a keyword 'logout' that
+destroys the current session and redirects to a new URL specified in
+the config file as C<after_logout>.
 
-  package Dancer2::Plugin::LinkBlocker;
+  package Dancer2::Plugin::Logout;
   use Dancer2::Plugin;
 
-  register block_links_from => sub {
-    my $dsl = shift;
+  register logout => sub {
+    my $dsl     = shift;
+    my $context = $dsl->app->context;
+    my $conf    = plugin_setting();
 
-    my $conf = plugin_setting();
-    my $re = join ('|', @{$conf->{hosts}});
-    $dsl->before( sub {
-        if ($dsl->request->referer && $dsl->request->referer =~ /$re/) {
-            $dsl->status(403) || $conf->{http_code};
-        }
-    });
+    $context->destroy_session;
+
+    return $context->redirect( $conf->{after_logout} );
   };
 
   register_plugin for_versions => [ 2 ] ;
@@ -401,9 +444,9 @@ And in your application:
     package My::Webapp;
 
     use Dancer2;
-    use Dancer2::Plugin::LinkBlocker;
+    use Dancer2::Plugin::Logout;
 
-    block_links_from; # this is exported by the plugin
+    get '/logout' => sub { logout };
 
 =head1 AUTHOR
 

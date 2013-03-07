@@ -2,7 +2,7 @@
 
 package Dancer2::Core::Role::StandardResponses;
 {
-  $Dancer2::Core::Role::StandardResponses::VERSION = '0.02';
+  $Dancer2::Core::Role::StandardResponses::VERSION = '0.03';
 }
 use Moo::Role;
 
@@ -43,7 +43,7 @@ Dancer2::Core::Role::StandardResponses - Role to provide commonly used responses
 
 =head1 VERSION
 
-version 0.02
+version 0.03
 
 =head1 METHODS
 

@@ -1,6 +1,6 @@
 package Dancer2::Core::Request;
 {
-  $Dancer2::Core::Request::VERSION = '0.02';
+  $Dancer2::Core::Request::VERSION = '0.03';
 }
 
 # ABSTRACT: Interface for accessing incoming requests
@@ -747,7 +747,7 @@ Dancer2::Core::Request - Interface for accessing incoming requests
 
 =head1 VERSION
 
-version 0.02
+version 0.03
 
 =head1 SYNOPSIS
 
@@ -956,7 +956,7 @@ This means that if your base is I<http://myserver/>, C<uri_base> will return
 I<http://myserver> (notice no trailing slash). This is considered very useful
 when using templates to do the following thing:
 
-    <link rel="stylesheet" href="<% request.uri_base %>/css/style.css" />
+    <link rel="stylesheet" href="[% request.uri_base %]/css/style.css" />
 
 =head2 uri_for(path, params)
 

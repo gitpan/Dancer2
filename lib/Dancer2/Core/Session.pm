@@ -1,6 +1,6 @@
 package Dancer2::Core::Session;
 {
-  $Dancer2::Core::Session::VERSION = '0.02';
+  $Dancer2::Core::Session::VERSION = '0.03';
 }
 
 #ABSTRACT: class to represent any session object
@@ -38,6 +38,14 @@ has expires => (
 );
 
 
+has is_dirty => (
+    is      => 'rw',
+    isa     => Bool,
+    default => sub {0},
+);
+
+
+
 sub read {
     my ($self, $key) = @_;
     return $self->data->{$key};
@@ -47,12 +55,14 @@ sub read {
 
 sub write {
     my ($self, $key, $value) = @_;
+    $self->is_dirty(1);
     $self->data->{$key} = $value;
 }
 
 
 sub delete {
     my ($self, $key, $value) = @_;
+    $self->is_dirty(1);
     delete $self->data->{$key};
 }
 
@@ -67,7 +77,7 @@ Dancer2::Core::Session - class to represent any session object
 
 =head1 VERSION
 
-version 0.02
+version 0.03
 
 =head1 DESCRIPTION
 
@@ -106,6 +116,10 @@ For a lifetime of one hour:
 
   expires => 3600
 
+=head2 is_dirty
+
+Boolean value for whether data in the session has been modified.
+
 =head1 METHODS
 
 =head2 read
@@ -122,7 +136,7 @@ Writer on the session data
 
   $session->write('something', $value);
 
-Returns C<$value>.
+Sets C<is_dirty> to true. Returns C<$value>.
 
 =head2 delete
 
@@ -130,7 +144,7 @@ Deletes a key from session data
 
   $session->delete('something');
 
-Returns the value deleted from the session.
+Sets C<is_dirty> to true. Returns the value deleted from the session.
 
 =head1 AUTHOR
 
