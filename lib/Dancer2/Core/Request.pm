@@ -1,6 +1,6 @@
 package Dancer2::Core::Request;
 {
-  $Dancer2::Core::Request::VERSION = '0.03';
+  $Dancer2::Core::Request::VERSION = '0.04';
 }
 
 # ABSTRACT: Interface for accessing incoming requests
@@ -580,7 +580,7 @@ sub _parse_get_params {
 
     if ($XS_PARSE_QUERY_STRING) {
         return $self->{_query_params} =
-          CGI::Deurl::XS::parse_query_string($source) // {};
+          CGI::Deurl::XS::parse_query_string($source) || {};
     }
 
     foreach my $token (split /[&;]/, $source) {
@@ -747,7 +747,7 @@ Dancer2::Core::Request - Interface for accessing incoming requests
 
 =head1 VERSION
 
-version 0.03
+version 0.04
 
 =head1 SYNOPSIS
 

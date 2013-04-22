@@ -10,13 +10,11 @@ my %module_build_args = (
     "Capture::Tiny" => "0.12",
     "ExtUtils::MakeMaker" => 0,
     "File::Find" => 0,
-    "File::Spec::Functions" => 0,
     "File::Temp" => "0.22",
     "FindBin" => 0,
     "HTTP::Body" => 0,
     "HTTP::Request::Common" => 0,
     "HTTP::Server::Simple::PSGI" => 0,
-    "LWP::UserAgent" => 0,
     "Module::Build" => "0.3601",
     "Path::Class" => 0,
     "Test::Fatal" => 0,
@@ -37,7 +35,7 @@ my %module_build_args = (
     "Dancer Core Developers"
   ],
   "dist_name" => "Dancer2",
-  "dist_version" => "0.03",
+  "dist_version" => "0.04",
   "license" => "perl",
   "module_name" => "Dancer2",
   "recommends" => {
@@ -46,6 +44,8 @@ my %module_build_args = (
     "JSON::XS" => 0,
     "Math::Random::ISAAC::XS" => 0,
     "Plack::Request" => 0,
+    "Pod::Simple::Search" => 0,
+    "Pod::Simple::SimpleTree" => 0,
     "Test::Builder" => 0,
     "Test::More" => 0,
     "URL::Encode::XS" => 0
@@ -55,21 +55,26 @@ my %module_build_args = (
     "Carp" => 0,
     "Config::Any" => 0,
     "Cwd" => 0,
+    "Dancer" => 0,
     "Data::Dumper" => 0,
     "Digest::SHA" => 0,
-    "Digest::SHA1" => 0,
     "Encode" => 0,
     "Exporter" => "5.57",
     "Fcntl" => 0,
     "File::Basename" => 0,
     "File::Copy" => 0,
+    "File::Path" => 0,
     "File::Spec" => 0,
+    "File::Spec::Functions" => 0,
+    "File::Temp" => 0,
+    "Getopt::Long" => 0,
     "HTTP::Body" => 0,
     "HTTP::Date" => 0,
     "HTTP::Headers" => 0,
     "HTTP::Server::Simple::PSGI" => 0,
     "IO::File" => 0,
     "JSON" => 0,
+    "LWP::UserAgent" => 0,
     "List::Util" => 0,
     "MIME::Base64" => "3.13",
     "MIME::Types" => 0,
@@ -81,6 +86,9 @@ my %module_build_args = (
     "MooX::Types::MooseLike::Numeric" => 0,
     "POSIX" => 0,
     "Plack::Request" => 0,
+    "Pod::Simple::Search" => 0,
+    "Pod::Simple::SimpleTree" => 0,
+    "Pod::Usage" => 0,
     "Scalar::Util" => 0,
     "Template" => 0,
     "Template::Tiny" => 0,
@@ -89,13 +97,16 @@ my %module_build_args = (
     "URI" => 0,
     "URI::Escape" => 0,
     "YAML::Any" => 0,
+    "constant" => 0,
     "overload" => 0,
     "parent" => 0,
     "perl" => "5.00503",
     "strict" => 0,
     "warnings" => 0
   },
-  "script_files" => []
+  "script_files" => [
+    "script/dancer2"
+  ]
 );
 
 

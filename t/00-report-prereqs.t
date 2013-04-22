@@ -16,9 +16,9 @@ my @modules = qw(
   Config::Any
   Crypt::URandom
   Cwd
+  Dancer
   Data::Dumper
   Digest::SHA
-  Digest::SHA1
   Encode
   Exporter
   ExtUtils::MakeMaker
@@ -26,10 +26,12 @@ my @modules = qw(
   File::Basename
   File::Copy
   File::Find
+  File::Path
   File::Spec
   File::Spec::Functions
   File::Temp
   FindBin
+  Getopt::Long
   HTTP::Body
   HTTP::Date
   HTTP::Headers
@@ -53,6 +55,9 @@ my @modules = qw(
   POSIX
   Path::Class
   Plack::Request
+  Pod::Simple::Search
+  Pod::Simple::SimpleTree
+  Pod::Usage
   Scalar::Util
   Template
   Template::Tiny
@@ -66,6 +71,7 @@ my @modules = qw(
   URL::Encode::XS
   YAML
   YAML::Any
+  constant
   overload
   parent
   perl

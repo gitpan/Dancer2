@@ -2,7 +2,7 @@
 
 package Dancer2::Template::Simple;
 {
-  $Dancer2::Template::Simple::VERSION = '0.03';
+  $Dancer2::Template::Simple::VERSION = '0.04';
 }
 use strict;
 use warnings;
@@ -159,7 +159,7 @@ Dancer2::Template::Simple - Pure Perl 5 template engine for Dancer2
 
 =head1 VERSION
 
-version 0.03
+version 0.04
 
 =head1 DESCRIPTION
 

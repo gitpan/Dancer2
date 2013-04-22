@@ -2,20 +2,13 @@
 
 package Dancer2::Core::Role::Engine;
 {
-  $Dancer2::Core::Role::Engine::VERSION = '0.03';
+  $Dancer2::Core::Role::Engine::VERSION = '0.04';
 }
 use Moo::Role;
 use Dancer2::Core::Types;
 
 
 with 'Dancer2::Core::Role::Hookable';
-
-
-has type => (
-    is      => 'ro',
-    lazy    => 1,
-    builder => 1,
-);
 
 
 has environment => (is => 'ro');
@@ -37,8 +30,6 @@ has config => (
     default => sub { {} },
 );
 
-requires '_build_type';
-
 1;
 
 __END__
@@ -50,7 +41,7 @@ Dancer2::Core::Role::Engine - Role for engines
 
 =head1 VERSION
 
-version 0.03
+version 0.04
 
 =head1 DESCRIPTION
 
@@ -60,10 +51,6 @@ shared logic for engines.
 This role consumes the L<Dancer2::Core::Role::Hookable> role.
 
 =head1 ATTRIBUTES
-
-=head2 type
-
-An attribute to host the name of the engine, mandatory
 
 =head2 environment 
 

@@ -2,7 +2,7 @@
 
 package Dancer2::Test;
 {
-  $Dancer2::Test::VERSION = '0.03';
+  $Dancer2::Test::VERSION = '0.04';
 }
 use strict;
 use warnings;
@@ -12,6 +12,7 @@ use Test::More;
 use Test::Builder;
 use URI::Escape;
 use Data::Dumper;
+use File::Temp;
 
 use parent 'Exporter';
 our @EXPORT = qw(
@@ -33,6 +34,9 @@ our @EXPORT = qw(
 
   route_exists
   route_doesnt_exist
+
+  is_pod_covered
+  route_pod_coverage
 
 );
 
@@ -91,9 +95,15 @@ sub _build_request_from_env {
 
     if (defined $options->{params}) {
         my @params;
-        foreach my $p (keys %{$options->{params}}) {
-            push @params,
-              uri_escape($p) . '=' . uri_escape($options->{params}->{$p});
+        while( my ($p, $value) = each %{$options->{params}} ) {
+            if ( ref($value) eq 'ARRAY' ) {
+                for my $v (@$value) {
+                    push @params, uri_escape($p) . '=' . uri_escape($v);
+                }
+            }
+            else {
+                push @params, uri_escape($p) . '=' . uri_escape($value);
+            }
         }
         $env->{QUERY_STRING} = join('&', @params);
     }
@@ -111,12 +121,41 @@ sub _build_request_from_env {
         }
     }
 
+    # files
+    if ( $options->{files} ) {
+        for my $file (@{$options->{files}}) {
+            my $headers  = $file->{headers};
+            $headers->{'Content-Type'} ||= 'text/plain';
+
+            my $temp = File::Temp->new();
+            if ( $file->{data} ) {
+                print $temp $file->{data};
+                close($temp);
+            }
+            else {
+                require File::Copy;
+                File::Copy::copy($file->{filename}, $temp);
+            }
+
+            my $upload = Dancer2::Core::Request::Upload->new(
+                filename => $file->{filename},
+                size     => -s $temp->filename,
+                tempname => $temp->filename,
+                headers  => $headers,
+            );
+
+            ## keep temp_fh in scope so it doesn't get deleted too early
+            ## But will get deleted by the time the test is finished.
+            $upload->{temp_fh} = $temp;
+
+            $request->uploads->{$file->{name}} = $upload;
+        }
+    }
+
     # content-type
     if ( $options->{content_type} ) {
         $request->content_type( $options->{content_type} );
     }
-
-    # TODO files
 
     return ($request, $env);
 }
@@ -139,8 +178,15 @@ sub _build_env_from_request {
     # TODO
     if (my $params = $request->{_query_params}) {
         my @params;
-        foreach my $p (keys %{$params}) {
-            push @params, uri_escape($p) . '=' . uri_escape($params->{$p});
+        while(my ($p, $value) = each %{$params}) {
+            if ( ref($value) eq 'ARRAY' ) {
+                for my $v (@$value) {
+                    push @params, uri_escape($p) . '=' . uri_escape($v);
+                }
+            }
+            else {
+                push @params, uri_escape($p) . '=' . uri_escape($value);
+            }
         }
         $env->{QUERY_STRING} = join('&', @params);
     }
@@ -287,6 +333,106 @@ sub response_headers_include {
 }
 
 
+sub route_pod_coverage { 
+
+    require Pod::Simple::Search;
+    require Pod::Simple::SimpleTree;
+
+    my $all_routes = {};
+ 
+    foreach my $app (@{ $_dispatcher->apps }) {
+        my $routes           = $app->routes;
+        my $available_routes = [];
+        foreach my $method ( keys %$routes ) {
+            foreach my $r ( @{ $routes->{$method} } ) {
+                # we don't need pod coverage for head
+                next if $method eq 'head';
+                push @$available_routes, $method . ' ' . $r->spec_route;
+            }
+        }
+        ## copy dereferenced array
+        $all_routes->{ $app->name }{routes} = [@$available_routes]
+          if @$available_routes;
+
+        my $undocumented_routes = [];
+        my $file                = Pod::Simple::Search->new->find( $app->name );
+        if ($file) {
+            $all_routes->{ $app->name }{ has_pod } = 1;
+            my $parser       = Pod::Simple::SimpleTree->new->parse_file($file);
+            my $pod_dataref  = $parser->root;
+            my $found_routes = {};
+            for ( my $i = 0 ; $i < @$available_routes ; $i++ ) {
+
+                my $r          = $available_routes->[$i];
+                my $app_string = lc $r;
+                $app_string =~ s/\*/_REPLACED_STAR_/g;
+
+                for ( my $idx = 0 ; $idx < @$pod_dataref ; $idx++ ) {
+                    my $pod_part = $pod_dataref->[$idx];
+
+                    next if ref $pod_part ne 'ARRAY';
+                    foreach my $ref_part (@$pod_part) {
+                        if (ref($ref_part) eq "ARRAY") {
+                            push @$pod_dataref, $ref_part;
+                        }
+                    }
+
+                    my $pod_string = lc $pod_part->[2];
+                    $pod_string =~ s/['|"|\s]+/ /g;
+                    $pod_string =~ s/\s$//g;
+                    $pod_string =~ s/\*/_REPLACED_STAR_/g;
+                    if ( $pod_string =~ m/^$app_string$/ ) {
+                        $found_routes->{$app_string} = 1;
+                        next;
+                    }
+                }
+                if ( !$found_routes->{$app_string} ) {
+                    push @$undocumented_routes, $r;
+                }
+            }
+        }
+        else { ### no POD found
+            $all_routes->{ $app->name }{ has_pod } = 0;
+        }
+        if (@$undocumented_routes) {
+            $all_routes->{ $app->name }{undocumented_routes} = $undocumented_routes;
+        }
+        elsif (! $all_routes->{ $app->name }{ has_pod }
+            && @{$all_routes->{ $app->name }{routes}} ){
+            ## copy dereferenced array
+            $all_routes->{ $app->name }{undocumented_routes} = [@{$all_routes->{ $app->name }{routes}}];
+        }
+    }
+
+    return $all_routes;
+}
+
+
+sub is_pod_covered {
+    my ($test_name) = @_;
+
+    $test_name ||= "is pod covered";
+    my $route_pod_coverage = route_pod_coverage();
+
+    my $tb = Test::Builder->new;
+    local $Test::Builder::Level = $Test::Builder::Level + 1;
+
+    foreach my $app (@{$_dispatcher->apps}) {
+        my %undocumented_route = (map { $_ => 1 }
+              @{$route_pod_coverage->{$app->name}{undocumented_routes}});
+        $tb->subtest(
+            $app->name . $test_name,
+            sub {
+                foreach
+                  my $route (@{$route_pod_coverage->{$app->name}{routes}})
+                {
+                    ok(!$undocumented_route{$route}, "$route is documented");
+                }
+            }
+        );
+    }
+}
+
 
 sub import {
     my ($class, %options) = @_;
@@ -405,7 +551,7 @@ Dancer2::Test - Useful routines for testing Dancer2 apps
 
 =head1 VERSION
 
-version 0.03
+version 0.04
 
 =head1 DESCRIPTION
 
@@ -417,7 +563,7 @@ $test_name is always optional.
 
 =head2 dancer_response ($method, $path, $params, $arg_env);
 
-Returns a Dancer2::Response object for the given request.
+Returns a Dancer2::Core::Response object for the given request.
 
 Only $method and $path are required.
 
@@ -425,13 +571,14 @@ $params is a hashref with 'body' as a string; 'headers' can be an arrayref or
 a HTTP::Headers object, 'files' can be arrayref of hashref, containing some 
 files to upload:
 
-	dancer_response($method, $path, 
-		{ params => $params, 
-			body => $body, 
-			headers => $headers, 
-			files => [{filename => '/path/to/file', name => 'my_file'}] 
-		}
-	);
+    dancer_response($method, $path, 
+        {
+            params => $params, 
+            body => $body, 
+            headers => $headers, 
+            files => [ { filename => '/path/to/file', name => 'my_file' } ],
+        }
+    );
 
 A good reason to use this function is for testing POST requests. Since POST
 requests may not be idempotent, it is necessary to capture the content and
@@ -461,6 +608,10 @@ In addition, you can supply the file contents as the C<data> key:
     $response = dancer_response(POST => '/upload', {
         files => [{name => 'test', filename => "filename.ext", data => $data}]
     });
+
+You can also supply a hashref of headers:
+
+    headers => { 'Content-Type' => 'text/plain' }
 
 =head2 response_status_is ($request, $expected, $test_name);
 
@@ -546,6 +697,138 @@ Asserts that the response headers data structure equals the one given.
 Asserts that the response headers data structure includes some of the defined ones.
 
     response_headers_include [GET => '/'], [ 'Content-Type' => 'text/plain' ];
+
+=head2 route_pod_coverage()
+
+Returns a structure describing pod coverage in your apps
+
+for one app like this:
+
+    package t::lib::TestPod;
+    use Dancer2;
+
+    =head1 NAME
+
+    TestPod
+
+    =head2 ROUTES
+
+    =over
+
+    =cut
+
+    =item get "/in_testpod"
+
+    testpod
+
+    =cut
+
+    get '/in_testpod' => sub {
+        return 'get in_testpod';
+    };
+
+    get '/hello' => sub {
+        return "hello world";
+    };
+
+    =item post '/in_testpod/*'
+
+    post in_testpod
+
+    =cut
+
+    post '/in_testpod/*' => sub {
+        return 'post in_testpod';
+    };
+
+    =back
+
+    =head2 SPECIALS
+
+    =head3 PUBLIC
+
+    =over
+
+    =item get "/me:id"
+
+    =cut
+
+    get "/me:id" => sub {
+        return "ME";
+    };
+
+    =back
+
+    =head3 PRIVAT
+
+    =over
+
+    =item post "/me:id"
+
+    post /me:id
+
+    =cut
+
+    post "/me:id" => sub {
+        return "ME";
+    };
+
+    =back
+
+    =cut
+
+    1;
+
+route_pod_coverage;
+
+would return something like:
+
+    {
+        't::lib::TestPod' => {
+            'has_pod'             => 1,
+            'routes'              => [
+                "post /in_testpod/*",
+                "post /me:id",
+                "get /in_testpod",
+                "get /hello",
+                "get /me:id"
+            ],
+            'undocumented_routes' => [
+                "get /hello"
+            ]
+        }
+    }
+
+=head2 is_pod_covered('is pod covered')
+
+Asserts that your apps have pods for all routes
+
+    is_pod_covered 'is pod covered'
+
+to avoid test failures, you shoud document all your routes with one of the following:
+head1, head2,head3,head4, item.
+
+    ex:
+
+    =item get '/login'
+
+    route to login
+
+    =cut
+
+    if you use:
+
+    any '/myaction' => sub {
+        # code
+    }
+
+    or 
+
+    any ['get', 'post'] => '/myaction' => sub {
+        # code
+    };
+
+    you need to create pods for each one of the routes created there.
 
 =head2 import
 

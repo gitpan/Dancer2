@@ -1,6 +1,6 @@
 package Dancer2::ModuleLoader;
 {
-  $Dancer2::ModuleLoader::VERSION = '0.03';
+  $Dancer2::ModuleLoader::VERSION = '0.04';
 }
 
 # ABSTRACT: Dynamic module loading helpers for Dancer2 core components
@@ -75,7 +75,7 @@ Dancer2::ModuleLoader - Dynamic module loading helpers for Dancer2 core componen
 
 =head1 VERSION
 
-version 0.03
+version 0.04
 
 =head1 DESCRIPTION
 

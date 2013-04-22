@@ -2,7 +2,7 @@
 
 package Dancer2::Handler::AutoPage;
 {
-  $Dancer2::Handler::AutoPage::VERSION = '0.03';
+  $Dancer2::Handler::AutoPage::VERSION = '0.04';
 }
 use Moo;
 use Carp 'croak';
@@ -61,7 +61,7 @@ Dancer2::Handler::AutoPage - Class for handling the AutoPage feature
 
 =head1 VERSION
 
-version 0.03
+version 0.04
 
 =head1 AUTHOR
 

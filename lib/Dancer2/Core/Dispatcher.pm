@@ -2,7 +2,7 @@
 
 package Dancer2::Core::Dispatcher;
 {
-  $Dancer2::Core::Dispatcher::VERSION = '0.03';
+  $Dancer2::Core::Dispatcher::VERSION = '0.04';
 }
 use Moo;
 use Encode;
@@ -109,9 +109,11 @@ sub dispatch {
             }
             else {
                 # serialize if needed
-                if (defined $app->config->{serializer}) {
-                    $content = $app->config->{serializer}->serialize($content)
-                      if ref($content);
+                # TODO make the response object self-serializable? With a 
+                # is_serialized attribute
+                if ( my $serializer = ref($content) && $app->config->{serializer} ) {
+                    $content = $serializer->serialize($content);
+                    $response->content_type($serializer->content_type);
                 }
 
                 $response->content(defined $content ? $content : '');
@@ -185,7 +187,7 @@ Dancer2::Core::Dispatcher - Class for dispatching request to the appropriate rou
 
 =head1 VERSION
 
-version 0.03
+version 0.04
 
 =head1 AUTHOR
 

@@ -2,13 +2,14 @@
 
 package Dancer2::Core::Cookie;
 {
-  $Dancer2::Core::Cookie::VERSION = '0.03';
+  $Dancer2::Core::Cookie::VERSION = '0.04';
 }
 use Moo;
 use URI::Escape;
 use Dancer2::Core::Types;
 use Dancer2::Core::Time;
 use Carp 'croak';
+use overload '""' => \&_get_value;
 
 
 sub to_header {
@@ -50,6 +51,11 @@ around value => sub {
     my $array = $orig->($self, @_);
     return wantarray ? @$array : $array->[0];
 };
+
+# this is only for overloading; need a real sub to refer to, as the Moose
+# attribute accessor won't be available at that point.
+sub _get_value { shift->value }
+
 
 
 has name => (
@@ -112,7 +118,7 @@ Dancer2::Core::Cookie - A cookie representing class
 
 =head1 VERSION
 
-version 0.03
+version 0.04
 
 =head1 SYNOPSIS
 
@@ -121,6 +127,10 @@ version 0.03
     my $cookie = Dancer2::Cookie->new(
         name => $cookie_name, value => $cookie_value
     );
+
+    my $value = $cookie->value;
+
+    print "$cookie"; # objects stringify to their value.
 
 =head1 DESCRIPTION
 
@@ -131,6 +141,13 @@ Dancer2::Cookie provides a HTTP cookie object to work with cookies.
 =head2 value
 
 The cookie's value.
+
+(Note that cookie objects use overloading to stringify to their value, so if 
+you say e.g. return "Hi, $cookie", you'll get the cookie's value there.)
+
+In list context, returns a list of potentially multiple values; in scalar
+context, returns just the first value.  (So, if you expect a cookie to have
+multiple values, use list context.)
 
 =head2 name
 

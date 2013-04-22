@@ -1,6 +1,6 @@
 package Dancer2::Core::Role::Config;
 {
-  $Dancer2::Core::Role::Config::VERSION = '0.03';
+  $Dancer2::Core::Role::Config::VERSION = '0.04';
 }
 
 # ABSTRACT: Config role for Dancer2 core objects
@@ -242,7 +242,7 @@ my $_setters = {
           $self->_get_config_for_engine(template => $value, $config);
         my $engine_attrs = {config => $engine_options};
         $engine_attrs->{layout} ||= $config->{layout};
-        $engine_attrs->{views} ||= path($self->config_location, 'views');
+        $engine_attrs->{views} ||= $config->{'views'} || path($self->config_location, 'views');
 
         return Dancer2::Core::Factory->create(
             template => $value,
@@ -317,7 +317,7 @@ Dancer2::Core::Role::Config - Config role for Dancer2 core objects
 
 =head1 VERSION
 
-version 0.03
+version 0.04
 
 =head1 DESCRIPTION
 

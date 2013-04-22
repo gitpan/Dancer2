@@ -12,7 +12,7 @@ Dancer2::Cookbook - Example-driven quick-start to the Dancer2 web framework
 
 =head1 VERSION
 
-version 0.03
+version 0.04
 
 =head1 DESCRIPTION
 
@@ -170,7 +170,7 @@ with the L<splat|Dancer2/splat> keyword:
 A L<before|Dancer2/before> filter declares code which should be handled before
 a request is passed to the appropriate route.
 
-    before sub {
+    hook before => sub {
         var note => 'Hi there';
         request->path('/foo/oversee')
     };
@@ -375,7 +375,7 @@ them to log in before continuing.
 
 This can easily be handled with a before filter to check their session:
 
-    before sub {
+    hook before => sub {
 
         if (! session('user') && request->path_info !~ m{^/login}) {
             var requested_path => request->path_info;
@@ -473,7 +473,7 @@ interpolate in the view (note that for convenience, the request, session, params
 and vars are automatically accessible in the view, named C<request>, C<session>,
 C<params> and C<vars>) - for example:
 
-    before => sub { var time => scalar(localtime) };
+    hook before => sub { var time => scalar(localtime) };
 
     get '/hello/:name' => sub {
         my $name = params->{name};
@@ -532,7 +532,7 @@ If your application is not mounted under root (B</>), you can use a
 before_template instead of hardcoding the path to your application for your
 css, images and javascript:
 
-    before_template sub {
+    hook before_template => sub {
         my $tokens = shift;
         $tokens->{uri_base} = request->base->path;
     };

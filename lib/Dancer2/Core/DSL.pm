@@ -2,7 +2,7 @@
 
 package Dancer2::Core::DSL;
 {
-  $Dancer2::Core::DSL::VERSION = '0.03';
+  $Dancer2::Core::DSL::VERSION = '0.04';
 }
 
 use Moo;
@@ -344,7 +344,7 @@ Dancer2::Core::DSL - Dancer2's Domain Specific Language (DSL)
 
 =head1 VERSION
 
-version 0.03
+version 0.04
 
 =head1 FUNCTIONS
 

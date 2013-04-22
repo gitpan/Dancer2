@@ -1,6 +1,6 @@
 package Dancer2;
 {
-  $Dancer2::VERSION = '0.03';
+  $Dancer2::VERSION = '0.04';
 }
 
 # ABSTRACT: Lightweight yet powerful web application framework
@@ -21,11 +21,6 @@ our $AUTHORITY = 'SUKRIA';
 # but we still need a basic version for
 # the tests
 $Dancer2::VERSION ||= '0.01'; # 2.0.1
-
-#
-# private
-#
-
 
 
 my $runner;
@@ -138,7 +133,6 @@ sub _set_import_method_to_caller {
 sub core_debug {
     my $msg = shift;
     my (@stuff) = @_;
-    use Data::Dumper;
 
     my $vars = @stuff ? Dumper(\@stuff) : '';
 
@@ -160,30 +154,26 @@ Dancer2 - Lightweight yet powerful web application framework
 
 =head1 VERSION
 
-version 0.03
+version 0.04
 
 =head1 DESCRIPTION
 
-This is the main module for the Dancer2 distribution. It contains logic for creating
-a new Dancer2 application.
+Dancer2 is the new generation of L<Dancer>, the lightweight web-framework for 
+Perl. Dancer2 is a complete rewrite based on L<Moo>. 
 
-=head1 OVERVIEW
-
-Dancer2 is the new generation lightweight web-framework for Perl. It's a
-complete rewrite of L<Dancer> based on L<Moo>.
-
-An application can be as simple as this simple hello world script:
-
+As usual, Dancer is easy and fun:
     use Dancer2;
     get '/' => sub { "Hello World" };
     dance;
 
-This doc describes the Dancer2 application core and therefore meant for Dancer2
-core developers. If you're a user of Dancer2, you should forget about this and
-read the L<Dancer2::Manual>.
+This is the main module for the Dancer2 distribution. It contains logic for 
+creating a new Dancer2 application. 
 
-You are also welcome to join our mailing list, and we're also on IRC: #dancer
-on irc.perl.org.
+If you are looking for info on how to write a webapp with Dancer2 you probably 
+want to look at L<Dancer2::Manual> or L<Dancer2::Cookbook>.
+
+You are also welcome to join our mailing list at dancer-users@perldancer.org, 
+and we're also on IRC: #dancer on irc.perl.org.
 
 =head1 METHODS
 

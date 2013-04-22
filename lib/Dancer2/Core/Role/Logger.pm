@@ -2,7 +2,7 @@
 
 package Dancer2::Core::Role::Logger;
 {
-  $Dancer2::Core::Role::Logger::VERSION = '0.03';
+  $Dancer2::Core::Role::Logger::VERSION = '0.04';
 }
 use Dancer2::Core::Types;
 
@@ -142,7 +142,7 @@ Dancer2::Core::Role::Logger - Role for logger engines
 
 =head1 VERSION
 
-version 0.03
+version 0.04
 
 =head1 AUTHOR
 

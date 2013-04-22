@@ -13,7 +13,7 @@ Dancer2::Manual::Hooks - Reference manual for all hooks supported by Dancer2's c
 
 =head1 VERSION
 
-version 0.03
+version 0.04
 
 This manual documents all the hooks that are supported by the core framework.
 

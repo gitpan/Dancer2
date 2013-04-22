@@ -2,7 +2,7 @@
 
 package Dancer2::Core::MIME;
 {
-  $Dancer2::Core::MIME::VERSION = '0.03';
+  $Dancer2::Core::MIME::VERSION = '0.04';
 }
 
 use strict;
@@ -92,7 +92,7 @@ Dancer2::Core::MIME - Class to ease manipulation of MIME types
 
 =head1 VERSION
 
-version 0.03
+version 0.04
 
 =head1 AUTHOR
 
