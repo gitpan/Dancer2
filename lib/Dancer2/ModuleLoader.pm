@@ -1,6 +1,6 @@
 package Dancer2::ModuleLoader;
 {
-  $Dancer2::ModuleLoader::VERSION = '0.04';
+    $Dancer2::ModuleLoader::VERSION = '0.05';
 }
 
 # ABSTRACT: Dynamic module loading helpers for Dancer2 core components
@@ -12,54 +12,57 @@ use Module::Runtime qw/ use_module /;
 
 
 sub load {
-    my ($class, $module, $version) = @_;
+    my ( $class, $module, $version ) = @_;
 
     $class->require( $module, $version );
 
     # normal 'use', can be done via require + import
-    my ($res, $error) = $class->load_with_params($module);
-    return wantarray ? ($res, $error) : $res;
+    my ( $res, $error ) = $class->load_with_params($module);
+    return wantarray ? ( $res, $error ) : $res;
 }
 
 
 sub require {
-    my ($class, $module, $version) = @_;
+    my ( $class, $module, $version ) = @_;
 
-    eval { defined $version ? use_module( $module, $version ) 
-                            : use_module( $module ) } 
-        or return wantarray ? (0, $@) : 0;
+    eval {
+        defined $version
+          ? use_module( $module, $version )
+          : use_module($module);
+    }
+      or return wantarray ? ( 0, $@ ) : 0;
 
     return 1;
 }
 
 
 sub load_with_params {
-    my ($class, $module, @args) = @_;
-    my ($res, $error) = $class->require($module);
-    $res or return wantarray ? (0, $error) : 0;
+    my ( $class, $module, @args ) = @_;
+    my ( $res, $error ) = $class->require($module);
+    $res or return wantarray ? ( 0, $error ) : 0;
 
     # From perlfunc : If no "import" method can be found then the call is
     # skipped, even if there is an AUTOLOAD method.
-    if ($module->can('import')) {
+    if ( $module->can('import') ) {
 
         # bump Exporter Level to import symbols in the caller
-        local $Exporter::ExportLevel = ($Exporter::ExportLevel || 0) + 1;
+        local $Exporter::ExportLevel = ( $Exporter::ExportLevel || 0 ) + 1;
         local $@;
         eval { $module->import(@args) };
         my $error = $@;
-        $error and return wantarray ? (0, $error) : 0;
+        $error and return wantarray ? ( 0, $error ) : 0;
     }
     return 1;
 }
 
 
 sub use_lib {
-    my ($class, @args) = @_;
+    my ( $class, @args ) = @_;
     use lib;
     local $@;
     lib->import(@args);
     my $error = $@;
-    $error and return wantarray ? (0, $error) : 0;
+    $error and return wantarray ? ( 0, $error ) : 0;
     return 1;
 }
 
@@ -67,6 +70,7 @@ sub use_lib {
 
 
 __END__
+
 =pod
 
 =head1 NAME
@@ -75,7 +79,7 @@ Dancer2::ModuleLoader - Dynamic module loading helpers for Dancer2 core componen
 
 =head1 VERSION
 
-version 0.04
+version 0.05
 
 =head1 DESCRIPTION
 
@@ -187,4 +191,3 @@ This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.
 
 =cut
-

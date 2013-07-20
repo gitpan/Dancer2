@@ -1,6 +1,6 @@
 package Dancer2::Template::Tiny;
 {
-  $Dancer2::Template::Tiny::VERSION = '0.04';
+    $Dancer2::Template::Tiny::VERSION = '0.05';
 }
 
 # ABSTRACT: Template::Tiny engine for Dancer2
@@ -17,17 +17,17 @@ with 'Dancer2::Core::Role::Template';
 
 
 has '+engine' =>
-  (isa => InstanceOf ['Dancer2::Template::Implementation::ForkedTiny'],);
+  ( isa => InstanceOf ['Dancer2::Template::Implementation::ForkedTiny'], );
 
 sub _build_engine {
-    Dancer2::Template::Implementation::ForkedTiny->new(%{$_[0]->config});
+    Dancer2::Template::Implementation::ForkedTiny->new( %{ $_[0]->config } );
 }
 
 
 sub render {
-    my ($self, $template, $tokens) = @_;
+    my ( $self, $template, $tokens ) = @_;
 
-    (ref $template || -f $template)
+    ( ref $template || -f $template )
       or die "$template is not a regular file or reference";
 
     my $template_data =
@@ -37,7 +37,7 @@ sub render {
 
     my $content;
 
-    $self->engine->process(\$template_data, $tokens, \$content,)
+    $self->engine->process( \$template_data, $tokens, \$content, )
       or die "Could not process template file '$template'";
 
     return $content;
@@ -46,8 +46,8 @@ sub render {
 1;
 
 
-
 __END__
+
 =pod
 
 =head1 NAME
@@ -56,7 +56,7 @@ Dancer2::Template::Tiny - Template::Tiny engine for Dancer2
 
 =head1 VERSION
 
-version 0.04
+version 0.05
 
 =head1 SYNOPSIS
 
@@ -116,4 +116,3 @@ This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.
 
 =cut
-

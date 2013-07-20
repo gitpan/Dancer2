@@ -2,7 +2,7 @@
 
 package Dancer2::Logger::Capture::Trap;
 {
-  $Dancer2::Logger::Capture::Trap::VERSION = '0.04';
+    $Dancer2::Logger::Capture::Trap::VERSION = '0.05';
 }
 use Moo;
 use Dancer2::Core::Types;
@@ -14,15 +14,15 @@ has storage => (
 );
 
 sub store {
-    my ($self, $level, $message) = @_;
-    push @{$self->storage}, {level => $level, message => $message};
+    my ( $self, $level, $message ) = @_;
+    push @{ $self->storage }, { level => $level, message => $message };
 }
 
 sub read {
     my $self = shift;
 
     my $logs = $self->storage;
-    $self->storage([]);
+    $self->storage( [] );
     return $logs;
 }
 
@@ -37,7 +37,7 @@ Dancer2::Logger::Capture::Trap - a place to store captured Dancer2 logs
 
 =head1 VERSION
 
-version 0.04
+version 0.05
 
 =head1 SYNOPSIS
 
@@ -91,4 +91,3 @@ the same terms as the Perl 5 programming language system itself.
 
 
 __END__
-

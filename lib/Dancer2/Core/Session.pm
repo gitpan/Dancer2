@@ -1,6 +1,6 @@
 package Dancer2::Core::Session;
 {
-  $Dancer2::Core::Session::VERSION = '0.04';
+    $Dancer2::Core::Session::VERSION = '0.05';
 }
 
 #ABSTRACT: class to represent any session object
@@ -33,7 +33,7 @@ has expires => (
     coerce => sub {
         my $value = shift;
         $value += time if $value =~ /^[\-\+]?\d+$/;
-        Dancer2::Core::Time->new(expression => $value)->epoch;
+        Dancer2::Core::Time->new( expression => $value )->epoch;
     },
 );
 
@@ -45,23 +45,21 @@ has is_dirty => (
 );
 
 
-
 sub read {
-    my ($self, $key) = @_;
+    my ( $self, $key ) = @_;
     return $self->data->{$key};
 }
 
 
-
 sub write {
-    my ($self, $key, $value) = @_;
+    my ( $self, $key, $value ) = @_;
     $self->is_dirty(1);
     $self->data->{$key} = $value;
 }
 
 
 sub delete {
-    my ($self, $key, $value) = @_;
+    my ( $self, $key, $value ) = @_;
     $self->is_dirty(1);
     delete $self->data->{$key};
 }
@@ -69,6 +67,7 @@ sub delete {
 1;
 
 __END__
+
 =pod
 
 =head1 NAME
@@ -77,7 +76,7 @@ Dancer2::Core::Session - class to represent any session object
 
 =head1 VERSION
 
-version 0.04
+version 0.05
 
 =head1 DESCRIPTION
 
@@ -158,4 +157,3 @@ This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.
 
 =cut
-

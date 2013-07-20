@@ -1,6 +1,5 @@
 package Dancer2::Plugins;
 # ABSTRACT: Recommended Dancer2 plugins 
-# PODNAME: Dancer2::Plugins
 
 
 __END__
@@ -12,7 +11,7 @@ Dancer2::Plugins - Recommended Dancer2 plugins
 
 =head1 VERSION
 
-version 0.04
+version 0.05
 
 Dancer2 aims to keep the core as small as possible, but there are a growing
 number of useful plugins to add helpful features.

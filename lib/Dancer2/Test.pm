@@ -2,7 +2,7 @@
 
 package Dancer2::Test;
 {
-  $Dancer2::Test::VERSION = '0.04';
+    $Dancer2::Test::VERSION = '0.05';
 }
 use strict;
 use warnings;
@@ -63,22 +63,22 @@ sub dancer_response {
     # useful for the high-level tests
     return $_[0] if ref $_[0] eq 'Dancer2::Core::Response';
 
-    my ($request, $env) =
+    my ( $request, $env ) =
       ref $_[0] eq 'Dancer2::Core::Request'
       ? _build_env_from_request(@_)
       : _build_request_from_env(@_);
 
-    return $_dispatcher->dispatch($env, $request);
+    return $_dispatcher->dispatch( $env, $request );
 }
 
 sub _build_request_from_env {
 
     # arguments can be passed as the triplet
     # or as a arrayref, or as a simple string
-    my ($method, $path, $options) =
-        @_ > 1               ? @_
-      : ref $_[0] eq 'ARRAY' ? @{$_[0]}
-      :                        (GET => $_[0], {});
+    my ( $method, $path, $options ) =
+        @_ > 1 ? @_
+      : ref $_[0] eq 'ARRAY' ? @{ $_[0] }
+      :                        ( GET => $_[0], {} );
 
     my $env = {
         %ENV,
@@ -93,38 +93,40 @@ sub _build_request_from_env {
         HTTP_USER_AGENT   => "Dancer2::Test simulator v " . Dancer2->VERSION,
     };
 
-    if (defined $options->{params}) {
+    if ( defined $options->{params} ) {
         my @params;
-        while( my ($p, $value) = each %{$options->{params}} ) {
+        while ( my ( $p, $value ) = each %{ $options->{params} } ) {
             if ( ref($value) eq 'ARRAY' ) {
                 for my $v (@$value) {
-                    push @params, uri_escape($p) . '=' . uri_escape($v);
+                    push @params,
+                      uri_escape_utf8($p) . '=' . uri_escape_utf8($v);
                 }
             }
             else {
-                push @params, uri_escape($p) . '=' . uri_escape($value);
+                push @params,
+                  uri_escape_utf8($p) . '=' . uri_escape_utf8($value);
             }
         }
-        $env->{QUERY_STRING} = join('&', @params);
+        $env->{QUERY_STRING} = join( '&', @params );
     }
 
-    my $request = Dancer2::Core::Request->new(env => $env);
+    my $request = Dancer2::Core::Request->new( env => $env );
 
     # body
-    $request->body($options->{body}) if exists $options->{body};
+    $request->body( $options->{body} ) if exists $options->{body};
 
     # headers
-    if ($options->{headers}) {
-        for my $header (@{$options->{headers}}) {
-            my ($name, $value) = @{$header};
-            $request->header($name => $value);
+    if ( $options->{headers} ) {
+        for my $header ( @{ $options->{headers} } ) {
+            my ( $name, $value ) = @{$header};
+            $request->header( $name => $value );
         }
     }
 
     # files
     if ( $options->{files} ) {
-        for my $file (@{$options->{files}}) {
-            my $headers  = $file->{headers};
+        for my $file ( @{ $options->{files} } ) {
+            my $headers = $file->{headers};
             $headers->{'Content-Type'} ||= 'text/plain';
 
             my $temp = File::Temp->new();
@@ -134,7 +136,7 @@ sub _build_request_from_env {
             }
             else {
                 require File::Copy;
-                File::Copy::copy($file->{filename}, $temp);
+                File::Copy::copy( $file->{filename}, $temp );
             }
 
             my $upload = Dancer2::Core::Request::Upload->new(
@@ -148,7 +150,7 @@ sub _build_request_from_env {
             ## But will get deleted by the time the test is finished.
             $upload->{temp_fh} = $temp;
 
-            $request->uploads->{$file->{name}} = $upload;
+            $request->uploads->{ $file->{name} } = $upload;
         }
     }
 
@@ -157,7 +159,7 @@ sub _build_request_from_env {
         $request->content_type( $options->{content_type} );
     }
 
-    return ($request, $env);
+    return ( $request, $env );
 }
 
 sub _build_env_from_request {
@@ -176,29 +178,31 @@ sub _build_env_from_request {
     };
 
     # TODO
-    if (my $params = $request->{_query_params}) {
+    if ( my $params = $request->{_query_params} ) {
         my @params;
-        while(my ($p, $value) = each %{$params}) {
+        while ( my ( $p, $value ) = each %{$params} ) {
             if ( ref($value) eq 'ARRAY' ) {
                 for my $v (@$value) {
-                    push @params, uri_escape($p) . '=' . uri_escape($v);
+                    push @params,
+                      uri_escape_utf8($p) . '=' . uri_escape_utf8($v);
                 }
             }
             else {
-                push @params, uri_escape($p) . '=' . uri_escape($value);
+                push @params,
+                  uri_escape_utf8($p) . '=' . uri_escape_utf8($value);
             }
         }
-        $env->{QUERY_STRING} = join('&', @params);
+        $env->{QUERY_STRING} = join( '&', @params );
     }
 
     # TODO files
 
-    return ($request, $env);
+    return ( $request, $env );
 }
 
 
 sub response_status_is {
-    my ($req, $status, $test_name) = @_;
+    my ( $req, $status, $test_name ) = @_;
 
     $test_name ||= "response status is $status for " . _req_label($req);
 
@@ -206,32 +210,33 @@ sub response_status_is {
 
     my $tb = Test::Builder->new;
     local $Test::Builder::Level = $Test::Builder::Level + 1;
-    $tb->is_eq($response->status, $status, $test_name);
+    $tb->is_eq( $response->status, $status, $test_name );
 }
 
 
 sub route_exists {
-    response_status_is($_[0], 200, $_[1]);
+    response_status_is( $_[0], 200, $_[1] );
 }
 
 
 sub route_doesnt_exist {
-    response_status_is(@_, 404);
+    response_status_is( $_[0], 404, $_[1] );
 }
 
 
 sub response_status_isnt {
-    my ($req, $status, $test_name) = @_;
+    my ( $req, $status, $test_name ) = @_;
     $test_name ||= "response status is not $status for " . _req_label($req);
 
     my $response = dancer_response($req);
 
     my $tb = Test::Builder->new;
     local $Test::Builder::Level = $Test::Builder::Level + 1;
-    $tb->isnt_eq($response->status, $status, $test_name);
+    $tb->isnt_eq( $response->status, $status, $test_name );
 }
 
 {
+
     # Map comparison operator names to human-friendly ones
     my %cmp_name = (
         is_eq   => "is",
@@ -241,9 +246,9 @@ sub response_status_isnt {
     );
 
     sub _cmp_response_content {
-        my ($req, $want, $test_name, $cmp) = @_;
+        my ( $req, $want, $test_name, $cmp ) = @_;
 
-        if (@_ == 3) {
+        if ( @_ == 3 ) {
             $cmp       = $test_name;
             $test_name = $cmp_name{$cmp};
             $test_name =
@@ -254,37 +259,37 @@ sub response_status_isnt {
 
         my $tb = Test::Builder->new;
         local $Test::Builder::Level = $Test::Builder::Level + 1;
-        $tb->$cmp($response->content, $want, $test_name);
+        $tb->$cmp( $response->content, $want, $test_name );
     }
 }
 
 
 sub response_content_is {
     local $Test::Builder::Level = $Test::Builder::Level + 1;
-    _cmp_response_content(@_, 'is_eq');
+    _cmp_response_content( @_, 'is_eq' );
 }
 
 
 sub response_content_isnt {
     local $Test::Builder::Level = $Test::Builder::Level + 1;
-    _cmp_response_content(@_, 'isnt_eq');
+    _cmp_response_content( @_, 'isnt_eq' );
 }
 
 
 sub response_content_like {
     local $Test::Builder::Level = $Test::Builder::Level + 1;
-    _cmp_response_content(@_, 'like');
+    _cmp_response_content( @_, 'like' );
 }
 
 
 sub response_content_unlike {
     local $Test::Builder::Level = $Test::Builder::Level + 1;
-    _cmp_response_content(@_, 'unlike');
+    _cmp_response_content( @_, 'unlike' );
 }
 
 
 sub response_content_is_deeply {
-    my ($req, $matcher, $test_name) = @_;
+    my ( $req, $matcher, $test_name ) = @_;
     $test_name ||= "response content looks good for " . _req_label($req);
 
     local $Test::Builder::Level = $Test::Builder::Level + 1;
@@ -294,30 +299,32 @@ sub response_content_is_deeply {
 
 
 sub response_is_file {
-    my ($req, $test_name) = @_;
+    my ( $req, $test_name ) = @_;
     $test_name ||= "a file is returned for " . _req_label($req);
 
     my $response = _get_file_response($req);
     my $tb       = Test::Builder->new;
     local $Test::Builder::Level = $Test::Builder::Level + 1;
-    return $tb->ok(defined($response), $test_name);
+    return $tb->ok( defined($response), $test_name );
 }
 
 
 sub response_headers_are_deeply {
-    my ($req, $expected, $test_name) = @_;
+    my ( $req, $expected, $test_name ) = @_;
     $test_name ||= "headers are as expected for " . _req_label($req);
 
     local $Test::Builder::Level = $Test::Builder::Level + 1;
-    my $response = dancer_response(_expand_req($req));
+    my $response = dancer_response( _expand_req($req) );
 
-    is_deeply(_sort_headers($response->headers_to_array),
-        _sort_headers($expected), $test_name);
+    is_deeply(
+        _sort_headers( $response->headers_to_array ),
+        _sort_headers($expected), $test_name
+    );
 }
 
 
 sub response_headers_include {
-    my ($req, $expected, $test_name) = @_;
+    my ( $req, $expected, $test_name ) = @_;
     $test_name ||= "headers include expected data for " . _req_label($req);
     my $tb = Test::Builder->new;
 
@@ -325,26 +332,29 @@ sub response_headers_include {
     local $Test::Builder::Level = $Test::Builder::Level + 1;
 
     print STDERR "Headers are: "
-      . Dumper($response->headers_to_array)
+      . Dumper( $response->headers_to_array )
       . "\n Expected to find header: "
       . Dumper($expected)
-      if !$tb->ok(_include_in_headers($response->headers_to_array, $expected),
-        $test_name);
+      if !$tb->ok(
+        _include_in_headers( $response->headers_to_array, $expected ),
+        $test_name
+      );
 }
 
 
-sub route_pod_coverage { 
+sub route_pod_coverage {
 
     require Pod::Simple::Search;
     require Pod::Simple::SimpleTree;
 
     my $all_routes = {};
- 
-    foreach my $app (@{ $_dispatcher->apps }) {
+
+    foreach my $app ( @{ $_dispatcher->apps } ) {
         my $routes           = $app->routes;
         my $available_routes = [];
-        foreach my $method ( keys %$routes ) {
+        foreach my $method ( sort { $b cmp $a } keys %$routes ) {
             foreach my $r ( @{ $routes->{$method} } ) {
+
                 # we don't need pod coverage for head
                 next if $method eq 'head';
                 push @$available_routes, $method . ' ' . $r->spec_route;
@@ -357,22 +367,22 @@ sub route_pod_coverage {
         my $undocumented_routes = [];
         my $file                = Pod::Simple::Search->new->find( $app->name );
         if ($file) {
-            $all_routes->{ $app->name }{ has_pod } = 1;
+            $all_routes->{ $app->name }{has_pod} = 1;
             my $parser       = Pod::Simple::SimpleTree->new->parse_file($file);
             my $pod_dataref  = $parser->root;
             my $found_routes = {};
-            for ( my $i = 0 ; $i < @$available_routes ; $i++ ) {
+            for ( my $i = 0; $i < @$available_routes; $i++ ) {
 
                 my $r          = $available_routes->[$i];
                 my $app_string = lc $r;
                 $app_string =~ s/\*/_REPLACED_STAR_/g;
 
-                for ( my $idx = 0 ; $idx < @$pod_dataref ; $idx++ ) {
+                for ( my $idx = 0; $idx < @$pod_dataref; $idx++ ) {
                     my $pod_part = $pod_dataref->[$idx];
 
                     next if ref $pod_part ne 'ARRAY';
                     foreach my $ref_part (@$pod_part) {
-                        if (ref($ref_part) eq "ARRAY") {
+                        if ( ref($ref_part) eq "ARRAY" ) {
                             push @$pod_dataref, $ref_part;
                         }
                     }
@@ -391,16 +401,19 @@ sub route_pod_coverage {
                 }
             }
         }
-        else { ### no POD found
-            $all_routes->{ $app->name }{ has_pod } = 0;
+        else {    ### no POD found
+            $all_routes->{ $app->name }{has_pod} = 0;
         }
         if (@$undocumented_routes) {
-            $all_routes->{ $app->name }{undocumented_routes} = $undocumented_routes;
+            $all_routes->{ $app->name }{undocumented_routes} =
+              $undocumented_routes;
         }
-        elsif (! $all_routes->{ $app->name }{ has_pod }
-            && @{$all_routes->{ $app->name }{routes}} ){
+        elsif ( !$all_routes->{ $app->name }{has_pod}
+            && @{ $all_routes->{ $app->name }{routes} } )
+        {
             ## copy dereferenced array
-            $all_routes->{ $app->name }{undocumented_routes} = [@{$all_routes->{ $app->name }{routes}}];
+            $all_routes->{ $app->name }{undocumented_routes} =
+              [ @{ $all_routes->{ $app->name }{routes} } ];
         }
     }
 
@@ -417,16 +430,17 @@ sub is_pod_covered {
     my $tb = Test::Builder->new;
     local $Test::Builder::Level = $Test::Builder::Level + 1;
 
-    foreach my $app (@{$_dispatcher->apps}) {
-        my %undocumented_route = (map { $_ => 1 }
-              @{$route_pod_coverage->{$app->name}{undocumented_routes}});
+    foreach my $app ( @{ $_dispatcher->apps } ) {
+        my %undocumented_route =
+          ( map { $_ => 1 }
+              @{ $route_pod_coverage->{ $app->name }{undocumented_routes} } );
         $tb->subtest(
             $app->name . $test_name,
             sub {
-                foreach
-                  my $route (@{$route_pod_coverage->{$app->name}{routes}})
+                foreach my $route (
+                    @{ $route_pod_coverage->{ $app->name }{routes} } )
                 {
-                    ok(!$undocumented_route{$route}, "$route is documented");
+                    ok( !$undocumented_route{$route}, "$route is documented" );
                 }
             }
         );
@@ -435,23 +449,23 @@ sub is_pod_covered {
 
 
 sub import {
-    my ($class, %options) = @_;
+    my ( $class, %options ) = @_;
 
     my @applications;
-    if (ref $options{apps} eq ref([])) {
-        @applications = @{$options{apps}};
+    if ( ref $options{apps} eq ref( [] ) ) {
+        @applications = @{ $options{apps} };
     }
     else {
-        my ($caller, $script) = caller;
+        my ( $caller, $script ) = caller;
 
         # if no app is passed, assume the caller is one.
         @applications = ($caller) if $caller->can('dancer_app');
     }
 
     # register the apps to the test dispatcher
-    $_dispatcher->apps([map { $_->dancer_app } @applications]);
+    $_dispatcher->apps( [ map { $_->dancer_app } @applications ] );
 
-    $class->export_to_level(1, $class, @EXPORT);
+    $class->export_to_level( 1, $class, @EXPORT );
 }
 
 # private
@@ -462,23 +476,23 @@ sub _req_label {
     return
         ref $req eq 'Dancer2::Core::Response' ? 'response object'
       : ref $req eq 'Dancer2::Core::Request'
-      ? join(' ', map { $req->$_ } qw/ method path /)
-      : ref $req eq 'ARRAY' ? join(' ', @$req)
+      ? join( ' ', map { $req->$_ } qw/ method path / )
+      : ref $req eq 'ARRAY' ? join( ' ', @$req )
       :                       "GET $req";
 }
 
 sub _expand_req {
     my $req = shift;
-    return ref $req eq 'ARRAY' ? @$req : ('GET', $req);
+    return ref $req eq 'ARRAY' ? @$req : ( 'GET', $req );
 }
 
 # Sort arrayref of headers (turn it into a list of arrayrefs, sort by the header
 # & value, then turn it back into an arrayref)
 sub _sort_headers {
-    my @originalheaders = @{shift()};    # take a copy we can modify
+    my @originalheaders = @{ shift() };    # take a copy we can modify
     my @headerpairs;
-    while (my ($header, $value) = splice @originalheaders, 0, 2) {
-        push @headerpairs, [$header, $value];
+    while ( my ( $header, $value ) = splice @originalheaders, 0, 2 ) {
+        push @headerpairs, [ $header, $value ];
     }
 
     # We have an array of arrayrefs holding header => value pairs; sort them by
@@ -491,16 +505,16 @@ sub _sort_headers {
 
 # make sure the given header sublist is included in the full headers array
 sub _include_in_headers {
-    my ($full_headers, $expected_subset) = @_;
+    my ( $full_headers, $expected_subset ) = @_;
 
     # walk through all the expected header pairs, make sure
     # they exist with the same value in the full_headers list
     # return false as soon as one is not.
-    for (my $i = 0; $i < scalar(@$expected_subset); $i += 2) {
-        my ($name, $value) =
-          ($expected_subset->[$i], $expected_subset->[$i + 1]);
+    for ( my $i = 0; $i < scalar(@$expected_subset); $i += 2 ) {
+        my ( $name, $value ) =
+          ( $expected_subset->[$i], $expected_subset->[ $i + 1 ] );
         return 0
-          unless _check_header($full_headers, $name, $value);
+          unless _check_header( $full_headers, $name, $value );
     }
 
     # we've found all the expected pairs in the $full_headers list
@@ -508,9 +522,9 @@ sub _include_in_headers {
 }
 
 sub _check_header {
-    my ($headers, $key, $value) = @_;
-    for (my $i = 0; $i < scalar(@$headers); $i += 2) {
-        my ($name, $val) = ($headers->[$i], $headers->[$i + 1]);
+    my ( $headers, $key, $value ) = @_;
+    for ( my $i = 0; $i < scalar(@$headers); $i += 2 ) {
+        my ( $name, $val ) = ( $headers->[$i], $headers->[ $i + 1 ] );
         return 1 if $name eq $key && $value eq $val;
     }
     return 0;
@@ -522,19 +536,19 @@ sub _req_to_response {
     # already a response object
     return $req if ref $req eq 'Dancer2::Core::Response';
 
-    return dancer_response(ref $req eq 'ARRAY' ? @$req : ('GET', $req));
+    return dancer_response( ref $req eq 'ARRAY' ? @$req : ( 'GET', $req ) );
 }
 
 # make sure we have at least one app in the dispatcher, and if not,
 # we must have at this point an app within the caller
 sub _find_dancer_apps_for_dispatcher {
-    return if scalar(@{$_dispatcher->apps});
+    return if scalar( @{ $_dispatcher->apps } );
 
-    for (my $deep = 0; $deep < 5; $deep++) {
+    for ( my $deep = 0; $deep < 5; $deep++ ) {
         my $caller = caller($deep);
-        next if !$caller->can('dancer_app');
+        next if !$caller || !$caller->can('dancer_app');
 
-        return $_dispatcher->apps([$caller->dancer_app]);
+        return $_dispatcher->apps( [ $caller->dancer_app ] );
     }
 
     croak "Unable to find a Dancer2 app, did you use Dancer2 in your test?";
@@ -543,6 +557,7 @@ sub _find_dancer_apps_for_dispatcher {
 1;
 
 __END__
+
 =pod
 
 =head1 NAME
@@ -551,7 +566,7 @@ Dancer2::Test - Useful routines for testing Dancer2 apps
 
 =head1 VERSION
 
-version 0.04
+version 0.05
 
 =head1 DESCRIPTION
 
@@ -857,4 +872,3 @@ This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.
 
 =cut
-

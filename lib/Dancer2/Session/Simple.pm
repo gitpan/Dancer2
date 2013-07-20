@@ -2,7 +2,7 @@
 
 package Dancer2::Session::Simple;
 {
-  $Dancer2::Session::Simple::VERSION = '0.04';
+    $Dancer2::Session::Simple::VERSION = '0.05';
 }
 use Moo;
 use Dancer2::Core::Types;
@@ -16,11 +16,11 @@ my $SESSIONS = {};
 
 sub _sessions {
     my ($self) = @_;
-    return [keys %{$SESSIONS}];
+    return [ keys %{$SESSIONS} ];
 }
 
 sub _retrieve {
-    my ($class, $id) = @_;
+    my ( $class, $id ) = @_;
     my $s = $SESSIONS->{$id};
 
     croak "Invalid session ID: $id"
@@ -30,12 +30,12 @@ sub _retrieve {
 }
 
 sub _destroy {
-    my ($class, $id) = @_;
+    my ( $class, $id ) = @_;
     delete $SESSIONS->{$id};
 }
 
 sub _flush {
-    my ($class, $id, $data) = @_;
+    my ( $class, $id, $data ) = @_;
     $SESSIONS->{$id} = $data;
 }
 
@@ -43,6 +43,7 @@ sub _flush {
 
 
 __END__
+
 =pod
 
 =head1 NAME
@@ -51,7 +52,7 @@ Dancer2::Session::Simple - in-memory session backend for Dancer2
 
 =head1 VERSION
 
-version 0.04
+version 0.05
 
 =head1 DESCRIPTION
 
@@ -72,7 +73,7 @@ engine in a Dancer2 application.
 
 =head1 SEE ALSO
 
-See L<Dancer2::Session> for details about session usage in route handlers.
+See L<Dancer2::Core::Session> for details about session usage in route handlers.
 
 =head1 AUTHOR
 
@@ -86,4 +87,3 @@ This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.
 
 =cut
-

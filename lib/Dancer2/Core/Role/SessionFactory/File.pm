@@ -1,6 +1,6 @@
 package Dancer2::Core::Role::SessionFactory::File;
 {
-  $Dancer2::Core::Role::SessionFactory::File::VERSION = '0.04';
+    $Dancer2::Core::Role::SessionFactory::File::VERSION = '0.05';
 }
 
 #ABSTRACT: Role for file-based session factories
@@ -34,13 +34,13 @@ requires '_freeze_to_handle';    # given handle and data, serialize it
 has session_dir => (
     is      => 'ro',
     isa     => Str,
-    default => sub { path('.', 'sessions') },
+    default => sub { path( '.', 'sessions' ) },
 );
 
 sub BUILD {
     my $self = shift;
 
-    if (!-d $self->session_dir) {
+    if ( !-d $self->session_dir ) {
         mkdir $self->session_dir
           or croak "Unable to create session dir : "
           . $self->session_dir . ' : '
@@ -52,14 +52,14 @@ sub _sessions {
     my ($self) = @_;
     my $sessions = [];
 
-    opendir(my $dh, $self->session_dir)
+    opendir( my $dh, $self->session_dir )
       or croak "Unable to open directory " . $self->session_dir . " : $!";
 
     my $suffix = $self->_suffix;
 
-    while (my $file = readdir($dh)) {
+    while ( my $file = readdir($dh) ) {
         next if $file eq '.' || $file eq '..';
-        if ($file =~ /(\w+)\Q$suffix\E/) {
+        if ( $file =~ /(\w+)\Q$suffix\E/ ) {
             push @{$sessions}, $1;
         }
     }
@@ -69,8 +69,8 @@ sub _sessions {
 }
 
 sub _retrieve {
-    my ($self, $id) = @_;
-    my $session_file = path($self->session_dir, $id . $self->_suffix);
+    my ( $self, $id ) = @_;
+    my $session_file = path( $self->session_dir, $id . $self->_suffix );
 
     return unless -f $session_file;
 
@@ -83,21 +83,21 @@ sub _retrieve {
 }
 
 sub _destroy {
-    my ($self, $id) = @_;
-    my $session_file = path($self->session_dir, $id . $self->_suffix);
+    my ( $self, $id ) = @_;
+    my $session_file = path( $self->session_dir, $id . $self->_suffix );
     return if !-f $session_file;
 
     unlink $session_file;
 }
 
 sub _flush {
-    my ($self, $id, $data) = @_;
-    my $session_file = path($self->session_dir, $id . $self->_suffix);
+    my ( $self, $id, $data ) = @_;
+    my $session_file = path( $self->session_dir, $id . $self->_suffix );
 
     open my $fh, '>', $session_file or die "Can't open '$session_file': $!\n";
     flock $fh, LOCK_EX or die "Can't lock file '$session_file': $!\n";
     set_file_mode($fh);
-    $self->_freeze_to_handle($fh, $data);
+    $self->_freeze_to_handle( $fh, $data );
     close $fh or die "Can't close '$session_file': $!\n";
 
     return $data;
@@ -106,6 +106,7 @@ sub _flush {
 1;
 
 __END__
+
 =pod
 
 =head1 NAME
@@ -114,7 +115,7 @@ Dancer2::Core::Role::SessionFactory::File - Role for file-based session factorie
 
 =head1 VERSION
 
-version 0.04
+version 0.05
 
 =head1 DESCRIPTION
 
@@ -176,4 +177,3 @@ This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.
 
 =cut
-

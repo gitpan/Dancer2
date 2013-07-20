@@ -1,6 +1,6 @@
 package Dancer2::Core::Request;
 {
-  $Dancer2::Core::Request::VERSION = '0.04';
+    $Dancer2::Core::Request::VERSION = '0.05';
 }
 
 # ABSTRACT: Interface for accessing incoming requests
@@ -17,7 +17,6 @@ use Dancer2::Core::Request::Upload;
 with 'Dancer2::Core::Role::Headers';
 
 
-
 # check presence of XS module to speedup request
 eval { require URL::Encode::XS; };
 our $XS_URL_DECODE = !$@;
@@ -31,14 +30,19 @@ my @http_env_keys = (
     'user_agent',      'accept_language', 'accept_charset',
     'accept_encoding', 'keep_alive',      'connection',
     'accept',          'accept_type',     'referer',
+    'x_requested_with',
 
     # 'host' is managed manually
 );
 
-has $_ => (
-    is  => 'rw',
-    isa => Str,
-) for @http_env_keys;
+foreach my $attr (@http_env_keys) {
+    has $attr => (
+        is      => 'rw',
+        isa     => Str,
+        lazy    => 1,
+        default => sub { $_[0]->env->{ 'HTTP_' . ( uc $attr ) } },
+    );
+}
 
 
 # then all the native attributes
@@ -47,7 +51,6 @@ has env => (
     isa     => HashRef,
     default => sub { {} },
 );
-
 
 
 has path => (
@@ -70,8 +73,8 @@ sub _build_path {
 
     # fallback to REQUEST_URI if nothing found
     # we have to decode it, according to PSGI specs.
-    if (defined $self->request_uri) {
-        $path ||= $self->_url_decode($self->request_uri);
+    if ( defined $self->request_uri ) {
+        $path ||= $self->_url_decode( $self->request_uri );
     }
 
     croak "Cannot resolve path" if not $path;
@@ -110,9 +113,9 @@ has method => (
 
 
 has content_type => (
-    is  => 'rw',
-    isa => Str,
-    lazy => 1,
+    is      => 'rw',
+    isa     => Str,
+    lazy    => 1,
     default => sub {
         $_[0]->env->{CONTENT_TYPE} || '';
     },
@@ -120,9 +123,9 @@ has content_type => (
 
 
 has content_length => (
-    is  => 'rw',
-    isa => Num,
-    lazy => 1,
+    is      => 'rw',
+    isa     => Num,
+    lazy    => 1,
     default => sub {
         $_[0]->env->{CONTENT_LENGTH} || 0;
     },
@@ -167,16 +170,14 @@ has is_behind_proxy => (
 sub host {
     my ($self) = @_;
 
-    return ($self->is_behind_proxy)
-      ? ($self->env->{HTTP_X_FORWARDED_HOST}
-          || $self->env->{X_FORWARDED_HOST})
+    return ( $self->is_behind_proxy )
+      ? ( $self->env->{HTTP_X_FORWARDED_HOST}
+          || $self->env->{X_FORWARDED_HOST} )
       : $self->env->{HTTP_HOST};
 }
 
 
 #from Dancer2::Core::Role::Headers
-
-
 
 
 # aliases, kept for backward compat
@@ -192,14 +193,14 @@ sub user                  { $_[0]->env->{REMOTE_USER} }
 sub script_name           { $_[0]->env->{SCRIPT_NAME} }
 
 
-
 sub scheme {
     my ($self) = @_;
     my $scheme;
-    if ($self->is_behind_proxy) {
+    if ( $self->is_behind_proxy ) {
         $scheme =
              $self->env->{'X_FORWARDED_PROTOCOL'}
           || $self->env->{'HTTP_X_FORWARDED_PROTOCOL'}
+          || $self->env->{'HTTP_X_FORWARDED_PROTO'}
           || $self->env->{'HTTP_FORWARDED_PROTO'}
           || "";
     }
@@ -212,15 +213,15 @@ sub scheme {
 
 
 has serializer => (
-    is => 'rw',
-    isa => Maybe(ConsumerOf['Dancer2::Core::Role::Serializer']),
+    is       => 'rw',
+    isa      => Maybe( ConsumerOf ['Dancer2::Core::Role::Serializer'] ),
     required => 0,
 );
 
 
 has data => (
-    is => 'ro',
-    lazy => 1,
+    is      => 'ro',
+    lazy    => 1,
     default => \&deserialize,
 );
 
@@ -237,14 +238,13 @@ sub deserialize {
 
     return unless $self->serializer->support_content_type($content_type);
 
-    return 
+    return
       unless grep { $self->method eq $_ } qw/ PUT POST PATCH /;
 
     # try to deserialize
-    my $data = eval {
-        $self->serializer->deserialize($self->body)
-    };
+    my $data = eval { $self->serializer->deserialize( $self->body ) };
     if ($@) {
+
         # TODO add logging
         return;
     }
@@ -253,7 +253,7 @@ sub deserialize {
 
     # TODO surely there is a better way
     $self->{params} = {
-        %{  $self->{params} || {} },
+        %{ $self->{params} || {} },
         %$data,
     };
 
@@ -261,7 +261,7 @@ sub deserialize {
 }
 
 
-sub secure    { $_[0]->scheme eq 'https' }
+sub secure    { $_[0]->scheme   eq 'https' }
 sub uri       { $_[0]->request_uri }
 sub is_head   { $_[0]->{method} eq 'HEAD' }
 sub is_post   { $_[0]->{method} eq 'POST' }
@@ -279,7 +279,7 @@ our $_count = 0;
 sub BUILD {
     my ($self) = @_;
 
-    $self->{id}             = ++$_count;
+    $self->{id} = ++$_count;
 
     $self->{_chunk_size}    = 4096;
     $self->{_read_position} = 0;
@@ -288,10 +288,9 @@ sub BUILD {
     $self->{_route_params}  = {};
 
     $self->_init_request_headers();
-    $self->_build_request_env();
 
     $self->{_http_body} =
-      HTTP::Body->new($self->content_type, $self->content_length);
+      HTTP::Body->new( $self->content_type, $self->content_length );
     $self->{_http_body}->cleanup(1);
 
     $self->_build_params();
@@ -310,24 +309,24 @@ sub to_string {
 # from the path location, which points instead to the new location
 # TODO this could be written in a more clean manner with a clone mechanism
 sub make_forward_to {
-    my ($self, $url, $params, $options) = @_;
+    my ( $self, $url, $params, $options ) = @_;
 
     # we clone the env to make sure we don't alter the existing one in $self
-    my $env = {%{$self->env}};
+    my $env = { %{ $self->env } };
 
     $env->{PATH_INFO} = $url;
 
-    my $new_request = (ref $self)->new(env => $env, body_is_parsed => 1);
-    my $new_params = _merge_params(scalar($self->params), $params || {});
+    my $new_request = ( ref $self )->new( env => $env, body_is_parsed => 1 );
+    my $new_params = _merge_params( scalar( $self->params ), $params || {} );
 
-    if (exists($options->{method})) {
-        $new_request->method($options->{method});
+    if ( exists( $options->{method} ) ) {
+        $new_request->method( $options->{method} );
     }
 
     $new_request->{params} = $new_params;
-    $new_request->_set_body_params($self->{_body_params});
-    $new_request->_set_query_params($self->{_query_params});
-    $new_request->_set_route_params($self->{_route_params});
+    $new_request->_set_body_params( $self->{_body_params} );
+    $new_request->_set_query_params( $self->{_query_params} );
+    $new_request->_set_route_params( $self->{_route_params} );
     $new_request->{_params_are_decoded} = 1;
     $new_request->{body}                = $self->body;
     $new_request->{headers}             = $self->headers;
@@ -338,14 +337,16 @@ sub make_forward_to {
 
 sub forward {
     my $new_request = shift->make_forward_to(@_);
-    return Dancer2->runner->server->dispatcher->dispatch($new_request->env,
-        $new_request);
+    return Dancer2->runner->server->dispatcher->dispatch(
+        $new_request->env,
+        $new_request
+    );
 }
 
 sub _merge_params {
-    my ($params, $to_add) = @_;
+    my ( $params, $to_add ) = @_;
 
-    for my $key (keys %$to_add) {
+    for my $key ( keys %$to_add ) {
         $params->{$key} = $to_add->{$key};
     }
     return $params;
@@ -370,12 +371,11 @@ sub _common_uri {
 
     my $uri = URI->new;
     $uri->scheme($scheme);
-    $uri->authority($host || "$server:$port");
-    $uri->path($path      || '/');
+    $uri->authority( $host || "$server:$port" );
+    $uri->path( $path      || '/' );
 
     return $uri;
 }
-
 
 
 sub uri_base {
@@ -383,7 +383,7 @@ sub uri_base {
     my $uri   = $self->_common_uri;
     my $canon = $uri->canonical;
 
-    if ($uri->path eq '/') {
+    if ( $uri->path eq '/' ) {
         $canon =~ s{/$}{};
     }
 
@@ -392,7 +392,7 @@ sub uri_base {
 
 
 sub uri_for {
-    my ($self, $part, $params, $dont_escape) = @_;
+    my ( $self, $part, $params, $dont_escape ) = @_;
 
     my $uri = $self->base;
 
@@ -404,36 +404,35 @@ sub uri_for {
 
     $uri->query_form($params) if $params;
 
-    return $dont_escape ? uri_unescape($uri->canonical) : $uri->canonical;
+    return $dont_escape ? uri_unescape( $uri->canonical ) : $uri->canonical;
 }
 
 
-
 sub params {
-    my ($self, $source) = @_;
+    my ( $self, $source ) = @_;
     my @caller = caller;
 
-    if (not $self->{_params_are_decoded}) {
-        $self->{params}              = _decode($self->{params});
-        $self->{_body_params}        = _decode($self->{_body_params});
-        $self->{_query_params}       = _decode($self->{_query_params});
-        $self->{_route_params}       = _decode($self->{_route_params});
+    if ( not $self->{_params_are_decoded} ) {
+        $self->{params}              = _decode( $self->{params} );
+        $self->{_body_params}        = _decode( $self->{_body_params} );
+        $self->{_query_params}       = _decode( $self->{_query_params} );
+        $self->{_route_params}       = _decode( $self->{_route_params} );
         $self->{_params_are_decoded} = 1;
     }
 
-    return %{$self->{params}} if wantarray && @_ == 1;
+    return %{ $self->{params} } if wantarray && @_ == 1;
     return $self->{params} if @_ == 1;
 
-    if ($source eq 'query') {
-        return %{$self->{_query_params}} if wantarray;
+    if ( $source eq 'query' ) {
+        return %{ $self->{_query_params} } if wantarray;
         return $self->{_query_params};
     }
-    elsif ($source eq 'body') {
-        return %{$self->{_body_params}} if wantarray;
+    elsif ( $source eq 'body' ) {
+        return %{ $self->{_body_params} } if wantarray;
         return $self->{_body_params};
     }
-    if ($source eq 'route') {
-        return %{$self->{_route_params}} if wantarray;
+    if ( $source eq 'route' ) {
+        return %{ $self->{_route_params} } if wantarray;
         return $self->{_route_params};
     }
     else {
@@ -443,27 +442,27 @@ sub params {
 
 sub captures { shift->params->{captures} }
 
-sub splat { @{shift->params->{splat} || []} }
+sub splat { @{ shift->params->{splat} || [] } }
 
-sub param { shift->params->{$_[0]} }
+sub param { shift->params->{ $_[0] } }
 
 sub _decode {
     my ($h) = @_;
     return if not defined $h;
 
-    if (!ref($h) && !utf8::is_utf8($h)) {
-        return decode('UTF-8', $h);
+    if ( !ref($h) && !utf8::is_utf8($h) ) {
+        return decode( 'UTF-8', $h );
     }
 
-    if (ref($h) eq 'HASH') {
-        while (my ($k, $v) = each(%$h)) {
+    if ( ref($h) eq 'HASH' ) {
+        while ( my ( $k, $v ) = each(%$h) ) {
             $h->{$k} = _decode($v);
         }
         return $h;
     }
 
-    if (ref($h) eq 'ARRAY') {
-        return [map { _decode($_) } @$h];
+    if ( ref($h) eq 'ARRAY' ) {
+        return [ map { _decode($_) } @$h ];
     }
 
     return $h;
@@ -482,50 +481,31 @@ sub is_ajax {
 
 # context-aware accessor for uploads
 sub upload {
-    my ($self, $name) = @_;
+    my ( $self, $name ) = @_;
     my $res = $self->{uploads}{$name};
 
     return $res unless wantarray;
     return ()   unless defined $res;
-    return (ref($res) eq 'ARRAY') ? @$res : $res;
+    return ( ref($res) eq 'ARRAY' ) ? @$res : $res;
 }
 
 # TODO : move these into attributes
 sub _set_route_params {
-    my ($self, $params) = @_;
+    my ( $self, $params ) = @_;
     $self->{_route_params} = $params;
     $self->_build_params();
 }
 
 sub _set_body_params {
-    my ($self, $params) = @_;
+    my ( $self, $params ) = @_;
     $self->{_body_params} = $params;
     $self->_build_params();
 }
 
 sub _set_query_params {
-    my ($self, $params) = @_;
+    my ( $self, $params ) = @_;
     $self->{_query_params} = $params;
     $self->_build_params();
-}
-
-sub _build_request_env {
-    my ($self) = @_;
-
-   # Don't refactor that, it's called whenever a request object is needed, that
-   # means at least once per request. If refactored in a loop, this will cost 4
-   # times more than the following static map.
-    $self->{user_agent}       = $self->env->{HTTP_USER_AGENT};
-    $self->{host}             = $self->env->{HTTP_HOST};
-    $self->{accept_language}  = $self->env->{HTTP_ACCEPT_LANGUAGE};
-    $self->{accept_charset}   = $self->env->{HTTP_ACCEPT_CHARSET};
-    $self->{accept_encoding}  = $self->env->{HTTP_ACCEPT_ENCODING};
-    $self->{keep_alive}       = $self->env->{HTTP_KEEP_ALIVE};
-    $self->{connection}       = $self->env->{HTTP_CONNECTION};
-    $self->{accept}           = $self->env->{HTTP_ACCEPT};
-    $self->{accept_type}      = $self->env->{HTTP_ACCEPT_TYPE};
-    $self->{referer}          = $self->env->{HTTP_REFERER};
-    $self->{x_requested_with} = $self->env->{HTTP_X_REQUESTED_WITH};
 }
 
 sub _build_params {
@@ -537,7 +517,7 @@ sub _build_params {
 
     # now parse environement params...
     $self->_parse_get_params();
-    if ($self->{body_is_parsed}) {
+    if ( $self->{body_is_parsed} ) {
         $self->{_body_params} ||= {};
     }
     else {
@@ -546,14 +526,14 @@ sub _build_params {
 
     # and merge everything
     $self->{params} = {
-        %$previous,                %{$self->{_query_params}},
-        %{$self->{_route_params}}, %{$self->{_body_params}},
+        %$previous,                  %{ $self->{_query_params} },
+        %{ $self->{_route_params} }, %{ $self->{_body_params} },
     };
 
 }
 
 sub _url_decode {
-    my ($self, $encoded) = @_;
+    my ( $self, $encoded ) = @_;
     return URL::Encode::XS::url_decode($encoded) if $XS_URL_DECODE;
     my $clean = $encoded;
     $clean =~ tr/\+/ /;
@@ -583,21 +563,21 @@ sub _parse_get_params {
           CGI::Deurl::XS::parse_query_string($source) || {};
     }
 
-    foreach my $token (split /[&;]/, $source) {
-        my ($key, $val) = split(/=/, $token);
+    foreach my $token ( split /[&;]/, $source ) {
+        my ( $key, $val ) = split( /=/, $token );
         next unless defined $key;
-        $val = (defined $val) ? $val : '';
+        $val = ( defined $val ) ? $val : '';
         $key = $self->_url_decode($key);
         $val = $self->_url_decode($val);
 
         # looking for multi-value params
-        if (exists $self->{_query_params}{$key}) {
+        if ( exists $self->{_query_params}{$key} ) {
             my $prev_val = $self->{_query_params}{$key};
-            if (ref($prev_val) && ref($prev_val) eq 'ARRAY') {
-                push @{$self->{_query_params}{$key}}, $val;
+            if ( ref($prev_val) && ref($prev_val) eq 'ARRAY' ) {
+                push @{ $self->{_query_params}{$key} }, $val;
             }
             else {
-                $self->{_query_params}{$key} = [$prev_val, $val];
+                $self->{_query_params}{$key} = [ $prev_val, $val ];
             }
         }
 
@@ -615,8 +595,8 @@ sub _read_to_end {
     my $content_length = $self->content_length;
     return unless $self->_has_something_to_read();
 
-    if ($content_length > 0) {
-        while (my $buffer = $self->_read()) {
+    if ( $content_length > 0 ) {
+        while ( my $buffer = $self->_read() ) {
             $self->{body} .= $buffer;
             $self->{_http_body}->add($buffer);
         }
@@ -632,19 +612,19 @@ sub _has_something_to_read {
 
 # taken from Miyagawa's Plack::Request::BodyParser
 sub _read {
-    my ($self,)   = @_;
+    my ( $self, ) = @_;
     my $remaining = $self->content_length - $self->{_read_position};
     my $maxlength = $self->{_chunk_size};
 
-    return if ($remaining <= 0);
+    return if ( $remaining <= 0 );
 
-    my $readlen = ($remaining > $maxlength) ? $maxlength : $remaining;
+    my $readlen = ( $remaining > $maxlength ) ? $maxlength : $remaining;
     my $buffer;
     my $rc;
 
-    $rc = $self->input_handle->read($buffer, $readlen);
+    $rc = $self->input_handle->read( $buffer, $readlen );
 
-    if (defined $rc) {
+    if ( defined $rc ) {
         $self->{_read_position} += $rc;
         return $buffer;
     }
@@ -660,8 +640,8 @@ sub _init_request_headers {
     $self->headers(
         HTTP::Headers->new(
             map {
-                (my $field = $_) =~ s/^HTTPS?_//;
-                ($field => $env->{$_});
+                ( my $field = $_ ) =~ s/^HTTPS?_//;
+                ( $field => $env->{$_} );
               }
               grep {/^(?:HTTP|CONTENT|COOKIE)/i} keys %$env
         )
@@ -672,15 +652,15 @@ sub _init_request_headers {
 sub _build_uploads {
     my ($self) = @_;
 
-    my $uploads = _decode($self->{_http_body}->upload);
+    my $uploads = _decode( $self->{_http_body}->upload );
     my %uploads;
 
-    for my $name (keys %{$uploads}) {
+    for my $name ( keys %{$uploads} ) {
         my $files = $uploads->{$name};
         $files = ref $files eq 'ARRAY' ? $files : [$files];
 
         my @uploads;
-        for my $upload (@{$files}) {
+        for my $upload ( @{$files} ) {
             push(
                 @uploads,
                 Dancer2::Core::Request::Upload->new(
@@ -703,6 +683,7 @@ sub _build_uploads {
     $self->_build_params();
 }
 
+
 has cookies => (
     is      => 'rw',
     isa     => HashRef,
@@ -717,19 +698,19 @@ sub _build_cookies {
     return {} unless defined $env_str;
 
     my $cookies = {};
-    foreach my $cookie (split(/[,;]\s/, $env_str)) {
+    foreach my $cookie ( split( /[,;]\s/, $env_str ) ) {
 
         # here, we don't want more than the 2 first elements
         # a cookie string can contains something like:
         # cookie_name="foo=bar"
         # we want `cookie_name' as the value and `foo=bar' as the value
-        my ($name, $value) = split(/\s*=\s*/, $cookie, 2);
+        my ( $name, $value ) = split( /\s*=\s*/, $cookie, 2 );
         my @values;
-        if ($value ne '') {
-            @values = map { uri_unescape($_) } split(/[&;]/, $value);
+        if ( $value ne '' ) {
+            @values = map { uri_unescape($_) } split( /[&;]/, $value );
         }
         $cookies->{$name} =
-          Dancer2::Core::Cookie->new(name => $name, value => \@values);
+          Dancer2::Core::Cookie->new( name => $name, value => \@values );
     }
     return $cookies;
 }
@@ -739,6 +720,7 @@ sub _build_cookies {
 
 
 __END__
+
 =pod
 
 =head1 NAME
@@ -747,7 +729,7 @@ Dancer2::Core::Request - Interface for accessing incoming requests
 
 =head1 VERSION
 
-version 0.04
+version 0.05
 
 =head1 SYNOPSIS
 
@@ -1029,6 +1011,11 @@ in @uploads, being the ARRAY ref:
 That is why this accessor should be used instead of a manual access to
 C<uploads>.
 
+=head2 cookies()
+
+Returns a reference to a hash containing cookies, where the keys are the names of the
+cookies and values are L<Dancer2::Core::Cookie> objects.
+
 =head1 HTTP environment variables
 
 All HTTP environment variables that are in %ENV will be provided in the
@@ -1068,6 +1055,8 @@ Dancer2::Request object through specific accessors, here are those supported:
 
 =item C<user_agent>
 
+=item C<x_requested_with>
+
 =back
 
 =head1 EXTRA SPEED
@@ -1092,4 +1081,3 @@ This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.
 
 =cut
-

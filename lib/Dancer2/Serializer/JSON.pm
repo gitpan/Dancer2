@@ -2,7 +2,7 @@
 
 package Dancer2::Serializer::JSON;
 {
-  $Dancer2::Serializer::JSON::VERSION = '0.04';
+    $Dancer2::Serializer::JSON::VERSION = '0.05';
 }
 use Moo;
 use JSON ();
@@ -25,27 +25,29 @@ sub to_json {
 sub loaded {1}
 
 
-
 sub serialize {
-    my ($self, $entity, $options) = @_;
+    my ( $self, $entity, $options ) = @_;
 
     # Why doesn't $self->config have this?
     my $config = $self->config;
 
-    if ($config->{allow_blessed} && !defined $options->{allow_blessed}) {
+    if ( $config->{allow_blessed} && !defined $options->{allow_blessed} ) {
         $options->{allow_blessed} = $config->{allow_blessed};
     }
-    if ($config->{convert_blessed}) {
+    if ( $config->{convert_blessed} ) {
         $options->{convert_blessed} = $config->{convert_blessed};
     }
+    $options->{utf8} = 1 if !defined $options->{utf8};
 
-    JSON::to_json($entity, $options);
+    JSON::to_json( $entity, $options );
 }
 
 
 sub deserialize {
-    my ($self, $entity, $options) = @_;
-    JSON::from_json($entity, $options);
+    my ( $self, $entity, $options ) = @_;
+
+    $options->{utf8} = 1 if !defined $options->{utf8};
+    JSON::from_json( $entity, $options );
 }
 
 
@@ -55,6 +57,7 @@ sub content_type {'application/json'}
 
 
 __END__
+
 =pod
 
 =head1 NAME
@@ -63,7 +66,7 @@ Dancer2::Serializer::JSON - Serializer for handling JSON data
 
 =head1 VERSION
 
-version 0.04
+version 0.05
 
 =head1 SYNOPSIS
 
@@ -97,4 +100,3 @@ This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.
 
 =cut
-

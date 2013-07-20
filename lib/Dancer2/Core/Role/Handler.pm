@@ -2,7 +2,7 @@
 
 package Dancer2::Core::Role::Handler;
 {
-  $Dancer2::Core::Role::Handler::VERSION = '0.04';
+    $Dancer2::Core::Role::Handler::VERSION = '0.05';
 }
 use Moo::Role;
 use Dancer2::Core::Types;
@@ -19,6 +19,7 @@ has app => (
 1;
 
 __END__
+
 =pod
 
 =head1 NAME
@@ -27,7 +28,7 @@ Dancer2::Core::Role::Handler - Role for Handlers
 
 =head1 VERSION
 
-version 0.04
+version 0.05
 
 =head1 ATTRIBUTES
 
@@ -35,9 +36,9 @@ version 0.04
 
 Contain an object of class L<Dancer2::Core::App>.
 
-=head1 REQUIRMENTS
+=head1 REQUIREMENTS
 
-That role requires that the method C<register> is implemented.
+This role requires the method C<register> to be implemented.
 
 =head1 AUTHOR
 
@@ -51,4 +52,3 @@ This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.
 
 =cut
-

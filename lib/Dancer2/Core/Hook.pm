@@ -1,7 +1,7 @@
 # ABSTRACT: Manipulate hooks with Dancer2
 package Dancer2::Core::Hook;
 {
-  $Dancer2::Core::Hook::VERSION = '0.04';
+    $Dancer2::Core::Hook::VERSION = '0.05';
 }
 use Moo;
 use Dancer2::Core::Types;
@@ -44,6 +44,7 @@ has code => (
 1;
 
 __END__
+
 =pod
 
 =head1 NAME
@@ -52,13 +53,13 @@ Dancer2::Core::Hook - Manipulate hooks with Dancer2
 
 =head1 VERSION
 
-version 0.04
+version 0.05
 
 =head1 SYNOPSIS
 
   # inside a plugin
   use Dancer2::Hook;
-  Dancer2::Hook->register_hooks_name(qw/before_auth after_auth/);
+  Dancer2::Core::Hook->register_hooks_name(qw/before_auth after_auth/);
 
 =head1 METHODS
 
@@ -85,7 +86,7 @@ Currently supported properties:
 Add a new hook name, so application developers can insert some code at this point.
 
     package My::Dancer2::Plugin;
-    Dancer2::Hook->instance->register_hooks_name(qw/before_auth after_auth/);
+    Dancer2::Core::Hook->instance->register_hooks_name(qw/before_auth after_auth/);
 
 =head2 execute_hook
 
@@ -111,4 +112,3 @@ This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.
 
 =cut
-

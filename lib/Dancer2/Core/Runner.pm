@@ -1,7 +1,7 @@
 # ABSTRACT: Top-layer class to start a dancer app
 package Dancer2::Core::Runner;
 {
-  $Dancer2::Core::Runner::VERSION = '0.04';
+    $Dancer2::Core::Runner::VERSION = '0.05';
 }
 
 use Moo;
@@ -10,10 +10,9 @@ use Dancer2::Core::MIME;
 use Carp 'croak';
 
 use Dancer2::FileUtils;
+use Dancer2::ModuleLoader;
 use File::Basename;
 use File::Spec;
-
-with 'Dancer2::Core::Role::Config';
 
 
 has postponed_hooks => (
@@ -30,7 +29,7 @@ has caller => (
     isa      => Str,
     required => 1,
     trigger  => sub {
-        my ($self, $script) = @_;
+        my ( $self, $script ) = @_;
         $self->_build_location($script);
     },
 );
@@ -50,8 +49,8 @@ sub _build_server {
     my $server_name  = $self->config->{apphandler};
     my $server_class = "Dancer2::Core::Server::${server_name}";
 
-    eval "use $server_class";
-    croak "Unable to load $server_class : $@" if $@;
+    my ( $res, $error ) = Dancer2::ModuleLoader->load($server_class);
+    $res or croak "Unable to load $server_class : $error";
 
     return $server_class->new(
         host      => $self->config->{host},
@@ -80,16 +79,19 @@ sub default_config {
       and $ENV{DANCER_APPHANDLER} = 'PSGI';
 
     my ($self) = @_;
-    {   apphandler   => ($ENV{DANCER_APPHANDLER}   || 'Standalone'),
-        content_type => ($ENV{DANCER_CONTENT_TYPE} || 'text/html'),
-        charset      => ($ENV{DANCER_CHARSET}      || ''),
-        warnings     => ($ENV{DANCER_WARNINGS}     || 0),
-        traces       => ($ENV{DANCER_TRACES}       || 0),
-        logger       => ($ENV{DANCER_LOGGER}       || 'console'),
-        host         => ($ENV{DANCER_SERVER}       || '0.0.0.0'),
-        port         => ($ENV{DANCER_PORT}         || '3000'),
-        is_daemon    => ($ENV{DANCER_DAEMON}       || 0),
-        appdir       => $self->location,
+    {   apphandler   => ( $ENV{DANCER_APPHANDLER}   || 'Standalone' ),
+        content_type => ( $ENV{DANCER_CONTENT_TYPE} || 'text/html' ),
+        charset      => ( $ENV{DANCER_CHARSET}      || '' ),
+        warnings     => ( $ENV{DANCER_WARNINGS}     || 0 ),
+        startup_info => ( $ENV{DANCER_STARTUP_INFO} || 1 ),
+        traces       => ( $ENV{DANCER_TRACES}       || 0 ),
+        logger       => ( $ENV{DANCER_LOGGER}       || 'console' ),
+        host         => ( $ENV{DANCER_SERVER}       || '0.0.0.0' ),
+        port         => ( $ENV{DANCER_PORT}         || '3000' ),
+        is_daemon    => ( $ENV{DANCER_DAEMON}       || 0 ),
+        views        => ( $ENV{DANCER_VIEWS}
+              || path( $self->config_location, 'views' ) ),
+        appdir          => $self->location,
         import_warnings => 1,
     };
 }
@@ -108,10 +110,10 @@ has location => (
     },
 );
 
-sub _build_config_location { $_[0]->location }
+with 'Dancer2::Core::Role::Config';
 
 sub _build_location {
-    my ($self, $script) = @_;
+    my ( $self, $script ) = @_;
 
     # default to the dir that contains the script...
     my $location = Dancer2::FileUtils::dirname($script);
@@ -121,24 +123,26 @@ sub _build_location {
     my $subdir_found = 0;
 
     #maximum of 10 iterations, to prevent infinite loop
-    for (1 .. 10) {
+    for ( 1 .. 10 ) {
 
         #try to find libdir and bindir to determine the root of dancer app
-        my $libdir = Dancer2::FileUtils::path($subdir, 'lib');
-        my $bindir = Dancer2::FileUtils::path($subdir, 'bin');
+        my $libdir = Dancer2::FileUtils::path( $subdir, 'lib' );
+        my $bindir = Dancer2::FileUtils::path( $subdir, 'bin' );
 
         #try to find .dancer_app file to determine the root of dancer app
-        my $dancerdir = Dancer2::FileUtils::path($subdir, '.dancer');
+        my $dancerdir = Dancer2::FileUtils::path( $subdir, '.dancer' );
 
         # if one of them is found, keep that
-        if ((-d $libdir && -d $bindir) || (-f $dancerdir)) {
+        if ( ( -d $libdir && -d $bindir ) || ( -f $dancerdir ) ) {
             $subdir_found = 1;
             last;
         }
-        $subdir = Dancer2::FileUtils::path($subdir, '..');
+        $subdir = Dancer2::FileUtils::path( $subdir, '..' );
+        last if File::Spec->rel2abs($subdir) eq File::Spec->rootdir;
+
     }
 
-    $self->location($subdir_found ? $subdir : $location);
+    $self->location( $subdir_found ? $subdir : $location );
 }
 
 
@@ -146,7 +150,7 @@ sub start {
     my ($self) = @_;
     my $server = $self->server;
 
-    $_->finish for @{$server->apps};
+    $_->finish for @{ $server->apps };
 
     # update the server config if needed
     my $port      = $self->setting('server_port');
@@ -176,8 +180,8 @@ sub name {"runner"}
 #Returns the environment. Same as C<< $object->environment >>.
 
 
-
 __END__
+
 =pod
 
 =head1 NAME
@@ -186,7 +190,7 @@ Dancer2::Core::Runner - Top-layer class to start a dancer app
 
 =head1 VERSION
 
-version 0.04
+version 0.05
 
 =head1 DESCRIPTION
 
@@ -258,4 +262,3 @@ This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.
 
 =cut
-

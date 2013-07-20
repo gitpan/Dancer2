@@ -2,7 +2,7 @@
 
 package Dancer2::Serializer::YAML;
 {
-  $Dancer2::Serializer::YAML::VERSION = '0.04';
+    $Dancer2::Serializer::YAML::VERSION = '0.05';
 }
 use Moo;
 use Carp 'croak';
@@ -28,12 +28,12 @@ sub BUILD { eval "use YAML::Any ()"; croak "Fail to load YAML: $@" if $@ }
 sub loaded {1}
 
 sub serialize {
-    my ($self, $entity) = @_;
+    my ( $self, $entity ) = @_;
     YAML::Any::Dump($entity);
 }
 
 sub deserialize {
-    my ($self, $content) = @_;
+    my ( $self, $content ) = @_;
     YAML::Any::Load($content);
 }
 
@@ -50,7 +50,7 @@ Dancer2::Serializer::YAML - Serializer for handling YAML data
 
 =head1 VERSION
 
-version 0.04
+version 0.05
 
 =head1 SYNOPSIS
 
@@ -85,4 +85,3 @@ the same terms as the Perl 5 programming language system itself.
 
 
 __END__
-

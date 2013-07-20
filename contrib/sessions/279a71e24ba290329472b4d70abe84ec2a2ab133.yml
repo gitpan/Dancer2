@@ -1,7 +1,0 @@
---- !!perl/hash:Dancer::Core::Session
-creation_time: 1354397283
-data:
-  value: set by main
-id: 279a71e24ba290329472b4d70abe84ec2a2ab133
-is_http_only: 1
-is_secure: 0

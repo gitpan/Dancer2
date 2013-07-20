@@ -1,14 +1,12 @@
 package Dancer2;
 {
-  $Dancer2::VERSION = '0.04';
+    $Dancer2::VERSION = '0.05';
 }
 
 # ABSTRACT: Lightweight yet powerful web application framework
 
 use strict;
 use warnings;
-use Carp;
-
 use Data::Dumper;
 use Dancer2::Core::Runner;
 use Dancer2::Core::App;
@@ -20,7 +18,7 @@ our $AUTHORITY = 'SUKRIA';
 # set version in dist.ini now
 # but we still need a basic version for
 # the tests
-$Dancer2::VERSION ||= '0.01'; # 2.0.1
+$Dancer2::VERSION ||= '0.04';    # 2.0.4
 
 
 my $runner;
@@ -29,8 +27,8 @@ sub runner {$runner}
 
 
 sub import {
-    my ($class,  @args)   = @_;
-    my ($caller, $script) = caller;
+    my ( $class,  @args )   = @_;
+    my ( $caller, $script ) = caller;
 
     strict->import;
     utf8->import;
@@ -39,19 +37,16 @@ sub import {
     my $syntax_only = 0;
     my $as_script   = 0;
     foreach (@args) {
-        if ($_ eq ':moose') {
-            push @final_args, '!before' => 1, '!after' => 1;
-        }
-        elsif ($_ eq ':tests') {
+        if ( $_ eq ':tests' ) {
             push @final_args, '!pass' => 1;
         }
-        elsif ($_ eq ':syntax') {
+        elsif ( $_ eq ':syntax' ) {
             $syntax_only = 1;
         }
-        elsif ($_ eq ':script') {
+        elsif ( $_ eq ':script' ) {
             $as_script = 1;
         }
-        elsif (substr($_, 0, 1) eq '!') {
+        elsif ( substr( $_, 0, 1 ) eq '!' ) {
             push @final_args, $_, 1;
         }
         else {
@@ -61,20 +56,20 @@ sub import {
 
     scalar(@final_args) % 2
       and die
-      "parameters to 'use Dancer2' should be one of : 'key => value', ':moose', ':tests', ':script', or !<keyword>, where <keyword> is a DSL keyword you don't want to import";
+      "parameters to 'use Dancer2' should be one of : 'key => value', ':tests', ':script', or !<keyword>, where <keyword> is a DSL keyword you don't want to import";
     my %final_args = @final_args;
 
     $final_args{dsl} ||= 'Dancer2::Core::DSL';
 
     # never instantiated the runner, should do it now
-    if (not defined $runner) {
+    if ( not defined $runner ) {
 
         # TODO should support commandline options as well
 
-        $runner = Dancer2::Core::Runner->new(caller => $script,);
+        $runner = Dancer2::Core::Runner->new( caller => $script, );
     }
 
-    my $local_libdir = Dancer2::FileUtils::path($runner->location, 'lib');
+    my $local_libdir = Dancer2::FileUtils::path( $runner->location, 'lib' );
     Dancer2::ModuleLoader->use_lib($local_libdir) if -d $local_libdir;
 
     # the app object
@@ -96,29 +91,29 @@ sub import {
     core_debug("exporting DSL symbols for $caller");
 
     # load the DSL, defaulting to Dancer2::Core::DSL
-    Dancer2::ModuleLoader->require($final_args{dsl})
+    Dancer2::ModuleLoader->require( $final_args{dsl} )
       or die "Couldn't require '" . $final_args{dsl} . "'\n";
-    my $dsl = $final_args{dsl}->new(app => $app);
-    $dsl->export_symbols_to($caller, \%final_args);
+    my $dsl = $final_args{dsl}->new( app => $app );
+    $dsl->export_symbols_to( $caller, \%final_args );
 
-#
-#    # if :syntax option exists, don't change settings
-#    return if $syntax_only;
-#
-#    $as_script = 1 if $ENV{PLACK_ENV};
-#
-#    Dancer2::GetOpt->process_args() if !$as_script;
+    #
+    #    # if :syntax option exists, don't change settings
+    #    return if $syntax_only;
+    #
+    #    $as_script = 1 if $ENV{PLACK_ENV};
+    #
+    #    Dancer2::GetOpt->process_args() if !$as_script;
 }
 
 sub _set_import_method_to_caller {
     my ($caller) = @_;
 
     my $import = sub {
-        my ($self, %options) = @_;
+        my ( $self, %options ) = @_;
 
         my $with = $options{with};
-        for my $key (keys %$with) {
-            $self->dancer_app->setting($key => $with->{$key});
+        for my $key ( keys %$with ) {
+            $self->dancer_app->setting( $key => $with->{$key} );
         }
     };
 
@@ -134,9 +129,9 @@ sub core_debug {
     my $msg = shift;
     my (@stuff) = @_;
 
-    my $vars = @stuff ? Dumper(\@stuff) : '';
+    my $vars = @stuff ? Dumper( \@stuff ) : '';
 
-    my ($package, $filename, $line) = caller;
+    my ( $package, $filename, $line ) = caller;
     return unless $ENV{DANCER_DEBUG_CORE};
 
     chomp $msg;
@@ -146,6 +141,7 @@ sub core_debug {
 1;
 
 __END__
+
 =pod
 
 =head1 NAME
@@ -154,14 +150,15 @@ Dancer2 - Lightweight yet powerful web application framework
 
 =head1 VERSION
 
-version 0.04
+version 0.05
 
 =head1 DESCRIPTION
 
 Dancer2 is the new generation of L<Dancer>, the lightweight web-framework for 
 Perl. Dancer2 is a complete rewrite based on L<Moo>. 
 
-As usual, Dancer is easy and fun:
+Dancer2 is easy and fun:
+
     use Dancer2;
     get '/' => sub { "Hello World" };
     dance;
@@ -170,27 +167,31 @@ This is the main module for the Dancer2 distribution. It contains logic for
 creating a new Dancer2 application. 
 
 If you are looking for info on how to write a webapp with Dancer2 you probably 
-want to look at L<Dancer2::Manual> or L<Dancer2::Cookbook>.
+want to look at L<Dancer2::Manual> or L<Dancer2::Cookbook>.  For a documentation
+of the Dancer2's DSL, you'll want to read L<Dancer2::Manual::DSL>.
 
 You are also welcome to join our mailing list at dancer-users@perldancer.org, 
 and we're also on IRC: #dancer on irc.perl.org.
 
 =head1 METHODS
 
-=head2 my $runner=import;
+=head2 import;
 
-This subroutine does most of the work.
+If it doesn't exist already, C<import> creates a new runner, imports strict 
+and warnings, loads additional libraries, creates a new Dancer2 app (of type 
+L<Dancer2::Core::App>) and exports the DSL symbols to the caller.
 
-First it imports strict and warnings.
+If any additional argument processing is needed, it will be done at this point.
 
-Then it does the following for these import options:
+Import gets called when you use Dancer2. You can specify import options giving 
+you control over the keywords that will be imported into your webapp and other 
+things:
+
+    use Dancer2 ':syntax';
+
+=head3 Import Options
 
 =over 4
-
-=item C<:moose>
-
-No importing of C<before> and C<after> hooks into your namespace. This is to
-prevent conflict with L<Moose> et al.
 
 =item C<:tests>
 
@@ -207,16 +208,6 @@ parameter parsing and built-in web server.
 Do not process arguments.
 
 =back
-
-It creates a new runner if one does not exist already.
-
-It will then load additional libraries.
-
-Then create a new Dancer2 app, of type L<Dancer2::Core::App>.
-
-Then it will export all the DSL symbols to the caller.
-
-If any additional argument processing is needed, it will be done at this point.
 
 =head1 FUNCTIONS
 
@@ -241,4 +232,3 @@ This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.
 
 =cut
-

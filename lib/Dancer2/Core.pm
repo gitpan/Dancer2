@@ -1,6 +1,6 @@
 package Dancer2::Core;
 {
-  $Dancer2::Core::VERSION = '0.04';
+    $Dancer2::Core::VERSION = '0.05';
 }
 
 # ABSTRACT: Core libraries for Dancer2 2.0
@@ -8,6 +8,7 @@ package Dancer2::Core;
 1;
 
 __END__
+
 =pod
 
 =head1 NAME
@@ -16,7 +17,7 @@ Dancer2::Core - Core libraries for Dancer2 2.0
 
 =head1 VERSION
 
-version 0.04
+version 0.05
 
 =head1 AUTHOR
 
@@ -30,4 +31,3 @@ This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.
 
 =cut
-

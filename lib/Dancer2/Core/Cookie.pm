@@ -2,7 +2,7 @@
 
 package Dancer2::Core::Cookie;
 {
-  $Dancer2::Core::Cookie::VERSION = '0.04';
+    $Dancer2::Core::Cookie::VERSION = '0.05';
 }
 use Moo;
 use URI::Escape;
@@ -16,8 +16,8 @@ sub to_header {
     my $self   = shift;
     my $header = '';
 
-    my $value = join('&', map { uri_escape($_) } $self->value);
-    my $no_httponly = defined($self->http_only) && $self->http_only == 0;
+    my $value = join( '&', map { uri_escape($_) } $self->value );
+    my $no_httponly = defined( $self->http_only ) && $self->http_only == 0;
 
     my @headers = $self->name . '=' . $value;
     push @headers, "path=" . $self->path       if $self->path;
@@ -28,7 +28,6 @@ sub to_header {
 
     return join '; ', @headers;
 }
-
 
 
 has value => (
@@ -48,14 +47,13 @@ has value => (
 around value => sub {
     my $orig  = shift;
     my $self  = shift;
-    my $array = $orig->($self, @_);
+    my $array = $orig->( $self, @_ );
     return wantarray ? @$array : $array->[0];
 };
 
 # this is only for overloading; need a real sub to refer to, as the Moose
 # attribute accessor won't be available at that point.
 sub _get_value { shift->value }
-
 
 
 has name => (
@@ -65,16 +63,14 @@ has name => (
 );
 
 
-
 has expires => (
     is       => 'rw',
     isa      => Str,
     required => 0,
     coerce   => sub {
-        Dancer2::Core::Time->new(expression => $_[0])->gmt_string;
+        Dancer2::Core::Time->new( expression => $_[0] )->gmt_string;
     },
 );
-
 
 
 has domain => (
@@ -110,6 +106,7 @@ has http_only => (
 1;
 
 __END__
+
 =pod
 
 =head1 NAME
@@ -118,13 +115,13 @@ Dancer2::Core::Cookie - A cookie representing class
 
 =head1 VERSION
 
-version 0.04
+version 0.05
 
 =head1 SYNOPSIS
 
     use Dancer2::Core::Cookie;
 
-    my $cookie = Dancer2::Cookie->new(
+    my $cookie = Dancer2::Core::Cookie->new(
         name => $cookie_name, value => $cookie_value
     );
 
@@ -189,7 +186,7 @@ attribute to 0.
 
 =head2 my $cookie=new Dancer2::Cookie (%opts);
 
-Create a new Dancer2::Cookie object.
+Create a new Dancer2::Core::Cookie object.
 
 You can set any attribute described in the I<ATTRIBUTES> section above.
 
@@ -209,4 +206,3 @@ This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.
 
 =cut
-

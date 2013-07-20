@@ -7,24 +7,7 @@ use Module::Build 0.3601;
 
 my %module_build_args = (
   "build_requires" => {
-    "Capture::Tiny" => "0.12",
-    "ExtUtils::MakeMaker" => 0,
-    "File::Find" => 0,
-    "File::Temp" => "0.22",
-    "FindBin" => 0,
-    "HTTP::Body" => 0,
-    "HTTP::Request::Common" => 0,
-    "HTTP::Server::Simple::PSGI" => 0,
-    "Module::Build" => "0.3601",
-    "Path::Class" => 0,
-    "Test::Fatal" => 0,
-    "Test::MockTime" => 0,
-    "Test::More" => "0.92",
-    "Test::TCP" => "1.13",
-    "YAML" => 0,
-    "YAML::Any" => 0,
-    "utf8" => 0,
-    "vars" => 0
+    "Module::Build" => "0.3601"
   },
   "configure_requires" => {
     "ExtUtils::MakeMaker" => "6.30",
@@ -35,7 +18,7 @@ my %module_build_args = (
     "Dancer Core Developers"
   ],
   "dist_name" => "Dancer2",
-  "dist_version" => "0.04",
+  "dist_version" => "0.05",
   "license" => "perl",
   "module_name" => "Dancer2",
   "recommends" => {
@@ -55,7 +38,6 @@ my %module_build_args = (
     "Carp" => 0,
     "Config::Any" => 0,
     "Cwd" => 0,
-    "Dancer" => 0,
     "Data::Dumper" => 0,
     "Digest::SHA" => 0,
     "Encode" => 0,
@@ -72,6 +54,7 @@ my %module_build_args = (
     "HTTP::Date" => 0,
     "HTTP::Headers" => 0,
     "HTTP::Server::Simple::PSGI" => 0,
+    "Hash::Merge::Simple" => 0,
     "IO::File" => 0,
     "JSON" => 0,
     "LWP::UserAgent" => 0,
@@ -98,6 +81,7 @@ my %module_build_args = (
     "URI::Escape" => 0,
     "YAML::Any" => 0,
     "constant" => 0,
+    "lib" => 0,
     "overload" => 0,
     "parent" => 0,
     "perl" => "5.00503",
@@ -106,9 +90,41 @@ my %module_build_args = (
   },
   "script_files" => [
     "script/dancer2"
-  ]
+  ],
+  "test_requires" => {
+    "Capture::Tiny" => "0.12",
+    "ExtUtils::MakeMaker" => 0,
+    "File::Find" => 0,
+    "File::Temp" => "0.22",
+    "FindBin" => 0,
+    "HTTP::Body" => 0,
+    "HTTP::Request::Common" => 0,
+    "HTTP::Server::Simple::PSGI" => 0,
+    "Path::Class" => 0,
+    "Test::Fatal" => 0,
+    "Test::MockTime" => 0,
+    "Test::More" => "0.92",
+    "Test::TCP" => "1.13",
+    "YAML" => 0,
+    "YAML::Any" => 0,
+    "utf8" => 0,
+    "vars" => 0
+  }
 );
 
+
+unless ( eval { Module::Build->VERSION(0.4004) } ) {
+  my $tr = delete $module_build_args{test_requires};
+  my $br = $module_build_args{build_requires};
+  for my $mod ( keys %$tr ) {
+    if ( exists $br->{$mod} ) {
+      $br->{$mod} = $tr->{$mod} if $tr->{$mod} > $br->{$mod};
+    }
+    else {
+      $br->{$mod} = $tr->{$mod};
+    }
+  }
+}
 
 my $build = Module::Build->new(%module_build_args);
 

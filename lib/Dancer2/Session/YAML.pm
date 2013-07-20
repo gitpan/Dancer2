@@ -1,6 +1,6 @@
 package Dancer2::Session::YAML;
 {
-  $Dancer2::Session::YAML::VERSION = '0.04';
+    $Dancer2::Session::YAML::VERSION = '0.05';
 }
 
 # ABSTRACT: YAML-file-based session backend for Dancer2
@@ -18,13 +18,13 @@ has _suffix => (
 with 'Dancer2::Core::Role::SessionFactory::File';
 
 sub _freeze_to_handle {
-    my ($self, $fh, $data) = @_;
+    my ( $self, $fh, $data ) = @_;
     print {$fh} YAML::Any::Dump($data);
     return;
 }
 
 sub _thaw_from_handle {
-    my ($self, $fh) = @_;
+    my ( $self, $fh ) = @_;
     return YAML::Any::LoadFile($fh);
 }
 
@@ -39,7 +39,7 @@ Dancer2::Session::YAML - YAML-file-based session backend for Dancer2
 
 =head1 VERSION
 
-version 0.04
+version 0.05
 
 =head1 DESCRIPTION
 
@@ -95,4 +95,3 @@ the same terms as the Perl 5 programming language system itself.
 
 
 __END__
-

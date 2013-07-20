@@ -2,7 +2,7 @@
 
 package Dancer2::Template::Simple;
 {
-  $Dancer2::Template::Simple::VERSION = '0.04';
+    $Dancer2::Template::Simple::VERSION = '0.05';
 }
 use strict;
 use warnings;
@@ -28,23 +28,23 @@ sub BUILD {
     my $self     = shift;
     my $settings = $self->config;
 
-    $settings->{$_} and $self->$_($settings->{$_})
+    $settings->{$_} and $self->$_( $settings->{$_} )
       for qw/ start_tag stop_tag /;
 }
 
 sub render {
-    my ($self, $template, $tokens) = @_;
+    my ( $self, $template, $tokens ) = @_;
     my $content;
 
     $content = read_file_content($template);
-    $content = $self->parse_branches($content, $tokens);
+    $content = $self->parse_branches( $content, $tokens );
 
     return $content;
 }
 
 sub parse_branches {
-    my ($self, $content, $tokens) = @_;
-    my ($start, $stop) = ($self->start_tag, $self->stop_tag);
+    my ( $self, $content, $tokens ) = @_;
+    my ( $start, $stop ) = ( $self->start_tag, $self->stop_tag );
 
     my @buffer;
     my $prefix             = "";
@@ -55,10 +55,10 @@ sub parse_branches {
 #    $content =~ s/(\S)\Q${stop}\E/$1 ${stop}/sg;
 
     # we get here a list of tokens without the start/stop tags
-    my @full = split(/\Q$start\E\s*(.*?)\s*\Q$stop\E/, $content);
+    my @full = split( /\Q$start\E\s*(.*?)\s*\Q$stop\E/, $content );
 
     # and here a list of tokens without variables
-    my @flat = split(/\Q$start\E\s*.*?\s*\Q$stop\E/, $content);
+    my @flat = split( /\Q$start\E\s*.*?\s*\Q$stop\E/, $content );
 
     # eg: for 'foo=<% var %>'
     #   @full = ('foo=', 'var')
@@ -69,8 +69,8 @@ sub parse_branches {
     for my $word (@full) {
 
         # flat word, nothing to do
-        if (defined $flat[$flat_index]
-            && ($flat[$flat_index] eq $full[$full_index]))
+        if ( defined $flat[$flat_index]
+            && ( $flat[$flat_index] eq $full[$full_index] ) )
         {
             push @buffer, $word if $should_bufferize;
             $flat_index++;
@@ -79,27 +79,28 @@ sub parse_branches {
         }
 
         my @to_parse = ($word);
-        @to_parse = split(/\s+/, $word) if $word =~ /\s+/;
+        @to_parse = split( /\s+/, $word ) if $word =~ /\s+/;
 
         for my $w (@to_parse) {
 
-            if ($w eq 'if') {
+            if ( $w eq 'if' ) {
                 $bufferize_if_token = 1;
             }
-            elsif ($w eq 'else') {
+            elsif ( $w eq 'else' ) {
                 $should_bufferize = !$should_bufferize;
             }
-            elsif ($w eq 'end') {
+            elsif ( $w eq 'end' ) {
                 $should_bufferize = 1;
             }
             elsif ($bufferize_if_token) {
-                my $bool = _find_value_from_token_name($w, $tokens);
+                my $bool = _find_value_from_token_name( $w, $tokens );
                 $should_bufferize = _interpolate_value($bool) ? 1 : 0;
                 $bufferize_if_token = 0;
             }
             elsif ($should_bufferize) {
                 my $val =
-                  _interpolate_value(_find_value_from_token_name($w, $tokens));
+                  _interpolate_value(
+                    _find_value_from_token_name( $w, $tokens ) );
                 push @buffer, $val;
             }
         }
@@ -112,18 +113,18 @@ sub parse_branches {
 
 
 sub _find_value_from_token_name {
-    my ($key, $tokens) = @_;
+    my ( $key, $tokens ) = @_;
     my $value = undef;
 
     my @elements = split /\./, $key;
     foreach my $e (@elements) {
-        if (not defined $value) {
+        if ( not defined $value ) {
             $value = $tokens->{$e};
         }
-        elsif (ref($value) eq 'HASH') {
+        elsif ( ref($value) eq 'HASH' ) {
             $value = $value->{$e};
         }
-        elsif (ref($value)) {
+        elsif ( ref($value) ) {
             local $@;
             eval { $value = $value->$e };
             $value = "" if $@;
@@ -134,12 +135,12 @@ sub _find_value_from_token_name {
 
 sub _interpolate_value {
     my ($value) = @_;
-    if (ref($value) eq 'CODE') {
+    if ( ref($value) eq 'CODE' ) {
         local $@;
         eval { $value = $value->() };
         $value = "" if $@;
     }
-    elsif (ref($value) eq 'ARRAY') {
+    elsif ( ref($value) eq 'ARRAY' ) {
         $value = "@{$value}";
     }
 
@@ -151,6 +152,7 @@ sub _interpolate_value {
 
 
 __END__
+
 =pod
 
 =head1 NAME
@@ -159,7 +161,7 @@ Dancer2::Template::Simple - Pure Perl 5 template engine for Dancer2
 
 =head1 VERSION
 
-version 0.04
+version 0.05
 
 =head1 DESCRIPTION
 
@@ -206,4 +208,3 @@ This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.
 
 =cut
-

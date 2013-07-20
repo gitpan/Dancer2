@@ -2,7 +2,7 @@
 
 package Dancer2::Core::Role::Headers;
 {
-  $Dancer2::Core::Role::Headers::VERSION = '0.04';
+    $Dancer2::Core::Role::Headers::VERSION = '0.05';
 }
 
 
@@ -18,7 +18,7 @@ has headers => (
     coerce => sub {
         my ($value) = @_;
         return $value if ref($value) eq 'HTTP::Headers';
-        HTTP::Headers->new(@{$value});
+        HTTP::Headers->new( @{$value} );
     },
     default => sub {
         HTTP::Headers->new();
@@ -31,7 +31,7 @@ sub header {
     my $header = shift;
 
     if (@_) {
-        $self->headers->header($header => @_);
+        $self->headers->header( $header => @_ );
     }
     else {
         return $self->headers->header($header);
@@ -45,7 +45,7 @@ sub push_header {
 
     if (@_) {
         foreach my $h (@_) {
-            $self->headers->push_header($header => $h);
+            $self->headers->push_header( $header => $h );
         }
     }
     else {
@@ -63,9 +63,9 @@ sub headers_to_array {
             map {
                 my $v = $_;
                 $v =~ s/^(.+)\r?\n(.*)$/$1\r\n $2/;
-                ($k => $v)
+                ( $k => $v )
             } $self->headers->header($_);
-        } $self->headers->header_field_names
+          } $self->headers->header_field_names
     ];
 
     return $headers;
@@ -74,6 +74,7 @@ sub headers_to_array {
 1;
 
 __END__
+
 =pod
 
 =head1 NAME
@@ -82,7 +83,7 @@ Dancer2::Core::Role::Headers - Role for handling headers
 
 =head1 VERSION
 
-version 0.04
+version 0.05
 
 =head1 DESCRIPTION
 
@@ -136,4 +137,3 @@ This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.
 
 =cut
-

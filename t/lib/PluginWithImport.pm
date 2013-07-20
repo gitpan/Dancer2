@@ -32,4 +32,3 @@ register dancer_plugin_with_import_keyword => sub {
 register_plugin for_versions => [2];
 
 1;
-

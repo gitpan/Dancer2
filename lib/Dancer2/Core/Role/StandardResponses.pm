@@ -1,49 +1,50 @@
-# ABSTRACT: Role to provide commonly used responses 
+# ABSTRACT: Role to provide commonly used responses
 
 package Dancer2::Core::Role::StandardResponses;
 {
-  $Dancer2::Core::Role::StandardResponses::VERSION = '0.04';
+    $Dancer2::Core::Role::StandardResponses::VERSION = '0.05';
 }
 use Moo::Role;
 
 
 sub response {
-    my ($self, $ctx, $code, $message) = @_;
+    my ( $self, $ctx, $code, $message ) = @_;
     $ctx->response->status($code);
-    $ctx->response->header('Content-Type', 'text/plain');
+    $ctx->response->header( 'Content-Type', 'text/plain' );
     return $message;
 }
 
 
 sub response_400 {
-    my ($self, $ctx) = @_;
-    $self->response($ctx, 400, 'Bad Request');
+    my ( $self, $ctx ) = @_;
+    $self->response( $ctx, 400, 'Bad Request' );
 }
 
 
 sub response_404 {
-    my ($self, $ctx) = @_;
-    $self->response($ctx, 404, 'Not Found');
+    my ( $self, $ctx ) = @_;
+    $self->response( $ctx, 404, 'Not Found' );
 }
 
 
 sub response_403 {
-    my ($self, $ctx) = @_;
-    $self->response($ctx, 403, 'Unauthorized');
+    my ( $self, $ctx ) = @_;
+    $self->response( $ctx, 403, 'Unauthorized' );
 }
 
 1;
 
 __END__
+
 =pod
 
 =head1 NAME
 
-Dancer2::Core::Role::StandardResponses - Role to provide commonly used responses 
+Dancer2::Core::Role::StandardResponses - Role to provide commonly used responses
 
 =head1 VERSION
 
-version 0.04
+version 0.05
 
 =head1 METHODS
 
@@ -78,4 +79,3 @@ This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.
 
 =cut
-

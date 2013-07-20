@@ -1,8 +1,0 @@
---- !!perl/hash:Dancer::Core::Session
-cookie_name: session.foo.dancer
-creation_time: 1357311791
-data: {}
-expires: 1357398191
-id: 86bf6642f7b0b773eed6da4cecfa0c654c3efa2a
-is_http_only: 1
-is_secure: 0

@@ -2,7 +2,7 @@
 
 package Dancer2::Core::Factory;
 {
-  $Dancer2::Core::Factory::VERSION = '0.04';
+    $Dancer2::Core::Factory::VERSION = '0.05';
 }
 use strict;
 use warnings;
@@ -11,14 +11,14 @@ use Dancer2::ModuleLoader;
 use Carp 'croak';
 
 sub create {
-    my ($class, $type, $name, %options) = @_;
+    my ( $class, $type, $name, %options ) = @_;
 
     $type = _camelize($type);
     $name = _camelize($name);
     my $component_class = "Dancer2::${type}::${name}";
 
-    my ($ok, $error) = Dancer2::ModuleLoader->require($component_class);
-    if ( ! $ok ) {
+    my ( $ok, $error ) = Dancer2::ModuleLoader->require($component_class);
+    if ( !$ok ) {
         croak "Unable to load class for $type component $name: $error";
     }
 
@@ -29,7 +29,7 @@ sub _camelize {
     my ($value) = @_;
 
     my $camelized = '';
-    for my $word (split /_/, $value) {
+    for my $word ( split /_/, $value ) {
         $camelized .= ucfirst($word);
     }
     return $camelized;
@@ -38,6 +38,7 @@ sub _camelize {
 1;
 
 __END__
+
 =pod
 
 =head1 NAME
@@ -46,7 +47,7 @@ Dancer2::Core::Factory - Instantiate components by type and name
 
 =head1 VERSION
 
-version 0.04
+version 0.05
 
 =head1 AUTHOR
 
@@ -60,4 +61,3 @@ This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.
 
 =cut
-

@@ -2,23 +2,23 @@
 
 package Dancer2::Logger::Diag;
 {
-  $Dancer2::Logger::Diag::VERSION = '0.04';
+    $Dancer2::Logger::Diag::VERSION = '0.05';
 }
 use Moo;
 use Test::More;
 with 'Dancer2::Core::Role::Logger';
 
 
-
 sub log {
-    my ($self, $level, $message) = @_;
+    my ( $self, $level, $message ) = @_;
 
-    Test::More::diag($self->format_message($level => $message));
+    Test::More::diag( $self->format_message( $level => $message ) );
 }
 
 1;
 
 __END__
+
 =pod
 
 =head1 NAME
@@ -27,7 +27,7 @@ Dancer2::Logger::Diag - Test::More diag() logging engine for Dancer2
 
 =head1 VERSION
 
-version 0.04
+version 0.05
 
 =head1 SYNOPSIS
 
@@ -56,4 +56,3 @@ This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.
 
 =cut
-

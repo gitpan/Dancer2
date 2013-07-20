@@ -2,7 +2,7 @@
 
 package Dancer2::Core::Role::Server;
 {
-  $Dancer2::Core::Role::Server::VERSION = '0.04';
+    $Dancer2::Core::Role::Server::VERSION = '0.05';
 }
 use Moo::Role;
 
@@ -70,7 +70,7 @@ requires '_build_name';
 sub _build_dispatcher {
     my ($self) = @_;
     my $d = Dancer2::Core::Dispatcher->new();
-    $d->apps($self->apps);
+    $d->apps( $self->apps );
     return $d;
 }
 
@@ -87,7 +87,7 @@ sub psgi_app {
         if ($@) {
             return [
                 500,
-                ['Content-Type' => 'text/plain'],
+                [ 'Content-Type' => 'text/plain' ],
                 ["Internal Server Error\n\n$@"],
             ];
         }
@@ -97,16 +97,20 @@ sub psgi_app {
 
 
 sub register_application {
-    my ($self, $app) = @_;
-    push @{$self->apps}, $app;
+    my ( $self, $app ) = @_;
+    push @{ $self->apps }, $app;
     $app->server($self);
     $app->server->runner->postponed_hooks(
-        {%{$app->server->runner->postponed_hooks}, %{$app->postponed_hooks}});
+        {   %{ $app->server->runner->postponed_hooks },
+            %{ $app->postponed_hooks }
+        }
+    );
 }
 
 1;
 
 __END__
+
 =pod
 
 =head1 NAME
@@ -115,7 +119,7 @@ Dancer2::Core::Role::Server - Role for Server classes
 
 =head1 VERSION
 
-version 0.04
+version 0.05
 
 =head1 DESCRIPTION
 
@@ -182,4 +186,3 @@ This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.
 
 =cut
-

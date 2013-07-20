@@ -1,7 +1,6 @@
 package Dancer2::Manual::Hooks;
 
 # ABSTRACT: Reference manual for all hooks supported by Dancer2's core.
-# PODNAME: Dancer2::Manual::Hooks
 
 
 __END__
@@ -13,7 +12,7 @@ Dancer2::Manual::Hooks - Reference manual for all hooks supported by Dancer2's c
 
 =head1 VERSION
 
-version 0.04
+version 0.05
 
 This manual documents all the hooks that are supported by the core framework.
 

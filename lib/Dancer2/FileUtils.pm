@@ -2,7 +2,7 @@
 
 package Dancer2::FileUtils;
 {
-  $Dancer2::FileUtils::VERSION = '0.04';
+    $Dancer2::FileUtils::VERSION = '0.05';
 }
 
 use strict;
@@ -19,7 +19,6 @@ our @EXPORT_OK = qw(
   dirname open_file path read_file_content read_glob_content
   path_or_empty set_file_mode normalize_path
 );
-
 
 
 sub path {
@@ -51,7 +50,7 @@ sub set_file_mode {
 
 
 sub open_file {
-    my ($mode, $filename) = @_;
+    my ( $mode, $filename ) = @_;
 
     open my $fh, $mode, $filename
       or croak "Can't open '$filename' using mode '$mode'";
@@ -62,7 +61,7 @@ sub open_file {
 
 sub read_file_content {
     my $file = shift or return;
-    my $fh = open_file('<', $file);
+    my $fh = open_file( '<', $file );
 
     return wantarray
       ? read_glob_content($fh)
@@ -70,17 +69,14 @@ sub read_file_content {
 }
 
 
-
 sub read_glob_content {
     my $fh = shift;
-    binmode $fh;
 
     my @content = <$fh>;
     close $fh;
 
     return wantarray ? @content : join '', @content;
 }
-
 
 
 sub normalize_path {
@@ -107,6 +103,7 @@ sub normalize_path {
 
 
 __END__
+
 =pod
 
 =head1 NAME
@@ -115,7 +112,7 @@ Dancer2::FileUtils - File utility helpers
 
 =head1 VERSION
 
-version 0.04
+version 0.05
 
 =head1 SYNOPSIS
 
@@ -137,8 +134,8 @@ version 0.04
 
     open my $fh, '<', $file or die "$!\n";
     set_file_mode($fh);
-    my @content = read_file_content($fh);
-    my $content = read_file_content($fh);
+    my @content = read_glob_content($fh);
+    my $content = read_glob_content($fh);
     
 
     use Dancer2::FileUtils qw/open_file/;
@@ -146,7 +143,7 @@ version 0.04
     my $fh = open_file('<', $file) or die $message;
 
 
-	use Dancer2::FileUtils 'set_file_mode';
+    use Dancer2::FileUtils 'set_file_mode';
 
     set_file_mode($fh);
 
@@ -213,11 +210,13 @@ in scalar context returns the entire contents of the file.
     use Dancer2::FileUtils 'read_glob_content';
 
     open my $fh, '<', $file or die "$!\n";
+    binmode $fh, ':encoding(utf-8)';
     my @content = read_glob_content($fh);
     my $content = read_glob_content($fh);
 
-Same as I<read_file_content>, only it accepts a file handle. Returns the
-content and B<closes the file handle>.
+Similar to I<read_file_content>, only it accepts a file handle. It is
+assumed that the appropriate PerlIO layers are applied to the file handle.
+Returns the content and B<closes the file handle>.
 
 =head2 my $norm_path=normalize_path ($path);
 
@@ -237,4 +236,3 @@ This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.
 
 =cut
-

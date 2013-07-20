@@ -2,7 +2,7 @@
 
 package Dancer2::Logger::Capture;
 {
-  $Dancer2::Logger::Capture::VERSION = '0.04';
+    $Dancer2::Logger::Capture::VERSION = '0.05';
 }
 use Moo;
 use Dancer2::Logger::Capture::Trap;
@@ -19,9 +19,9 @@ has trapper => (
 sub _build_trapper { Dancer2::Logger::Capture::Trap->new }
 
 sub log {
-    my ($self, $level, $message) = @_;
+    my ( $self, $level, $message ) = @_;
 
-    $self->trapper->store($level => $message);
+    $self->trapper->store( $level => $message );
     return;
 }
 
@@ -29,6 +29,7 @@ sub log {
 
 
 __END__
+
 =pod
 
 =head1 NAME
@@ -37,7 +38,7 @@ Dancer2::Logger::Capture - Capture dancer logs
 
 =head1 VERSION
 
-version 0.04
+version 0.05
 
 =head1 SYNOPSIS
 
@@ -93,4 +94,3 @@ This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.
 
 =cut
-

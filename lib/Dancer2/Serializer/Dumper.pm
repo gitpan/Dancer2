@@ -2,7 +2,7 @@
 
 package Dancer2::Serializer::Dumper;
 {
-  $Dancer2::Serializer::Dumper::VERSION = '0.04';
+    $Dancer2::Serializer::Dumper::VERSION = '0.05';
 }
 
 use Moo;
@@ -10,7 +10,6 @@ use Carp 'croak';
 use Data::Dumper;
 
 with 'Dancer2::Core::Role::Serializer';
-
 
 
 # helpers
@@ -29,7 +28,7 @@ sub loaded {1}
 
 
 sub serialize {
-    my ($self, $entity) = @_;
+    my ( $self, $entity ) = @_;
 
     {
         local $Data::Dumper::Purity = 1;
@@ -39,7 +38,7 @@ sub serialize {
 
 
 sub deserialize {
-    my ($self, $content) = @_;
+    my ( $self, $content ) = @_;
 
     my $res = eval "my \$VAR1; $content";
     croak "unable to deserialize : $@" if $@;
@@ -53,6 +52,7 @@ sub content_type {'text/x-data-dumper'}
 
 
 __END__
+
 =pod
 
 =head1 NAME
@@ -61,7 +61,7 @@ Dancer2::Serializer::Dumper - Serializer for handling Dumper data
 
 =head1 VERSION
 
-version 0.04
+version 0.05
 
 =head1 SYNOPSIS
 
@@ -95,4 +95,3 @@ This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.
 
 =cut
-

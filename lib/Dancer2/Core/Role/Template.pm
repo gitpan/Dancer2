@@ -2,7 +2,7 @@
 
 package Dancer2::Core::Role::Template;
 {
-  $Dancer2::Core::Role::Template::VERSION = '0.04';
+    $Dancer2::Core::Role::Template::VERSION = '0.05';
 }
 
 use Dancer2::Core::Types;
@@ -12,6 +12,7 @@ use Carp 'croak';
 use Data::Dumper;
 use Moo::Role;
 with 'Dancer2::Core::Role::Engine';
+
 
 sub supported_hooks {
     qw/
@@ -26,13 +27,18 @@ sub _build_type {'Template'}
 
 requires 'render';
 
+
 has name => (
     is      => 'ro',
     lazy    => 1,
     builder => 1,
 );
 
-sub _build_name { (my $name = ref shift) =~ s/^Dancer2::Template:://; $name; }
+sub _build_name {
+    ( my $name = ref shift ) =~ s/^Dancer2::Template:://;
+    $name;
+}
+
 
 has charset => (
     is      => 'ro',
@@ -40,21 +46,25 @@ has charset => (
     default => sub {'UTF-8'},
 );
 
+
 has default_tmpl_ext => (
     is      => 'rw',
     isa     => Str,
     default => sub { shift->config->{extension} || 'tt' },
 );
 
+
 has views => (
     is  => 'rw',
     isa => Maybe [Str],
 );
 
+
 has layout => (
     is  => 'rw',
     isa => Maybe [Str],
 );
+
 
 has engine => (
     is      => 'ro',
@@ -64,46 +74,56 @@ has engine => (
 );
 
 sub _template_name {
-    my ($self, $view) = @_;
+    my ( $self, $view ) = @_;
     my $def_tmpl_ext = $self->default_tmpl_ext();
     $view .= ".$def_tmpl_ext" if $view !~ /\.\Q$def_tmpl_ext\E$/;
     return $view;
 }
 
-sub view {
-    my ($self, $view) = @_;
+
+sub view_pathname {
+    my ( $self, $view ) = @_;
 
     $view = $self->_template_name($view);
-    return path($self->views, $view);
+    return path( $self->views, $view );
 }
+
+
+sub layout_pathname {
+    my ( $self, $layout ) = @_;
+    $layout = $self->_template_name($layout);
+    return path( $self->views, 'layouts', $layout );
+}
+
 
 sub render_layout {
-    my ($self, $layout, $tokens, $content) = @_;
+    my ( $self, $layout, $tokens, $content ) = @_;
 
-    my $layout_name = $self->_template_name($layout);
-    my $layout_path = path($self->views, 'layouts', $layout_name);
+    $layout = $self->layout_pathname($layout);
 
     # FIXME: not sure if I can "just call render"
-    $self->render($layout_path, {%$tokens, content => $content});
+    $self->render( $layout, { %$tokens, content => $content } );
 }
 
+
 sub apply_renderer {
-    my ($self, $view, $tokens) = @_;
-    $view = $self->view($view) if !ref $view;
+    my ( $self, $view, $tokens ) = @_;
+    $view = $self->view_pathname($view) if !ref $view;
     $tokens = $self->_prepare_tokens_options($tokens);
 
-    $self->execute_hook('engine.template.before_render', $tokens);
+    $self->execute_hook( 'engine.template.before_render', $tokens );
 
-    my $content = $self->render($view, $tokens);
-    $self->execute_hook('engine.template.after_render', \$content);
+    my $content = $self->render( $view, $tokens );
+    $self->execute_hook( 'engine.template.after_render', \$content );
 
     # make sure to avoid ( undef ) in list context return
     defined $content and return $content;
     return;
 }
 
+
 sub apply_layout {
-    my ($self, $content, $tokens, $options) = @_;
+    my ( $self, $content, $tokens, $options ) = @_;
 
     $tokens = $self->_prepare_tokens_options($tokens);
 
@@ -113,20 +133,25 @@ sub apply_layout {
    # is.
     my $layout =
       exists $options->{layout}
-      ? ($options->{layout} ? $options->{layout} : undef)
-      : ($self->layout || $self->context->app->config->{layout});
+      ? ( $options->{layout} ? $options->{layout} : undef )
+      : ( $self->layout || $self->context->app->config->{layout} );
 
     # that should only be $self->config, but the layout ain't there ???
 
     defined $content or return;
     defined $layout  or return $content;
 
-    $self->execute_hook('engine.template.before_layout_render',
-        $tokens, \$content);
+    $self->execute_hook(
+        'engine.template.before_layout_render',
+        $tokens, \$content
+    );
 
-    my $full_content = $self->render_layout($layout, $tokens, $content);
+    my $full_content = $self->render_layout( $layout, $tokens, $content );
 
-    $self->execute_hook('engine.template.after_layout_render', \$full_content);
+    $self->execute_hook(
+        'engine.template.after_layout_render',
+        \$full_content
+    );
 
     # make sure to avoid ( undef ) in list context return
     defined $full_content and return $full_content;
@@ -134,14 +159,14 @@ sub apply_layout {
 }
 
 sub _prepare_tokens_options {
-    my ($self, $tokens) = @_;
+    my ( $self, $tokens ) = @_;
 
     # these are the default tokens provided for template processing
     $tokens ||= {};
     $tokens->{perl_version}   = $];
     $tokens->{dancer_version} = Dancer2->VERSION;
 
-    if (defined $self->context) {
+    if ( defined $self->context ) {
         $tokens->{settings} = $self->context->app->config;
         $tokens->{request}  = $self->context->request;
         $tokens->{params}   = $self->context->request->params;
@@ -154,9 +179,10 @@ sub _prepare_tokens_options {
     return $tokens;
 }
 
+
 sub process {
-    my ($self, $view, $tokens, $options) = @_;
-    my ($content, $full_content);
+    my ( $self, $view, $tokens, $options ) = @_;
+    my ( $content, $full_content );
 
     # it's important that $tokens is not undef, so that things added to it via
     # a before_template in apply_renderer survive to the apply_layout. GH#354
@@ -167,11 +193,11 @@ sub process {
 
     $content =
         $view
-      ? $self->apply_renderer($view, $tokens)
+      ? $self->apply_renderer( $view, $tokens )
       : delete $options->{content};
 
     defined $content
-      and $full_content = $self->apply_layout($content, $tokens, $options);
+      and $full_content = $self->apply_layout( $content, $tokens, $options );
 
     defined $full_content
       and return $full_content;
@@ -182,6 +208,7 @@ sub process {
 1;
 
 __END__
+
 =pod
 
 =head1 NAME
@@ -190,7 +217,68 @@ Dancer2::Core::Role::Template - Role for template engines
 
 =head1 VERSION
 
-version 0.04
+version 0.05
+
+=head1 DESCRIPTION
+
+This role provides methods and attributes needed for working with template.
+
+All Dancer's templates engine should consume this role, and they B<need> to
+implement a C<render> method. This method will receive three arguments:
+
+=over 4
+
+=item $self
+
+=item $template
+
+=item $tokens
+
+=back
+
+=head1 METHODS
+
+=head2 name
+
+The name of the template engine (e.g.: Simple).
+
+=head2 charset
+
+The charset.  The default value is B<UTF-8>.
+
+=head2 default_tmpl_ext
+
+The default file extension.  If not provided, B<tt> is used.
+
+=head2 views
+
+Path to the directory containing the views.
+
+=head2 layout
+
+Path to the directory containing the layouts.
+
+=head2 engine
+
+Contains the engine.
+
+=head2 view_pathname($view)
+
+Returns the full path to the requested view.
+
+=head2 layout_pathname($layout)
+
+Returns the full path to the requested layout.
+
+=head2 render_layout($layout, $tokens, \$content)
+
+Render the layout with the applied tokens
+
+=head2 apply_renderer($view, $tokens)
+
+=head2 apply_layout
+
+=head2 process($view, $tokens, $options)
 
 =head1 AUTHOR
 
@@ -204,4 +292,3 @@ This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.
 
 =cut
-

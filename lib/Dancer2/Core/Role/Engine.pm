@@ -2,7 +2,7 @@
 
 package Dancer2::Core::Role::Engine;
 {
-  $Dancer2::Core::Role::Engine::VERSION = '0.04';
+    $Dancer2::Core::Role::Engine::VERSION = '0.05';
 }
 use Moo::Role;
 use Dancer2::Core::Types;
@@ -11,9 +11,9 @@ use Dancer2::Core::Types;
 with 'Dancer2::Core::Role::Hookable';
 
 
-has environment => (is => 'ro');
+has environment => ( is => 'ro' );
 
-has location    => (is => 'ro');
+has location => ( is => 'ro' );
 
 
 has context => (
@@ -33,6 +33,7 @@ has config => (
 1;
 
 __END__
+
 =pod
 
 =head1 NAME
@@ -41,7 +42,7 @@ Dancer2::Core::Role::Engine - Role for engines
 
 =head1 VERSION
 
-version 0.04
+version 0.05
 
 =head1 DESCRIPTION
 
@@ -76,4 +77,3 @@ This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.
 
 =cut
-

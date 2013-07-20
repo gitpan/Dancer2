@@ -2,7 +2,7 @@
 
 package Dancer2::Template::TemplateToolkit;
 {
-  $Dancer2::Template::TemplateToolkit::VERSION = '0.04';
+    $Dancer2::Template::TemplateToolkit::VERSION = '0.05';
 }
 
 use strict;
@@ -15,7 +15,7 @@ use Template;
 with 'Dancer2::Core::Role::Template';
 
 
-has '+engine' => (isa => InstanceOf ['Template'],);
+has '+engine' => ( isa => InstanceOf ['Template'], );
 
 sub _build_engine {
     my $self      = shift;
@@ -23,8 +23,8 @@ sub _build_engine {
     my %tt_config = (
         ANYCASE  => 1,
         ABSOLUTE => 1,
-        length($charset) ? (ENCODING => $charset) : (),
-        %{$self->config},
+        length($charset) ? ( ENCODING => $charset ) : (),
+        %{ $self->config },
     );
 
     my $start_tag = $self->config->{'start_tag'};
@@ -41,17 +41,17 @@ sub _build_engine {
 
 
 sub render {
-    my ($self, $template, $tokens) = @_;
+    my ( $self, $template, $tokens ) = @_;
 
-    if (!ref $template) {
+    if ( !ref $template ) {
         -f $template
           or croak "'$template' doesn't exist or not a regular file";
     }
 
     my $content = "";
     my $charset = $self->charset;
-    my @options = length($charset) ? (binmode => ":encoding($charset)") : ();
-    $self->engine->process($template, $tokens, \$content, @options)
+    my @options = length($charset) ? ( binmode => ":encoding($charset)" ) : ();
+    $self->engine->process( $template, $tokens, \$content, @options )
       or croak $self->engine->error;
     return $content;
 }
@@ -59,6 +59,7 @@ sub render {
 1;
 
 __END__
+
 =pod
 
 =head1 NAME
@@ -67,7 +68,7 @@ Dancer2::Template::TemplateToolkit - Template toolkit engine for Dancer2
 
 =head1 VERSION
 
-version 0.04
+version 0.05
 
 =head1 SYNOPSIS
 
@@ -102,4 +103,3 @@ This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.
 
 =cut
-

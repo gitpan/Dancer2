@@ -1,6 +1,6 @@
 package Dancer2::Core::Request::Upload;
 {
-  $Dancer2::Core::Request::Upload::VERSION = '0.04';
+    $Dancer2::Core::Request::Upload::VERSION = '0.05';
 }
 
 # ABSTRACT: Class representing file upload requests
@@ -16,7 +16,6 @@ has filename => (
     is  => 'rw',
     isa => Str,
 );
-
 
 
 has tempname => (
@@ -37,31 +36,29 @@ has size => (
 );
 
 
-
 sub file_handle {
     my ($self) = @_;
     return $self->{_fh} if defined $self->{_fh};
-    my $fh = open_file('<', $self->tempname);
+    my $fh = open_file( '<', $self->tempname );
     $self->{_fh} = $fh;
 }
 
 
-
 sub copy_to {
-    my ($self, $target) = @_;
+    my ( $self, $target ) = @_;
     require File::Copy;
-    File::Copy::copy($self->{tempname}, $target);
+    File::Copy::copy( $self->{tempname}, $target );
 }
 
 
 sub link_to {
-    my ($self, $target) = @_;
-    CORE::link($self->{tempname}, $target);
+    my ( $self, $target ) = @_;
+    CORE::link( $self->{tempname}, $target );
 }
 
 
 sub content {
-    my ($self, $layer) = @_;
+    my ( $self, $layer ) = @_;
     return $self->{_content}
       if defined $self->{_content};
 
@@ -70,9 +67,9 @@ sub content {
     my $content = undef;
     my $handle  = $self->file_handle;
 
-    binmode($handle, $layer);
+    binmode( $handle, $layer );
 
-    while ($handle->read(my $buffer, 8192)) {
+    while ( $handle->read( my $buffer, 8192 ) ) {
         $content .= $buffer;
     }
 
@@ -83,9 +80,8 @@ sub content {
 sub basename {
     my ($self) = @_;
     require File::Basename;
-    File::Basename::basename($self->filename);
+    File::Basename::basename( $self->filename );
 }
-
 
 
 sub type {
@@ -96,9 +92,8 @@ sub type {
 1;
 
 
-
-
 __END__
+
 =pod
 
 =head1 NAME
@@ -107,7 +102,7 @@ Dancer2::Core::Request::Upload - Class representing file upload requests
 
 =head1 VERSION
 
-version 0.04
+version 0.05
 
 =head1 DESCRIPTION
 
@@ -191,4 +186,3 @@ This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.
 
 =cut
-

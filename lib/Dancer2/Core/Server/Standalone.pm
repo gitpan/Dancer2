@@ -2,13 +2,13 @@
 
 package Dancer2::Core::Server::Standalone;
 {
-  $Dancer2::Core::Server::Standalone::VERSION = '0.04';
+    $Dancer2::Core::Server::Standalone::VERSION = '0.05';
 }
 
 use Moo;
 use Dancer2::Core::Types;
 with 'Dancer2::Core::Role::Server';
-use HTTP::Server::Simple::PSGI;
+use parent 'HTTP::Server::Simple::PSGI';
 
 
 sub _build_name {'Standalone'}
@@ -22,13 +22,9 @@ has backend => (
 );
 
 sub _build_backend {
-    my $self    = shift;
-    my $backend = HTTP::Server::Simple::PSGI->new($self->port);
-
-    $backend->host($self->host);
-    $backend->app($self->psgi_app);
-
-    return $backend;
+    my $self = shift;
+    $self->app( $self->psgi_app );
+    return $self;
 }
 
 
@@ -38,11 +34,39 @@ sub start {
     $self->is_daemon
       ? $self->backend->background()
       : $self->backend->run();
+
 }
 
+sub print_banner {
+    my $self = shift;
+    my $pid  = $$;      #Todo:how to get background pid?
+
+    print "startupinfo:" . $self->runner->config->{'startup_info'} . "\n";
+
+    # we only print the info if we need to
+    $self->runner->config->{'startup_info'} or return;
+
+    # bare minimum
+    print STDERR ">> Dancer2 v$Dancer2::VERSION server $pid listening "
+      . 'on http://'
+      . $self->host . ':'
+      . $self->port . "\n";
+
+    # all loaded plugins
+    foreach my $module ( grep { $_ =~ m{^Dancer2/Plugin/} } keys %INC ) {
+        $module =~ s{/}{::}g;     # change / to ::
+        $module =~ s{\.pm$}{};    # remove .pm at the end
+        my $version = $module->VERSION;
+
+        defined $version or $version = 'no version number defined';
+        print ">> $module ($version)\n";
+    }
+
+}
 1;
 
 __END__
+
 =pod
 
 =head1 NAME
@@ -51,7 +75,7 @@ Dancer2::Core::Server::Standalone - Basic standalone HTTP server for Dancer2
 
 =head1 VERSION
 
-version 0.04
+version 0.05
 
 =head1 DESCRIPTION
 
@@ -88,4 +112,3 @@ This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.
 
 =cut
-

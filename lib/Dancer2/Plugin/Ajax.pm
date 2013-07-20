@@ -2,52 +2,60 @@
 
 package Dancer2::Plugin::Ajax;
 {
-  $Dancer2::Plugin::Ajax::VERSION = '0.04';
+    $Dancer2::Plugin::Ajax::VERSION = '0.05';
 }
 
 use strict;
 use warnings;
 
-use Dancer2 ':syntax';
+use Dancer2;
 use Dancer2::Plugin;
 
 
-hook 'before' => sub {
-    if (request->is_ajax) {
-        content_type('text/xml');
-    }
+on_plugin_import {
+    my $dsl = shift;
+    $dsl->app->add_hook(
+        Dancer2::Core::Hook->new(
+            name => 'before',
+            code => sub {
+                if ( $dsl->request->is_ajax ) {
+                    $dsl->request->content_type('text/xml');
+                }
+            }
+        )
+    );
 };
 
 register 'ajax' => sub {
-    my ($dsl, $pattern, @rest) = @_;
+    my ( $dsl, $pattern, @rest ) = @_;
 
     my $code;
-    for my $e (@rest) { $code = $e if (ref($e) eq 'CODE') }
+    for my $e (@rest) { $code = $e if ( ref($e) eq 'CODE' ) }
 
     my $ajax_route = sub {
 
         # must be an XMLHttpRequest
-        if (not $dsl->request->is_ajax) {
+        if ( not $dsl->request->is_ajax ) {
             $dsl->pass and return 0;
         }
 
         # disable layout
         my $layout = $dsl->setting('layout');
-        $dsl->setting('layout' => undef);
+        $dsl->setting( 'layout' => undef );
         my $response = $code->();
-        $dsl->setting('layout' => $layout);
+        $dsl->setting( 'layout' => $layout );
         return $response;
     };
 
-    $dsl->any(['get', 'post'] => $pattern, $ajax_route);
+    $dsl->any( [ 'get', 'post' ] => $pattern, $ajax_route );
 };
 
-register_plugin for_versions => [2];
+register_plugin;
 1;
 
 
-
 __END__
+
 =pod
 
 =head1 NAME
@@ -56,7 +64,7 @@ Dancer2::Plugin::Ajax - a plugin for adding Ajax route handlers
 
 =head1 VERSION
 
-version 0.04
+version 0.05
 
 =head1 SYNOPSIS
 
@@ -106,4 +114,3 @@ This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.
 
 =cut
-

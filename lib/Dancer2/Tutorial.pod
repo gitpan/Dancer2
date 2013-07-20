@@ -1,6 +1,5 @@
 package Dancer2::Tutorial;
 # ABSTRACT: An example to get you dancing
-# PODNAME: Dancer2::Tutorial
 
 
 __END__
@@ -12,7 +11,7 @@ Dancer2::Tutorial - An example to get you dancing
 
 =head1 VERSION
 
-version 0.04
+version 0.05
 
 =head1 What is Dancer2?
 
