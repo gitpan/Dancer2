@@ -23,3 +23,4 @@ response_status_is $resp => 200;
 response_content_is $resp => '{"bar":"baz"}';
 
 response_headers_include $resp, [ 'Content-Type' => 'application/json' ];
+

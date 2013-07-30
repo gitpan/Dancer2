@@ -1,6 +1,6 @@
 package Dancer2::Core::Role::Config;
 {
-    $Dancer2::Core::Role::Config::VERSION = '0.05';
+    $Dancer2::Core::Role::Config::VERSION = '0.06';
 }
 
 # ABSTRACT: Config role for Dancer2 core objects
@@ -303,12 +303,14 @@ my $_setters = {
         if ( ref($self) eq 'Dancer2::Core::App' && defined $self->server ) {
             $self->engine('template')->views($value);
         }
+        $value;
     },
     layout => sub {
         my ( $self, $value, $config ) = @_;
         if ( ref($self) eq 'Dancer2::Core::App' && defined $self->server ) {
             $self->engine('template')->layout($value);
         }
+        $value;
     },
 };
 
@@ -350,7 +352,7 @@ Dancer2::Core::Role::Config - Config role for Dancer2 core objects
 
 =head1 VERSION
 
-version 0.05
+version 0.06
 
 =head1 DESCRIPTION
 

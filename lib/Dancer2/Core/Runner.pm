@@ -1,7 +1,7 @@
 # ABSTRACT: Top-layer class to start a dancer app
 package Dancer2::Core::Runner;
 {
-    $Dancer2::Core::Runner::VERSION = '0.05';
+    $Dancer2::Core::Runner::VERSION = '0.06';
 }
 
 use Moo;
@@ -179,7 +179,6 @@ sub name {"runner"}
 #
 #Returns the environment. Same as C<< $object->environment >>.
 
-
 __END__
 
 =pod
@@ -190,7 +189,7 @@ Dancer2::Core::Runner - Top-layer class to start a dancer app
 
 =head1 VERSION
 
-version 0.05
+version 0.06
 
 =head1 DESCRIPTION
 

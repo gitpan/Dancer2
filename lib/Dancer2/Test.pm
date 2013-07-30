@@ -2,7 +2,7 @@
 
 package Dancer2::Test;
 {
-    $Dancer2::Test::VERSION = '0.05';
+    $Dancer2::Test::VERSION = '0.06';
 }
 use strict;
 use warnings;
@@ -76,7 +76,7 @@ sub _build_request_from_env {
     # arguments can be passed as the triplet
     # or as a arrayref, or as a simple string
     my ( $method, $path, $options ) =
-        @_ > 1 ? @_
+        @_ > 1               ? @_
       : ref $_[0] eq 'ARRAY' ? @{ $_[0] }
       :                        ( GET => $_[0], {} );
 
@@ -566,7 +566,7 @@ Dancer2::Test - Useful routines for testing Dancer2 apps
 
 =head1 VERSION
 
-version 0.05
+version 0.06
 
 =head1 DESCRIPTION
 

@@ -2,7 +2,7 @@
 
 package Dancer2::Core::Role::Serializer;
 {
-    $Dancer2::Core::Role::Serializer::VERSION = '0.05';
+    $Dancer2::Core::Role::Serializer::VERSION = '0.06';
 }
 use Dancer2::Core::Types;
 
@@ -58,7 +58,7 @@ Dancer2::Core::Role::Serializer - Role for Serializer engines
 
 =head1 VERSION
 
-version 0.05
+version 0.06
 
 =head1 REQUIREMENTS
 

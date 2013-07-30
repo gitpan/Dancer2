@@ -50,7 +50,7 @@ sub _retrieve_get_urls {
             # Other than that, its cool to be added.
             push( @urls, $regexp )
               if !grep { $regexp =~ m/$_/i }
-                  @$Dancer2::Plugin::SiteMap::OMIT_ROUTES;
+              @$Dancer2::Plugin::SiteMap::OMIT_ROUTES;
         }
     }
 
@@ -58,5 +58,5 @@ sub _retrieve_get_urls {
 }
 
 
-register_plugin for_versions => [2];
+register_plugin;
 1;

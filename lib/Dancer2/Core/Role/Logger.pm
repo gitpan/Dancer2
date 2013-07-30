@@ -2,7 +2,7 @@
 
 package Dancer2::Core::Role::Logger;
 {
-    $Dancer2::Core::Role::Logger::VERSION = '0.05';
+    $Dancer2::Core::Role::Logger::VERSION = '0.06';
 }
 use Dancer2::Core::Types;
 
@@ -50,9 +50,10 @@ my $_levels = {
 
     # levels > 0 are for end-users only
     debug   => 1,
-    warn    => 2,
-    warning => 2,
-    error   => 3,
+    info    => 2,
+    warn    => 3,
+    warning => 3,
+    error   => 4,
 };
 
 has log_level => (
@@ -150,6 +151,11 @@ sub debug {
     $self->_should('debug') and $self->log( 'debug', _serialize(@args) );
 }
 
+sub info {
+    my ( $self, @args ) = @_;
+    $self->_should('info') and $self->log( 'info', _serialize(@args) );
+}
+
 sub warning {
     my ( $self, @args ) = @_;
     $self->_should('warning') and $self->log( 'warning', _serialize(@args) );
@@ -172,7 +178,7 @@ Dancer2::Core::Role::Logger - Role for logger engines
 
 =head1 VERSION
 
-version 0.05
+version 0.06
 
 =head1 AUTHOR
 

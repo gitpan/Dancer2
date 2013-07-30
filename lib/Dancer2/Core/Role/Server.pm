@@ -2,7 +2,7 @@
 
 package Dancer2::Core::Role::Server;
 {
-    $Dancer2::Core::Role::Server::VERSION = '0.05';
+    $Dancer2::Core::Role::Server::VERSION = '0.06';
 }
 use Moo::Role;
 
@@ -119,7 +119,7 @@ Dancer2::Core::Role::Server - Role for Server classes
 
 =head1 VERSION
 
-version 0.05
+version 0.06
 
 =head1 DESCRIPTION
 

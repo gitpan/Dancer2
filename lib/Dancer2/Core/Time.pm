@@ -1,6 +1,6 @@
 package Dancer2::Core::Time;
 {
-    $Dancer2::Core::Time::VERSION = '0.05';
+    $Dancer2::Core::Time::VERSION = '0.06';
 }
 
 #ABSTRACT: class to handle common helpers for time manipulations
@@ -146,7 +146,7 @@ Dancer2::Core::Time - class to handle common helpers for time manipulations
 
 =head1 VERSION
 
-version 0.05
+version 0.06
 
 =head1 SYNOPSIS
 

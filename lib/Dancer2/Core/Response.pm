@@ -2,7 +2,7 @@
 
 package Dancer2::Core::Response;
 {
-    $Dancer2::Core::Response::VERSION = '0.05';
+    $Dancer2::Core::Response::VERSION = '0.06';
 }
 
 use strict;
@@ -178,7 +178,6 @@ sub error {
 
 1;
 
-
 __END__
 
 =pod
@@ -189,7 +188,7 @@ Dancer2::Core::Response - Response object for Dancer2
 
 =head1 VERSION
 
-version 0.05
+version 0.06
 
 =head1 ATTRIBUTES
 

@@ -1,6 +1,6 @@
 package Dancer2::Plugin;
 {
-    $Dancer2::Plugin::VERSION = '0.05';
+    $Dancer2::Plugin::VERSION = '0.06';
 }
 
 # ABSTRACT: Extending Dancer2's DSL with plugins
@@ -174,6 +174,8 @@ sub execute_hook {
 
 # private
 
+my $dsl_deprecation_wrapper = 0;
+
 sub import {
     my $class  = shift;
     my $plugin = caller;
@@ -224,6 +226,8 @@ sub import {
 
         # bind the newly compiled symbol to the caller's namespace.
         *{"${plugin}::${symbol}"} = $compiled;
+
+        $dsl_deprecation_wrapper = $compiled if $symbol eq 'dsl';
     }
 
     # Finally, make sure our caller becomes a Moo::Role
@@ -236,7 +240,9 @@ sub _get_dsl {
     my $dsl;
     my $deep = 2;
     while ( my $caller = caller( $deep++ ) ) {
-        $dsl = $caller->dsl if $caller->can('dsl');
+        my $caller_dsl = $caller->can('dsl');
+        next if !$caller_dsl || $caller_dsl == $dsl_deprecation_wrapper;
+        $dsl = $caller->dsl;
         last if defined $dsl && length( ref($dsl) );
     }
 
@@ -244,7 +250,6 @@ sub _get_dsl {
 }
 
 1;
-
 
 __END__
 
@@ -256,7 +261,7 @@ Dancer2::Plugin - Extending Dancer2's DSL with plugins
 
 =head1 VERSION
 
-version 0.05
+version 0.06
 
 =head1 DESCRIPTION
 
@@ -347,9 +352,9 @@ which version of Dancer the plugin was written, e.g.
 
     register_plugin for_versions => [ 2 ];
 
-Today, plugins for Dancer2 are only expected to work for Dancer2 and the 
-C<for_version> keyword is ignored. If you try to load a plugin for Dancer2
-that does not meet the requirements of a Dancer2 plugin, you will get an error 
+Today, plugins for Dancer2 are only expected to work for Dancer2 and the
+C<for_versions> keyword is ignored. If you try to load a plugin for Dancer2
+that does not meet the requirements of a Dancer2 plugin, you will get an error
 message.
 
 =head2 plugin_args

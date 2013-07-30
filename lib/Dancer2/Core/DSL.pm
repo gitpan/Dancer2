@@ -2,7 +2,7 @@
 
 package Dancer2::Core::DSL;
 {
-    $Dancer2::Core::DSL::VERSION = '0.05';
+    $Dancer2::Core::DSL::VERSION = '0.06';
 }
 
 use Moo;
@@ -48,6 +48,7 @@ sub dsl_keywords {
         [ header               => 0 ],
         [ headers              => 0 ],
         [ hook                 => 1 ],
+        [ info                 => 1 ],
         [ load_app             => 1 ],
         [ log                  => 1 ],
         [ mime                 => 1 ],
@@ -94,6 +95,7 @@ sub dancer_major_version {
 }
 
 sub debug   { shift->log( debug   => @_ ) }
+sub info    { shift->log( info    => @_ ) }
 sub warning { shift->log( warning => @_ ) }
 sub error   { shift->log( error   => @_ ) }
 
@@ -387,7 +389,6 @@ sub core_debug {
 
 1;
 
-
 __END__
 
 =pod
@@ -398,7 +399,7 @@ Dancer2::Core::DSL - Dancer2's Domain Specific Language (DSL)
 
 =head1 VERSION
 
-version 0.05
+version 0.06
 
 =head1 FUNCTIONS
 

@@ -2,7 +2,7 @@
 
 package Dancer2::Plugin::Ajax;
 {
-    $Dancer2::Plugin::Ajax::VERSION = '0.05';
+    $Dancer2::Plugin::Ajax::VERSION = '0.06';
 }
 
 use strict;
@@ -53,7 +53,6 @@ register 'ajax' => sub {
 register_plugin;
 1;
 
-
 __END__
 
 =pod
@@ -64,7 +63,7 @@ Dancer2::Plugin::Ajax - a plugin for adding Ajax route handlers
 
 =head1 VERSION
 
-version 0.05
+version 0.06
 
 =head1 SYNOPSIS
 

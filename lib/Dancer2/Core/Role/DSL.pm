@@ -2,7 +2,7 @@
 
 package Dancer2::Core::Role::DSL;
 {
-    $Dancer2::Core::Role::DSL::VERSION = '0.05';
+    $Dancer2::Core::Role::DSL::VERSION = '0.06';
 }
 use Moo::Role;
 use Dancer2::Core::Types;
@@ -121,7 +121,7 @@ Dancer2::Core::Role::DSL - Role for DSL
 
 =head1 VERSION
 
-version 0.05
+version 0.06
 
 =head1 AUTHOR
 

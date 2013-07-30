@@ -2,7 +2,7 @@
 
 package Dancer2::Core::Error;
 {
-    $Dancer2::Core::Error::VERSION = '0.05';
+    $Dancer2::Core::Error::VERSION = '0.06';
 }
 use Moo;
 use Carp;
@@ -133,7 +133,7 @@ sub _build_error_template {
     # E.g.: views/404.tt  for a TT template
     return $self->status
       if -f $self->context->app->engine('template')
-          ->view_pathname( $self->status );
+      ->view_pathname( $self->status );
 
     return undef;
 }
@@ -501,7 +501,6 @@ sub _render_html {
 
 1;
 
-
 __END__
 
 =pod
@@ -512,7 +511,7 @@ Dancer2::Core::Error - Class representing fatal errors
 
 =head1 VERSION
 
-version 0.05
+version 0.06
 
 =head1 SYNOPSIS
 

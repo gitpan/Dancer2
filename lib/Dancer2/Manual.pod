@@ -1,8 +1,8 @@
 # ABSTRACT: A gentle introduction to Dancer2
 package Dancer2::Manual;
 
-
 __END__
+
 =pod
 
 =head1 NAME
@@ -11,7 +11,7 @@ Dancer2::Manual - A gentle introduction to Dancer2
 
 =head1 VERSION
 
-version 0.05
+version 0.06
 
 =head1 DESCRIPTION
 
@@ -316,7 +316,7 @@ And in a production one:
     show_errors:  0
 
 Please note that you are not limited to writing configuration files in YAML.
-Dancer2 supports any file format that is supported by L< Config::Any >, such as
+Dancer2 supports any file format that is supported by L<Config::Any>, such as
 JSON, XML, INI files, and Apache-style config files.
 
 =head2 load
@@ -379,7 +379,8 @@ start the logger engine in your config file:
 
 Then you can choose which kind of messages you want to actually log:
 
-    log: 'debug'     # will log debug, warning and errors
+    log: 'debug'     # will log debug, info, warning and errors
+    log: 'info'      # will log info, warning and errors
     log: 'warning'   # will log warning and errors
     log: 'error'     # will log only errors
 
@@ -387,7 +388,7 @@ A directory appdir/logs will be created and will host one logfile per
 environment. The log message contains the time it was written, the PID of the
 current process, the message and the caller information (file and line).
 
-To log messages, use the debug, warning and error methods, for instance:
+To log messages, use the debug, info, warning and error methods, for instance:
 
     debug "This is a debug message";
 
@@ -615,4 +616,3 @@ This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.
 
 =cut
-

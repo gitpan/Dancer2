@@ -2,7 +2,7 @@
 
 package Dancer2::Core::Route;
 {
-    $Dancer2::Core::Route::VERSION = '0.05';
+    $Dancer2::Core::Route::VERSION = '0.06';
 }
 
 use strict;
@@ -267,7 +267,7 @@ Dancer2::Core::Route - Dancer2's route handler
 
 =head1 VERSION
 
-version 0.05
+version 0.06
 
 =head1 ATTRIBUTES
 

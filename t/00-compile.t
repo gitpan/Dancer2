@@ -17,7 +17,7 @@ find(
         $found =~ s{^lib/}{};
         $found =~ s{[/\\]}{::}g;
         $found =~ s/\.pm$//;
-        return if $found =~ /^Dancer::(?:Serializer|Session)::YAML$/;
+        return if $found =~ /^.*\.pod$/;
         push @modules, $found;
     },
     'lib',
@@ -31,7 +31,7 @@ sub _find_scripts {
         sub {
             return unless -f;
             my $found = $File::Find::name;
-            return if $found =~ /^Dancer::(?:Serializer|Session)::YAML$/;
+            return if $found =~ /^.*\.pod$/;
             open my $FH, '<', $_ or do {
                 note("Unable to open $found in ( $! ), skipping");
                 return;
@@ -54,7 +54,6 @@ my $plan = scalar(@modules) + scalar(@scripts);
 $plan ? ( plan tests => $plan ) : ( plan skip_all => "no tests to run" );
 
 {
-
     # fake home for cpan-testers
     # no fake requested ## local $ENV{HOME} = tempdir( CLEANUP => 1 );
 
@@ -72,4 +71,5 @@ $plan ? ( plan tests => $plan ) : ( plan skip_all => "no tests to run" );
             script_compiles( $file, "$script script compiles" );
         }
     }
+
 }

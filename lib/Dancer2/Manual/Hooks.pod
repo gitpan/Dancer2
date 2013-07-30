@@ -2,8 +2,8 @@ package Dancer2::Manual::Hooks;
 
 # ABSTRACT: Reference manual for all hooks supported by Dancer2's core.
 
-
 __END__
+
 =pod
 
 =head1 NAME
@@ -12,7 +12,7 @@ Dancer2::Manual::Hooks - Reference manual for all hooks supported by Dancer2's c
 
 =head1 VERSION
 
-version 0.05
+version 0.06
 
 This manual documents all the hooks that are supported by the core framework.
 
@@ -167,4 +167,3 @@ This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.
 
 =cut
-

@@ -2,7 +2,7 @@
 
 package Dancer2::FileUtils;
 {
-    $Dancer2::FileUtils::VERSION = '0.05';
+    $Dancer2::FileUtils::VERSION = '0.06';
 }
 
 use strict;
@@ -101,7 +101,6 @@ sub normalize_path {
 
 1;
 
-
 __END__
 
 =pod
@@ -112,7 +111,7 @@ Dancer2::FileUtils - File utility helpers
 
 =head1 VERSION
 
-version 0.05
+version 0.06
 
 =head1 SYNOPSIS
 

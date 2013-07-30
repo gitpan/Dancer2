@@ -3,8 +3,8 @@ package Dancer2::Manual::DSL;
 # ABSTRACT: Dancer2's DSL keywords
 # PODNAME: Dancer2::Manual::DSL
 
-
 __END__
+
 =pod
 
 =head1 NAME
@@ -13,7 +13,7 @@ Dancer2::Manual::DSL - Dancer2's DSL keywords
 
 =head1 VERSION
 
-version 0.05
+version 0.06
 
 =head1 DESCRIPTION
 
@@ -256,7 +256,7 @@ Sets a response object with the content given.
 When used as a return value from a filter, this breaks the execution flow and
 renders the response immediately:
 
-    hook before sub {
+    hook before => sub {
         if ($some_condition) {
             halt("Unauthorized");
             # This code is not executed :
@@ -1201,4 +1201,3 @@ This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.
 
 =cut
-

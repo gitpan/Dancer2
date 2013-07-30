@@ -2,7 +2,7 @@
 
 package Dancer2::Core::App;
 {
-    $Dancer2::Core::App::VERSION = '0.05';
+    $Dancer2::Core::App::VERSION = '0.06';
 }
 
 
@@ -535,13 +535,6 @@ sub add_route {
 
     my $method = $route->method;
 
-    croak "Route '"
-      . $route->spec_route
-      . "' with method "
-      . uc($method)
-      . " is already defined"
-      if $self->route_exists($route);
-
     push @{ $self->routes->{$method} }, $route;
 }
 
@@ -575,7 +568,7 @@ Dancer2::Core::App - encapsulation of Dancer2 packages
 
 =head1 VERSION
 
-version 0.05
+version 0.06
 
 =head1 DESCRIPTION
 

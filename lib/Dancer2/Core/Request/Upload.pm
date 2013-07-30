@@ -1,6 +1,6 @@
 package Dancer2::Core::Request::Upload;
 {
-    $Dancer2::Core::Request::Upload::VERSION = '0.05';
+    $Dancer2::Core::Request::Upload::VERSION = '0.06';
 }
 
 # ABSTRACT: Class representing file upload requests
@@ -91,7 +91,6 @@ sub type {
 
 1;
 
-
 __END__
 
 =pod
@@ -102,13 +101,13 @@ Dancer2::Core::Request::Upload - Class representing file upload requests
 
 =head1 VERSION
 
-version 0.05
+version 0.06
 
 =head1 DESCRIPTION
 
 This class implements a representation of file uploads for Dancer2.
 These objects are accessible within route handlers via the request->uploads
-keyword. See L<Dancer2::Request> for details.
+keyword. See L<Dancer2::Core::Request> for details.
 
 =head1 ATTRIBUTES
 

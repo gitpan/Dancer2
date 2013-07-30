@@ -2,7 +2,7 @@
 
 package Dancer2::Core::Role::Headers;
 {
-    $Dancer2::Core::Role::Headers::VERSION = '0.05';
+    $Dancer2::Core::Role::Headers::VERSION = '0.06';
 }
 
 
@@ -65,7 +65,7 @@ sub headers_to_array {
                 $v =~ s/^(.+)\r?\n(.*)$/$1\r\n $2/;
                 ( $k => $v )
             } $self->headers->header($_);
-          } $self->headers->header_field_names
+        } $self->headers->header_field_names
     ];
 
     return $headers;
@@ -83,7 +83,7 @@ Dancer2::Core::Role::Headers - Role for handling headers
 
 =head1 VERSION
 
-version 0.05
+version 0.06
 
 =head1 DESCRIPTION
 

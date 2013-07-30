@@ -2,7 +2,7 @@
 
 package Dancer2::Core::Role::Hookable;
 {
-    $Dancer2::Core::Role::Hookable::VERSION = '0.05';
+    $Dancer2::Core::Role::Hookable::VERSION = '0.06';
 }
 use Moo::Role;
 use Dancer2::Core::Types;
@@ -137,7 +137,6 @@ sub execute_hook {
 
 1;
 
-
 __END__
 
 =pod
@@ -148,7 +147,7 @@ Dancer2::Core::Role::Hookable - Role for hookable objects
 
 =head1 VERSION
 
-version 0.05
+version 0.06
 
 =head1 AUTHOR
 
