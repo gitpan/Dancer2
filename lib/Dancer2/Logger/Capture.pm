@@ -2,7 +2,7 @@
 
 package Dancer2::Logger::Capture;
 {
-    $Dancer2::Logger::Capture::VERSION = '0.06';
+    $Dancer2::Logger::Capture::VERSION = '0.07';
 }
 use Moo;
 use Dancer2::Logger::Capture::Trap;
@@ -37,7 +37,7 @@ Dancer2::Logger::Capture - Capture dancer logs
 
 =head1 VERSION
 
-version 0.06
+version 0.07
 
 =head1 SYNOPSIS
 

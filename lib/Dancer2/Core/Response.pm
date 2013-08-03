@@ -2,7 +2,7 @@
 
 package Dancer2::Core::Response;
 {
-    $Dancer2::Core::Response::VERSION = '0.06';
+    $Dancer2::Core::Response::VERSION = '0.07';
 }
 
 use strict;
@@ -33,6 +33,14 @@ has has_passed => (
     is      => 'rw',
     isa     => Bool,
     default => sub {0},
+);
+
+
+has serializer => (
+    is        => 'rw',
+    isa       => Maybe( ConsumerOf ['Dancer2::Core::Role::Serializer'] ),
+    required  => 0,
+    predicate => 1,
 );
 
 sub pass { shift->has_passed(1) }
@@ -90,13 +98,19 @@ has content => (
    # changes
     trigger => sub {
         my ( $self, $value ) = @_;
-
         $self->header( 'Content-Length' => length($value) )
           if !$self->has_passed;
 
         $value;
     },
 );
+
+before content => sub {
+    my $self = shift;
+    if ( ref( $_[0] ) and $self->has_serializer ) {
+        $_[0] = $self->serialize( $_[0] );
+    }
+};
 
 
 sub encode_content {
@@ -176,6 +190,18 @@ sub error {
     return $error;
 }
 
+sub serialize {
+    my ( $self, $content ) = @_;
+
+    return unless $self->has_serializer;
+
+    $content = $self->serializer->serialize($content);
+    return if !defined $content;
+
+    $self->content_type( $self->serializer->content_type );
+    return $content;
+}
+
 1;
 
 __END__
@@ -188,7 +214,7 @@ Dancer2::Core::Response - Response object for Dancer2
 
 =head1 VERSION
 
-version 0.06
+version 0.07
 
 =head1 ATTRIBUTES
 
@@ -213,6 +239,11 @@ Whenever the content changes, it recalculates and updates the Content-Length hea
 unless the response has_passed.
 
 =head1 METHODS
+
+=head2 serializer( $serializer )
+
+Set or returns the optional serializer object used to deserialize request
+parameters
 
 =head2 halt
 

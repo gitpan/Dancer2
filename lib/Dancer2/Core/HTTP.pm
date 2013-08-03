@@ -2,7 +2,7 @@
 
 package Dancer2::Core::HTTP;
 {
-    $Dancer2::Core::HTTP::VERSION = '0.06';
+    $Dancer2::Core::HTTP::VERSION = '0.07';
 }
 
 use strict;
@@ -97,7 +97,7 @@ Dancer2::Core::HTTP - helper for rendering HTTP status codes for Dancer2
 
 =head1 VERSION
 
-version 0.06
+version 0.07
 
 =head1 FUNCTIONS
 

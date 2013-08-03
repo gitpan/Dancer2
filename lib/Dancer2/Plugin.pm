@@ -1,6 +1,6 @@
 package Dancer2::Plugin;
 {
-    $Dancer2::Plugin::VERSION = '0.06';
+    $Dancer2::Plugin::VERSION = '0.07';
 }
 
 # ABSTRACT: Extending Dancer2's DSL with plugins
@@ -261,7 +261,7 @@ Dancer2::Plugin - Extending Dancer2's DSL with plugins
 
 =head1 VERSION
 
-version 0.06
+version 0.07
 
 =head1 DESCRIPTION
 
@@ -312,7 +312,7 @@ in order to set some options.
 The option C<is_global> (boolean) is used to declare a global/non-global keyword 
 (by default all keywords are global). A non-global keyword must be called from
 within a route handler (eg: C<session> or C<param>) whereas a global one can be
-called frome everywhere (eg: C<dancer_version> or C<setting>).
+called from everywhere (eg: C<dancer_version> or C<setting>).
 
     register my_symbol_to_export => sub {
         # ... some code

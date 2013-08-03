@@ -2,7 +2,7 @@
 
 package Dancer2::Core::Dispatcher;
 {
-    $Dancer2::Core::Dispatcher::VERSION = '0.06';
+    $Dancer2::Core::Dispatcher::VERSION = '0.07';
 }
 use Moo;
 use Encode;
@@ -25,7 +25,7 @@ has default_content_type => (
 
 # take the list of applications and an $env hash, return a Response object.
 sub dispatch {
-    my ( $self, $env, $request ) = @_;
+    my ( $self, $env, $request, $curr_context ) = @_;
 
 #    warn "dispatching ".$env->{PATH_INFO}
 #       . " with ".join(", ", map { $_->name } @{$self->apps });
@@ -34,6 +34,10 @@ sub dispatch {
 # Once per didspatching! We should not create one context for each app or we're
 # going to parse multiple time the request body/
     my $context = Dancer2::Core::Context->new( env => $env );
+
+    if ( $curr_context && $curr_context->has_session ) {
+        $context->session( $curr_context->session );
+    }
 
     foreach my $app ( @{ $self->apps } ) {
 
@@ -63,8 +67,13 @@ sub dispatch {
 
             $context->request->_set_route_params($match);
 
-            $context->request->deserialize
-              if $context->request->serializer( $app->settings->{serializer} );
+            if ( $context->request->has_serializer ) {
+                $context->request->deserialize;
+                if ( $context->request->serializer->has_error ) {
+                    $app->log( "core" => "Failed to deserialize the request : "
+                          . $context->request->serializer->error );
+                }
+            }
 
    # if the request has been altered by a before filter, we should not continue
    # with this route handler, we should continue to walk through the
@@ -87,6 +96,8 @@ sub dispatch {
                 my $error = $@;
                 if ($error) {
                     $app->log( error => "Route exception: $error" );
+                    $app->execute_hook( 'core.app.route_exception', $context,
+                        $error );
                     return $self->response_internal_error( $context, $error );
                 }
             }
@@ -107,17 +118,6 @@ sub dispatch {
                 $response = $context->response($content);
             }
             else {
-
-                # serialize if needed
-                # TODO make the response object self-serializable? With a
-                # is_serialized attribute
-                if ( my $serializer =
-                    ref($content) && $app->config->{serializer} )
-                {
-                    $content = $serializer->serialize($content);
-                    $response->content_type( $serializer->content_type );
-                }
-
                 $response->content( defined $content ? $content : '' );
                 $response->encode_content;
             }
@@ -145,8 +145,8 @@ sub dispatch {
 # the C-L header everytime we change the value, we need to modify a around
 # modifier to change the value of content and restore the length.
 around 'dispatch' => sub {
-    my ( $orig, $self, $env, $request ) = @_;
-    my $response = $orig->( $self, $env, $request );
+    my ( $orig, $self, $env, $request, $curr_context ) = @_;
+    my $response = $orig->( $self, $env, $request, $curr_context );
     return $response unless defined $request && $request->is_head;
     my $cl = $response->header('Content-Length');
     $response->content('');
@@ -160,12 +160,9 @@ sub response_internal_error {
     # warn "got error: $error";
 
     return Dancer2::Core::Error->new(
-        context      => $context,
-        status       => 500,
-        title        => 'Internal Server Error',
-        content      => "Internal Server Error",
-        exception    => $error,
-        content_type => 'text/plain'
+        context   => $context,
+        status    => 500,
+        exception => $error,
     )->throw;
 }
 
@@ -207,7 +204,7 @@ Dancer2::Core::Dispatcher - Class for dispatching request to the appropriate rou
 
 =head1 VERSION
 
-version 0.06
+version 0.07
 
 =head1 SYNOPSIS
 

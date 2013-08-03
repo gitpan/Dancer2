@@ -2,7 +2,7 @@
 
 package Dancer2::Core::Role::Serializer;
 {
-    $Dancer2::Core::Role::Serializer::VERSION = '0.06';
+    $Dancer2::Core::Role::Serializer::VERSION = '0.07';
 }
 use Dancer2::Core::Types;
 
@@ -23,14 +23,31 @@ requires 'serialize';
 requires 'deserialize';
 requires 'loaded';
 
+has error => (
+    is        => 'rw',
+    isa       => Str,
+    predicate => 1,
+);
+
 around serialize => sub {
     my ( $orig, $self, @data ) = @_;
-
     $self->execute_hook( 'engine.serializer.before', @data );
-    my $serialized = $self->$orig(@data);
-    $self->execute_hook( 'engine.serializer.after', $serialized );
+    my $serialized = eval { $self->$orig(@data); };
 
+    if ($@) {
+        $self->error($@);
+    }
+    else {
+        $self->execute_hook( 'engine.serializer.after', $serialized );
+    }
     return $serialized;
+};
+
+around deserialize => sub {
+    my ( $orig, $self, @data ) = @_;
+    my $data = eval { $self->$orig(@data); };
+    $self->error($@) if $@;
+    return $data;
 };
 
 # attribute vs method?
@@ -58,7 +75,7 @@ Dancer2::Core::Role::Serializer - Role for Serializer engines
 
 =head1 VERSION
 
-version 0.06
+version 0.07
 
 =head1 REQUIREMENTS
 

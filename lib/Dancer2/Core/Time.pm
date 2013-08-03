@@ -1,6 +1,6 @@
 package Dancer2::Core::Time;
 {
-    $Dancer2::Core::Time::VERSION = '0.06';
+    $Dancer2::Core::Time::VERSION = '0.07';
 }
 
 #ABSTRACT: class to handle common helpers for time manipulations
@@ -146,7 +146,7 @@ Dancer2::Core::Time - class to handle common helpers for time manipulations
 
 =head1 VERSION
 
-version 0.06
+version 0.07
 
 =head1 SYNOPSIS
 
@@ -157,7 +157,7 @@ version 0.06
 
 For consistency, whenever something needs to work with time, it
 needs to be expressed in seconds, with a timestamp. Although it's very
-convinient for the machine and calculations, it's not very handy for a
+convenient for the machine and calculations, it's not very handy for a
 human-being, for instance in a configuration file.
 
 This class provides everything needed to translate any human-understandable 

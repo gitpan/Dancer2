@@ -24,7 +24,6 @@ my @modules = qw(
   Fcntl
   File::Basename
   File::Copy
-  File::Find
   File::Path
   File::Spec
   File::Spec::Functions
@@ -51,9 +50,7 @@ my @modules = qw(
   Moo::Role
   MooX::Types::MooseLike
   MooX::Types::MooseLike::Base
-  MooX::Types::MooseLike::Numeric
   POSIX
-  Path::Class
   Plack::Request
   Pod::Simple::Search
   Pod::Simple::SimpleTree
@@ -65,12 +62,14 @@ my @modules = qw(
   Test::Fatal
   Test::MockTime
   Test::More
+  Test::Script
   Test::TCP
   URI
   URI::Escape
   URL::Encode::XS
   YAML
   YAML::Any
+  blib
   constant
   lib
   overload

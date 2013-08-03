@@ -2,7 +2,7 @@
 
 package Dancer2::Core::DSL;
 {
-    $Dancer2::Core::DSL::VERSION = '0.06';
+    $Dancer2::Core::DSL::VERSION = '0.07';
 }
 
 use Moo;
@@ -27,7 +27,6 @@ sub dsl_keywords {
         [ context              => 0 ],
         [ cookie               => 0 ],
         [ cookies              => 0 ],
-        [ core_debug           => 1 ],
         [ dance                => 1 ],
         [ dancer_app           => 1 ],
         [ dancer_version       => 1 ],
@@ -303,7 +302,10 @@ sub param { shift->request->param(@_) }
 
 sub redirect { shift->context->redirect(@_) }
 
-sub forward { shift->request->forward(@_) }
+sub forward {
+    my $self = shift;
+    $self->request->forward( $self->context, @_ );
+}
 
 sub vars { shift->context->vars }
 sub var  { shift->context->var(@_) }
@@ -378,14 +380,6 @@ sub to_dumper {
 
 sub log { shift->app->log(@_) }
 
-sub core_debug {
-    my $msg = shift;
-    return unless $ENV{DANCER_DEBUG_CORE};
-
-    chomp $msg;
-    print STDERR "core: $msg\n";
-}
-
 
 1;
 
@@ -399,7 +393,7 @@ Dancer2::Core::DSL - Dancer2's Domain Specific Language (DSL)
 
 =head1 VERSION
 
-version 0.06
+version 0.07
 
 =head1 FUNCTIONS
 

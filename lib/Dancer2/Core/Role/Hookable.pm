@@ -2,7 +2,7 @@
 
 package Dancer2::Core::Role::Hookable;
 {
-    $Dancer2::Core::Role::Hookable::VERSION = '0.06';
+    $Dancer2::Core::Role::Hookable::VERSION = '0.07';
 }
 use Moo::Role;
 use Dancer2::Core::Types;
@@ -32,11 +32,19 @@ sub hook_aliases {
         after_file_render      => 'handler.file.after_render',
         before_template_render => 'engine.template.before_render',
         after_template_render  => 'engine.template.after_render',
+        before_layout_render   => 'engine.template.before_layout_render',
+        after_layout_render    => 'engine.template.after_layout_render',
         before_serializer      => 'engine.serializer.before',
         after_serializer       => 'engine.serializer.after',
         init_error             => 'core.error.init',
         before_error           => 'core.error.before',
         after_error            => 'core.error.after',
+        on_route_exception     => 'core.app.route_exception',
+
+        # compatibility from Dancer1
+        before_error_render => 'core.error.before',
+        after_error_render  => 'core.error.after',
+        before_error_init   => 'core.error.init',
     };
 }
 
@@ -130,6 +138,9 @@ sub execute_hook {
     croak "Hook '$name' does not exist"
       if !$self->has_hook($name);
 
+    ref($self) eq 'Dancer2::Core::App'
+      && $self->engine('logger')->core("Entering hook $name");
+
     my $res;
     $res = $_->(@args) for @{ $self->hooks->{$name} };
     return $res;
@@ -147,7 +158,7 @@ Dancer2::Core::Role::Hookable - Role for hookable objects
 
 =head1 VERSION
 
-version 0.06
+version 0.07
 
 =head1 AUTHOR
 

@@ -2,15 +2,13 @@
 
 package Dancer2::Core::Error;
 {
-    $Dancer2::Core::Error::VERSION = '0.06';
+    $Dancer2::Core::Error::VERSION = '0.07';
 }
 use Moo;
 use Carp;
 use Dancer2::Core::Types;
 use Data::Dumper;
 use Dancer2::FileUtils 'path';
-
-with 'Dancer2::Core::Role::Hookable';
 
 
 my %error_title = (
@@ -68,15 +66,6 @@ my %error_title = (
     598 => "Network read timeout error ",
     599 => "Network connect timeout error ",
 );
-
-
-sub supported_hooks {
-    qw/
-      core.error.before
-      core.error.after
-      core.error.init
-      /;
-}
 
 
 has show_errors => (
@@ -236,7 +225,8 @@ has context => (
 
 sub BUILD {
     my ($self) = @_;
-    $self->execute_hook( 'core.error.init', $self );
+    $self->has_context
+      && $self->context->app->execute_hook( 'core.error.init', $self );
 }
 
 has exception => (
@@ -293,7 +283,8 @@ sub throw {
 
     croak "error has no response to throw at" unless $self->response;
 
-    $self->execute_hook( 'core.error.before', $self );
+    $self->has_context
+      && $self->context->app->execute_hook( 'core.error.before', $self );
 
     my $message = $self->content;
     $message .= "\n\n" . $self->exception
@@ -302,10 +293,12 @@ sub throw {
     $self->response->status( $self->status );
     $self->response->header( $self->content_type );
     $self->response->content($message);
+
+    $self->has_context
+      && $self->context->app->execute_hook( 'core.error.after',
+        $self->response );
+
     $self->response->halt(1);
-
-    $self->execute_hook( 'core.error.after', $self->response );
-
     return $self->response;
 }
 
@@ -511,7 +504,7 @@ Dancer2::Core::Error - Class representing fatal errors
 
 =head1 VERSION
 
-version 0.06
+version 0.07
 
 =head1 SYNOPSIS
 

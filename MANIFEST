@@ -44,8 +44,6 @@ lib/Dancer2/Core/Server/Standalone.pm
 lib/Dancer2/Core/Session.pm
 lib/Dancer2/Core/Time.pm
 lib/Dancer2/Core/Types.pm
-lib/Dancer2/Deployment.pod
-lib/Dancer2/Development.pod
 lib/Dancer2/FileUtils.pm
 lib/Dancer2/Handler/AutoPage.pm
 lib/Dancer2/Handler/File.pm
@@ -57,8 +55,6 @@ lib/Dancer2/Logger/File.pm
 lib/Dancer2/Logger/Note.pm
 lib/Dancer2/Logger/Null.pm
 lib/Dancer2/Manual.pod
-lib/Dancer2/Manual/DSL.pod
-lib/Dancer2/Manual/Hooks.pod
 lib/Dancer2/ModuleLoader.pm
 lib/Dancer2/Plugin.pm
 lib/Dancer2/Plugin/Ajax.pm
@@ -75,6 +71,7 @@ lib/Dancer2/Template/Tiny.pm
 lib/Dancer2/Test.pm
 lib/Dancer2/Tutorial.pod
 script/dancer2
+t/.multiserver.t.swp
 t/00-compile.t
 t/00-report-prereqs.t
 t/ajax_plugin.t
@@ -162,9 +159,15 @@ t/serializer_json.t
 t/server.t
 t/session_config.t
 t/session_engines.t
+t/session_forward.t
 t/session_lifecycle.t
 t/session_object.t
-t/sessions/Ufe0zzXKL1a2QDEAplElkowI4wmxAwwZ.yml
+t/sessions/Uf1awwAAXkpPhxmXEwjwLY6Oi5Dv7A8v.yml
+t/sessions/Uf1znwAABxlBOUOk04NfndOLhVZzIrnf.yml
+t/sessions/UfRHAQAAJsw_2oX_cvBqBtXlgre8vFiy.yml
+t/sessions/UfRXcwAAO8pp0bx4QwYmc73cP7UKMyY7.yml
+t/sessions/UfUFzgAAOBHtc6NRAKAH4xNgo-GIz8VA.yml
+t/sessions/Ufqu9QAAQfNUOjyt9fa2al5-bFlpbWfR.yml
 t/shared_engines.t
 t/special_import.t
 t/splat.t

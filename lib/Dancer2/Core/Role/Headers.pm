@@ -2,7 +2,7 @@
 
 package Dancer2::Core::Role::Headers;
 {
-    $Dancer2::Core::Role::Headers::VERSION = '0.06';
+    $Dancer2::Core::Role::Headers::VERSION = '0.07';
 }
 
 
@@ -83,7 +83,7 @@ Dancer2::Core::Role::Headers - Role for handling headers
 
 =head1 VERSION
 
-version 0.06
+version 0.07
 
 =head1 DESCRIPTION
 

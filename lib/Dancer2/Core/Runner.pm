@@ -1,7 +1,7 @@
 # ABSTRACT: Top-layer class to start a dancer app
 package Dancer2::Core::Runner;
 {
-    $Dancer2::Core::Runner::VERSION = '0.06';
+    $Dancer2::Core::Runner::VERSION = '0.07';
 }
 
 use Moo;
@@ -13,6 +13,8 @@ use Dancer2::FileUtils;
 use Dancer2::ModuleLoader;
 use File::Basename;
 use File::Spec;
+
+with 'Dancer2::Core::Role::Config';
 
 
 has postponed_hooks => (
@@ -67,10 +69,6 @@ has mime_type => (
     default => sub { Dancer2::Core::MIME->new(); },
 );
 
-sub _build_environment {
-    $ENV{DANCER_ENVIRONMENT} || $ENV{PLACK_ENV} || 'development';
-}
-
 
 # our Config role needs a default_config hash
 sub default_config {
@@ -96,21 +94,6 @@ sub default_config {
     };
 }
 
-
-has location => (
-    is  => 'rw',
-    isa => Str,
-
-    # make sure the path given is always absolute
-    coerce => sub {
-        my ($value) = @_;
-        return File::Spec->rel2abs($value)
-          if !File::Spec->file_name_is_absolute($value);
-        return $value;
-    },
-);
-
-with 'Dancer2::Core::Role::Config';
 
 sub _build_location {
     my ( $self, $script ) = @_;
@@ -189,7 +172,7 @@ Dancer2::Core::Runner - Top-layer class to start a dancer app
 
 =head1 VERSION
 
-version 0.06
+version 0.07
 
 =head1 DESCRIPTION
 
@@ -233,10 +216,6 @@ It checks for an object that consumes the L<Dancer2::Core::Role::Server> role.
 =head2 mime_type
 
 A read/write attribute that holds a L<Dancer2::Core::MIME> object.
-
-=head2 location
-
-Absolute path to the directory where the server started.
 
 =head1 METHODS
 

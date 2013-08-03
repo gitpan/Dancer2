@@ -1,6 +1,6 @@
 package Dancer2::Core::Context;
 {
-    $Dancer2::Core::Context::VERSION = '0.06';
+    $Dancer2::Core::Context::VERSION = '0.07';
 }
 
 # ABSTRACT: handles everything proper to a request's context.
@@ -41,7 +41,11 @@ has request => (
 
 sub _build_request {
     my ($self) = @_;
-    Dancer2::Core::Request->new( env => $self->env );
+    my $req = Dancer2::Core::Request->new( env => $self->env );
+    if ( defined $self->app && defined $self->app->config->{serializer} ) {
+        $req->serializer( $self->app->config->{serializer} );
+    }
+    return $req;
 }
 
 # a buffer for per-request variables
@@ -68,7 +72,14 @@ sub var {
 has response => (
     is      => 'rw',
     isa     => InstanceOf ['Dancer2::Core::Response'],
-    default => sub { Dancer2::Core::Response->new },
+    lazy    => 1,
+    default => sub {
+        my $self = shift;
+        my $resp = Dancer2::Core::Response->new;
+        $resp->serializer( $self->app->config->{serializer} )
+          if $self->app->config->{serializer};
+        return $resp;
+    },
 );
 
 
@@ -118,9 +129,7 @@ sub _build_session {
     my $session;
 
     # Find the session engine
-    my $engine = $self->app->setting('session');
-    croak "No session engine defined, cannot use session."
-      if !defined $engine;
+    my $engine = $self->app->engine('session');
 
     # find the session cookie if any
     if ( !$self->destroyed_session ) {
@@ -146,8 +155,7 @@ sub _build_session {
 sub has_session {
     my ($self) = @_;
 
-    my $engine = $self->app->setting('session')
-      or return;
+    my $engine = $self->app->engine('session');
 
     return $self->{session}
       || ( $self->cookie( $engine->cookie_name )
@@ -166,9 +174,7 @@ sub destroy_session {
     my ($self) = @_;
 
     # Find the session engine
-    my $engine = $self->app->setting('session');
-    croak "No session engine defined, cannot use session."
-      if !defined $engine;
+    my $engine = $self->app->engine('session');
 
     # Expire session, set the expired cookie and destroy the session
     # Setting the cookie ensures client gets an expired cookie unless
@@ -196,7 +202,7 @@ Dancer2::Core::Context - handles everything proper to a request's context.
 
 =head1 VERSION
 
-version 0.06
+version 0.07
 
 =head1 ATTRIBUTES
 

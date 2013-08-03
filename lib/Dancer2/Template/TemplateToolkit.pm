@@ -2,7 +2,7 @@
 
 package Dancer2::Template::TemplateToolkit;
 {
-    $Dancer2::Template::TemplateToolkit::VERSION = '0.06';
+    $Dancer2::Template::TemplateToolkit::VERSION = '0.07';
 }
 
 use strict;
@@ -68,7 +68,7 @@ Dancer2::Template::TemplateToolkit - Template toolkit engine for Dancer2
 
 =head1 VERSION
 
-version 0.06
+version 0.07
 
 =head1 SYNOPSIS
 

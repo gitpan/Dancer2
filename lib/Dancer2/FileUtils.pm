@@ -2,7 +2,7 @@
 
 package Dancer2::FileUtils;
 {
-    $Dancer2::FileUtils::VERSION = '0.06';
+    $Dancer2::FileUtils::VERSION = '0.07';
 }
 
 use strict;
@@ -111,7 +111,7 @@ Dancer2::FileUtils - File utility helpers
 
 =head1 VERSION
 
-version 0.06
+version 0.07
 
 =head1 SYNOPSIS
 
@@ -201,7 +201,7 @@ defaults to utf-8 if setting not present).
 Returns either the content of a file (whose filename is the input), or I<undef>
 if the file could not be opened.
 
-In array context it returns each line (as defined by $/) as a seperate element;
+In array context it returns each line (as defined by $/) as a separate element;
 in scalar context returns the entire contents of the file.
 
 =head2 my $content = read_glob_content($fh);

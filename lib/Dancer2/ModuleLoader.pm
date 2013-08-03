@@ -1,6 +1,6 @@
 package Dancer2::ModuleLoader;
 {
-    $Dancer2::ModuleLoader::VERSION = '0.06';
+    $Dancer2::ModuleLoader::VERSION = '0.07';
 }
 
 # ABSTRACT: Dynamic module loading helpers for Dancer2 core components
@@ -78,7 +78,7 @@ Dancer2::ModuleLoader - Dynamic module loading helpers for Dancer2 core componen
 
 =head1 VERSION
 
-version 0.06
+version 0.07
 
 =head1 DESCRIPTION
 
@@ -121,7 +121,7 @@ Takes in arguments the module name, and optionally the minimum version number re
 In scalar context, returns 1 if successful, 0 if not.
 In list context, returns 1 if successful, C<(0, "error message")> if not.
 
-If you need to give argumentto the loading module, please use the method C<load_with_params>
+If you need to give arguments to the loading module, please use the method C<load_with_params>
 
 =head2 require
 
