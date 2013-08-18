@@ -2,7 +2,7 @@
 
 package Dancer2::Serializer::Dumper;
 {
-    $Dancer2::Serializer::Dumper::VERSION = '0.07';
+    $Dancer2::Serializer::Dumper::VERSION = '0.08';
 }
 
 use Moo;
@@ -11,6 +11,7 @@ use Data::Dumper;
 
 with 'Dancer2::Core::Role::Serializer';
 
+has '+content_type' => ( default => 'text/x-data-dumper' );
 
 # helpers
 sub from_dumper {
@@ -26,7 +27,6 @@ sub to_dumper {
 # class definition
 sub loaded {1}
 
-
 sub serialize {
     my ( $self, $entity ) = @_;
 
@@ -36,7 +36,6 @@ sub serialize {
     }
 }
 
-
 sub deserialize {
     my ( $self, $content ) = @_;
 
@@ -44,9 +43,6 @@ sub deserialize {
     croak "unable to deserialize : $@" if $@;
     return $res;
 }
-
-
-sub content_type {'text/x-data-dumper'}
 
 1;
 
@@ -60,27 +56,44 @@ Dancer2::Serializer::Dumper - Serializer for handling Dumper data
 
 =head1 VERSION
 
-version 0.07
-
-=head1 SYNOPSIS
+version 0.08
 
 =head1 DESCRIPTION
 
-Turn Perl data structures into L<Data::Dumper> output and vice-versa.
+This is a serializer engine that allows you to turn Perl data structures  into
+L<Data::Dumper> output and vice-versa.
 
-=head1 METHODS
-
-=head2 serialize
-
-Serialize a Perl data structure into a Dumper string.
-
-=head2 deserialize
-
-Deserialize a Dumper string into a Perl data structure
+=head1 ATTRIBUTES
 
 =head2 content_type
 
-Return 'text/x-data-dumper'
+Returns 'text/x-data-dumper'
+
+=head1 METHODS
+
+=head2 serialize($content)
+
+Serializes a Perl data structure into a Dumper string.
+
+=head2 deserialize($content)
+
+Deserialize a Dumper string into a Perl data structure.
+
+=head1 FUNCTIONS
+
+=head2 from_dumper($content)
+
+This is an helper available to transform a L<Data::Dumper> output to a Perl
+data structures.
+
+=head2 to_dumper($content)
+
+This is an helper available to transform a Perl data structures to a
+L<Data::Dumper> output.
+
+Calling this function will B<not> trigger the serialization's hooks.
+
+=head1 METHODS
 
 =head1 AUTHOR
 

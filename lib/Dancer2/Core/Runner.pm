@@ -1,7 +1,7 @@
 # ABSTRACT: Top-layer class to start a dancer app
 package Dancer2::Core::Runner;
 {
-    $Dancer2::Core::Runner::VERSION = '0.07';
+    $Dancer2::Core::Runner::VERSION = '0.08';
 }
 
 use Moo;
@@ -16,32 +16,25 @@ use File::Spec;
 
 with 'Dancer2::Core::Role::Config';
 
-
-has postponed_hooks => (
-    is      => 'rw',
-    isa     => HashRef,
-    default => sub { {} },
-);
-
-
 # the path to the caller script that is starting the app
 # mandatory, because we use that to determine where the appdir is.
 has caller => (
     is       => 'ro',
     isa      => Str,
     required => 1,
-    trigger  => sub {
-        my ( $self, $script ) = @_;
-        $self->_build_location($script);
-    },
 );
 
-
 has server => (
-    is      => 'rw',
+    is      => 'ro',
     isa     => ConsumerOf ['Dancer2::Core::Role::Server'],
     lazy    => 1,
     builder => '_build_server',
+);
+
+has mime_type => (
+    is      => 'ro',
+    isa     => InstanceOf ['Dancer2::Core::MIME'],
+    default => sub { Dancer2::Core::MIME->new(); },
 );
 
 # when the runner is created, it has to init the server instance
@@ -58,17 +51,8 @@ sub _build_server {
         host      => $self->config->{host},
         port      => $self->config->{port},
         is_daemon => $self->config->{is_daemon},
-        runner    => $self,
     );
 }
-
-
-has mime_type => (
-    is      => 'rw',
-    isa     => InstanceOf ["Dancer2::Core::MIME"],
-    default => sub { Dancer2::Core::MIME->new(); },
-);
-
 
 # our Config role needs a default_config hash
 sub default_config {
@@ -81,7 +65,7 @@ sub default_config {
         content_type => ( $ENV{DANCER_CONTENT_TYPE} || 'text/html' ),
         charset      => ( $ENV{DANCER_CHARSET}      || '' ),
         warnings     => ( $ENV{DANCER_WARNINGS}     || 0 ),
-        startup_info => ( $ENV{DANCER_STARTUP_INFO} || 1 ),
+        startup_info => ( $ENV{DANCER_STARTUP_INFO} || 0 ),
         traces       => ( $ENV{DANCER_TRACES}       || 0 ),
         logger       => ( $ENV{DANCER_LOGGER}       || 'console' ),
         host         => ( $ENV{DANCER_SERVER}       || '0.0.0.0' ),
@@ -94,9 +78,9 @@ sub default_config {
     };
 }
 
-
 sub _build_location {
-    my ( $self, $script ) = @_;
+    my $self   = shift;
+    my $script = $self->caller;
 
     # default to the dir that contains the script...
     my $location = Dancer2::FileUtils::dirname($script);
@@ -120,20 +104,44 @@ sub _build_location {
             $subdir_found = 1;
             last;
         }
+
         $subdir = Dancer2::FileUtils::path( $subdir, '..' );
         last if File::Spec->rel2abs($subdir) eq File::Spec->rootdir;
 
     }
 
-    $self->location( $subdir_found ? $subdir : $location );
+    my $path = $subdir_found ? $subdir : $location;
+
+    # return if absolute
+    File::Spec->file_name_is_absolute($path)
+      and return $path;
+
+    # convert relative to absolute
+    return File::Spec->rel2abs($path);
 }
 
+sub BUILD {
+    my $self = shift;
+
+    # this assures any failure in building the location
+    # will be encountered as soon as possible
+    # while making sure that 'caller' is already available
+    $self->location;
+
+    # set the global runner object if one doesn't exist yet
+    # this can happen if you create one without going through Dancer2
+    # which doesn't trigger the import that creates it
+    defined $Dancer2::runner
+      or $Dancer2::runner = $self;
+}
 
 sub start {
     my ($self) = @_;
     my $server = $self->server;
 
-    $_->finish for @{ $server->apps };
+    foreach my $app ( @{ $server->apps } ) {
+        $app->finish;
+    }
 
     # update the server config if needed
     my $port      = $self->setting('server_port');
@@ -150,7 +158,6 @@ sub start {
 sub name {"runner"}
 
 1;
-
 
 #still exists?
 #=method BUILD
@@ -172,7 +179,7 @@ Dancer2::Core::Runner - Top-layer class to start a dancer app
 
 =head1 VERSION
 
-version 0.07
+version 0.08
 
 =head1 DESCRIPTION
 
@@ -195,11 +202,6 @@ The environment string. The options, in this order, are:
 =back
 
 =head1 ATTRIBUTES
-
-=head2 postponed_hooks
-
-Postponed hooks will be applied at the end, when the hookable objects are 
-instantiated, not before.
 
 =head2 caller
 

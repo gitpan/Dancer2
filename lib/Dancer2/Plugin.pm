@@ -1,6 +1,6 @@
 package Dancer2::Plugin;
 {
-    $Dancer2::Plugin::VERSION = '0.07';
+    $Dancer2::Plugin::VERSION = '0.08';
 }
 
 # ABSTRACT: Extending Dancer2's DSL with plugins
@@ -261,7 +261,7 @@ Dancer2::Plugin - Extending Dancer2's DSL with plugins
 
 =head1 VERSION
 
-version 0.07
+version 0.08
 
 =head1 DESCRIPTION
 
@@ -290,8 +290,8 @@ when the symbol is called.
 
 The coderef receives as its first argument the Dancer2::Core::DSL object.
 
-Instead of importing C<use Dancer ':syntax'>, plugins B<must> use the DSL
-object to access application components and work with them directly.
+Plugins B<must> use the DSL object to access application components and work
+with them directly.
 
     sub {
         my $dsl = shift;

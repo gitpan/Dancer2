@@ -2,9 +2,10 @@
 
 package Dancer2::Core::Role::Hookable;
 {
-    $Dancer2::Core::Role::Hookable::VERSION = '0.07';
+    $Dancer2::Core::Role::Hookable::VERSION = '0.08';
 }
 use Moo::Role;
+use Dancer2::Core;
 use Dancer2::Core::Types;
 use Carp 'croak';
 
@@ -69,7 +70,7 @@ sub _add_postponed_hooks {
         $h_type = 'engine';
     }
 
-#    Dancer2::core_debug("looking for hooks for $h_type/$h_name");
+#    Dancer2::Core::debug("looking for hooks for $h_type/$h_name");
     # keep only the hooks we want
     $postponed_hooks = $postponed_hooks->{$h_type}{$h_name};
     return unless defined $postponed_hooks;
@@ -82,7 +83,7 @@ sub _add_postponed_hooks {
           or croak "$h_name $h_type does not support the hook `$name'. ("
           . join( ", ", @{$caller} ) . ")";
 
-#        Dancer2::core_debug("Adding hook '$name' to $self");
+#        Dancer2::Core::debug("Adding hook '$name' to $self");
         $self->add_hook($hook);
     }
 }
@@ -158,7 +159,7 @@ Dancer2::Core::Role::Hookable - Role for hookable objects
 
 =head1 VERSION
 
-version 0.07
+version 0.08
 
 =head1 AUTHOR
 

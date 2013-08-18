@@ -1,8 +1,7 @@
 # ABSTRACT: Role for Server classes
-
 package Dancer2::Core::Role::Server;
 {
-    $Dancer2::Core::Role::Server::VERSION = '0.07';
+    $Dancer2::Core::Role::Server::VERSION = '0.08';
 }
 use Moo::Role;
 
@@ -16,6 +15,7 @@ use Dancer2::Core::Response;
 use Dancer2::Core::Request;
 use Dancer2::Core::Context;
 
+requires '_build_name';
 
 has name => (
     is      => 'ro',
@@ -23,13 +23,11 @@ has name => (
     builder => 1,
 );
 
-
 has host => (
     is       => 'rw',
     isa      => Str,
     required => 1,
 );
-
 
 has port => (
     is       => 'rw',
@@ -37,26 +35,16 @@ has port => (
     required => 1,
 );
 
-
 has is_daemon => (
     is  => 'rw',
     isa => Bool,
 );
-
 
 has apps => (
     is      => 'ro',
     isa     => ArrayRef,
     default => sub { [] },
 );
-
-has runner => (
-    is       => 'ro',
-    required => 1,
-    isa      => InstanceOf ['Dancer2::Core::Runner'],
-    weak_ref => 1,
-);
-
 
 has dispatcher => (
     is      => 'rw',
@@ -65,7 +53,11 @@ has dispatcher => (
     builder => '_build_dispatcher',
 );
 
-requires '_build_name';
+has postponed_hooks => (
+    is      => 'rw',
+    isa     => HashRef,
+    default => sub { {} },
+);
 
 sub _build_dispatcher {
     my ($self) = @_;
@@ -73,7 +65,6 @@ sub _build_dispatcher {
     $d->apps( $self->apps );
     return $d;
 }
-
 
 # our PSGI application
 sub psgi_app {
@@ -95,14 +86,22 @@ sub psgi_app {
     };
 }
 
-
 sub register_application {
     my ( $self, $app ) = @_;
     push @{ $self->apps }, $app;
     $app->server($self);
-    $app->server->runner->postponed_hooks(
-        {   %{ $app->server->runner->postponed_hooks },
-            %{ $app->postponed_hooks }
+
+    # add postponed hooks to our app-global copy
+    $self->add_postponed_hooks( $app->postponed_hooks );
+}
+
+sub add_postponed_hooks {
+    my $self  = shift;
+    my $hooks = shift;
+
+    $self->postponed_hooks(
+        {   %{ $self->postponed_hooks },
+            %{$hooks},
         }
     );
 }
@@ -119,7 +118,7 @@ Dancer2::Core::Role::Server - Role for Server classes
 
 =head1 VERSION
 
-version 0.07
+version 0.08
 
 =head1 DESCRIPTION
 
@@ -157,6 +156,11 @@ A read/write attribute which holds the L<Dancer2::Core::Dispatcher> object, to
 dispatch an incoming request to the appropriate route.
 
 It has a lazy builder that creates a new dispatcher with the server's apps.
+
+=head2 postponed_hooks
+
+Postponed hooks will be applied at the end, when the hookable objects are
+instantiated, not before.
 
 =head1 METHODS
 

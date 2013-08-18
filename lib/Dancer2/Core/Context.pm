@@ -1,6 +1,6 @@
 package Dancer2::Core::Context;
 {
-    $Dancer2::Core::Context::VERSION = '0.07';
+    $Dancer2::Core::Context::VERSION = '0.08';
 }
 
 # ABSTRACT: handles everything proper to a request's context.
@@ -16,9 +16,10 @@ use Dancer2::Core::Cookie;
 
 
 has app => (
-    is       => 'rw',
-    isa      => InstanceOf ['Dancer2::Core::App'],
-    weak_ref => 1,
+    is        => 'rw',
+    isa       => InstanceOf ['Dancer2::Core::App'],
+    weak_ref  => 1,
+    predicate => 1,
 );
 
 
@@ -41,10 +42,21 @@ has request => (
 
 sub _build_request {
     my ($self) = @_;
-    my $req = Dancer2::Core::Request->new( env => $self->env );
-    if ( defined $self->app && defined $self->app->config->{serializer} ) {
-        $req->serializer( $self->app->config->{serializer} );
-    }
+
+    # If we have an app, get the serialization engine
+    my $engine = $self->app->engine('serializer')
+      if $self->has_app;
+
+    my $req = Dancer2::Core::Request->new(
+        env => $self->env,
+        $engine ? ( serializer => $engine ) : (),
+    );
+
+    # Log deserialization errors
+    $self->app->log(
+        core => "Failed to deserialize the request : " . $engine->error )
+      if ( $engine && $engine->has_error );
+
     return $req;
 }
 
@@ -76,8 +88,10 @@ has response => (
     default => sub {
         my $self = shift;
         my $resp = Dancer2::Core::Response->new;
-        $resp->serializer( $self->app->config->{serializer} )
-          if $self->app->config->{serializer};
+        if ( $self->has_app ) {
+            my $engine = $self->app->engine('serializer');
+            $resp->serializer($engine) if $engine;
+        }
         return $resp;
     },
 );
@@ -202,7 +216,7 @@ Dancer2::Core::Context - handles everything proper to a request's context.
 
 =head1 VERSION
 
-version 0.07
+version 0.08
 
 =head1 ATTRIBUTES
 

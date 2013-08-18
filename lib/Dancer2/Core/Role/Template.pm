@@ -2,7 +2,7 @@
 
 package Dancer2::Core::Role::Template;
 {
-    $Dancer2::Core::Role::Template::VERSION = '0.07';
+    $Dancer2::Core::Role::Template::VERSION = '0.08';
 }
 
 use Dancer2::Core::Types;
@@ -12,7 +12,6 @@ use Carp 'croak';
 use Data::Dumper;
 use Moo::Role;
 with 'Dancer2::Core::Role::Engine';
-
 
 sub supported_hooks {
     qw/
@@ -27,7 +26,6 @@ sub _build_type {'Template'}
 
 requires 'render';
 
-
 has name => (
     is      => 'ro',
     lazy    => 1,
@@ -39,13 +37,11 @@ sub _build_name {
     $name;
 }
 
-
 has charset => (
     is      => 'ro',
     isa     => Str,
     default => sub {'UTF-8'},
 );
-
 
 has default_tmpl_ext => (
     is      => 'rw',
@@ -53,18 +49,15 @@ has default_tmpl_ext => (
     default => sub { shift->config->{extension} || 'tt' },
 );
 
-
 has views => (
     is  => 'rw',
     isa => Maybe [Str],
 );
 
-
 has layout => (
     is  => 'rw',
     isa => Maybe [Str],
 );
-
 
 has engine => (
     is      => 'ro',
@@ -80,7 +73,6 @@ sub _template_name {
     return $view;
 }
 
-
 sub view_pathname {
     my ( $self, $view ) = @_;
 
@@ -88,13 +80,11 @@ sub view_pathname {
     return path( $self->views, $view );
 }
 
-
 sub layout_pathname {
     my ( $self, $layout ) = @_;
     $layout = $self->_template_name($layout);
     return path( $self->views, 'layouts', $layout );
 }
-
 
 sub render_layout {
     my ( $self, $layout, $tokens, $content ) = @_;
@@ -104,7 +94,6 @@ sub render_layout {
     # FIXME: not sure if I can "just call render"
     $self->render( $layout, { %$tokens, content => $content } );
 }
-
 
 sub apply_renderer {
     my ( $self, $view, $tokens ) = @_;
@@ -120,7 +109,6 @@ sub apply_renderer {
     defined $content and return $content;
     return;
 }
-
 
 sub apply_layout {
     my ( $self, $content, $tokens, $options ) = @_;
@@ -179,7 +167,6 @@ sub _prepare_tokens_options {
     return $tokens;
 }
 
-
 sub process {
     my ( $self, $view, $tokens, $options ) = @_;
     my ( $content, $full_content );
@@ -217,14 +204,14 @@ Dancer2::Core::Role::Template - Role for template engines
 
 =head1 VERSION
 
-version 0.07
+version 0.08
 
 =head1 DESCRIPTION
 
-This role provides methods and attributes needed for working with template.
+Any class that consumes this role will be able to be used as a template engine
+under Dancer2.
 
-All Dancer's templates engine should consume this role, and they B<need> to
-implement a C<render> method. This method will receive three arguments:
+In order to implement this role, the consumer B<must> implement the method C<render>. This method will receive three arguments:
 
 =over 4
 
@@ -236,7 +223,7 @@ implement a C<render> method. This method will receive three arguments:
 
 =back
 
-=head1 METHODS
+=head1 ATTRIBUTES
 
 =head2 name
 
@@ -262,6 +249,8 @@ Path to the directory containing the layouts.
 
 Contains the engine.
 
+=head1 METHODS
+
 =head2 view_pathname($view)
 
 Returns the full path to the requested view.
@@ -270,15 +259,17 @@ Returns the full path to the requested view.
 
 Returns the full path to the requested layout.
 
-=head2 render_layout($layout, $tokens, \$content)
+=head2 render_layout($layout, \%tokens, \$content)
 
 Render the layout with the applied tokens
 
-=head2 apply_renderer($view, $tokens)
+=head2 apply_renderer($view, \%tokens)
 
-=head2 apply_layout
+=head2 apply_layout($content, \%tokens, \%options)
 
-=head2 process($view, $tokens, $options)
+=head2 process($view, \%tokens, \%options)
+
+=head1 METHODS
 
 =head1 AUTHOR
 

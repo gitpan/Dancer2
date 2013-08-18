@@ -2,7 +2,7 @@
 
 package Dancer2::Logger::Console;
 {
-    $Dancer2::Logger::Console::VERSION = '0.07';
+    $Dancer2::Logger::Console::VERSION = '0.08';
 }
 use Moo;
 with 'Dancer2::Core::Role::Logger';
@@ -24,7 +24,31 @@ Dancer2::Logger::Console - Console logger
 
 =head1 VERSION
 
-version 0.07
+version 0.08
+
+=head1 DESCRIPTION
+
+This is a logging engine that allows you to print debug messages on the
+standard error output.
+
+=head1 METHODS
+
+=head2 log
+
+Writes the log message to the console.
+
+=head1 CONFIGURATION
+
+The setting C<logger> should be set to C<console> in order to use this logging
+engine in a Dancer2 application.
+
+There is no additional setting available with this engine.
+
+=head1 METHODS
+
+=head1 SEE ALSO
+
+L<Dancer2::Core::Role::Logger>
 
 =head1 AUTHOR
 

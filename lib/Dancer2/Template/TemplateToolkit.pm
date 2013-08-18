@@ -2,18 +2,17 @@
 
 package Dancer2::Template::TemplateToolkit;
 {
-    $Dancer2::Template::TemplateToolkit::VERSION = '0.07';
+    $Dancer2::Template::TemplateToolkit::VERSION = '0.08';
 }
 
 use strict;
 use warnings;
-use Carp;
+use Carp qw/croak/;
 use Moo;
 use Dancer2::Core::Types;
 use Template;
 
 with 'Dancer2::Core::Role::Template';
-
 
 has '+engine' => ( isa => InstanceOf ['Template'], );
 
@@ -39,14 +38,11 @@ sub _build_engine {
     return Template->new(%tt_config);
 }
 
-
 sub render {
     my ( $self, $template, $tokens ) = @_;
 
-    if ( !ref $template ) {
-        -f $template
-          or croak "'$template' doesn't exist or not a regular file";
-    }
+    ( ref $template || -f $template )
+      or croak "$template is not a regular file or reference";
 
     my $content = "";
     my $charset = $self->charset;
@@ -68,7 +64,7 @@ Dancer2::Template::TemplateToolkit - Template toolkit engine for Dancer2
 
 =head1 VERSION
 
-version 0.07
+version 0.08
 
 =head1 SYNOPSIS
 
@@ -82,14 +78,22 @@ setting it manually with C<set>:
     # code code code
     set template => 'template_toolkit';
 
+=head1 DESCRIPTION
+
+This template engine allows you to use L<Template::Toolkit> in L<Dancer2>.
+
 =head1 METHODS
 
-=head2 render TEMPLATE, TOKENS
+=head2 render($template, \%tokens)
 
 Renders the template.  The first arg is a filename for the template file
 or a reference to a string that contains the template.  The second arg
 is a hashref for the tokens that you wish to pass to
 L<Template::Toolkit> for rendering.
+
+=head1 SEE ALSO
+
+L<Dancer2>, L<Dancer2::Core::Role::Template>, L<Template::Toolkit>.
 
 =head1 AUTHOR
 

@@ -2,7 +2,7 @@
 
 package Dancer2::Core::Role::Logger;
 {
-    $Dancer2::Core::Role::Logger::VERSION = '0.07';
+    $Dancer2::Core::Role::Logger::VERSION = '0.08';
 }
 use Dancer2::Core::Types;
 
@@ -35,7 +35,6 @@ has app_name => (
     is  => 'ro',
     isa => Str,
 );
-
 
 has log_format => (
     is      => 'rw',
@@ -78,7 +77,7 @@ sub format_message {
     $message = Encode::encode( $self->auto_encoding_charset, $message )
       if $self->auto_encoding_charset;
 
-    my @stack = caller(2);
+    my @stack = caller(6);
 
     my $block_handler = sub {
         my ( $block, $type ) = @_;
@@ -178,7 +177,134 @@ Dancer2::Core::Role::Logger - Role for logger engines
 
 =head1 VERSION
 
-version 0.07
+version 0.08
+
+=head1 DESCRIPTION
+
+Any class that consumes this role will be able to implement to write log messages.
+
+In order to implement this role, the consumer B<must> implement the C<log>
+method. This method will receives as argument the C<level> and the C<message>.
+
+=head1 ATTRIBUTES
+
+=head2 auto_encoding_charset
+
+Charset to use when writing a message.
+
+=head2 app_name
+
+Name of the application. Can be used in the message.
+
+=head2 log_format
+
+This is a format string (or a preset name) to specify the log format.
+
+The possible values are:
+
+=over 4
+
+=item %h
+
+host emitting the request
+
+=item %t
+
+date (local timezone, formatted like %d/%b/%Y %H:%M:%S)
+
+=item %T
+
+date (local timezone, formatted like %Y-%m-%d %H:%M:%S)
+
+=item %u
+
+date (UTC timezone, formatted like %d/%b/%Y %H:%M:%S)
+
+=item %U
+
+date (UTC timezone, formatted like %Y-%m-%d %H:%M:%S)
+
+=item %P
+
+PID
+
+=item %L
+
+log level
+
+=item %D
+
+timer
+
+=item %m
+
+message
+
+=item %f
+
+file name that emit the message
+
+=item %l
+
+line from the file
+
+=item %i
+
+request ID
+
+=item %{$fmt}t
+
+timer formatted with a valid time format
+
+=item %{header}h
+
+header value
+
+=back
+
+=head2 log_level
+
+Level to use by default.
+
+=head1 METHODS
+
+=head2 core
+
+Log messages as B<core>.
+
+=head2 debug
+
+Log messages as B<debug>.
+
+=head2 info
+
+Log messages as B<info>.
+
+=head2 warning
+
+Log messages as B<warning>.
+
+=head2 error
+
+Log messages as B<error>.
+
+=head2 format_message
+
+Provides a common message formating.
+
+=head1 CONFIGURATION
+
+The B<logger> configuration variable tells Dancer2 which engine to use.
+
+You can change it either in your config.yml file:
+
+    # logging to console
+    logger: "console"
+
+The log format can also be configured,
+please see L<Dancer2::Core::Role::Logger/"logger_format"> for details.
+
+=head1 METHODS
 
 =head1 AUTHOR
 

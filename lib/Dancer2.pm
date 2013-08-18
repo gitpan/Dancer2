@@ -1,6 +1,6 @@
 package Dancer2;
 {
-    $Dancer2::VERSION = '0.07';
+    $Dancer2::VERSION = '0.08';
 }
 
 # ABSTRACT: Lightweight yet powerful web application framework
@@ -8,6 +8,7 @@ package Dancer2;
 use strict;
 use warnings;
 use Data::Dumper;
+use Dancer2::Core;
 use Dancer2::Core::Runner;
 use Dancer2::Core::App;
 use Dancer2::FileUtils;
@@ -18,10 +19,10 @@ our $AUTHORITY = 'SUKRIA';
 # set version in dist.ini now
 # but we still need a basic version for
 # the tests
-$Dancer2::VERSION ||= '0.06';    # 2.0.6
+$Dancer2::VERSION ||= '0.08';    # 2.0.8
 
 
-my $runner;
+our $runner;
 
 sub runner {$runner}
 
@@ -34,14 +35,10 @@ sub import {
     utf8->import;
 
     my @final_args;
-    my $syntax_only = 0;
-    my $as_script   = 0;
+    my $as_script = 0;
     foreach (@args) {
         if ( $_ eq ':tests' ) {
             push @final_args, '!pass' => 1;
-        }
-        elsif ( $_ eq ':syntax' ) {
-            $syntax_only = 1;
         }
         elsif ( $_ eq ':script' ) {
             $as_script = 1;
@@ -72,23 +69,26 @@ sub import {
     my $local_libdir = Dancer2::FileUtils::path( $runner->location, 'lib' );
     Dancer2::ModuleLoader->use_lib($local_libdir) if -d $local_libdir;
 
+    my $server = $runner->server;
+
     # the app object
+    # populating with the server's postponed hooks in advance
     my $app = Dancer2::Core::App->new(
         name            => $caller,
         environment     => $runner->environment,
         location        => $runner->location,
         runner_config   => $runner->config,
-        postponed_hooks => $runner->postponed_hooks,
+        postponed_hooks => $server->postponed_hooks,
     );
 
-    core_debug("binding import method to $caller");
+    Dancer2::Core::debug("binding import method to $caller");
     _set_import_method_to_caller($caller);
 
     # register the app within the runner instance
-    core_debug("binding app to $caller");
-    $runner->server->register_application($app);
+    Dancer2::Core::debug("binding app to $caller");
+    $server->register_application($app);
 
-    core_debug("exporting DSL symbols for $caller");
+    Dancer2::Core::debug("exporting DSL symbols for $caller");
 
     # load the DSL, defaulting to Dancer2::Core::DSL
     Dancer2::ModuleLoader->require( $final_args{dsl} )
@@ -96,9 +96,6 @@ sub import {
     my $dsl = $final_args{dsl}->new( app => $app );
     $dsl->export_symbols_to( $caller, \%final_args );
 
-    #
-    #    # if :syntax option exists, don't change settings
-    #    return if $syntax_only;
     #
     #    $as_script = 1 if $ENV{PLACK_ENV};
     #
@@ -124,21 +121,6 @@ sub _set_import_method_to_caller {
     }
 }
 
-
-sub core_debug {
-    return unless $ENV{DANCER_DEBUG_CORE};
-
-    my $msg = shift;
-    my (@stuff) = @_;
-
-    my $vars = @stuff ? Dumper( \@stuff ) : '';
-
-    my ( $package, $filename, $line ) = caller;
-
-    chomp $msg;
-    print STDERR "core: $msg\n$vars";
-}
-
 1;
 
 __END__
@@ -151,7 +133,7 @@ Dancer2 - Lightweight yet powerful web application framework
 
 =head1 VERSION
 
-version 0.07
+version 0.08
 
 =head1 DESCRIPTION
 
@@ -225,7 +207,7 @@ Import gets called when you use Dancer2. You can specify import options giving
 you control over the keywords that will be imported into your webapp and other 
 things:
 
-    use Dancer2 ':syntax';
+    use Dancer2 ':script';
 
 =head3 Import Options
 
@@ -235,11 +217,6 @@ things:
 
 No importing of C<pass> function. This is to prevent conflict with
 L<Test::More> et al.
-
-=item C<:syntax>
-
-Imports syntax only instead of treating your code as a script with command line
-parameter parsing and built-in web server.
 
 =item C<:script>
 
@@ -252,11 +229,6 @@ Do not process arguments.
 =head2 my $runner=runner();
 
 Returns the current runner. It is of type L<Dancer2::Core::Runner>.
-
-=head2 core_debug
-
-Output a message to STDERR and take further arguments as some data structures using 
-L<Data::Dumper>
 
 =head1 AUTHOR
 

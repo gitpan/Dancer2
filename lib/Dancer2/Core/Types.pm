@@ -1,6 +1,6 @@
 package Dancer2::Core::Types;
 {
-    $Dancer2::Core::Types::VERSION = '0.07';
+    $Dancer2::Core::Types::VERSION = '0.08';
 }
 
 # ABSTRACT: Moo types for Dancer2 core.
@@ -148,7 +148,7 @@ Dancer2::Core::Types - Moo types for Dancer2 core.
 
 =head1 VERSION
 
-version 0.07
+version 0.08
 
 =head1 DESCRIPTION
 

@@ -2,7 +2,7 @@
 
 package Dancer2::Core::Server::Standalone;
 {
-    $Dancer2::Core::Server::Standalone::VERSION = '0.07';
+    $Dancer2::Core::Server::Standalone::VERSION = '0.08';
 }
 
 use Moo;
@@ -42,7 +42,7 @@ sub print_banner {
     my $pid  = $$;      #Todo:how to get background pid?
 
     # we only print the info if we need to
-    $self->runner->config->{'startup_info'} or return;
+    Dancer2->runner->config->{'startup_info'} or return;
 
     # bare minimum
     print STDERR ">> Dancer2 v$Dancer2::VERSION server $pid listening "
@@ -73,7 +73,7 @@ Dancer2::Core::Server::Standalone - Basic standalone HTTP server for Dancer2
 
 =head1 VERSION
 
-version 0.07
+version 0.08
 
 =head1 DESCRIPTION
 

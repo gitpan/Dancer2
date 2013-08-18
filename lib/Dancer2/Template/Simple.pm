@@ -2,17 +2,14 @@
 
 package Dancer2::Template::Simple;
 {
-    $Dancer2::Template::Simple::VERSION = '0.07';
+    $Dancer2::Template::Simple::VERSION = '0.08';
 }
 use strict;
 use warnings;
-use Carp;
-
 use Moo;
 use Dancer2::FileUtils 'read_file_content';
 
 with 'Dancer2::Core::Role::Template';
-
 
 has start_tag => (
     is      => 'rw',
@@ -160,7 +157,13 @@ Dancer2::Template::Simple - Pure Perl 5 template engine for Dancer2
 
 =head1 VERSION
 
-version 0.07
+version 0.08
+
+=head1 SYNOPSIS
+
+To use this engine, you may configure L<Dancer2> via C<config.yaml>:
+
+    template: simple
 
 =head1 DESCRIPTION
 
@@ -172,12 +175,21 @@ powerful one, it's written in pure Perl and has no C bindings to accelerate the
 template processing.
 
 If you want to power an application with Dancer2 in production environment, it's
-strongly advised to switch to Dancer2::Template::TemplateToolkit.
+strongly advised to switch to L<Dancer2::Template::TemplateToolkit>.
+
+=head1 METHODS
+
+=head2 render($template, \%tokens)
+
+Renders the template.  The first arg is a filename for the template file
+or a reference to a string that contains the template.  The second arg
+is a hashref for the tokens that you wish to pass to
+L<Template::Toolkit> for rendering.
 
 =head1 SYNTAX
 
-A template written for Dancer2::Template::Simple should be working just fine with
-Dancer2::Template::TemplateToolkit. The opposite is not true though.
+A template written for C<Dancer2::Template::Simple> should be working just fine
+with L<Dancer2::Template::TemplateToolkit>. The opposite is not true though.
 
 =over 4
 
@@ -187,13 +199,14 @@ To interpolate a variable in the template, use the following syntax:
 
     <% var1 %>
 
-If 'var1' exists in the tokens hash given, its value will be written there.
+If B<var1> exists in the tokens hash given, its value will be written there.
 
 =back
 
 =head1 SEE ALSO
 
-L<Dancer2>, L<Dancer2::Template>
+L<Dancer2>, L<Dancer2::Core::Role::Template>,
+L<Dancer2::Template::TemplateToolkit>.
 
 =head1 AUTHOR
 

@@ -2,13 +2,14 @@
 
 package Dancer2::Serializer::JSON;
 {
-    $Dancer2::Serializer::JSON::VERSION = '0.07';
+    $Dancer2::Serializer::JSON::VERSION = '0.08';
 }
 use Moo;
 use JSON ();
 
 with 'Dancer2::Core::Role::Serializer';
 
+has '+content_type' => ( default => 'application/json' );
 
 # helpers
 sub from_json {
@@ -23,7 +24,6 @@ sub to_json {
 
 # class definition
 sub loaded {1}
-
 
 sub serialize {
     my ( $self, $entity, $options ) = @_;
@@ -42,16 +42,12 @@ sub serialize {
     JSON::to_json( $entity, $options );
 }
 
-
 sub deserialize {
     my ( $self, $entity, $options ) = @_;
 
     $options->{utf8} = 1 if !defined $options->{utf8};
     JSON::from_json( $entity, $options );
 }
-
-
-sub content_type {'application/json'}
 
 1;
 
@@ -65,27 +61,42 @@ Dancer2::Serializer::JSON - Serializer for handling JSON data
 
 =head1 VERSION
 
-version 0.07
-
-=head1 SYNOPSIS
+version 0.08
 
 =head1 DESCRIPTION
 
-Turn Perl data structures into JSON output and vice-versa.
+This is a serializer engine that allows you to turn Perl data structures into
+JSON output and vice-versa.
 
-=head1 METHODS
-
-=head2 serialize
-
-Serialize a Perl data structure into a JSON string.
-
-=head2 deserialize
-
-Deserialize a JSON string into a Perl data structure
+=head1 ATTRIBUTES
 
 =head2 content_type
 
-return 'application/json'
+Returns 'application/json'
+
+=head1 METHODS
+
+=head2 serialize($content)
+
+Serializes a Perl data structure into a JSON string.
+
+=head2 deserialize($content)
+
+Deserializes a JSON string into a Perl data structure.
+
+=head1 FUNCTIONS
+
+=head2 from_json($content, \%options)
+
+This is an helper available to transform a JSON data structure to a Perl data structures.
+
+=head2 to_json($content, \%options)
+
+This is an helper available to transform a Perl data structure to JSON.
+
+Calling this function will B<not> trigger the serialization's hooks.
+
+=head1 METHODS
 
 =head1 AUTHOR
 

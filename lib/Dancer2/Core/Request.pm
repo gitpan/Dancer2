@@ -1,6 +1,6 @@
 package Dancer2::Core::Request;
 {
-    $Dancer2::Core::Request::VERSION = '0.07';
+    $Dancer2::Core::Request::VERSION = '0.08';
 }
 
 # ABSTRACT: Interface for accessing incoming requests
@@ -229,7 +229,7 @@ has data => (
 sub deserialize {
     my $self = shift;
 
-    return unless $self->serializer;
+    return unless $self->has_serializer;
 
     # Content-Type may contain additional parameters
     # (http://www.w3.org/Protocols/rfc2616/rfc2616-sec3.html#sec3.7)
@@ -246,13 +246,7 @@ sub deserialize {
     my $data = $self->serializer->deserialize( $self->body );
     return if !defined $data;
 
-    $self->{_body_params} = $data;
-
-    # TODO surely there is a better way
-    $self->{params} = {
-        %{ $self->{params} || {} },
-        %$data,
-    };
+    $self->_set_body_params($data);
 
     return $data;
 }
@@ -290,6 +284,7 @@ sub BUILD {
       HTTP::Body->new( $self->content_type, $self->content_length );
     $self->{_http_body}->cleanup(1);
 
+    $self->data;    # Deserialize
     $self->_build_params();
     $self->_build_uploads();
 
@@ -517,7 +512,7 @@ sub _build_params {
 
     # now parse environement params...
     $self->_parse_get_params();
-    if ( $self->{body_is_parsed} ) {
+    if ( $self->body_is_parsed ) {
         $self->{_body_params} ||= {};
     }
     else {
@@ -728,7 +723,7 @@ Dancer2::Core::Request - Interface for accessing incoming requests
 
 =head1 VERSION
 
-version 0.07
+version 0.08
 
 =head1 SYNOPSIS
 

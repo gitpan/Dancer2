@@ -2,7 +2,7 @@
 
 package Dancer2::Core::Role::DSL;
 {
-    $Dancer2::Core::Role::DSL::VERSION = '0.07';
+    $Dancer2::Core::Role::DSL::VERSION = '0.08';
 }
 use Moo::Role;
 use Dancer2::Core::Types;
@@ -66,7 +66,7 @@ sub _compile_keyword {
     my ( $self, $keyword, $is_global ) = @_;
 
     my $compiled_code = sub {
-        Dancer2::core_debug( "["
+        Dancer2::Core::debug( "["
               . $self->app->name
               . "] -> $keyword("
               . join( ', ', map { defined() ? $_ : '<undef>' } @_ )
@@ -112,7 +112,7 @@ Dancer2::Core::Role::DSL - Role for DSL
 
 =head1 VERSION
 
-version 0.07
+version 0.08
 
 =head1 AUTHOR
 

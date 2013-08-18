@@ -1,20 +1,19 @@
 package Dancer2::Template::Tiny;
 {
-    $Dancer2::Template::Tiny::VERSION = '0.07';
+    $Dancer2::Template::Tiny::VERSION = '0.08';
 }
 
 # ABSTRACT: Template::Tiny engine for Dancer2
 
 use strict;
 use warnings;
-use Carp;
+use Carp qw/croak/;
 use Moo;
 use Dancer2::Core::Types;
 use Dancer2::Template::Implementation::ForkedTiny;
 use Dancer2::FileUtils 'read_file_content';
 
 with 'Dancer2::Core::Role::Template';
-
 
 has '+engine' =>
   ( isa => InstanceOf ['Dancer2::Template::Implementation::ForkedTiny'], );
@@ -23,12 +22,11 @@ sub _build_engine {
     Dancer2::Template::Implementation::ForkedTiny->new( %{ $_[0]->config } );
 }
 
-
 sub render {
     my ( $self, $template, $tokens ) = @_;
 
     ( ref $template || -f $template )
-      or die "$template is not a regular file or reference";
+      or croak "$template is not a regular file or reference";
 
     my $template_data =
       ref $template
@@ -55,7 +53,7 @@ Dancer2::Template::Tiny - Template::Tiny engine for Dancer2
 
 =head1 VERSION
 
-version 0.07
+version 0.08
 
 =head1 SYNOPSIS
 
@@ -94,14 +92,21 @@ Of course, you can also set this B<while> working using C<set>:
 
 Since L<Dancer2> has internal support for a wrapper-like option with the
 C<layout> configuration option, you can have a L<Template::Toolkit>-like WRAPPER
-even though L<Template::Tiny> doesn't really support it. :)
+even though L<Template::Tiny> doesn't really support it.
 
 =head1 METHODS
 
-=head2 render
+=head2 render($template, \%tokens)
 
-Renders the template. Accepts a string to a file or a reference to a string of
-the template.
+Renders the template.  The first arg is a filename for the template file
+or a reference to a string that contains the template.  The second arg
+is a hashref for the tokens that you wish to pass to
+L<Template::Toolkit> for rendering.
+
+=head1 SEE ALSO
+
+L<Dancer2>, L<Dancer2::Core::Role::Template>, L<Template::Tiny>,
+L<Dancer2::Template::Implementation::ForkedTiny>.
 
 =head1 AUTHOR
 
