@@ -1,18 +1,18 @@
 # ABSTRACT: Top-layer class to start a dancer app
 package Dancer2::Core::Runner;
 {
-    $Dancer2::Core::Runner::VERSION = '0.08';
+    $Dancer2::Core::Runner::VERSION = '0.09';
 }
 
 use Moo;
+use Carp 'croak';
+use Class::Load 'try_load_class';
 use Dancer2::Core::Types;
 use Dancer2::Core::MIME;
-use Carp 'croak';
 
-use Dancer2::FileUtils;
-use Dancer2::ModuleLoader;
-use File::Basename;
 use File::Spec;
+use File::Basename;
+use Dancer2::FileUtils;
 
 with 'Dancer2::Core::Role::Config';
 
@@ -44,8 +44,8 @@ sub _build_server {
     my $server_name  = $self->config->{apphandler};
     my $server_class = "Dancer2::Core::Server::${server_name}";
 
-    my ( $res, $error ) = Dancer2::ModuleLoader->load($server_class);
-    $res or croak "Unable to load $server_class : $error";
+    my ( $ok, $error ) = try_load_class($server_class);
+    $ok or croak "Unable to load $server_class: $error\n";
 
     return $server_class->new(
         host      => $self->config->{host},
@@ -99,13 +99,16 @@ sub _build_location {
         #try to find .dancer_app file to determine the root of dancer app
         my $dancerdir = Dancer2::FileUtils::path( $subdir, '.dancer' );
 
-        # if one of them is found, keep that
-        if ( ( -d $libdir && -d $bindir ) || ( -f $dancerdir ) ) {
+# if one of them is found, keep that; but skip ./blib since both lib and bin exist
+# under it, but views and public do not.
+        if (   ( $subdir !~ m!/blib/?$! && -d $libdir && -d $bindir )
+            || ( -f $dancerdir ) )
+        {
             $subdir_found = 1;
             last;
         }
 
-        $subdir = Dancer2::FileUtils::path( $subdir, '..' );
+        $subdir = Dancer2::FileUtils::path( $subdir, '..' ) || '.';
         last if File::Spec->rel2abs($subdir) eq File::Spec->rootdir;
 
     }
@@ -179,7 +182,7 @@ Dancer2::Core::Runner - Top-layer class to start a dancer app
 
 =head1 VERSION
 
-version 0.08
+version 0.09
 
 =head1 DESCRIPTION
 

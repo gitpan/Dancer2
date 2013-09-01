@@ -1,25 +1,24 @@
 package Dancer2;
 {
-    $Dancer2::VERSION = '0.08';
+    $Dancer2::VERSION = '0.09';
 }
 
 # ABSTRACT: Lightweight yet powerful web application framework
 
 use strict;
 use warnings;
-use Data::Dumper;
+use Class::Load 'load_class';
 use Dancer2::Core;
 use Dancer2::Core::Runner;
 use Dancer2::Core::App;
 use Dancer2::FileUtils;
-use Dancer2::ModuleLoader;
 
 our $AUTHORITY = 'SUKRIA';
 
 # set version in dist.ini now
 # but we still need a basic version for
 # the tests
-$Dancer2::VERSION ||= '0.08';    # 2.0.8
+$Dancer2::VERSION ||= '0.09';    # 2.0.9
 
 
 our $runner;
@@ -66,9 +65,6 @@ sub import {
         $runner = Dancer2::Core::Runner->new( caller => $script, );
     }
 
-    my $local_libdir = Dancer2::FileUtils::path( $runner->location, 'lib' );
-    Dancer2::ModuleLoader->use_lib($local_libdir) if -d $local_libdir;
-
     my $server = $runner->server;
 
     # the app object
@@ -91,8 +87,7 @@ sub import {
     Dancer2::Core::debug("exporting DSL symbols for $caller");
 
     # load the DSL, defaulting to Dancer2::Core::DSL
-    Dancer2::ModuleLoader->require( $final_args{dsl} )
-      or die "Couldn't require '" . $final_args{dsl} . "'\n";
+    load_class( $final_args{dsl} );
     my $dsl = $final_args{dsl}->new( app => $app );
     $dsl->export_symbols_to( $caller, \%final_args );
 
@@ -133,7 +128,7 @@ Dancer2 - Lightweight yet powerful web application framework
 
 =head1 VERSION
 
-version 0.08
+version 0.09
 
 =head1 DESCRIPTION
 

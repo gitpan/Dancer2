@@ -2,7 +2,7 @@
 
 package Dancer2::Core::Route;
 {
-    $Dancer2::Core::Route::VERSION = '0.08';
+    $Dancer2::Core::Route::VERSION = '0.09';
 }
 
 use strict;
@@ -72,11 +72,8 @@ has _should_capture => (
 );
 
 has _match_data => (
-    is      => 'rw',
-    isa     => HashRef,
-    trigger => sub {
-        my ( $self, $value ) = @_;
-    },
+    is  => 'rw',
+    isa => HashRef,
 );
 
 has _params => (
@@ -94,7 +91,7 @@ sub match {
     }
 
     my %params;
-    my @values = $request->path =~ $self->regexp;
+    my @values = $request->dispatch_path =~ $self->regexp;
 
     # the regex comments are how we know if we captured
     # a splat or a megasplat
@@ -165,7 +162,7 @@ sub BUILDARGS {
     # init prefix
     if ($prefix) {
         $args{regexp} =
-            ref($regexp) eq 'Regexp' ? qr{\Q${prefix}\E${regexp}}
+            ref($regexp) eq 'Regexp' ? qr{^\Q${prefix}\E${regexp}$}
           : $regexp eq '/'           ? qr{^\Q${prefix}\E/?$}
           :                            $prefix . $regexp;
     }
@@ -239,7 +236,7 @@ Dancer2::Core::Route - Dancer2's route handler
 
 =head1 VERSION
 
-version 0.08
+version 0.09
 
 =head1 ATTRIBUTES
 

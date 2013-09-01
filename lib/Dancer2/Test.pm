@@ -2,7 +2,7 @@
 
 package Dancer2::Test;
 {
-    $Dancer2::Test::VERSION = '0.08';
+    $Dancer2::Test::VERSION = '0.09';
 }
 use strict;
 use warnings;
@@ -463,7 +463,13 @@ sub import {
     }
 
     # register the apps to the test dispatcher
-    $_dispatcher->apps( [ map { $_->dancer_app } @applications ] );
+    $_dispatcher->apps(
+        [   map {
+                $_->dancer_app->finish();
+                $_->dancer_app;
+            } @applications
+        ]
+    );
 
     $class->export_to_level( 1, $class, @EXPORT );
 }
@@ -566,7 +572,7 @@ Dancer2::Test - Useful routines for testing Dancer2 apps
 
 =head1 VERSION
 
-version 0.08
+version 0.09
 
 =head1 DESCRIPTION
 
@@ -602,13 +608,13 @@ functions in succession would make two requests, each of which could alter the
 state of the application and cause Schrodinger's cat to die.
 
     my $response = dancer_response POST => '/widgets';
-    is $response->{status}, 202, "response for POST /widgets is 202";
-    is $response->{content}, "Widget #1 has been scheduled for creation",
+    is $response->status, 202, "response for POST /widgets is 202";
+    is $response->content, "Widget #1 has been scheduled for creation",
         "response content looks good for first POST /widgets";
 
     $response = dancer_response POST => '/widgets';
-    is $response->{status}, 202, "response for POST /widgets is 202";
-    is $response->{content}, "Widget #2 has been scheduled for creation",
+    is $response->status, 202, "response for POST /widgets is 202";
+    is $response->content, "Widget #2 has been scheduled for creation",
         "response content looks good for second POST /widgets";
 
 It's possible to test file uploads:

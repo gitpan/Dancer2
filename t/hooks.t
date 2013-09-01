@@ -4,9 +4,10 @@ use Test::More import => ['!pass'];
 use File::Spec;
 use Carp;
 
+use Class::Load 'try_load_class';
 use Capture::Tiny 0.12 'capture_stderr';
 
-Dancer2::ModuleLoader->require('Template')
+try_load_class('Template')
   or plan skip_all => 'Template::Toolkit not present';
 
 my @hooks = qw(
@@ -28,7 +29,6 @@ my @hooks = qw(
 my $tests_flags = {};
 {
     use Dancer2;
-
 
     for my $hook (@hooks) {
         hook $hook => sub {
@@ -98,8 +98,6 @@ my $tests_flags = {};
         like $response->content, qr/Internal Server Error/;
     };
 
-    # make sure we compile all the apps without starting a webserver
-    main->dancer_app->finish;
 }
 
 use Dancer2::Test;

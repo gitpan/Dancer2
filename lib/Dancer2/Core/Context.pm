@@ -1,6 +1,6 @@
 package Dancer2::Core::Context;
 {
-    $Dancer2::Core::Context::VERSION = '0.08';
+    $Dancer2::Core::Context::VERSION = '0.09';
 }
 
 # ABSTRACT: handles everything proper to a request's context.
@@ -126,6 +126,7 @@ sub redirect {
         $destination = $self->request->uri_for( $destination, {}, 1 );
     }
 
+    $self->response->halt;
     $self->response->redirect( $destination, $status );
 }
 
@@ -216,7 +217,7 @@ Dancer2::Core::Context - handles everything proper to a request's context.
 
 =head1 VERSION
 
-version 0.08
+version 0.09
 
 =head1 ATTRIBUTES
 

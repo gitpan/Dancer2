@@ -3,12 +3,12 @@
 use strict;
 use warnings;
 use Test::More;
-use Dancer2::ModuleLoader;
+use Class::Load 'try_load_class';
 
 my $mocked_epoch = 1355676244;    # "Sun, 16-Dec-2012 16:44:04 GMT"
 
 # The order is important!
-Dancer2::ModuleLoader->require('Test::MockTime')
+try_load_class('Test::MockTime')
   or plan skip_all => 'Test::MockTime not present';
 
 Test::MockTime::set_fixed_time($mocked_epoch);

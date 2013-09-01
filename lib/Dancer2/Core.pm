@@ -2,7 +2,7 @@
 
 package Dancer2::Core;
 {
-    $Dancer2::Core::VERSION = '0.08';
+    $Dancer2::Core::VERSION = '0.09';
 }
 
 use strict;
@@ -47,7 +47,7 @@ Dancer2::Core - Core libraries for Dancer2 2.0
 
 =head1 VERSION
 
-version 0.08
+version 0.09
 
 =head1 FUNCTIONS
 

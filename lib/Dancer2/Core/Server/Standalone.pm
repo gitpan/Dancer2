@@ -2,7 +2,7 @@
 
 package Dancer2::Core::Server::Standalone;
 {
-    $Dancer2::Core::Server::Standalone::VERSION = '0.08';
+    $Dancer2::Core::Server::Standalone::VERSION = '0.09';
 }
 
 use Moo;
@@ -73,7 +73,7 @@ Dancer2::Core::Server::Standalone - Basic standalone HTTP server for Dancer2
 
 =head1 VERSION
 
-version 0.08
+version 0.09
 
 =head1 DESCRIPTION
 

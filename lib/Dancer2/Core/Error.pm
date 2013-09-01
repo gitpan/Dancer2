@@ -2,7 +2,7 @@
 
 package Dancer2::Core::Error;
 {
-    $Dancer2::Core::Error::VERSION = '0.08';
+    $Dancer2::Core::Error::VERSION = '0.09';
 }
 use Moo;
 use Carp;
@@ -449,7 +449,7 @@ Dancer2::Core::Error - Class representing fatal errors
 
 =head1 VERSION
 
-version 0.08
+version 0.09
 
 =head1 SYNOPSIS
 

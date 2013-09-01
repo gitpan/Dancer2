@@ -11,7 +11,7 @@ Dancer2::Manual - A gentle introduction to Dancer2
 
 =head1 VERSION
 
-version 0.08
+version 0.09
 
 =head1 DESCRIPTION
 
@@ -241,26 +241,6 @@ This is done with the B<pass> keyword, like in the following example
         "I say a number: ".params->{number};
     };
 
-=head2 Load rules from external files
-
-You can use the load method to include additional routes into your application:
-
-    get '/go/:value', sub {
-        # foo
-    };
-
-    load 'more_routes.pl';
-
-    # then, in the file more_routes.pl:
-    get '/yes', sub {
-        'orly?';
-    };
-
-B<load> is just a wrapper for B<require>, but you can also specify a list of
-routes files:
-
-    load 'login_routes.pl', 'session_routes.pl', 'misc_routes.pl';
-
 =head2 Default Error Pages
 
 When an error is rendered (the action responded with a status code different
@@ -303,7 +283,6 @@ with the keyword 'var'.
 
     hook before => sub {
         var note => 'Hi there';
-        request->path_info('/foo/oversee')
     };
 
     get '/foo/*' => sub {
@@ -315,10 +294,9 @@ For another example, this can be used along with session support to easily
 give non-logged-in users a login page:
 
     hook before => sub {
-        if (!session('user') && request->path_info !~ m{^/login}) {
+        if (!session('user') && request->dispatch_path !~ m{^/login}) {
             # Pass the original path requested along to the handler:
-            var requested_path => request->path_info;
-            request->path_info('/login');
+            forward '/login', { requested_path => request->dispatch_path };
         }
     };
 
@@ -538,7 +516,7 @@ A setting is key/value pair assigned by the keyword B<set>:
 
 More usefully, settings can be defined in a configuration file.
 Environment-specific settings can also be defined in environment-specific files
-(for instance, you don't want auto_reload in production, and might want extra
+(for instance, you do not want to show error stacktraces in production, and might want extra
 logging in development).  See the cookbook for examples.
 
 =head2 Serializers
@@ -915,21 +893,19 @@ B<POST>. That is because C<forward> chains the same type of route the user
 reached. If it was a B<GET>, it will remain a B<GET> (but if you do need to
 change the method, you can do so; read on below for details.)
 
-B<WARNING> : Issuing a forward immediately exits the current route,
-and perform the forward. Thus, any code after a forward is ignored, until the
-end of the route. e.g.
+B<WARNING> : Issuing a forward will B<NOT> exits the current
+route. Unlike with Dancer 1, in Dancer 2 you need to explicitly return
+from the route. This keeps up with the behavior of C<redirect>.
 
     get '/foo/:article_id' => sub {
         if ($condition) {
             forward "/articles/" . params->{article_id};
-            # The following code is never executed
+            # The following code WILL BE executed
             do_stuff();
         }
 
         more_stuff();
     };
-
-So it's not necessary anymore to use C<return> with forward.
 
 Note that forward doesn't parse GET arguments. So, you can't use
 something like:
@@ -1050,21 +1026,6 @@ Loads one or more perl scripts in the current application's namespace. Syntactic
 sugar around Perl's C<require>:
 
     load 'UserActions.pl', 'AdminActions.pl';
-
-=head2 load_app
-
-Loads a Dancer package. This method sets the libdir to the current C<./lib>
-directory:
-
-    # if we have lib/Webapp.pm, we can load it like:
-    load_app 'Webapp';
-    # or with options
-    load_app 'Forum', prefix => '/forum', settings => {foo => 'bar'};
-
-To load multiple apps repeat load_app:
-
-    load_app 'one';
-    load_app 'two';
 
 =head2 mime
 

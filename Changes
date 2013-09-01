@@ -1,6 +1,32 @@
-0.08      2013-08-18 15:22:45 Asia/Jerusalem
+0.09      2013-09-02 00:12:58 Asia/Jerusalem
 
-0.07      2013-08-04 01:14:59 Asia/Jerusalem
+    [ ENHANCEMENTS ]
+    * Rewite DSL keyword engine (Mickey Nasriachi)
+    * Require minimum Role::Tiny 1.003000 (Alberto Simões)
+    * GH#382: Move Request attributes to params, and fix serializers
+              behavior (Russell Jenkins)
+    * GH#406: Replace Dancer2::ModuleLoader with Class::Load
+              (Alberto Simões, Sawyer X)
+    * GH#329: Remove 'load_app' DSL keyword. Remove reference to
+              'load' as well. (Sawyer X)
+    * GH#412: Autopages are now called properly with correct MIME.
+              (Alberto Simões)
+
+    [ DOCUMENTATION ]
+    * GH#390: minor cookbook documentation fixes (Russell Jenkins)
+    * GH#392: remove support to auto_reload and suggest alternative
+      in Dancer2::Cookbook (Ahmad M. Zawawi)
+    * GH#397,407: Miscellaneous documentation fixes (Andrew Solomon)
+    * Documentation cleanups (Alex Beamish)
+
+    [ BUG FIXES ]
+    * When compiling route regex object with prefix, add the closing anchor
+      (Mickey Nasriachi)
+    * GH#386: honor log level defined in config file (Alberto Simões)
+    * GH#396,409: Miscellaneous bug fixes (Russell Jenkins)
+    * GH#403: Fix forward behavior (Russell Jenkins)
+
+0.08      2013-08-18 15:22:45 Asia/Jerusalem
 
     [ ENHANCEMENTS ]
     * GH#352: Define content_type as a property for serializers. (Franck Cuny)

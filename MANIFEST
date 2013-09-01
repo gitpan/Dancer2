@@ -56,7 +56,6 @@ lib/Dancer2/Logger/File.pm
 lib/Dancer2/Logger/Note.pm
 lib/Dancer2/Logger/Null.pm
 lib/Dancer2/Manual.pod
-lib/Dancer2/ModuleLoader.pm
 lib/Dancer2/Plugin.pm
 lib/Dancer2/Plugin/Ajax.pm
 lib/Dancer2/Plugins.pod
@@ -116,6 +115,7 @@ t/error_template.t
 t/factory.t
 t/file_utils.t
 t/forward.t
+t/forward_before_hook.t
 t/forward_test_tcp.t
 t/handler_file.t
 t/hooks.t
@@ -136,7 +136,6 @@ t/lib/TestPod.pm
 t/logger.t
 t/logger_console.t
 t/mime.t
-t/path_info.t
 t/plugin_import.t
 t/plugin_multiple_apps.t
 t/plugin_register.t
@@ -184,6 +183,14 @@ t/sessions/Ufqu9QAAQfNUOjyt9fa2al5-bFlpbWfR.yml
 t/sessions/UgEFqgAAa4HX5JbR80YhN9rOBcGLG-zH.yml
 t/sessions/UgnzfAAAX0Gcwelnex1vHnakFt7dZMGb.yml
 t/sessions/UhC04wAAcgtUmse-OjZCvj1H0_I5z0pU.yml
+t/sessions/UhC_EwAAHS4yKDNKIO8DV-5B47BS6vWY.yml
+t/sessions/UhaF7gAAYpJSGqByK67_SB3A9mGE5l-s.yml
+t/sessions/UhaGNQAAaDVWUzXrQaDQAaQPzLEWV-4v.yml
+t/sessions/UiMfZwAAc4FCMkrxKK-kKyuTIDuVupPc.yml
+t/sessions/UiMnAgAAahCCdaVhPiVfrcwyo6sxcp7z.yml
+t/sessions/UiNDXgAAJ0mTXspthJgvbjShFZfcyPR3.yml
+t/sessions/UiNIAwAAbVyD4lIKW93APRO9IDd1K5BJ.yml
+t/sessions/UiNIHQAAb3tN7zHtZJRZY7ULJVTc4-bo.yml
 t/shared_engines.t
 t/special_import.t
 t/splat.t

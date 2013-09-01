@@ -1,7 +1,7 @@
 # ABSTRACT: encapsulation of Dancer2 packages
 package Dancer2::Core::App;
 {
-    $Dancer2::Core::App::VERSION = '0.08';
+    $Dancer2::Core::App::VERSION = '0.09';
 }
 
 use Moo;
@@ -52,8 +52,8 @@ has default_config => (
 
 has route_handlers => (
     is      => 'rw',
-    isa     => HashRef,
-    default => sub { {} },
+    isa     => ArrayRef,
+    default => sub { [] },
 );
 
 has name => (
@@ -172,13 +172,14 @@ sub _build_default_config {
     return {
         %{ $self->runner_config },
         template       => 'Tiny',
-        route_handlers => {
-            File => {
-                public_dir => $ENV{DANCER_PUBLIC}
-                  || path( $self->location, 'public' )
-            },
-            AutoPage => 1,
-        },
+        route_handlers => [
+            [   File => {
+                    public_dir => $ENV{DANCER_PUBLIC}
+                      || path( $self->location, 'public' )
+                }
+            ],
+            [ AutoPage => 1 ],
+        ],
     };
 }
 
@@ -319,10 +320,10 @@ sub hook_candidates {
     }
 
     my @route_handlers;
-    for my $handler_name ( keys %{ $self->route_handlers } ) {
-        my $handler = $self->route_handlers->{$handler_name};
-        push @route_handlers, $handler
-          if blessed($handler) && $handler->can('supported_hooks');
+    for my $handler ( @{ $self->route_handlers } ) {
+        my $handler_code = $handler->{handler};
+        push @route_handlers, $handler_code
+          if blessed($handler_code) && $handler_code->can('supported_hooks');
     }
 
     # TODO : get the list of all plugins registered
@@ -398,9 +399,12 @@ sub send_file {
         public_dir => ( $options{system_path} ? File::Spec->rootdir : undef ),
     );
 
-    if ( $self->route_handlers->{File} ) {
-        for my $h ( keys %{ $self->route_handlers->{File}->hooks } ) {
-            my $hooks = $self->route_handlers->{File}->hooks->{$h};
+    # List shouldn't be too long, so we use 'grep' instead of 'first'
+    if ( my ($handler) =
+        grep { $_->{name} eq 'File' } @{ $self->route_handlers } )
+    {
+        for my $h ( keys %{ $handler->{handler}->hooks } ) {
+            my $hooks = $handler->{handler}->hooks->{$h};
             $file_handler->replace_hook( $h, $hooks );
         }
     }
@@ -428,24 +432,29 @@ sub init_route_handlers {
     my ($self) = @_;
 
     my $handlers_config = $self->config->{route_handlers};
-    for my $handler_name ( keys %{$handlers_config} ) {
-        my $config = $handlers_config->{$handler_name};
+    for my $handler_data ( @{$handlers_config} ) {
+        my ( $handler_name, $config ) = @{$handler_data};
         $config = {} if !ref($config);
         $config->{app} = $self;
+
         my $handler = Dancer2::Core::Factory->create(
             Handler => $handler_name,
             %$config,
             postponed_hooks => $self->postponed_hooks,
         );
-        $self->route_handlers->{$handler_name} = $handler;
+
+        push @{ $self->route_handlers },
+          { name    => $handler_name,
+            handler => $handler,
+          };
     }
 }
 
 sub register_route_handlers {
     my ($self) = @_;
-    for my $handler_name ( keys %{ $self->route_handlers } ) {
-        my $handler = $self->route_handlers->{$handler_name};
-        $handler->register($self);
+    for my $handler ( @{ $self->{route_handlers} } ) {
+        my $handler_code = $handler->{handler};
+        $handler_code->register($self);
     }
 }
 
@@ -537,7 +546,7 @@ Dancer2::Core::App - encapsulation of Dancer2 packages
 
 =head1 VERSION
 
-version 0.08
+version 0.09
 
 =head1 DESCRIPTION
 

@@ -13,6 +13,8 @@ my @modules = qw(
     CGI::Deurl::XS
   Capture::Tiny
   Carp
+  Class::Load
+  Class::Load::XS
   Config::Any
   Crypt::URandom
   Cwd
@@ -37,6 +39,8 @@ my @modules = qw(
   HTTP::Server::Simple::PSGI
   Hash::Merge::Simple
   IO::File
+  IO::Handle
+  IPC::Open3
   JSON
   JSON::XS
   LWP::UserAgent
@@ -45,7 +49,6 @@ my @modules = qw(
   MIME::Types
   Math::Random::ISAAC::XS
   Module::Build
-  Module::Runtime
   Moo
   Moo::Role
   MooX::Types::MooseLike
@@ -55,6 +58,7 @@ my @modules = qw(
   Pod::Simple::Search
   Pod::Simple::SimpleTree
   Pod::Usage
+  Role::Tiny
   Scalar::Util
   Template
   Template::Tiny
@@ -69,7 +73,6 @@ my @modules = qw(
   URL::Encode::XS
   YAML
   YAML::Any
-  blib
   constant
   lib
   overload
