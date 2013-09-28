@@ -43,4 +43,3 @@ note "HTTP status_message";
         );
     }
 }
-

@@ -2,7 +2,7 @@
 
 package Dancer2::Logger::File;
 {
-    $Dancer2::Logger::File::VERSION = '0.09';
+    $Dancer2::Logger::File::VERSION = '0.10';
 }
 use Carp 'carp';
 use Moo;
@@ -75,7 +75,6 @@ sub log {
 
 1;
 
-__END__
 
 =pod
 
@@ -85,7 +84,7 @@ Dancer2::Logger::File - file-based logging engine for Dancer2
 
 =head1 VERSION
 
-version 0.09
+version 0.10
 
 =head1 DESCRIPTION
 
@@ -134,3 +133,6 @@ This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.
 
 =cut
+
+
+__END__

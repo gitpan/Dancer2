@@ -103,6 +103,7 @@ sub run_test {
 
     note "testing path, dispatch_path and uri_base";
     {
+
         # Base env used for path, dispatch_path and uri_base tests
         my $base = {
             'psgi.url_scheme' => 'http',

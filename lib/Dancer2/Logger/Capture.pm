@@ -2,7 +2,7 @@
 
 package Dancer2::Logger::Capture;
 {
-    $Dancer2::Logger::Capture::VERSION = '0.09';
+    $Dancer2::Logger::Capture::VERSION = '0.10';
 }
 use Moo;
 use Dancer2::Logger::Capture::Trap;
@@ -27,6 +27,7 @@ sub log {
 
 1;
 
+
 __END__
 
 =pod
@@ -37,7 +38,7 @@ Dancer2::Logger::Capture - Capture dancer logs
 
 =head1 VERSION
 
-version 0.09
+version 0.10
 
 =head1 SYNOPSIS
 
@@ -51,7 +52,7 @@ The basics:
 A worked-out real-world example:
 
     use Test::More tests => 2;
-    use Dancer2 ':tests';
+    use Dancer2;
 
     set logger => 'capture';
 

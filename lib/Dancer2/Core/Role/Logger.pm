@@ -2,7 +2,7 @@
 
 package Dancer2::Core::Role::Logger;
 {
-    $Dancer2::Core::Role::Logger::VERSION = '0.09';
+    $Dancer2::Core::Role::Logger::VERSION = '0.10';
 }
 use Dancer2::Core::Types;
 
@@ -167,7 +167,6 @@ sub error {
 
 1;
 
-__END__
 
 =pod
 
@@ -177,7 +176,7 @@ Dancer2::Core::Role::Logger - Role for logger engines
 
 =head1 VERSION
 
-version 0.09
+version 0.10
 
 =head1 DESCRIPTION
 
@@ -318,3 +317,6 @@ This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.
 
 =cut
+
+
+__END__

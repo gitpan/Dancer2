@@ -73,6 +73,7 @@ note "Verify Serializers decode into characters";
 
 note "Decoding of mixed route and deserialized body params";
 {
+
     # Check integers from request body remain integers
     # but route params get decoded.
     my $r = dancer_response(

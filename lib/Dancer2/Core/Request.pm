@@ -1,16 +1,18 @@
 package Dancer2::Core::Request;
 {
-    $Dancer2::Core::Request::VERSION = '0.09';
+    $Dancer2::Core::Request::VERSION = '0.10';
 }
 
 # ABSTRACT: Interface for accessing incoming requests
 
 use Moo;
+
 use Carp;
 use Encode;
 use HTTP::Body;
 use URI;
 use URI::Escape;
+
 use Dancer2::Core::Types;
 use Dancer2::Core::Request::Upload;
 
@@ -26,18 +28,25 @@ our $XS_PARSE_QUERY_STRING = !$@;
 
 
 # add an attribute for each HTTP_* variables
+# (HOST is managed manually)
 my @http_env_keys = (
-    'user_agent',      'accept_language', 'accept_charset',
-    'accept_encoding', 'keep_alive',      'connection',
-    'accept',          'accept_type',     'referer',
-    'x_requested_with',
-
-    # 'host' is managed manually
+    qw/
+      accept
+      accept_charset
+      accept_encoding
+      accept_language
+      accept_type
+      connection
+      keep_alive
+      referer
+      user_agent
+      x_requested_with
+      /
 );
 
 foreach my $attr (@http_env_keys) {
     has $attr => (
-        is      => 'rw',
+        is      => 'ro',
         isa     => Str,
         lazy    => 1,
         default => sub { $_[0]->env->{ 'HTTP_' . ( uc $attr ) } },
@@ -54,7 +63,7 @@ has env => (
 
 
 has path => (
-    is      => 'rw',
+    is      => 'ro',
     isa     => Str,
     lazy    => 1,
     builder => '_build_path',
@@ -113,7 +122,7 @@ has method => (
 
 
 has content_type => (
-    is      => 'rw',
+    is      => 'ro',
     isa     => Str,
     lazy    => 1,
     default => sub {
@@ -123,7 +132,7 @@ has content_type => (
 
 
 has content_length => (
-    is      => 'rw',
+    is      => 'ro',
     isa     => Num,
     lazy    => 1,
     default => sub {
@@ -133,13 +142,13 @@ has content_length => (
 
 
 has body => (
-    is      => 'rw',
+    is      => 'ro',
     isa     => Str,
     default => sub {''},
 );
 
 has id => (
-    is  => 'rw',
+    is  => 'ro',
     isa => Num,
 );
 
@@ -196,12 +205,12 @@ sub _set_route_params {
 
 
 has uploads => (
-    is  => 'rw',
+    is  => 'ro',
     isa => HashRef,
 );
 
 has body_is_parsed => (
-    is      => 'rw',
+    is      => 'ro',
     isa     => Bool,
     default => sub {0},
 );
@@ -258,9 +267,8 @@ sub scheme {
 
 
 has serializer => (
-    is        => 'rw',
+    is        => 'ro',
     isa       => Maybe( ConsumerOf ['Dancer2::Core::Role::Serializer'] ),
-    required  => 0,
     predicate => 1,
 );
 
@@ -303,7 +311,7 @@ sub deserialize {
 }
 
 
-sub secure    { $_[0]->scheme eq 'https' }
+sub secure    { $_[0]->scheme   eq 'https' }
 sub uri       { $_[0]->request_uri }
 sub is_head   { $_[0]->{method} eq 'HEAD' }
 sub is_post   { $_[0]->{method} eq 'POST' }
@@ -757,6 +765,7 @@ sub _build_cookies {
 
 1;
 
+
 __END__
 
 =pod
@@ -767,7 +776,7 @@ Dancer2::Core::Request - Interface for accessing incoming requests
 
 =head1 VERSION
 
-version 0.09
+version 0.10
 
 =head1 SYNOPSIS
 
@@ -884,10 +893,9 @@ Return script_name from the environment.
 
 Return the scheme of the request
 
-=head2 serializer( $serializer )
+=head2 serializer()
 
-Set or returns the optional serializer object used to deserialize request
-parameters
+Returns the optional serializer object used to deserialize request parameters.
 
 =head2 data()
 

@@ -3,7 +3,7 @@ use warnings;
 use Test::More import => ['!pass'];
 use Carp 'croak';
 
-use Dancer2 (qw':tests');
+use Dancer2;
 use Dancer2::Test;
 use Dancer2::Core::App;
 use Dancer2::Core::Route;
@@ -167,8 +167,12 @@ foreach my $test (@tests) {
 
 foreach my $test (
     {   env => {
-            REQUEST_METHOD => 'GET',
-            PATH_INFO      => '/error',
+            REQUEST_METHOD    => 'GET',
+            PATH_INFO         => '/error',
+            'psgi.uri_scheme' => 'http',
+            SERVER_NAME       => 'localhost',
+            SERVER_PORT       => 5000,
+            SERVER_PROTOCOL   => 'HTTP/1.1',
         },
         expected => [
             500,

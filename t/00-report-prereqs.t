@@ -43,6 +43,7 @@ my @modules = qw(
   IPC::Open3
   JSON
   JSON::XS
+  LWP::Protocol::PSGI
   LWP::UserAgent
   List::Util
   MIME::Base64

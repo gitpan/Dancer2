@@ -2,7 +2,7 @@
 
 package Dancer2::Core::Dispatcher;
 {
-    $Dancer2::Core::Dispatcher::VERSION = '0.09';
+    $Dancer2::Core::Dispatcher::VERSION = '0.10';
 }
 use Moo;
 use Encode;
@@ -193,7 +193,6 @@ sub response_not_found {
 
 1;
 
-__END__
 
 =pod
 
@@ -203,7 +202,7 @@ Dancer2::Core::Dispatcher - Class for dispatching request to the appropriate rou
 
 =head1 VERSION
 
-version 0.09
+version 0.10
 
 =head1 SYNOPSIS
 
@@ -265,3 +264,6 @@ This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.
 
 =cut
+
+
+__END__

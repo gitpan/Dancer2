@@ -2,7 +2,7 @@
 
 package Dancer2::Core::Error;
 {
-    $Dancer2::Core::Error::VERSION = '0.09';
+    $Dancer2::Core::Error::VERSION = '0.10';
 }
 use Moo;
 use Carp;
@@ -36,7 +36,7 @@ has type => (
 
 
 has title => (
-    is      => 'rw',
+    is      => 'ro',
     isa     => Str,
     lazy    => 1,
     builder => '_build_title',
@@ -67,7 +67,7 @@ sub _build_error_template {
     # E.g.: views/404.tt  for a TT template
     return $self->status
       if -f $self->context->app->engine('template')
-      ->view_pathname( $self->status );
+          ->view_pathname( $self->status );
 
     return undef;
 }
@@ -101,11 +101,13 @@ sub default_error_page {
 
     require Template::Tiny;
 
+    my $uri_base = $self->has_context ? $self->context->request->uri_base : '';
     my $opts = {
-        title   => $self->title,
-        charset => $self->charset,
-        content => $self->message,
-        version => Dancer2->VERSION,
+        title    => $self->title,
+        charset  => $self->charset,
+        content  => $self->message,
+        version  => Dancer2->VERSION,
+        uri_base => $uri_base,
     };
 
     Template::Tiny->new->process( \<<"END_TEMPLATE", $opts, \my $output );
@@ -113,7 +115,7 @@ sub default_error_page {
 <html>
 <head>
 <title>[% title %]</title>
-<link rel="stylesheet" href="/css/error.css" />
+<link rel="stylesheet" href="[% uri_base %]/css/error.css" />
 <meta http-equiv="Content-type" content="text/html; charset='[% charset %]'" />
 </head>
 <body>
@@ -140,7 +142,7 @@ has status => (
 
 
 has message => (
-    is  => 'rw',
+    is  => 'ro',
     isa => Str,
 );
 
@@ -153,8 +155,9 @@ sub full_message {
 }
 
 has serializer => (
-    is  => 'ro',
-    isa => ConsumerOf ['Dancer2::Core::Role::Serializer'],
+    is        => 'ro',
+    isa       => ConsumerOf ['Dancer2::Core::Role::Serializer'],
+    predicate => 1,
 );
 
 has session => (
@@ -170,12 +173,13 @@ has context => (
 
 sub BUILD {
     my ($self) = @_;
+
     $self->has_context
       && $self->context->app->execute_hook( 'core.error.init', $self );
 }
 
 has exception => (
-    is  => 'rw',
+    is  => 'ro',
     isa => Str,
 );
 
@@ -191,7 +195,13 @@ has response => (
 
 has content_type => (
     is      => 'ro',
-    default => sub {'text/html'},
+    lazy    => 1,
+    default => sub {
+        my $self = shift;
+        $self->has_serializer
+          ? $self->serializer->content_type
+          : 'text/html';
+    },
 );
 
 has content => (
@@ -200,15 +210,28 @@ has content => (
     default => sub {
         my $self = shift;
 
-        # we check for a template, for a static file and,
+        # Apply serializer
+        if ( $self->has_serializer ) {
+            my $content = {
+                message => $self->message,
+                title   => $self->title,
+                status  => $self->status,
+            };
+            $content->{exception} = $self->exception
+              if defined $self->{exception};
+            return $self->serializer->serialize($content);
+        }
+
+        # Otherwise we check for a template, for a static file and,
         # if all else fail, the default error page
 
         if ( $self->has_context and $self->template ) {
             return $self->context->app->template(
                 $self->template,
-                {   title   => $self->title,
-                    content => $self->message,
-                    status  => $self->status,
+                {   title     => $self->title,
+                    content   => $self->message,
+                    exception => $self->exception,
+                    status    => $self->status,
                 }
             );
         }
@@ -236,7 +259,7 @@ sub throw {
       if $self->show_errors && defined $self->exception;
 
     $self->response->status( $self->status );
-    $self->response->header( $self->content_type );
+    $self->response->content_type( $self->content_type );
     $self->response->content($message);
 
     $self->has_context
@@ -449,7 +472,7 @@ Dancer2::Core::Error - Class representing fatal errors
 
 =head1 VERSION
 
-version 0.09
+version 0.10
 
 =head1 SYNOPSIS
 
@@ -508,7 +531,7 @@ Create a new Dancer2::Core::Error object. For available arguments see ATTRIBUTES
 =head2 throw($response)
 
 Populates the content of the response with the error's information.
-If I<$response> is not given, acts on the I<context> 
+If I<$response> is not given, acts on the I<context>
 attribute's response.
 
 =head2 backtrace
@@ -544,7 +567,7 @@ C<dumper> calls this method to censor things like passwords and such.
 =head2 my $string=_html_encode ($string);
 
 Private function that replaces illegal entities in (X)HTML with their
-escaped representations. 
+escaped representations.
 
 html_encode() doesn't do any UTF black magic.
 

@@ -2,7 +2,7 @@
 
 package Dancer2::Core::Route;
 {
-    $Dancer2::Core::Route::VERSION = '0.09';
+    $Dancer2::Core::Route::VERSION = '0.10';
 }
 
 use strict;
@@ -163,7 +163,7 @@ sub BUILDARGS {
     if ($prefix) {
         $args{regexp} =
             ref($regexp) eq 'Regexp' ? qr{^\Q${prefix}\E${regexp}$}
-          : $regexp eq '/'           ? qr{^\Q${prefix}\E/?$}
+          : $regexp      eq '/'      ? qr{^\Q${prefix}\E/?$}
           :                            $prefix . $regexp;
     }
 
@@ -236,7 +236,7 @@ Dancer2::Core::Route - Dancer2's route handler
 
 =head1 VERSION
 
-version 0.09
+version 0.10
 
 =head1 ATTRIBUTES
 

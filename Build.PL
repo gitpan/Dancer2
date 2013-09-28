@@ -18,7 +18,7 @@ my %module_build_args = (
     "Dancer Core Developers"
   ],
   "dist_name" => "Dancer2",
-  "dist_version" => "0.09",
+  "dist_version" => "0.10",
   "license" => "perl",
   "module_name" => "Dancer2",
   "recommends" => {
@@ -93,6 +93,7 @@ my %module_build_args = (
   "test_requires" => {
     "Capture::Tiny" => "0.12",
     "ExtUtils::MakeMaker" => 0,
+    "File::Spec" => 0,
     "File::Temp" => "0.22",
     "FindBin" => 0,
     "HTTP::Body" => 0,
@@ -100,6 +101,7 @@ my %module_build_args = (
     "HTTP::Server::Simple::PSGI" => 0,
     "IO::Handle" => 0,
     "IPC::Open3" => 0,
+    "LWP::Protocol::PSGI" => "0.06",
     "Test::Fatal" => 0,
     "Test::MockTime" => 0,
     "Test::More" => "0.92",

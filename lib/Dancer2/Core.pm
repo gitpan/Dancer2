@@ -2,26 +2,11 @@
 
 package Dancer2::Core;
 {
-    $Dancer2::Core::VERSION = '0.09';
+    $Dancer2::Core::VERSION = '0.10';
 }
 
 use strict;
 use warnings;
-
-
-sub debug {
-    return unless $ENV{DANCER_DEBUG_CORE};
-
-    my $msg = shift;
-    my (@stuff) = @_;
-
-    my $vars = @stuff ? Dumper( \@stuff ) : '';
-
-    my ( $package, $filename, $line ) = caller;
-
-    chomp $msg;
-    print STDERR "core: $msg\n$vars";
-}
 
 
 sub camelize {
@@ -47,14 +32,9 @@ Dancer2::Core - Core libraries for Dancer2 2.0
 
 =head1 VERSION
 
-version 0.09
+version 0.10
 
 =head1 FUNCTIONS
-
-=head2 debug
-
-Output a message to STDERR and take further arguments as some data structures using 
-L<Data::Dumper>
 
 =head2 camelize
 

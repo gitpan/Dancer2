@@ -1,7 +1,7 @@
 # ABSTRACT: encapsulation of Dancer2 packages
 package Dancer2::Core::App;
 {
-    $Dancer2::Core::App::VERSION = '0.09';
+    $Dancer2::Core::App::VERSION = '0.10';
 }
 
 use Moo;
@@ -254,7 +254,7 @@ sub api_version {2}
 
 sub register_plugin {
     my ( $self, $plugin ) = @_;
-    Dancer2::Core::debug("Registered $plugin");
+    $self->log( core => "Registered $plugin" );
     push @{ $self->plugins }, $plugin;
 }
 
@@ -536,7 +536,6 @@ sub routes_regexps_for {
 
 1;
 
-__END__
 
 =pod
 
@@ -546,7 +545,7 @@ Dancer2::Core::App - encapsulation of Dancer2 packages
 
 =head1 VERSION
 
-version 0.09
+version 0.10
 
 =head1 DESCRIPTION
 
@@ -625,3 +624,6 @@ This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.
 
 =cut
+
+
+__END__

@@ -1,7 +1,7 @@
 # ABSTRACT: Role for Server classes
 package Dancer2::Core::Role::Server;
 {
-    $Dancer2::Core::Role::Server::VERSION = '0.09';
+    $Dancer2::Core::Role::Server::VERSION = '0.10';
 }
 use Moo::Role;
 
@@ -108,7 +108,6 @@ sub add_postponed_hooks {
 
 1;
 
-__END__
 
 =pod
 
@@ -118,7 +117,7 @@ Dancer2::Core::Role::Server - Role for Server classes
 
 =head1 VERSION
 
-version 0.09
+version 0.10
 
 =head1 DESCRIPTION
 
@@ -152,7 +151,7 @@ An arrayref to hold Dancer2 applications.
 
 =head2 dispatcher
 
-A read/write attribute which holds the L<Dancer2::Core::Dispatcher> object, to 
+A read/write attribute which holds the L<Dancer2::Core::Dispatcher> object, to
 dispatch an incoming request to the appropriate route.
 
 It has a lazy builder that creates a new dispatcher with the server's apps.
@@ -190,3 +189,6 @@ This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.
 
 =cut
+
+
+__END__

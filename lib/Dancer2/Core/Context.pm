@@ -1,6 +1,6 @@
 package Dancer2::Core::Context;
 {
-    $Dancer2::Core::Context::VERSION = '0.09';
+    $Dancer2::Core::Context::VERSION = '0.10';
 }
 
 # ABSTRACT: handles everything proper to a request's context.
@@ -87,12 +87,14 @@ has response => (
     lazy    => 1,
     default => sub {
         my $self = shift;
-        my $resp = Dancer2::Core::Response->new;
-        if ( $self->has_app ) {
-            my $engine = $self->app->engine('serializer');
-            $resp->serializer($engine) if $engine;
-        }
-        return $resp;
+
+        my $engine =
+            $self->has_app
+          ? $self->app->engine('serializer')
+          : undef;
+
+        return Dancer2::Core::Response->new(
+            $engine ? ( serializer => $engine ) : () );
     },
 );
 
@@ -217,13 +219,13 @@ Dancer2::Core::Context - handles everything proper to a request's context.
 
 =head1 VERSION
 
-version 0.09
+version 0.10
 
 =head1 ATTRIBUTES
 
 =head2 app
 
-Reference to the L<Dancer2::Core::App> object for the current application. 
+Reference to the L<Dancer2::Core::App> object for the current application.
 
 =head2 env
 

@@ -1,8 +1,8 @@
 # ABSTRACT: A gentle introduction to Dancer2
 package Dancer2::Manual;
 
-__END__
 
+__END__
 =pod
 
 =head1 NAME
@@ -11,7 +11,7 @@ Dancer2::Manual - A gentle introduction to Dancer2
 
 =head1 VERSION
 
-version 0.09
+version 0.10
 
 =head1 DESCRIPTION
 
@@ -97,7 +97,7 @@ information.  They should not be used for requests which change data on the
 server or have other effects.
 
 When defining a route handler for the GET method, Dancer2 automatically defines
-a route handler for the HEAD method, in order to honour HEAD requests for each
+a route handler for the HEAD method (in order to honour HEAD requests for each
 of your GET route handlers).
 
 To define a GET action, use the L<get|Dancer2::Manual/get> keyword.
@@ -369,7 +369,7 @@ argument received by the hook is a reference to the complete content string.
 =head2 Error handling
 
 When an error is caught by Dancer2's core, an exception object is built (of the
-class L<Dancer2::Core::Error>. This class provides hook to let the user alter
+class L<Dancer2::Core::Error>). This class provides hook to let the user alter
 the error work-flow if needed.
 
 C<init_error> hooks are called whenever an error object is built, the object is
@@ -1155,7 +1155,7 @@ This makes it possible to nest prefixes:
 
    prefix '/home' => sub {
        ## some routes
-       
+
       prefix '/private' => sub {
          ## here we are under /home/private...
 
@@ -1509,7 +1509,7 @@ Returns the response of processing the given template with the given parameters
 (and optional settings), wrapping it in the default or specified layout too, if
 layouts are in use.
 
-An example of a  route handler which returns the result of using template to 
+An example of a  route handler which returns the result of using template to
 build a response with the current template engine:
 
     get '/' => sub {
@@ -1702,3 +1702,4 @@ This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.
 
 =cut
+

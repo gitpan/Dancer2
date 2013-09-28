@@ -1,20 +1,16 @@
 package Dancer2::Core::Time;
 {
-    $Dancer2::Core::Time::VERSION = '0.09';
+    $Dancer2::Core::Time::VERSION = '0.10';
 }
 
 #ABSTRACT: class to handle common helpers for time manipulations
 
 
-use strict;
-use warnings;
-use Carp 'croak';
-
 use Moo;
 
 
 has seconds => (
-    is      => 'rw',
+    is      => 'ro',
     lazy    => 1,
     builder => '_build_seconds',
 );
@@ -23,15 +19,15 @@ sub _build_seconds {
     my ($self) = @_;
     my $seconds = $self->expression;
 
-    $seconds = $self->_parse_duration($seconds)
-      if $seconds !~ /^\d+$/;
+    return $seconds
+      if $seconds =~ /^\d+$/;
 
-    return $seconds;
+    return $self->_parse_duration($seconds);
 }
 
 
 has epoch => (
-    is      => 'rw',
+    is      => 'ro',
     lazy    => 1,
     builder => '_build_epoch',
 );
@@ -44,7 +40,7 @@ sub _build_epoch {
 
 
 has gmt_string => (
-    is      => 'rw',
+    is      => 'ro',
     builder => '_build_gmt_string',
     lazy    => 1,
 );
@@ -68,19 +64,19 @@ sub _build_gmt_string {
 
 
 has expression => (
-    is       => 'rw',
+    is       => 'ro',
     required => 1,
 );
 
-sub BUILD {
-    my ($self) = @_;
+sub BUILDARGS {
+    my ( $class, %args ) = @_;
 
-    # if the expression is already a numeric value, assume it's an epoch
-    if ( $self->expression =~ /^\d+$/ ) {
-        $self->epoch( $self->expression );
-        $self->expression('0h');
-    }
+    $args{epoch} = $args{expression}
+      if $args{expression} =~ /^\d+$/;
+
+    return \%args;
 }
+
 
 # private
 
@@ -146,7 +142,7 @@ Dancer2::Core::Time - class to handle common helpers for time manipulations
 
 =head1 VERSION
 
-version 0.09
+version 0.10
 
 =head1 SYNOPSIS
 
@@ -160,7 +156,7 @@ needs to be expressed in seconds, with a timestamp. Although it's very
 convenient for the machine and calculations, it's not very handy for a
 human-being, for instance in a configuration file.
 
-This class provides everything needed to translate any human-understandable 
+This class provides everything needed to translate any human-understandable
 expression into a number of seconds.
 
 =head1 ATTRIBUTES
@@ -195,7 +191,7 @@ understands:
 Months and years are currently fixed at 30 and 365 days.  This may change.
 Anything else is used verbatim as the expression of a number of seconds.
 
-Example: 
+Example:
 
     2 hours, 3 days, 3d, 1 week, 3600, etc...
 

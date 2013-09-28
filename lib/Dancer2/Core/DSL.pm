@@ -2,7 +2,7 @@
 
 package Dancer2::Core::DSL;
 {
-    $Dancer2::Core::DSL::VERSION = '0.09';
+    $Dancer2::Core::DSL::VERSION = '0.10';
 }
 
 use Moo;
@@ -313,10 +313,12 @@ sub cookie { shift->context->cookie(@_) }
 sub send_error {
     my ( $self, $message, $status ) = @_;
 
-    my $x = Dancer2::Core::Error->new(
+    my $serializer = $self->app->engine('serializer');
+    my $x          = Dancer2::Core::Error->new(
         message => $message,
         context => $self->app->context,
-        ( status => $status ) x !!$status,
+        ( status     => $status ) x !!$status,
+        ( serializer => $serializer ) x !!$serializer,
     )->throw;
 
     $x;
@@ -377,7 +379,7 @@ Dancer2::Core::DSL - Dancer2's Domain Specific Language (DSL)
 
 =head1 VERSION
 
-version 0.09
+version 0.10
 
 =head1 FUNCTIONS
 

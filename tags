@@ -1,0 +1,514 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.9~svn20110310	//
+BUILD	lib/Dancer2/Core/App.pm	/^sub BUILD {$/;"	s
+BUILD	lib/Dancer2/Core/Error.pm	/^sub BUILD {$/;"	s
+BUILD	lib/Dancer2/Core/Request.pm	/^sub BUILD {$/;"	s
+BUILD	lib/Dancer2/Core/Response.pm	/^sub BUILD {$/;"	s
+BUILD	lib/Dancer2/Core/Role/Hookable.pm	/^sub BUILD { }$/;"	s
+BUILD	lib/Dancer2/Core/Role/SessionFactory/File.pm	/^sub BUILD {$/;"	s
+BUILD	lib/Dancer2/Core/Runner.pm	/^sub BUILD {$/;"	s
+BUILD	lib/Dancer2/Handler/File.pm	/^sub BUILD {$/;"	s
+BUILD	lib/Dancer2/Logger/File.pm	/^sub BUILD {$/;"	s
+BUILD	lib/Dancer2/Serializer/YAML.pm	/^sub BUILD { eval "use YAML::Any ()"; croak "Fail to load YAML: $@" if $@ }$/;"	s
+BUILD	lib/Dancer2/Template/Simple.pm	/^sub BUILD {$/;"	s
+BUILDARGS	lib/Dancer2/Core/Route.pm	/^sub BUILDARGS {$/;"	s
+BUILDARGS	lib/Dancer2/Core/Time.pm	/^sub BUILDARGS {$/;"	s
+Dancer2	lib/Dancer2.pm	/^package Dancer2;$/;"	p
+Dancer2::Core	lib/Dancer2/Core.pm	/^package Dancer2::Core;$/;"	p
+Dancer2::Core::App	lib/Dancer2/Core/App.pm	/^package Dancer2::Core::App;$/;"	p
+Dancer2::Core::Context	lib/Dancer2/Core/Context.pm	/^package Dancer2::Core::Context;$/;"	p
+Dancer2::Core::Cookie	lib/Dancer2/Core/Cookie.pm	/^package Dancer2::Core::Cookie;$/;"	p
+Dancer2::Core::DSL	lib/Dancer2/Core/DSL.pm	/^package Dancer2::Core::DSL;$/;"	p
+Dancer2::Core::Dispatcher	lib/Dancer2/Core/Dispatcher.pm	/^package Dancer2::Core::Dispatcher;$/;"	p
+Dancer2::Core::Error	lib/Dancer2/Core/Error.pm	/^package Dancer2::Core::Error;$/;"	p
+Dancer2::Core::Factory	lib/Dancer2/Core/Factory.pm	/^package Dancer2::Core::Factory;$/;"	p
+Dancer2::Core::HTTP	lib/Dancer2/Core/HTTP.pm	/^package Dancer2::Core::HTTP;$/;"	p
+Dancer2::Core::Hook	lib/Dancer2/Core/Hook.pm	/^package Dancer2::Core::Hook;$/;"	p
+Dancer2::Core::MIME	lib/Dancer2/Core/MIME.pm	/^package Dancer2::Core::MIME;$/;"	p
+Dancer2::Core::Request	lib/Dancer2/Core/Request.pm	/^package Dancer2::Core::Request;$/;"	p
+Dancer2::Core::Request::Upload	lib/Dancer2/Core/Request/Upload.pm	/^package Dancer2::Core::Request::Upload;$/;"	p
+Dancer2::Core::Response	lib/Dancer2/Core/Response.pm	/^package Dancer2::Core::Response;$/;"	p
+Dancer2::Core::Role::Config	lib/Dancer2/Core/Role/Config.pm	/^package Dancer2::Core::Role::Config;$/;"	p
+Dancer2::Core::Role::DSL	lib/Dancer2/Core/Role/DSL.pm	/^package Dancer2::Core::Role::DSL;$/;"	p
+Dancer2::Core::Role::Engine	lib/Dancer2/Core/Role/Engine.pm	/^package Dancer2::Core::Role::Engine;$/;"	p
+Dancer2::Core::Role::Handler	lib/Dancer2/Core/Role/Handler.pm	/^package Dancer2::Core::Role::Handler;$/;"	p
+Dancer2::Core::Role::Headers	lib/Dancer2/Core/Role/Headers.pm	/^package Dancer2::Core::Role::Headers;$/;"	p
+Dancer2::Core::Role::Hookable	lib/Dancer2/Core/Role/Hookable.pm	/^package Dancer2::Core::Role::Hookable;$/;"	p
+Dancer2::Core::Role::Logger	lib/Dancer2/Core/Role/Logger.pm	/^package Dancer2::Core::Role::Logger;$/;"	p
+Dancer2::Core::Role::Serializer	lib/Dancer2/Core/Role/Serializer.pm	/^package Dancer2::Core::Role::Serializer;$/;"	p
+Dancer2::Core::Role::Server	lib/Dancer2/Core/Role/Server.pm	/^package Dancer2::Core::Role::Server;$/;"	p
+Dancer2::Core::Role::SessionFactory	lib/Dancer2/Core/Role/SessionFactory.pm	/^package Dancer2::Core::Role::SessionFactory;$/;"	p
+Dancer2::Core::Role::SessionFactory::File	lib/Dancer2/Core/Role/SessionFactory/File.pm	/^package Dancer2::Core::Role::SessionFactory::File;$/;"	p
+Dancer2::Core::Role::StandardResponses	lib/Dancer2/Core/Role/StandardResponses.pm	/^package Dancer2::Core::Role::StandardResponses;$/;"	p
+Dancer2::Core::Role::Template	lib/Dancer2/Core/Role/Template.pm	/^package Dancer2::Core::Role::Template;$/;"	p
+Dancer2::Core::Route	lib/Dancer2/Core/Route.pm	/^package Dancer2::Core::Route;$/;"	p
+Dancer2::Core::Runner	lib/Dancer2/Core/Runner.pm	/^package Dancer2::Core::Runner;$/;"	p
+Dancer2::Core::Server::PSGI	lib/Dancer2/Core/Server/PSGI.pm	/^package Dancer2::Core::Server::PSGI;$/;"	p
+Dancer2::Core::Server::Standalone	lib/Dancer2/Core/Server/Standalone.pm	/^package Dancer2::Core::Server::Standalone;$/;"	p
+Dancer2::Core::Session	lib/Dancer2/Core/Session.pm	/^package Dancer2::Core::Session;$/;"	p
+Dancer2::Core::Time	lib/Dancer2/Core/Time.pm	/^package Dancer2::Core::Time;$/;"	p
+Dancer2::Core::Types	lib/Dancer2/Core/Types.pm	/^package Dancer2::Core::Types;$/;"	p
+Dancer2::FileUtils	lib/Dancer2/FileUtils.pm	/^package Dancer2::FileUtils;$/;"	p
+Dancer2::Handler::AutoPage	lib/Dancer2/Handler/AutoPage.pm	/^package Dancer2::Handler::AutoPage;$/;"	p
+Dancer2::Handler::File	lib/Dancer2/Handler/File.pm	/^package Dancer2::Handler::File;$/;"	p
+Dancer2::Logger::Capture	lib/Dancer2/Logger/Capture.pm	/^package Dancer2::Logger::Capture;$/;"	p
+Dancer2::Logger::Capture::Trap	lib/Dancer2/Logger/Capture/Trap.pm	/^package Dancer2::Logger::Capture::Trap;$/;"	p
+Dancer2::Logger::Console	lib/Dancer2/Logger/Console.pm	/^package Dancer2::Logger::Console;$/;"	p
+Dancer2::Logger::Diag	lib/Dancer2/Logger/Diag.pm	/^package Dancer2::Logger::Diag;$/;"	p
+Dancer2::Logger::File	lib/Dancer2/Logger/File.pm	/^package Dancer2::Logger::File;$/;"	p
+Dancer2::Logger::Note	lib/Dancer2/Logger/Note.pm	/^package Dancer2::Logger::Note;$/;"	p
+Dancer2::Logger::Null	lib/Dancer2/Logger/Null.pm	/^package Dancer2::Logger::Null;$/;"	p
+Dancer2::Plugin	lib/Dancer2/Plugin.pm	/^package Dancer2::Plugin;$/;"	p
+Dancer2::Plugin::Ajax	lib/Dancer2/Plugin/Ajax.pm	/^package Dancer2::Plugin::Ajax;$/;"	p
+Dancer2::Serializer::Dumper	lib/Dancer2/Serializer/Dumper.pm	/^package Dancer2::Serializer::Dumper;$/;"	p
+Dancer2::Serializer::JSON	lib/Dancer2/Serializer/JSON.pm	/^package Dancer2::Serializer::JSON;$/;"	p
+Dancer2::Serializer::YAML	lib/Dancer2/Serializer/YAML.pm	/^package Dancer2::Serializer::YAML;$/;"	p
+Dancer2::Session::Simple	lib/Dancer2/Session/Simple.pm	/^package Dancer2::Session::Simple;$/;"	p
+Dancer2::Session::YAML	lib/Dancer2/Session/YAML.pm	/^package Dancer2::Session::YAML;$/;"	p
+Dancer2::Template::Implementation::ForkedTiny	lib/Dancer2/Template/Implementation/ForkedTiny.pm	/^package Dancer2::Template::Implementation::ForkedTiny;$/;"	p
+Dancer2::Template::Simple	lib/Dancer2/Template/Simple.pm	/^package Dancer2::Template::Simple;$/;"	p
+Dancer2::Template::TemplateToolkit	lib/Dancer2/Template/TemplateToolkit.pm	/^package Dancer2::Template::TemplateToolkit;$/;"	p
+Dancer2::Template::Tiny	lib/Dancer2/Template/Tiny.pm	/^package Dancer2::Template::Tiny;$/;"	p
+Dancer2::Test	lib/Dancer2/Test.pm	/^package Dancer2::Test;$/;"	p
+Example	lib/Dancer2/Core/Time.pm	/^Example:$/;"	l
+MyDancerDSL	t/lib/MyDancerDSL.pm	/^package MyDancerDSL;$/;"	p
+ROUTE	lib/Dancer2/Core/Dispatcher.pm	/^      ROUTE:$/;"	l
+_add_postponed_hooks	lib/Dancer2/Core/Role/Hookable.pm	/^sub _add_postponed_hooks {$/;"	s
+_build_backend	lib/Dancer2/Core/Server/Standalone.pm	/^sub _build_backend {$/;"	s
+_build_config	lib/Dancer2/Core/Role/Config.pm	/^sub _build_config {$/;"	s
+_build_config_files	lib/Dancer2/Core/Role/Config.pm	/^sub _build_config_files {$/;"	s
+_build_config_triggers	lib/Dancer2/Core/Role/Config.pm	/^sub _build_config_triggers {$/;"	s
+_build_cookies	lib/Dancer2/Core/Request.pm	/^sub _build_cookies {$/;"	s
+_build_default_config	lib/Dancer2/Core/App.pm	/^sub _build_default_config {$/;"	s
+_build_dispatcher	lib/Dancer2/Core/Role/Server.pm	/^sub _build_dispatcher {$/;"	s
+_build_dsl_keywords	lib/Dancer2/Core/Role/DSL.pm	/^sub _build_dsl_keywords {$/;"	s
+_build_engine	lib/Dancer2/Template/TemplateToolkit.pm	/^sub _build_engine {$/;"	s
+_build_engine	lib/Dancer2/Template/Tiny.pm	/^sub _build_engine {$/;"	s
+_build_engine_logger	lib/Dancer2/Core/Role/Config.pm	/^sub _build_engine_logger {$/;"	s
+_build_engine_serializer	lib/Dancer2/Core/Role/Config.pm	/^sub _build_engine_serializer {$/;"	s
+_build_engine_session	lib/Dancer2/Core/Role/Config.pm	/^sub _build_engine_session {$/;"	s
+_build_engine_template	lib/Dancer2/Core/Role/Config.pm	/^sub _build_engine_template {$/;"	s
+_build_engines	lib/Dancer2/Core/Role/Config.pm	/^sub _build_engines {$/;"	s
+_build_engines_triggers	lib/Dancer2/Core/Role/Config.pm	/^sub _build_engines_triggers {$/;"	s
+_build_env_from_request	lib/Dancer2/Test.pm	/^sub _build_env_from_request {$/;"	s
+_build_environment	lib/Dancer2/Core/Role/Config.pm	/^sub _build_environment {$/;"	s
+_build_epoch	lib/Dancer2/Core/Time.pm	/^sub _build_epoch {$/;"	s
+_build_error_template	lib/Dancer2/Core/Error.pm	/^sub _build_error_template {$/;"	s
+_build_file_name	lib/Dancer2/Logger/File.pm	/^sub _build_file_name {$_[0]->environment . ".log"}$/;"	s
+_build_gmt_string	lib/Dancer2/Core/Time.pm	/^sub _build_gmt_string {$/;"	s
+_build_hooks	lib/Dancer2/Core/Role/Hookable.pm	/^sub _build_hooks {$/;"	s
+_build_location	lib/Dancer2/Core/Role/Config.pm	/^sub _build_location { File::Spec->rel2abs('.') }$/;"	s
+_build_location	lib/Dancer2/Core/Runner.pm	/^sub _build_location {$/;"	s
+_build_log_dir	lib/Dancer2/Logger/File.pm	/^sub _build_log_dir {File::Spec->catdir( $_[0]->location, 'logs' )}$/;"	s
+_build_name	lib/Dancer2/Core/Role/Template.pm	/^sub _build_name {$/;"	s
+_build_name	lib/Dancer2/Core/Server/PSGI.pm	/^sub _build_name {'PSGI'}$/;"	s
+_build_name	lib/Dancer2/Core/Server/Standalone.pm	/^sub _build_name {'Standalone'}$/;"	s
+_build_params	lib/Dancer2/Core/Request.pm	/^sub _build_params {$/;"	s
+_build_path	lib/Dancer2/Core/Request.pm	/^sub _build_path {$/;"	s
+_build_path_info	lib/Dancer2/Core/Request.pm	/^sub _build_path_info {$/;"	s
+_build_regexp_from_string	lib/Dancer2/Core/Route.pm	/^sub _build_regexp_from_string {$/;"	s
+_build_request	lib/Dancer2/Core/Context.pm	/^sub _build_request {$/;"	s
+_build_request_from_env	lib/Dancer2/Test.pm	/^sub _build_request_from_env {$/;"	s
+_build_seconds	lib/Dancer2/Core/Time.pm	/^sub _build_seconds {$/;"	s
+_build_server	lib/Dancer2/Core/Runner.pm	/^sub _build_server {$/;"	s
+_build_session	lib/Dancer2/Core/Context.pm	/^sub _build_session {$/;"	s
+_build_static_page	lib/Dancer2/Core/Error.pm	/^sub _build_static_page {$/;"	s
+_build_title	lib/Dancer2/Core/Error.pm	/^sub _build_title {$/;"	s
+_build_trapper	lib/Dancer2/Logger/Capture.pm	/^sub _build_trapper { Dancer2::Logger::Capture::Trap->new }$/;"	s
+_build_type	lib/Dancer2/Core/Role/Logger.pm	/^sub _build_type {'Logger'}$/;"	s
+_build_type	lib/Dancer2/Core/Role/Serializer.pm	/^sub _build_type {'Serializer'}$/;"	s
+_build_type	lib/Dancer2/Core/Role/SessionFactory.pm	/^sub _build_type {$/;"	s
+_build_type	lib/Dancer2/Core/Role/Template.pm	/^sub _build_type {'Template'}$/;"	s
+_build_uploads	lib/Dancer2/Core/Request.pm	/^sub _build_uploads {$/;"	s
+_censor	lib/Dancer2/Core/Error.pm	/^sub _censor {$/;"	s
+_check_header	lib/Dancer2/Test.pm	/^sub _check_header {$/;"	s
+_check_options	lib/Dancer2/Core/Route.pm	/^sub _check_options {$/;"	s
+_cmp_response_content	lib/Dancer2/Test.pm	/^    sub _cmp_response_content {$/;"	s
+_common_uri	lib/Dancer2/Core/Request.pm	/^sub _common_uri {$/;"	s
+_compile_config	lib/Dancer2/Core/Role/Config.pm	/^sub _compile_config {$/;"	s
+_compile_config_entry	lib/Dancer2/Core/Role/Config.pm	/^sub _compile_config_entry {$/;"	s
+_compile_keyword	lib/Dancer2/Core/Role/DSL.pm	/^sub _compile_keyword {$/;"	s
+_construct_export_map	lib/Dancer2/Core/Role/DSL.pm	/^sub _construct_export_map {$/;"	s
+_decode	lib/Dancer2/Core/Request.pm	/^sub _decode {$/;"	s
+_destroy	lib/Dancer2/Core/Role/SessionFactory/File.pm	/^sub _destroy {$/;"	s
+_destroy	lib/Dancer2/Session/Simple.pm	/^sub _destroy {$/;"	s
+_expand_req	lib/Dancer2/Test.pm	/^sub _expand_req {$/;"	s
+_expression	lib/Dancer2/Template/Implementation/ForkedTiny.pm	/^sub _expression {$/;"	s
+_find_dancer_apps_for_dispatcher	lib/Dancer2/Test.pm	/^sub _find_dancer_apps_for_dispatcher {$/;"	s
+_find_value_from_token_name	lib/Dancer2/Template/Simple.pm	/^sub _find_value_from_token_name {$/;"	s
+_flush	lib/Dancer2/Core/Role/SessionFactory/File.pm	/^sub _flush {$/;"	s
+_flush	lib/Dancer2/Session/Simple.pm	/^sub _flush {$/;"	s
+_foreach	lib/Dancer2/Template/Implementation/ForkedTiny.pm	/^sub _foreach {$/;"	s
+_freeze_to_handle	lib/Dancer2/Session/YAML.pm	/^sub _freeze_to_handle {$/;"	s
+_get_config_for_engine	lib/Dancer2/Core/Role/Config.pm	/^sub _get_config_for_engine {$/;"	s
+_get_dsl	lib/Dancer2/Plugin.pm	/^sub _get_dsl {$/;"	s
+_get_value	lib/Dancer2/Core/Cookie.pm	/^sub _get_value { shift->value }$/;"	s
+_has_something_to_read	lib/Dancer2/Core/Request.pm	/^sub _has_something_to_read {$/;"	s
+_html_encode	lib/Dancer2/Core/Error.pm	/^sub _html_encode {$/;"	s
+_html_sitemap	t/lib/FooPlugin.pm	/^sub _html_sitemap {$/;"	s
+_include_in_headers	lib/Dancer2/Test.pm	/^sub _include_in_headers {$/;"	s
+_init_for_context	lib/Dancer2/Core/App.pm	/^sub _init_for_context {$/;"	s
+_init_hooks	lib/Dancer2/Core/App.pm	/^sub _init_hooks {$/;"	s
+_init_request_headers	lib/Dancer2/Core/Request.pm	/^sub _init_request_headers {$/;"	s
+_interpolate_value	lib/Dancer2/Template/Simple.pm	/^sub _interpolate_value {$/;"	s
+_merge_params	lib/Dancer2/Core/Request.pm	/^sub _merge_params {$/;"	s
+_normalize_config	lib/Dancer2/Core/Role/Config.pm	/^sub _normalize_config {$/;"	s
+_normalize_config_entry	lib/Dancer2/Core/Role/Config.pm	/^sub _normalize_config_entry {$/;"	s
+_parse_duration	lib/Dancer2/Core/Time.pm	/^sub _parse_duration {$/;"	s
+_parse_get_params	lib/Dancer2/Core/Request.pm	/^sub _parse_get_params {$/;"	s
+_parse_post_params	lib/Dancer2/Core/Request.pm	/^sub _parse_post_params {$/;"	s
+_prepare_tokens_options	lib/Dancer2/Core/Role/Template.pm	/^sub _prepare_tokens_options {$/;"	s
+_preprocess	lib/Dancer2/Template/Implementation/ForkedTiny.pm	/^sub _preprocess {$/;"	s
+_process	lib/Dancer2/Template/Implementation/ForkedTiny.pm	/^sub _process {$/;"	s
+_read	lib/Dancer2/Core/Request.pm	/^sub _read {$/;"	s
+_read_to_end	lib/Dancer2/Core/Request.pm	/^sub _read_to_end {$/;"	s
+_render_html	lib/Dancer2/Core/Error.pm	/^sub _render_html {$/;"	s
+_req_label	lib/Dancer2/Test.pm	/^sub _req_label {$/;"	s
+_req_to_response	lib/Dancer2/Test.pm	/^sub _req_to_response {$/;"	s
+_retrieve	lib/Dancer2/Core/Role/SessionFactory/File.pm	/^sub _retrieve {$/;"	s
+_retrieve	lib/Dancer2/Session/Simple.pm	/^sub _retrieve {$/;"	s
+_retrieve_get_urls	t/lib/FooPlugin.pm	/^sub _retrieve_get_urls {$/;"	s
+_route_parameters	lib/Dancer2/Core/DSL.pm	/^sub _route_parameters {$/;"	s
+_serialize	lib/Dancer2/Core/Role/Logger.pm	/^sub _serialize {$/;"	s
+_sessions	lib/Dancer2/Core/Role/SessionFactory/File.pm	/^sub _sessions {$/;"	s
+_sessions	lib/Dancer2/Session/Simple.pm	/^sub _sessions {$/;"	s
+_set_body_params	lib/Dancer2/Core/Request.pm	/^sub _set_body_params {$/;"	s
+_set_config_entries	lib/Dancer2/Core/Role/Config.pm	/^sub _set_config_entries {$/;"	s
+_set_config_entry	lib/Dancer2/Core/Role/Config.pm	/^sub _set_config_entry {$/;"	s
+_set_import_method_to_caller	lib/Dancer2.pm	/^sub _set_import_method_to_caller {$/;"	s
+_set_query_params	lib/Dancer2/Core/Request.pm	/^sub _set_query_params {$/;"	s
+_set_route_params	lib/Dancer2/Core/Request.pm	/^sub _set_route_params {$/;"	s
+_should	lib/Dancer2/Core/Role/Logger.pm	/^sub _should {$/;"	s
+_sort_headers	lib/Dancer2/Test.pm	/^sub _sort_headers {$/;"	s
+_template_name	lib/Dancer2/Core/Role/Template.pm	/^sub _template_name {$/;"	s
+_thaw_from_handle	lib/Dancer2/Session/YAML.pm	/^sub _thaw_from_handle {$/;"	s
+_url_decode	lib/Dancer2/Core/Request.pm	/^sub _url_decode {$/;"	s
+add_alias	lib/Dancer2/Core/MIME.pm	/^sub add_alias {$/;"	s
+add_hook	lib/Dancer2/Core/Role/Hookable.pm	/^sub add_hook {$/;"	s
+add_postponed_hooks	lib/Dancer2/Core/Role/Server.pm	/^sub add_postponed_hooks {$/;"	s
+add_route	lib/Dancer2/Core/App.pm	/^sub add_route {$/;"	s
+add_type	lib/Dancer2/Core/MIME.pm	/^sub add_type {$/;"	s
+address	lib/Dancer2/Core/Request.pm	/^sub address               { $_[0]->env->{REMOTE_ADDR} }$/;"	s
+agent	lib/Dancer2/Core/Request.pm	/^sub agent                 { $_[0]->user_agent }$/;"	s
+all_hook_aliases	lib/Dancer2/Core/App.pm	/^sub all_hook_aliases {$/;"	s
+any	lib/Dancer2/Core/DSL.pm	/^sub any {$/;"	s
+api_version	lib/Dancer2/Core/App.pm	/^sub api_version {2}$/;"	s
+apply_layout	lib/Dancer2/Core/Role/Template.pm	/^sub apply_layout {$/;"	s
+apply_renderer	lib/Dancer2/Core/Role/Template.pm	/^sub apply_renderer {$/;"	s
+backtrace	lib/Dancer2/Core/Error.pm	/^sub backtrace {$/;"	s
+base	lib/Dancer2/Core/Request.pm	/^sub base {$/;"	s
+basename	lib/Dancer2/Core/Request/Upload.pm	/^sub basename {$/;"	s
+camelize	lib/Dancer2/Core.pm	/^sub camelize {$/;"	s
+captures	lib/Dancer2/Core/DSL.pm	/^sub captures { shift->request->captures }$/;"	s
+captures	lib/Dancer2/Core/Request.pm	/^sub captures { shift->params->{captures} }$/;"	s
+code	lib/Dancer2/Handler/AutoPage.pm	/^sub code {$/;"	s
+code	lib/Dancer2/Handler/File.pm	/^sub code {$/;"	s
+compile_hooks	lib/Dancer2/Core/App.pm	/^sub compile_hooks {$/;"	s
+config	lib/Dancer2/Core/DSL.pm	/^sub config { shift->app->settings }$/;"	s
+content	lib/Dancer2/Core/Request/Upload.pm	/^sub content {$/;"	s
+content_type	lib/Dancer2/Core/DSL.pm	/^sub content_type { shift->response->content_type(@_) }$/;"	s
+content_type	lib/Dancer2/Core/Response.pm	/^sub content_type {$/;"	s
+context	lib/Dancer2/Core/DSL.pm	/^sub context { shift->app->context }$/;"	s
+cookie	lib/Dancer2/Core/Context.pm	/^sub cookie {$/;"	s
+cookie	lib/Dancer2/Core/DSL.pm	/^sub cookie { shift->context->cookie(@_) }$/;"	s
+cookie	lib/Dancer2/Core/Role/SessionFactory.pm	/^sub cookie {$/;"	s
+cookies	lib/Dancer2/Core/Context.pm	/^sub cookies { shift->request->cookies(@_) }$/;"	s
+cookies	lib/Dancer2/Core/DSL.pm	/^sub cookies { shift->context->cookies }$/;"	s
+copy_to	lib/Dancer2/Core/Request/Upload.pm	/^sub copy_to {$/;"	s
+core	lib/Dancer2/Core/Role/Logger.pm	/^sub core {$/;"	s
+create	lib/Dancer2/Core/Factory.pm	/^sub create {$/;"	s
+create	lib/Dancer2/Core/Role/SessionFactory.pm	/^sub create {$/;"	s
+dance	lib/Dancer2/Core/DSL.pm	/^sub dance { shift->start(@_) }$/;"	s
+dancer_app	lib/Dancer2/Core/DSL.pm	/^sub dancer_app     { shift->app }$/;"	s
+dancer_major_version	lib/Dancer2/Core/DSL.pm	/^sub dancer_major_version {$/;"	s
+dancer_response	lib/Dancer2/Test.pm	/^sub dancer_response {$/;"	s
+dancer_version	lib/Dancer2/Core/DSL.pm	/^sub dancer_version { Dancer2->VERSION }$/;"	s
+debug	lib/Dancer2/Core/DSL.pm	/^sub debug   { shift->log( debug   => @_ ) }$/;"	s
+debug	lib/Dancer2/Core/Role/Logger.pm	/^sub debug {$/;"	s
+default_config	lib/Dancer2/Core/Runner.pm	/^sub default_config {$/;"	s
+default_error_page	lib/Dancer2/Core/Error.pm	/^sub default_error_page {$/;"	s
+del	lib/Dancer2/Core/DSL.pm	/^sub del {$/;"	s
+delete	lib/Dancer2/Core/Session.pm	/^sub delete {$/;"	s
+deserialize	lib/Dancer2/Core/Request.pm	/^sub deserialize {$/;"	s
+deserialize	lib/Dancer2/Serializer/Dumper.pm	/^sub deserialize {$/;"	s
+deserialize	lib/Dancer2/Serializer/JSON.pm	/^sub deserialize {$/;"	s
+deserialize	lib/Dancer2/Serializer/YAML.pm	/^sub deserialize {$/;"	s
+destroy	lib/Dancer2/Core/Role/SessionFactory.pm	/^sub destroy {$/;"	s
+destroy_session	lib/Dancer2/Core/Context.pm	/^sub destroy_session {$/;"	s
+dirname	lib/Dancer2/Core/DSL.pm	/^sub dirname { shift and Dancer2::FileUtils::dirname(@_) }$/;"	s
+dirname	lib/Dancer2/FileUtils.pm	/^sub dirname { File::Basename::dirname(@_) }$/;"	s
+dispatch	lib/Dancer2/Core/Dispatcher.pm	/^sub dispatch {$/;"	s
+dispatch_path	lib/Dancer2/Core/Request.pm	/^sub dispatch_path {$/;"	s
+dsl	lib/Dancer2/Core/Role/DSL.pm	/^sub dsl { $_[0] }$/;"	s
+dsl_keywords	lib/Dancer2/Core/DSL.pm	/^sub dsl_keywords {$/;"	s
+dumper	lib/Dancer2/Core/Error.pm	/^sub dumper {$/;"	s
+encode_content	lib/Dancer2/Core/Response.pm	/^sub encode_content {$/;"	s
+engine	lib/Dancer2/Core/App.pm	/^sub engine {$/;"	s
+engine	lib/Dancer2/Core/DSL.pm	/^sub engine { shift->app->engine(@_) }$/;"	s
+entete	t/lib/MyDancerDSL.pm	/^sub entete { goto &Dancer2::Core::DSL::header }$/;"	s
+environment	lib/Dancer2/Core/Error.pm	/^sub environment {$/;"	s
+envoie	t/lib/MyDancerDSL.pm	/^sub envoie { goto &Dancer2::Core::DSL::post }$/;"	s
+error	lib/Dancer2/Core/DSL.pm	/^sub error   { shift->log( error   => @_ ) }$/;"	s
+error	lib/Dancer2/Core/Response.pm	/^sub error {$/;"	s
+error	lib/Dancer2/Core/Role/Logger.pm	/^sub error {$/;"	s
+ex	lib/Dancer2/Test.pm	/^    ex:$/;"	l
+execute	lib/Dancer2/Core/Route.pm	/^sub execute {$/;"	s
+execute_hook	lib/Dancer2/Core/Role/Hookable.pm	/^sub execute_hook {$/;"	s
+execute_hook	lib/Dancer2/Plugin.pm	/^sub execute_hook {$/;"	s
+export_symbols_to	lib/Dancer2/Core/Role/DSL.pm	/^sub export_symbols_to {$/;"	s
+false	lib/Dancer2/Core/DSL.pm	/^sub false {0}$/;"	s
+file_handle	lib/Dancer2/Core/Request/Upload.pm	/^sub file_handle {$/;"	s
+finish	lib/Dancer2/Core/App.pm	/^sub finish {$/;"	s
+flush	lib/Dancer2/Core/Role/SessionFactory.pm	/^sub flush {$/;"	s
+for_file	lib/Dancer2/Core/MIME.pm	/^sub for_file {$/;"	s
+for_name	lib/Dancer2/Core/MIME.pm	/^sub for_name {$/;"	s
+format_message	lib/Dancer2/Core/Role/Logger.pm	/^sub format_message {$/;"	s
+forward	lib/Dancer2/Core/DSL.pm	/^sub forward {$/;"	s
+forward	lib/Dancer2/Core/Request.pm	/^sub forward {$/;"	s
+forward	lib/Dancer2/Core/Response.pm	/^sub forward {$/;"	s
+forwarded_for_address	lib/Dancer2/Core/Request.pm	/^sub forwarded_for_address { $_[0]->env->{'X_FORWARDED_FOR'} }$/;"	s
+from_dumper	lib/Dancer2/Core/DSL.pm	/^sub from_dumper {$/;"	s
+from_dumper	lib/Dancer2/Serializer/Dumper.pm	/^sub from_dumper {$/;"	s
+from_json	lib/Dancer2/Core/DSL.pm	/^sub from_json {$/;"	s
+from_json	lib/Dancer2/Serializer/JSON.pm	/^sub from_json {$/;"	s
+from_yaml	lib/Dancer2/Core/DSL.pm	/^sub from_yaml {$/;"	s
+from_yaml	lib/Dancer2/Serializer/YAML.pm	/^sub from_yaml {$/;"	s
+full_message	lib/Dancer2/Core/Error.pm	/^sub full_message {$/;"	s
+gateau	t/lib/MyDancerDSL.pm	/^sub gateau { goto &Dancer2::Core::DSL::cookie }$/;"	s
+generate_id	lib/Dancer2/Core/Role/SessionFactory.pm	/^    sub generate_id {$/;"	s
+get	lib/Dancer2/Core/DSL.pm	/^sub get {$/;"	s
+get_caller	lib/Dancer2/Core/Error.pm	/^sub get_caller {$/;"	s
+get_postponed_hooks	lib/Dancer2/Core/Role/Config.pm	/^sub get_postponed_hooks {$/;"	s
+get_route	t/lib/FooPlugin.pm	/^      get_route:$/;"	l
+halt	lib/Dancer2/Core/DSL.pm	/^sub halt { shift->app->context->response->halt }$/;"	s
+halt	lib/Dancer2/Core/Response.pm	/^sub halt { shift->is_halted(1) }$/;"	s
+has_hook	lib/Dancer2/Core/Role/Hookable.pm	/^sub has_hook {$/;"	s
+has_session	lib/Dancer2/Core/Context.pm	/^sub has_session {$/;"	s
+has_setting	lib/Dancer2/Core/Role/Config.pm	/^sub has_setting {$/;"	s
+header	lib/Dancer2/Core/DSL.pm	/^sub header       { shift->response->header(@_) }$/;"	s
+header	lib/Dancer2/Core/Role/Headers.pm	/^sub header {$/;"	s
+headers	lib/Dancer2/Core/DSL.pm	/^sub headers      { shift->response->header(@_) }$/;"	s
+headers_to_array	lib/Dancer2/Core/Role/Headers.pm	/^sub headers_to_array {$/;"	s
+hook	lib/Dancer2/Core/DSL.pm	/^sub hook {$/;"	s
+hook	lib/Dancer2/Plugin.pm	/^hook:$/;"	l
+hook_aliases	lib/Dancer2/Core/Role/Hookable.pm	/^sub hook_aliases {$/;"	s
+hook_candidates	lib/Dancer2/Core/App.pm	/^sub hook_candidates {$/;"	s
+host	lib/Dancer2/Core/Request.pm	/^sub host {$/;"	s
+import	lib/Dancer2.pm	/^sub import {$/;"	s
+import	lib/Dancer2/Plugin.pm	/^sub import {$/;"	s
+import	lib/Dancer2/Test.pm	/^sub import {$/;"	s
+import	t/lib/PluginWithImport.pm	/^sub import {$/;"	s
+info	lib/Dancer2/Core/DSL.pm	/^sub info    { shift->log( info    => @_ ) }$/;"	s
+info	lib/Dancer2/Core/Role/Logger.pm	/^sub info {$/;"	s
+init_route_handlers	lib/Dancer2/Core/App.pm	/^sub init_route_handlers {$/;"	s
+input_handle	lib/Dancer2/Core/Request.pm	/^sub input_handle { $_[0]->env->{'psgi.input'} || $_[0]->env->{'PSGI.INPUT'} }$/;"	s
+is_ajax	lib/Dancer2/Core/Request.pm	/^sub is_ajax {$/;"	s
+is_delete	lib/Dancer2/Core/Request.pm	/^sub is_delete { $_[0]->{method} eq 'DELETE' }$/;"	s
+is_forwarded	lib/Dancer2/Core/Response.pm	/^sub is_forwarded {$/;"	s
+is_get	lib/Dancer2/Core/Request.pm	/^sub is_get    { $_[0]->{method} eq 'GET' }$/;"	s
+is_head	lib/Dancer2/Core/Request.pm	/^sub is_head   { $_[0]->{method} eq 'HEAD' }$/;"	s
+is_patch	lib/Dancer2/Core/Request.pm	/^sub is_patch  { $_[0]->{method} eq 'PATCH' }$/;"	s
+is_pod_covered	lib/Dancer2/Test.pm	/^sub is_pod_covered {$/;"	s
+is_post	lib/Dancer2/Core/Request.pm	/^sub is_post   { $_[0]->{method} eq 'POST' }$/;"	s
+is_put	lib/Dancer2/Core/Request.pm	/^sub is_put    { $_[0]->{method} eq 'PUT' }$/;"	s
+key	lib/Dancer2/Plugin.pm	/^      key: value$/;"	l
+layout_pathname	lib/Dancer2/Core/Role/Template.pm	/^sub layout_pathname {$/;"	s
+lexical_prefix	lib/Dancer2/Core/App.pm	/^sub lexical_prefix {$/;"	s
+link_to	lib/Dancer2/Core/Request/Upload.pm	/^sub link_to {$/;"	s
+load_config_file	lib/Dancer2/Core/Role/Config.pm	/^sub load_config_file {$/;"	s
+loaded	lib/Dancer2/Serializer/Dumper.pm	/^sub loaded {1}$/;"	s
+loaded	lib/Dancer2/Serializer/JSON.pm	/^sub loaded {1}$/;"	s
+loaded	lib/Dancer2/Serializer/YAML.pm	/^sub loaded {1}$/;"	s
+log	lib/Dancer2/Core/App.pm	/^sub log {$/;"	s
+log	lib/Dancer2/Core/DSL.pm	/^sub log { shift->app->log(@_) }$/;"	s
+log	lib/Dancer2/Logger/Capture.pm	/^sub log {$/;"	s
+log	lib/Dancer2/Logger/Console.pm	/^sub log {$/;"	s
+log	lib/Dancer2/Logger/Diag.pm	/^sub log {$/;"	s
+log	lib/Dancer2/Logger/File.pm	/^sub log {$/;"	s
+log	lib/Dancer2/Logger/Note.pm	/^sub log {$/;"	s
+log	lib/Dancer2/Logger/Null.pm	/^sub log {1}$/;"	s
+make_forward_to	lib/Dancer2/Core/Request.pm	/^sub make_forward_to {$/;"	s
+match	lib/Dancer2/Core/Route.pm	/^sub match {$/;"	s
+message	lib/Dancer2/Core/Role/StandardResponses.pm	/^message:$/;"	l
+methods	lib/Dancer2/Handler/AutoPage.pm	/^sub methods {qw(head get)}$/;"	s
+methods	lib/Dancer2/Handler/File.pm	/^sub methods { ( 'head', 'get' ) }$/;"	s
+mime	lib/Dancer2/Core/DSL.pm	/^sub mime {$/;"	s
+mime_type	lib/Dancer2/Core/App.pm	/^sub mime_type {$/;"	s
+moteur	t/lib/MyDancerDSL.pm	/^sub moteur { goto &Dancer2::Core::DSL::engine }$/;"	s
+name	lib/Dancer2/Core/Runner.pm	/^sub name {"runner"}$/;"	s
+name_or_type	lib/Dancer2/Core/MIME.pm	/^sub name_or_type {$/;"	s
+new	lib/Dancer2/Template/Implementation/ForkedTiny.pm	/^sub new {$/;"	s
+normalize_path	lib/Dancer2/FileUtils.pm	/^sub normalize_path {$/;"	s
+on_plugin_import	lib/Dancer2/Plugin.pm	/^sub on_plugin_import(&) {$/;"	s
+open_file	lib/Dancer2/FileUtils.pm	/^sub open_file {$/;"	s
+options	lib/Dancer2/Core/DSL.pm	/^sub options {$/;"	s
+param	lib/Dancer2/Core/DSL.pm	/^sub param { shift->request->param(@_) }$/;"	s
+param	lib/Dancer2/Core/Request.pm	/^sub param { shift->params->{ $_[0] } }$/;"	s
+params	lib/Dancer2/Core/DSL.pm	/^sub params { shift->request->params }$/;"	s
+params	lib/Dancer2/Core/Request.pm	/^sub params {$/;"	s
+parse_branches	lib/Dancer2/Template/Simple.pm	/^sub parse_branches {$/;"	s
+pass	lib/Dancer2/Core/DSL.pm	/^sub pass         { shift->response->pass }$/;"	s
+pass	lib/Dancer2/Core/Response.pm	/^sub pass { shift->has_passed(1) }$/;"	s
+patch	lib/Dancer2/Core/DSL.pm	/^sub patch {$/;"	s
+path	lib/Dancer2/Core/DSL.pm	/^sub path    { shift and Dancer2::FileUtils::path(@_) }$/;"	s
+path	lib/Dancer2/FileUtils.pm	/^sub path {$/;"	s
+path_or_empty	lib/Dancer2/FileUtils.pm	/^sub path_or_empty {$/;"	s
+plugin_args	lib/Dancer2/Plugin.pm	/^sub plugin_args {@_}$/;"	s
+plugin_name	lib/Dancer2/Plugin.pm	/^    plugin_name:$/;"	l
+plugin_setting	lib/Dancer2/Plugin.pm	/^sub plugin_setting {$/;"	s
+plugins	lib/Dancer2/Plugin.pm	/^  plugins:$/;"	l
+port	lib/Dancer2/Core/Request.pm	/^sub port                  { $_[0]->env->{SERVER_PORT} }$/;"	s
+post	lib/Dancer2/Core/DSL.pm	/^sub post {$/;"	s
+prefix	lib/Dancer2/Core/DSL.pm	/^sub prefix {$/;"	s
+prend	t/lib/MyDancerDSL.pm	/^sub prend  { goto &Dancer2::Core::DSL::get }$/;"	s
+preprocess	lib/Dancer2/Template/Implementation/ForkedTiny.pm	/^sub preprocess {$/;"	s
+print_banner	lib/Dancer2/Core/Server/Standalone.pm	/^sub print_banner {$/;"	s
+process	lib/Dancer2/Core/Role/Template.pm	/^sub process {$/;"	s
+process	lib/Dancer2/Template/Implementation/ForkedTiny.pm	/^sub process {$/;"	s
+protocol	lib/Dancer2/Core/Request.pm	/^sub protocol              { $_[0]->env->{SERVER_PROTOCOL} }$/;"	s
+psgi_app	lib/Dancer2/Core/Role/Server.pm	/^sub psgi_app {$/;"	s
+push_header	lib/Dancer2/Core/DSL.pm	/^sub push_header  { shift->response->push_header(@_) }$/;"	s
+push_header	lib/Dancer2/Core/Role/Headers.pm	/^sub push_header {$/;"	s
+put	lib/Dancer2/Core/DSL.pm	/^sub put {$/;"	s
+read	lib/Dancer2/Core/Session.pm	/^sub read {$/;"	s
+read	lib/Dancer2/Logger/Capture/Trap.pm	/^sub read {$/;"	s
+read_file_content	lib/Dancer2/FileUtils.pm	/^sub read_file_content {$/;"	s
+read_glob_content	lib/Dancer2/FileUtils.pm	/^sub read_glob_content {$/;"	s
+redirect	lib/Dancer2/Core/Context.pm	/^sub redirect {$/;"	s
+redirect	lib/Dancer2/Core/DSL.pm	/^sub redirect { shift->context->redirect(@_) }$/;"	s
+redirect	lib/Dancer2/Core/Response.pm	/^sub redirect {$/;"	s
+regexp	lib/Dancer2/Handler/AutoPage.pm	/^sub regexp {'\/**'}$/;"	s
+register	lib/Dancer2/Core/Role/DSL.pm	/^sub register {$/;"	s
+register	lib/Dancer2/Handler/AutoPage.pm	/^sub register {$/;"	s
+register	lib/Dancer2/Handler/File.pm	/^sub register {$/;"	s
+register	lib/Dancer2/Plugin.pm	/^sub register {$/;"	s
+register_application	lib/Dancer2/Core/Role/Server.pm	/^sub register_application {$/;"	s
+register_hook	lib/Dancer2/Plugin.pm	/^sub register_hook {$/;"	s
+register_plugin	lib/Dancer2/Core/App.pm	/^sub register_plugin {$/;"	s
+register_plugin	lib/Dancer2/Plugin.pm	/^sub register_plugin {$/;"	s
+register_route_handlers	lib/Dancer2/Core/App.pm	/^sub register_route_handlers {$/;"	s
+remote_address	lib/Dancer2/Core/Request.pm	/^sub remote_address        { $_[0]->address }$/;"	s
+remote_host	lib/Dancer2/Core/Request.pm	/^sub remote_host           { $_[0]->env->{REMOTE_HOST} }$/;"	s
+render	lib/Dancer2/Template/Simple.pm	/^sub render {$/;"	s
+render	lib/Dancer2/Template/TemplateToolkit.pm	/^sub render {$/;"	s
+render	lib/Dancer2/Template/Tiny.pm	/^sub render {$/;"	s
+render_layout	lib/Dancer2/Core/Role/Template.pm	/^sub render_layout {$/;"	s
+replace_hook	lib/Dancer2/Core/Role/Hookable.pm	/^sub replace_hook {$/;"	s
+request	lib/Dancer2/Core/DSL.pm	/^sub request { shift->context->request }$/;"	s
+request_method	lib/Dancer2/Core/Request.pm	/^sub request_method { method(@_) }$/;"	s
+request_uri	lib/Dancer2/Core/Request.pm	/^sub request_uri           { $_[0]->env->{REQUEST_URI} }$/;"	s
+reset_default	lib/Dancer2/Core/MIME.pm	/^sub reset_default {$/;"	s
+response	lib/Dancer2/Core/DSL.pm	/^sub response { shift->context->response }$/;"	s
+response	lib/Dancer2/Core/Role/StandardResponses.pm	/^sub response {$/;"	s
+response_400	lib/Dancer2/Core/Role/StandardResponses.pm	/^sub response_400 {$/;"	s
+response_403	lib/Dancer2/Core/Role/StandardResponses.pm	/^sub response_403 {$/;"	s
+response_404	lib/Dancer2/Core/Role/StandardResponses.pm	/^sub response_404 {$/;"	s
+response_content_is	lib/Dancer2/Test.pm	/^sub response_content_is {$/;"	s
+response_content_is_deeply	lib/Dancer2/Test.pm	/^sub response_content_is_deeply {$/;"	s
+response_content_isnt	lib/Dancer2/Test.pm	/^sub response_content_isnt {$/;"	s
+response_content_like	lib/Dancer2/Test.pm	/^sub response_content_like {$/;"	s
+response_content_unlike	lib/Dancer2/Test.pm	/^sub response_content_unlike {$/;"	s
+response_headers_are_deeply	lib/Dancer2/Test.pm	/^sub response_headers_are_deeply {$/;"	s
+response_headers_include	lib/Dancer2/Test.pm	/^sub response_headers_include {$/;"	s
+response_internal_error	lib/Dancer2/Core/Dispatcher.pm	/^sub response_internal_error {$/;"	s
+response_is_file	lib/Dancer2/Test.pm	/^sub response_is_file {$/;"	s
+response_not_found	lib/Dancer2/Core/Dispatcher.pm	/^sub response_not_found {$/;"	s
+response_status_is	lib/Dancer2/Test.pm	/^sub response_status_is {$/;"	s
+response_status_isnt	lib/Dancer2/Test.pm	/^sub response_status_isnt {$/;"	s
+retrieve	lib/Dancer2/Core/Role/SessionFactory.pm	/^sub retrieve {$/;"	s
+route_doesnt_exist	lib/Dancer2/Test.pm	/^sub route_doesnt_exist {$/;"	s
+route_exists	lib/Dancer2/Core/App.pm	/^sub route_exists {$/;"	s
+route_exists	lib/Dancer2/Test.pm	/^sub route_exists {$/;"	s
+route_pod_coverage	lib/Dancer2/Test.pm	/^sub route_pod_coverage {$/;"	s
+routes_regexps_for	lib/Dancer2/Core/App.pm	/^sub routes_regexps_for {$/;"	s
+runner	lib/Dancer2.pm	/^sub runner {$runner}$/;"	s
+runner	lib/Dancer2/Core/DSL.pm	/^sub runner { Dancer2->runner }$/;"	s
+scheme	lib/Dancer2/Core/Request.pm	/^sub scheme {$/;"	s
+script_name	lib/Dancer2/Core/Request.pm	/^sub script_name           { $_[0]->env->{SCRIPT_NAME} }$/;"	s
+secure	lib/Dancer2/Core/Request.pm	/^sub secure    { $_[0]->scheme   eq 'https' }$/;"	s
+send_error	lib/Dancer2/Core/DSL.pm	/^sub send_error {$/;"	s
+send_file	lib/Dancer2/Core/App.pm	/^sub send_file {$/;"	s
+send_file	lib/Dancer2/Core/DSL.pm	/^sub send_file { shift->app->send_file(@_) }$/;"	s
+serialize	lib/Dancer2/Core/Response.pm	/^sub serialize {$/;"	s
+serialize	lib/Dancer2/Serializer/Dumper.pm	/^sub serialize {$/;"	s
+serialize	lib/Dancer2/Serializer/JSON.pm	/^sub serialize {$/;"	s
+serialize	lib/Dancer2/Serializer/YAML.pm	/^sub serialize {$/;"	s
+session	lib/Dancer2/Core/App.pm	/^sub session {$/;"	s
+session	lib/Dancer2/Core/DSL.pm	/^sub session { shift->app->session(@_) }$/;"	s
+sessions	lib/Dancer2/Core/Role/SessionFactory.pm	/^sub sessions {$/;"	s
+set	lib/Dancer2/Core/DSL.pm	/^sub set { shift->setting(@_) }$/;"	s
+set_cookie_header	lib/Dancer2/Core/Role/SessionFactory.pm	/^sub set_cookie_header {$/;"	s
+set_file_mode	lib/Dancer2/FileUtils.pm	/^sub set_file_mode {$/;"	s
+setting	lib/Dancer2/Core/DSL.pm	/^sub setting { shift->app->setting(@_) }$/;"	s
+setting	lib/Dancer2/Core/Role/Config.pm	/^sub setting {$/;"	s
+settings	lib/Dancer2/Core/App.pm	/^sub settings {$/;"	s
+settings	lib/Dancer2/Core/Role/Config.pm	/^sub settings { shift->config }$/;"	s
+splat	lib/Dancer2/Core/DSL.pm	/^sub splat { shift->request->splat }$/;"	s
+splat	lib/Dancer2/Core/Request.pm	/^sub splat { @{ shift->params->{splat} || [] } }$/;"	s
+start	lib/Dancer2/Core/DSL.pm	/^sub start { shift->runner->start }$/;"	s
+start	lib/Dancer2/Core/Runner.pm	/^sub start {$/;"	s
+start	lib/Dancer2/Core/Server/PSGI.pm	/^sub start {$/;"	s
+start	lib/Dancer2/Core/Server/Standalone.pm	/^sub start {$/;"	s
+status	lib/Dancer2/Core/DSL.pm	/^sub status       { shift->response->status(@_) }$/;"	s
+status	lib/Dancer2/Core/HTTP.pm	/^sub status {$/;"	s
+status_message	lib/Dancer2/Core/HTTP.pm	/^sub status_message {$/;"	s
+stop	t/lib/MyDancerDSL.pm	/^sub stop   { goto &Dancer2::Core::DSL::halt }$/;"	s
+store	lib/Dancer2/Logger/Capture/Trap.pm	/^sub store {$/;"	s
+stuff	t/lib/PluginWithImport.pm	/^sub stuff {$_stuff}$/;"	s
+support_content_type	lib/Dancer2/Core/Role/Serializer.pm	/^sub support_content_type {$/;"	s
+supported_hooks	lib/Dancer2/Core/App.pm	/^sub supported_hooks {$/;"	s
+supported_hooks	lib/Dancer2/Core/Role/DSL.pm	/^sub supported_hooks { }$/;"	s
+supported_hooks	lib/Dancer2/Core/Role/Logger.pm	/^sub supported_hooks {$/;"	s
+supported_hooks	lib/Dancer2/Core/Role/Serializer.pm	/^sub supported_hooks {$/;"	s
+supported_hooks	lib/Dancer2/Core/Role/SessionFactory.pm	/^sub supported_hooks {$/;"	s
+supported_hooks	lib/Dancer2/Core/Role/Template.pm	/^sub supported_hooks {$/;"	s
+supported_hooks	lib/Dancer2/Handler/File.pm	/^sub supported_hooks {$/;"	s
+t::lib::App1	t/lib/App1.pm	/^package t::lib::App1;$/;"	p
+t::lib::App2	t/lib/App2.pm	/^package t::lib::App2;$/;"	p
+t::lib::DancerPlugin	t/lib/DancerPlugin.pm	/^package t::lib::DancerPlugin;$/;"	p
+t::lib::Foo	t/lib/Foo.pm	/^package t::lib::Foo;$/;"	p
+t::lib::FooPlugin	t/lib/FooPlugin.pm	/^package t::lib::FooPlugin;$/;"	p
+t::lib::Hookee	t/lib/Hookee.pm	/^package t::lib::Hookee;$/;"	p
+t::lib::PluginWithImport	t/lib/PluginWithImport.pm	/^package t::lib::PluginWithImport;$/;"	p
+t::lib::SubApp1	t/lib/SubApp1.pm	/^package t::lib::SubApp1;$/;"	p
+t::lib::SubApp2	t/lib/SubApp2.pm	/^package t::lib::SubApp2;$/;"	p
+t::lib::TestApp	t/lib/TestApp.pm	/^package t::lib::TestApp;$/;"	p
+t::lib::TestPod	lib/Dancer2/Test.pm	/^    package t::lib::TestPod;$/;"	p
+t::lib::TestPod	t/lib/TestPod.pm	/^package t::lib::TestPod;$/;"	p
+tabulate	lib/Dancer2/Core/Error.pm	/^sub tabulate {$/;"	s
+template	lib/Dancer2/Core/App.pm	/^sub template {$/;"	s
+template	lib/Dancer2/Core/DSL.pm	/^sub template { shift->app->template(@_) }$/;"	s
+things	lib/Dancer2.pm	/^things:$/;"	l
+throw	lib/Dancer2/Core/Error.pm	/^sub throw {$/;"	s
+to_dumper	lib/Dancer2/Core/DSL.pm	/^sub to_dumper {$/;"	s
+to_dumper	lib/Dancer2/Serializer/Dumper.pm	/^sub to_dumper {$/;"	s
+to_header	lib/Dancer2/Core/Cookie.pm	/^sub to_header {$/;"	s
+to_json	lib/Dancer2/Core/DSL.pm	/^sub to_json {$/;"	s
+to_json	lib/Dancer2/Serializer/JSON.pm	/^sub to_json {$/;"	s
+to_psgi	lib/Dancer2/Core/Response.pm	/^sub to_psgi {$/;"	s
+to_string	lib/Dancer2/Core/Request.pm	/^sub to_string {$/;"	s
+to_yaml	lib/Dancer2/Core/DSL.pm	/^sub to_yaml {$/;"	s
+to_yaml	lib/Dancer2/Serializer/YAML.pm	/^sub to_yaml {$/;"	s
+true	lib/Dancer2/Core/DSL.pm	/^sub true  {1}$/;"	s
+type	lib/Dancer2/Core/Request/Upload.pm	/^sub type {$/;"	s
+understands	lib/Dancer2/Core/Time.pm	/^understands:$/;"	l
+upload	lib/Dancer2/Core/DSL.pm	/^sub upload { shift->request->upload(@_) }$/;"	s
+upload	lib/Dancer2/Core/Request.pm	/^sub upload {$/;"	s
+uri	lib/Dancer2/Core/Request.pm	/^sub uri       { $_[0]->request_uri }$/;"	s
+uri_base	lib/Dancer2/Core/Request.pm	/^sub uri_base {$/;"	s
+uri_for	lib/Dancer2/Core/DSL.pm	/^sub uri_for { shift->request->uri_for(@_) }$/;"	s
+uri_for	lib/Dancer2/Core/Request.pm	/^sub uri_for {$/;"	s
+user	lib/Dancer2/Core/Request.pm	/^sub user                  { $_[0]->env->{REMOTE_USER} }$/;"	s
+validate_options	lib/Dancer2/Core/Route.pm	/^sub validate_options {$/;"	s
+var	lib/Dancer2/Core/Context.pm	/^sub var {$/;"	s
+var	lib/Dancer2/Core/DSL.pm	/^sub var  { shift->context->var(@_) }$/;"	s
+vars	lib/Dancer2/Core/Context.pm	/^sub vars { shift->buffer }$/;"	s
+vars	lib/Dancer2/Core/DSL.pm	/^sub vars { shift->context->vars }$/;"	s
+view_pathname	lib/Dancer2/Core/Role/Template.pm	/^sub view_pathname {$/;"	s
+warning	lib/Dancer2/Core/DSL.pm	/^sub warning { shift->log( warning => @_ ) }$/;"	s
+warning	lib/Dancer2/Core/Role/Logger.pm	/^sub warning {$/;"	s
+write	lib/Dancer2/Core/Session.pm	/^sub write {$/;"	s

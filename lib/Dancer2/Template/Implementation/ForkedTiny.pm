@@ -1,6 +1,6 @@
 package Dancer2::Template::Implementation::ForkedTiny;
 {
-    $Dancer2::Template::Implementation::ForkedTiny::VERSION = '0.09';
+    $Dancer2::Template::Implementation::ForkedTiny::VERSION = '0.10';
 }
 
 # ABSTRACT: Dancer2 own implementation of Template::Tiny
@@ -220,7 +220,6 @@ sub _expression {
 
 1;
 
-__END__
 
 =pod
 
@@ -230,14 +229,14 @@ Dancer2::Template::Implementation::ForkedTiny - Dancer2 own implementation of Te
 
 =head1 VERSION
 
-version 0.09
+version 0.10
 
 =head1 SYNOPSIS
 
   my $template = Dancer2::Template::Implementation::ForkedTiny->new(
       TRIM => 1,
   );
-  
+
   # Print the template results to STDOUT
   $template->process( <<'END_TEMPLATE', { foo => 'World' } );
   Hello [% foo %]!
@@ -327,10 +326,10 @@ Additional parameters can be provided without error, but will be ignored.
 
   # DEPRECATED: Return template results (emits a warning)
   my $text = $template->process( \$input, $vars );
-  
+
   # Print template results to STDOUT
   $template->process( \$input, $vars );
-  
+
   # Generate template results into a variable
   my $output = '';
   $template->process( \$input, $vars, \$output );
@@ -393,3 +392,6 @@ This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.
 
 =cut
+
+
+__END__

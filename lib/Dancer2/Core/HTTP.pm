@@ -2,7 +2,7 @@
 
 package Dancer2::Core::HTTP;
 {
-    $Dancer2::Core::HTTP::VERSION = '0.09';
+    $Dancer2::Core::HTTP::VERSION = '0.10';
 }
 
 use strict;
@@ -31,11 +31,11 @@ my $HTTP_CODES = {
     # redirections
     301 => 'Moved Permanently',
     302 => 'Found',
-    303 => '303 See Other',         # only on HTTP 1.1
+    303 => '303 See Other',                    # only on HTTP 1.1
     304 => 'Not Modified',
-    305 => '305 Use Proxy',         # only on HTTP 1.1
+    305 => '305 Use Proxy',                    # only on HTTP 1.1
     306 => 'Switch Proxy',
-    307 => 'Temporary Redirect',    # only on HTTP 1.1
+    307 => 'Temporary Redirect',               # only on HTTP 1.1
 
     # 308 => 'Permanent Redirect'    # approved as experimental RFC
 
@@ -112,7 +112,7 @@ $HTTP_CODES->{error} = $HTTP_CODES->{internal_server_error};
 sub status {
     my ( $class, $status ) = @_;
     return if !defined $status;
-    return $status if $status =~ /^\d+/;
+    return $status if $status =~ /^\d+$/;
     if ( exists $HTTP_CODES->{$status} ) {
         return $HTTP_CODES->{$status};
     }
@@ -140,7 +140,7 @@ Dancer2::Core::HTTP - helper for rendering HTTP status codes for Dancer2
 
 =head1 VERSION
 
-version 0.09
+version 0.10
 
 =head1 FUNCTIONS
 

@@ -1,7 +1,7 @@
 # ABSTRACT: Top-layer class to start a dancer app
 package Dancer2::Core::Runner;
 {
-    $Dancer2::Core::Runner::VERSION = '0.09';
+    $Dancer2::Core::Runner::VERSION = '0.10';
 }
 
 use Moo;
@@ -65,7 +65,7 @@ sub default_config {
         content_type => ( $ENV{DANCER_CONTENT_TYPE} || 'text/html' ),
         charset      => ( $ENV{DANCER_CHARSET}      || '' ),
         warnings     => ( $ENV{DANCER_WARNINGS}     || 0 ),
-        startup_info => ( $ENV{DANCER_STARTUP_INFO} || 0 ),
+        startup_info => ( $ENV{DANCER_STARTUP_INFO} || 1 ),
         traces       => ( $ENV{DANCER_TRACES}       || 0 ),
         logger       => ( $ENV{DANCER_LOGGER}       || 'console' ),
         host         => ( $ENV{DANCER_SERVER}       || '0.0.0.0' ),
@@ -73,8 +73,7 @@ sub default_config {
         is_daemon    => ( $ENV{DANCER_DAEMON}       || 0 ),
         views        => ( $ENV{DANCER_VIEWS}
               || path( $self->config_location, 'views' ) ),
-        appdir          => $self->location,
-        import_warnings => 1,
+        appdir => $self->location,
     };
 }
 
@@ -172,7 +171,6 @@ sub name {"runner"}
 #
 #Returns the environment. Same as C<< $object->environment >>.
 
-__END__
 
 =pod
 
@@ -182,7 +180,7 @@ Dancer2::Core::Runner - Top-layer class to start a dancer app
 
 =head1 VERSION
 
-version 0.09
+version 0.10
 
 =head1 DESCRIPTION
 
@@ -245,3 +243,6 @@ This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.
 
 =cut
+
+
+__END__

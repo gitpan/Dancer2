@@ -1,6 +1,6 @@
 package Dancer2;
 {
-    $Dancer2::VERSION = '0.09';
+    $Dancer2::VERSION = '0.10';
 }
 
 # ABSTRACT: Lightweight yet powerful web application framework
@@ -8,6 +8,7 @@ package Dancer2;
 use strict;
 use warnings;
 use Class::Load 'load_class';
+use Carp 'croak';
 use Dancer2::Core;
 use Dancer2::Core::Runner;
 use Dancer2::Core::App;
@@ -31,15 +32,13 @@ sub import {
     my ( $caller, $script ) = caller;
 
     strict->import;
+    warnings->import;
     utf8->import;
 
     my @final_args;
     my $as_script = 0;
     foreach (@args) {
-        if ( $_ eq ':tests' ) {
-            push @final_args, '!pass' => 1;
-        }
-        elsif ( $_ eq ':script' ) {
+        if ( $_ eq ':script' ) {
             $as_script = 1;
         }
         elsif ( substr( $_, 0, 1 ) eq '!' ) {
@@ -52,7 +51,7 @@ sub import {
 
     scalar(@final_args) % 2
       and die
-      "parameters to 'use Dancer2' should be one of : 'key => value', ':tests', ':script', or !<keyword>, where <keyword> is a DSL keyword you don't want to import";
+      "parameters to 'use Dancer2' should be one of : 'key => value', ':script', or !<keyword>, where <keyword> is a DSL keyword you don't want to import";
     my %final_args = @final_args;
 
     $final_args{dsl} ||= 'Dancer2::Core::DSL';
@@ -64,6 +63,11 @@ sub import {
 
         $runner = Dancer2::Core::Runner->new( caller => $script, );
     }
+
+    # Include the local ./lib directory by default
+    my $local_libdir = Dancer2::FileUtils::path( $runner->location, 'lib' );
+    eval "use lib '$local_libdir'" if -d $local_libdir;
+    croak "Cannot use local lib: $local_libdir: $@" if $@;
 
     my $server = $runner->server;
 
@@ -77,14 +81,10 @@ sub import {
         postponed_hooks => $server->postponed_hooks,
     );
 
-    Dancer2::Core::debug("binding import method to $caller");
     _set_import_method_to_caller($caller);
 
     # register the app within the runner instance
-    Dancer2::Core::debug("binding app to $caller");
     $server->register_application($app);
-
-    Dancer2::Core::debug("exporting DSL symbols for $caller");
 
     # load the DSL, defaulting to Dancer2::Core::DSL
     load_class( $final_args{dsl} );
@@ -128,12 +128,12 @@ Dancer2 - Lightweight yet powerful web application framework
 
 =head1 VERSION
 
-version 0.09
+version 0.10
 
 =head1 DESCRIPTION
 
-Dancer2 is the new generation of L<Dancer>, the lightweight web-framework for 
-Perl. Dancer2 is a complete rewrite based on L<Moo>. 
+Dancer2 is the new generation of L<Dancer>, the lightweight web-framework for
+Perl. Dancer2 is a complete rewrite based on L<Moo>.
 
 Dancer2 is easy and fun:
 
@@ -141,10 +141,10 @@ Dancer2 is easy and fun:
     get '/' => sub { "Hello World" };
     dance;
 
-This is the main module for the Dancer2 distribution. It contains logic for 
-creating a new Dancer2 application. 
+This is the main module for the Dancer2 distribution. It contains logic for
+creating a new Dancer2 application.
 
-You are also welcome to join our mailing list at dancer-users@perldancer.org, 
+You are also welcome to join our mailing list at dancer-users@perldancer.org,
 and we're also on IRC: #dancer on irc.perl.org.
 
 =head2 Documentation Index
@@ -192,14 +192,14 @@ rely on plugin authors to warn us about new modules.
 
 =head2 import;
 
-If it doesn't exist already, C<import> creates a new runner, imports strict 
-and warnings, loads additional libraries, creates a new Dancer2 app (of type 
+If it doesn't exist already, C<import> creates a new runner, imports strict
+and warnings, loads additional libraries, creates a new Dancer2 app (of type
 L<Dancer2::Core::App>) and exports the DSL symbols to the caller.
 
 If any additional argument processing is needed, it will be done at this point.
 
-Import gets called when you use Dancer2. You can specify import options giving 
-you control over the keywords that will be imported into your webapp and other 
+Import gets called when you use Dancer2. You can specify import options giving
+you control over the keywords that will be imported into your webapp and other
 things:
 
     use Dancer2 ':script';
@@ -207,11 +207,6 @@ things:
 =head3 Import Options
 
 =over 4
-
-=item C<:tests>
-
-No importing of C<pass> function. This is to prevent conflict with
-L<Test::More> et al.
 
 =item C<:script>
 

@@ -2,7 +2,7 @@
 
 package Dancer2::Handler::File;
 {
-    $Dancer2::Handler::File::VERSION = '0.09';
+    $Dancer2::Handler::File::VERSION = '0.10';
 }
 use Carp 'croak';
 use Moo;
@@ -149,7 +149,7 @@ Dancer2::Handler::File - class for handling file content rendering
 
 =head1 VERSION
 
-version 0.09
+version 0.10
 
 =head1 AUTHOR
 

@@ -2,7 +2,7 @@
 
 package Dancer2::Core::Factory;
 {
-    $Dancer2::Core::Factory::VERSION = '0.09';
+    $Dancer2::Core::Factory::VERSION = '0.10';
 }
 use strict;
 use warnings;
@@ -36,7 +36,7 @@ Dancer2::Core::Factory - Instantiate components by type and name
 
 =head1 VERSION
 
-version 0.09
+version 0.10
 
 =head1 AUTHOR
 

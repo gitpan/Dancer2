@@ -2,7 +2,7 @@
 
 package Dancer2::Core::Role::Engine;
 {
-    $Dancer2::Core::Role::Engine::VERSION = '0.09';
+    $Dancer2::Core::Role::Engine::VERSION = '0.10';
 }
 use Moo::Role;
 use Dancer2::Core::Types;
@@ -42,7 +42,7 @@ Dancer2::Core::Role::Engine - Role for engines
 
 =head1 VERSION
 
-version 0.09
+version 0.10
 
 =head1 DESCRIPTION
 
@@ -53,7 +53,7 @@ This role consumes the L<Dancer2::Core::Role::Hookable> role.
 
 =head1 ATTRIBUTES
 
-=head2 environment 
+=head2 environment
 
 The value of the current environment
 

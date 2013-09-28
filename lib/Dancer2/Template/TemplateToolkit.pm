@@ -2,7 +2,7 @@
 
 package Dancer2::Template::TemplateToolkit;
 {
-    $Dancer2::Template::TemplateToolkit::VERSION = '0.09';
+    $Dancer2::Template::TemplateToolkit::VERSION = '0.10';
 }
 
 use strict;
@@ -54,6 +54,7 @@ sub render {
 
 1;
 
+
 __END__
 
 =pod
@@ -64,7 +65,7 @@ Dancer2::Template::TemplateToolkit - Template toolkit engine for Dancer2
 
 =head1 VERSION
 
-version 0.09
+version 0.10
 
 =head1 SYNOPSIS
 

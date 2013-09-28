@@ -1,6 +1,6 @@
 package Dancer2::Template::Tiny;
 {
-    $Dancer2::Template::Tiny::VERSION = '0.09';
+    $Dancer2::Template::Tiny::VERSION = '0.10';
 }
 
 # ABSTRACT: Template::Tiny engine for Dancer2
@@ -43,7 +43,6 @@ sub render {
 
 1;
 
-__END__
 
 =pod
 
@@ -53,7 +52,7 @@ Dancer2::Template::Tiny - Template::Tiny engine for Dancer2
 
 =head1 VERSION
 
-version 0.09
+version 0.10
 
 =head1 SYNOPSIS
 
@@ -120,3 +119,6 @@ This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.
 
 =cut
+
+
+__END__

@@ -2,7 +2,7 @@
 
 package Dancer2::Plugin::Ajax;
 {
-    $Dancer2::Plugin::Ajax::VERSION = '0.09';
+    $Dancer2::Plugin::Ajax::VERSION = '0.10';
 }
 
 use strict;
@@ -12,25 +12,13 @@ use Dancer2;
 use Dancer2::Plugin;
 
 
-on_plugin_import {
-    my $dsl = shift;
-    $dsl->app->add_hook(
-        Dancer2::Core::Hook->new(
-            name => 'before',
-            code => sub {
-                if ( $dsl->request->is_ajax ) {
-                    $dsl->request->content_type('text/xml');
-                }
-            }
-        )
-    );
-};
-
 register 'ajax' => sub {
     my ( $dsl, $pattern, @rest ) = @_;
 
     my $code;
     for my $e (@rest) { $code = $e if ( ref($e) eq 'CODE' ) }
+
+    my $content_type = plugin_setting->{content_type} || 'text/xml';
 
     my $ajax_route = sub {
 
@@ -38,6 +26,11 @@ register 'ajax' => sub {
         if ( not $dsl->request->is_ajax ) {
             $dsl->pass and return 0;
         }
+
+        # Default response content type is either what's defined in the
+        # plugin setting or text/xml
+        $dsl->response->header('Content-Type')
+          or $dsl->response->content_type($content_type);
 
         # disable layout
         my $layout = $dsl->setting('layout');
@@ -63,7 +56,7 @@ Dancer2::Plugin::Ajax - a plugin for adding Ajax route handlers
 
 =head1 VERSION
 
-version 0.09
+version 0.10
 
 =head1 SYNOPSIS
 
@@ -97,9 +90,20 @@ Disable the layout
 
 =item *
 
-The action built is a POST request.
+The action built matches POST / GET requests.
 
 =back
+
+=head1 CONFIGURATION
+
+By default the plugin will use a content-type of 'text/xml' but this can be overridden
+with plugin setting 'content_type'.
+
+Here is example to use JSON:
+
+  plugins:
+    Ajax:
+      content_type: 'application/json'
 
 =head1 AUTHOR
 

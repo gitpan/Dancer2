@@ -1,7 +1,7 @@
 # ABSTRACT: Config role for Dancer2 core objects
 package Dancer2::Core::Role::Config;
 {
-    $Dancer2::Core::Role::Config::VERSION = '0.09';
+    $Dancer2::Core::Role::Config::VERSION = '0.10';
 }
 
 use Moo::Role;
@@ -274,10 +274,6 @@ sub _build_config_triggers {
 
     # TODO route_cache
     return {
-        import_warnings => sub {
-            my ( $self, $value ) = @_;
-            $^W = $value ? 1 : 0;
-        },
         traces => sub {
             my ( $self, $traces ) = @_;
             require Carp;
@@ -436,7 +432,6 @@ sub _build_engine_serializer {
 
 1;
 
-__END__
 
 =pod
 
@@ -446,7 +441,7 @@ Dancer2::Core::Role::Config - Config role for Dancer2 core objects
 
 =head1 VERSION
 
-version 0.09
+version 0.10
 
 =head1 DESCRIPTION
 
@@ -536,3 +531,6 @@ This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.
 
 =cut
+
+
+__END__

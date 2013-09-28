@@ -1,6 +1,6 @@
 package Dancer2::Session::YAML;
 {
-    $Dancer2::Session::YAML::VERSION = '0.09';
+    $Dancer2::Session::YAML::VERSION = '0.10';
 }
 
 # ABSTRACT: YAML-file-based session backend for Dancer2
@@ -30,7 +30,6 @@ sub _thaw_from_handle {
 
 1;
 
-__END__
 
 =pod
 
@@ -40,7 +39,7 @@ Dancer2::Session::YAML - YAML-file-based session backend for Dancer2
 
 =head1 VERSION
 
-version 0.09
+version 0.10
 
 =head1 DESCRIPTION
 
@@ -93,3 +92,6 @@ This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.
 
 =cut
+
+
+__END__

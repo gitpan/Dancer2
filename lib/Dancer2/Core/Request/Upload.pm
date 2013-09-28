@@ -1,37 +1,38 @@
 package Dancer2::Core::Request::Upload;
 {
-    $Dancer2::Core::Request::Upload::VERSION = '0.09';
+    $Dancer2::Core::Request::Upload::VERSION = '0.10';
 }
 
 # ABSTRACT: Class representing file upload requests
 use Moo;
-use Dancer2::Core::Types;
 
 use Carp;
 use File::Spec;
+
+use Dancer2::Core::Types;
 use Dancer2::FileUtils qw(open_file);
 
 
 has filename => (
-    is  => 'rw',
+    is  => 'ro',
     isa => Str,
 );
 
 
 has tempname => (
-    is  => 'rw',
+    is  => 'ro',
     isa => Str,
 );
 
 
 has headers => (
-    is  => 'rw',
+    is  => 'ro',
     isa => HashRef,
 );
 
 
 has size => (
-    is  => 'rw',
+    is  => 'ro',
     isa => Num,
 );
 
@@ -91,6 +92,7 @@ sub type {
 
 1;
 
+
 __END__
 
 =pod
@@ -101,7 +103,7 @@ Dancer2::Core::Request::Upload - Class representing file upload requests
 
 =head1 VERSION
 
-version 0.09
+version 0.10
 
 =head1 DESCRIPTION
 

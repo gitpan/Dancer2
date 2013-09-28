@@ -1,6 +1,6 @@
 package Dancer2::Core::Session;
 {
-    $Dancer2::Core::Session::VERSION = '0.09';
+    $Dancer2::Core::Session::VERSION = '0.10';
 }
 
 #ABSTRACT: class to represent any session object
@@ -14,14 +14,17 @@ use Dancer2::Core::Time;
 
 
 has id => (
-    is       => 'ro',
+
+    # for some specific plugins this should be rw.
+    # refer to https://github.com/PerlDancer/Dancer2/issues/460
+    is       => 'rw',
     isa      => Str,
     required => 1,
 );
 
 
 has data => (
-    is      => 'rw',
+    is      => 'ro',
     lazy    => 1,
     default => sub { {} },
 );
@@ -76,7 +79,7 @@ Dancer2::Core::Session - class to represent any session object
 
 =head1 VERSION
 
-version 0.09
+version 0.10
 
 =head1 DESCRIPTION
 
@@ -98,6 +101,8 @@ context object if a session engine is defined.
 The identifier of the session object. Required. By default,
 L<Dancer2::Core::Role::SessionFactory> sets this to a randomly-generated,
 guaranteed-unique string.
+
+This attribute can be modified if your Session implementation requires this.
 
 =head2 data
 

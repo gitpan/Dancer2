@@ -2,7 +2,7 @@
 
 package Dancer2::Test;
 {
-    $Dancer2::Test::VERSION = '0.09';
+    $Dancer2::Test::VERSION = '0.10';
 }
 use strict;
 use warnings;
@@ -76,7 +76,7 @@ sub _build_request_from_env {
     # arguments can be passed as the triplet
     # or as a arrayref, or as a simple string
     my ( $method, $path, $options ) =
-        @_ > 1               ? @_
+        @_ > 1 ? @_
       : ref $_[0] eq 'ARRAY' ? @{ $_[0] }
       :                        ( GET => $_[0], {} );
 
@@ -467,7 +467,7 @@ sub import {
         [   map {
                 $_->dancer_app->finish();
                 $_->dancer_app;
-            } @applications
+              } @applications
         ]
     );
 
@@ -572,7 +572,7 @@ Dancer2::Test - Useful routines for testing Dancer2 apps
 
 =head1 VERSION
 
-version 0.09
+version 0.10
 
 =head1 DESCRIPTION
 
@@ -589,14 +589,14 @@ Returns a Dancer2::Core::Response object for the given request.
 Only $method and $path are required.
 
 $params is a hashref with 'body' as a string; 'headers' can be an arrayref or
-a HTTP::Headers object, 'files' can be arrayref of hashref, containing some 
+a HTTP::Headers object, 'files' can be arrayref of hashref, containing some
 files to upload:
 
-    dancer_response($method, $path, 
+    dancer_response($method, $path,
         {
-            params => $params, 
-            body => $body, 
-            headers => $headers, 
+            params => $params,
+            body => $body,
+            headers => $headers,
             files => [ { filename => '/path/to/file', name => 'my_file' } ],
         }
     );
@@ -650,7 +650,7 @@ registry.
 
 =head2 route_doesnt_exist([$method, $path], $test_name)
 
-Asserts that the given request does not match any route handler 
+Asserts that the given request does not match any route handler
 in Dancer2's registry.
 
     route_doesnt_exist [GET => '/bogus_path'], "GET /bogus_path is not handled";
@@ -666,14 +666,14 @@ one given.
 
 Asserts that the response content is equal to the C<$expected> string.
 
- response_content_is [GET => '/'], "Hello, World", 
+ response_content_is [GET => '/'], "Hello, World",
         "got expected response content for GET /";
 
 =head2 response_content_isnt([$method, $path], $not_expected, $test_name)
 
 Asserts that the response content is not equal to the C<$not_expected> string.
 
-    response_content_isnt [GET => '/'], "Hello, World", 
+    response_content_isnt [GET => '/'], "Hello, World",
         "got expected response content for GET /";
 
 =head2 response_content_like([$method, $path], $regexp, $test_name)
@@ -681,7 +681,7 @@ Asserts that the response content is not equal to the C<$not_expected> string.
 Asserts that the response content for the given request matches the regexp
 given.
 
-    response_content_like [GET => '/'], qr/Hello, World/, 
+    response_content_like [GET => '/'], qr/Hello, World/,
         "response content looks good for GET /";
 
 =head2 response_content_unlike([$method, $path], $regexp, $test_name)
@@ -689,20 +689,20 @@ given.
 Asserts that the response content for the given request does not match the regexp
 given.
 
-    response_content_unlike [GET => '/'], qr/Page not found/, 
+    response_content_unlike [GET => '/'], qr/Page not found/,
         "response content looks good for GET /";
 
 =head2 response_content_is_deeply([$method, $path], $expected_struct, $test_name)
 
-Similar to response_content_is(), except that if response content and 
-$expected_struct are references, it does a deep comparison walking each data 
-structure to see if they are equivalent.  
+Similar to response_content_is(), except that if response content and
+$expected_struct are references, it does a deep comparison walking each data
+structure to see if they are equivalent.
 
 If the two structures are different, it will display the place where they start
 differing.
 
-    response_content_is_deeply [GET => '/complex_struct'], 
-        { foo => 42, bar => 24}, 
+    response_content_is_deeply [GET => '/complex_struct'],
+        { foo => 42, bar => 24},
         "got expected response structure for GET /complex_struct";
 
 =head2 response_is_file ($request, $test_name);
@@ -843,7 +843,7 @@ head1, head2,head3,head4, item.
         # code
     }
 
-    or 
+    or
 
     any ['get', 'post'] => '/myaction' => sub {
         # code

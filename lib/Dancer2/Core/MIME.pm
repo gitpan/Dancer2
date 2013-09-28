@@ -2,16 +2,14 @@
 
 package Dancer2::Core::MIME;
 {
-    $Dancer2::Core::MIME::VERSION = '0.09';
+    $Dancer2::Core::MIME::VERSION = '0.10';
 }
 
-use strict;
-use warnings;
-
 use Moo;
-use Dancer2::Core::Types;
-use Carp 'croak';
+
 use MIME::Types;
+
+use Dancer2::Core::Types;
 
 # Initialise MIME::Types at compile time, to ensure it's done before
 # the fork in a preforking webserver like mod_perl or Starman. Not
@@ -30,7 +28,7 @@ has mime_type => (
 );
 
 has custom_types => (
-    is      => 'rw',
+    is      => 'ro',
     isa     => HashRef,
     default => sub { +{} },
 );
@@ -83,7 +81,6 @@ sub for_name {
 
 1;
 
-__END__
 
 =pod
 
@@ -93,35 +90,35 @@ Dancer2::Core::MIME - Class to ease manipulation of MIME types
 
 =head1 VERSION
 
-version 0.09
+version 0.10
 
 =head1 SYNOPSIS
 
-	use Dancer2::Core::MIME;
+    use Dancer2::Core::MIME;
 
-	my $mime = Dancer::MIME->new();
+    my $mime = Dancer::MIME->new();
 
-	# get mime type for an alias
-	my $type = $mime->for_name('css');
+    # get mime type for an alias
+    my $type = $mime->for_name('css');
 
-	# set a new mime type
-	my $type = $mime->add_type( foo => 'text/foo' );
+    # set a new mime type
+    my $type = $mime->add_type( foo => 'text/foo' );
 
-	# set a mime type alias
-	my $alias = $mime->add_alias( f => 'foo' );
+    # set a mime type alias
+    my $alias = $mime->add_alias( f => 'foo' );
 
-	# get mime type for a file (based on extension)
-	my $file = $mime->for_file( "foo.bar" );
+    # get mime type for a file (based on extension)
+    my $file = $mime->for_file( "foo.bar" );
 
-	# set the $thing into a content $type.
-	my $type = $mime->name_or_type($thing);
+    # set the $thing into a content $type.
+    my $type = $mime->name_or_type($thing);
 
-	# get current defined default mime type
-	my $type = $mime->default;
+    # get current defined default mime type
+    my $type = $mime->default;
 
-	# set the default mime type using config.yml
-	# or using the set keyword
-	set default_mime_type => 'text/plain';
+    # set the default mime type using config.yml
+    # or using the set keyword
+    set default_mime_type => 'text/plain';
 
 =head1 DESCRIPTION
 
@@ -181,3 +178,6 @@ This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.
 
 =cut
+
+
+__END__

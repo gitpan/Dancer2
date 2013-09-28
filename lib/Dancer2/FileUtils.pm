@@ -2,7 +2,7 @@
 
 package Dancer2::FileUtils;
 {
-    $Dancer2::FileUtils::VERSION = '0.09';
+    $Dancer2::FileUtils::VERSION = '0.10';
 }
 
 use strict;
@@ -111,7 +111,7 @@ Dancer2::FileUtils - File utility helpers
 
 =head1 VERSION
 
-version 0.09
+version 0.10
 
 =head1 SYNOPSIS
 
@@ -135,7 +135,7 @@ version 0.09
     set_file_mode($fh);
     my @content = read_glob_content($fh);
     my $content = read_glob_content($fh);
-    
+
 
     use Dancer2::FileUtils qw/open_file/;
 
@@ -156,7 +156,7 @@ file reading subroutines or using additional modules.
 
 =head2 my $path = path( 'folder', 'folder', 'filename');
 
-Provides comfortable path resolution, internally using L<File::Spec>. 'path' 
+Provides comfortable path resolution, internally using L<File::Spec>. 'path'
 does not verify paths, it just normalizes the path.
 
 =head2 my $path = path_or_empty('folder, 'folder','filename');

@@ -2,7 +2,7 @@
 
 package Dancer2::Core::Cookie;
 {
-    $Dancer2::Core::Cookie::VERSION = '0.09';
+    $Dancer2::Core::Cookie::VERSION = '0.10';
 }
 use Moo;
 use URI::Escape;
@@ -115,7 +115,7 @@ Dancer2::Core::Cookie - A cookie representing class
 
 =head1 VERSION
 
-version 0.09
+version 0.10
 
 =head1 SYNOPSIS
 
@@ -139,7 +139,7 @@ Dancer2::Cookie provides a HTTP cookie object to work with cookies.
 
 The cookie's value.
 
-(Note that cookie objects use overloading to stringify to their value, so if 
+(Note that cookie objects use overloading to stringify to their value, so if
 you say e.g. return "Hi, $cookie", you'll get the cookie's value there.)
 
 In list context, returns a list of potentially multiple values; in scalar
@@ -156,7 +156,7 @@ The cookie's expiration date.  There are several formats.
 
 Unix epoch time like 1288817656 to mean "Wed, 03-Nov-2010 20:54:16 GMT"
 
-It also supports a human readable offset from the current time such as "2 hours". 
+It also supports a human readable offset from the current time such as "2 hours".
 See the documentation of L<Dancer2::Core::Time> for details of all supported
 formats.
 

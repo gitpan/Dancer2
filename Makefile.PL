@@ -79,6 +79,7 @@ my %WriteMakefileArgs = (
   "TEST_REQUIRES" => {
     "Capture::Tiny" => "0.12",
     "ExtUtils::MakeMaker" => 0,
+    "File::Spec" => 0,
     "File::Temp" => "0.22",
     "FindBin" => 0,
     "HTTP::Body" => 0,
@@ -86,6 +87,7 @@ my %WriteMakefileArgs = (
     "HTTP::Server::Simple::PSGI" => 0,
     "IO::Handle" => 0,
     "IPC::Open3" => 0,
+    "LWP::Protocol::PSGI" => "0.06",
     "Test::Fatal" => 0,
     "Test::MockTime" => 0,
     "Test::More" => "0.92",
@@ -97,7 +99,7 @@ my %WriteMakefileArgs = (
     "utf8" => 0,
     "vars" => 0
   },
-  "VERSION" => "0.09",
+  "VERSION" => "0.10",
   "test" => {
     "TESTS" => "t/*.t t/roles/*.t t/route-pod-coverage/*.t t/template_tiny/*.t"
   }
