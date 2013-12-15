@@ -1,6 +1,6 @@
 package Dancer2::Core::Request::Upload;
 {
-    $Dancer2::Core::Request::Upload::VERSION = '0.10';
+  $Dancer2::Core::Request::Upload::VERSION = '0.11';
 }
 
 # ABSTRACT: Class representing file upload requests
@@ -17,6 +17,7 @@ has filename => (
     is  => 'ro',
     isa => Str,
 );
+
 
 
 has tempname => (
@@ -37,6 +38,7 @@ has size => (
 );
 
 
+
 sub file_handle {
     my ($self) = @_;
     return $self->{_fh} if defined $self->{_fh};
@@ -45,16 +47,17 @@ sub file_handle {
 }
 
 
+
 sub copy_to {
     my ( $self, $target ) = @_;
     require File::Copy;
-    File::Copy::copy( $self->{tempname}, $target );
+    File::Copy::copy( $self->tempname, $target );
 }
 
 
 sub link_to {
     my ( $self, $target ) = @_;
-    CORE::link( $self->{tempname}, $target );
+    CORE::link( $self->tempname, $target );
 }
 
 
@@ -85,13 +88,13 @@ sub basename {
 }
 
 
+
 sub type {
     my $self = shift;
     return $self->headers->{'Content-Type'};
 }
 
 1;
-
 
 __END__
 
@@ -103,7 +106,7 @@ Dancer2::Core::Request::Upload - Class representing file upload requests
 
 =head1 VERSION
 
-version 0.10
+version 0.11
 
 =head1 DESCRIPTION
 

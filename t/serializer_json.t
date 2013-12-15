@@ -24,7 +24,7 @@ for my $test (@tests) {
 
 use Dancer2::Core::Response;
 my $resp = Dancer2::Core::Response->new(
-    content    => '---',
+    content => '---',
     serializer => Dancer2::Serializer::JSON->new(),
 );
 

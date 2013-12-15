@@ -46,6 +46,7 @@ sub run_test {
     is $req->user,                  'sukria';
     is $req->script_name,           '/foo';
     is $req->scheme,                'http';
+    is $req->referer,               undef;
     ok( !$req->secure );
     is $req->method,         'GET';
     is $req->request_method, 'GET';
@@ -90,8 +91,7 @@ sub run_test {
         is $req->base, 'http://oddhostname:5000/foo';
     }
 
-    note "testing behind proxy";
-    {
+    note "testing behind proxy"; {
         my $req = Dancer2::Core::Request->new(
             env             => $env,
             is_behind_proxy => 1
@@ -101,9 +101,7 @@ sub run_test {
         is $req->scheme, 'https';
     }
 
-    note "testing path, dispatch_path and uri_base";
-    {
-
+    note "testing path, dispatch_path and uri_base"; {
         # Base env used for path, dispatch_path and uri_base tests
         my $base = {
             'psgi.url_scheme' => 'http',

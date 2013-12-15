@@ -2,7 +2,7 @@
 
 package Dancer2::Test;
 {
-    $Dancer2::Test::VERSION = '0.10';
+  $Dancer2::Test::VERSION = '0.11';
 }
 use strict;
 use warnings;
@@ -463,13 +463,10 @@ sub import {
     }
 
     # register the apps to the test dispatcher
-    $_dispatcher->apps(
-        [   map {
-                $_->dancer_app->finish();
-                $_->dancer_app;
-              } @applications
-        ]
-    );
+    $_dispatcher->apps( [ map {
+        $_->dancer_app->finish();
+        $_->dancer_app;
+    } @applications ] );
 
     $class->export_to_level( 1, $class, @EXPORT );
 }
@@ -572,7 +569,7 @@ Dancer2::Test - Useful routines for testing Dancer2 apps
 
 =head1 VERSION
 
-version 0.10
+version 0.11
 
 =head1 DESCRIPTION
 
@@ -826,7 +823,7 @@ Asserts that your apps have pods for all routes
 
     is_pod_covered 'is pod covered'
 
-to avoid test failures, you shoud document all your routes with one of the following:
+to avoid test failures, you should document all your routes with one of the following:
 head1, head2,head3,head4, item.
 
     ex:

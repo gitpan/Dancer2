@@ -26,13 +26,12 @@ my $server = sub {
 
     get '/get_session' => sub {
         session 'more' => 'one';
-        sprintf( "%s:%s:%s", session("more"), session('foo'),
-            session('zbr') || "" );
+        sprintf("%s:%s:%s", session("more"), session('foo') , session('zbr')||"")
     };
 
     get '/clear' => sub {
-        session "foo"  => undef;
-        session "zbr"  => undef;
+        session "foo" => undef;
+        session "zbr" => undef;
         session "more" => undef;
     };
 
@@ -42,12 +41,11 @@ my $server = sub {
 
 my $client = sub {
     my $port = shift;
-    my $ua   = LWP::UserAgent->new;
+    my $ua = LWP::UserAgent->new;
     $ua->cookie_jar( { file => "$tempdir/.cookies.txt" } );
 
     my $res = $ua->get("http://127.0.0.1:$port/set_chained_session");
-    is $res->content, q{one:bar:ugh},
-      'Session value preserved after chained forwards';
+    is $res->content, q{one:bar:ugh}, 'Session value preserved after chained forwards';
 
     $res = $ua->get("http://127.0.0.1:$port/get_session");
     is $res->content, q{one:bar:ugh}, 'Session values preserved between calls';
@@ -55,10 +53,9 @@ my $client = sub {
     $res = $ua->get("http://127.0.0.1:$port/clear");
 
     $res = $ua->get("http://127.0.0.1:$port/set_session");
-    is $res->content, q{one:bar:},
-      'Session value preserved after forward from route';
+    is $res->content, q{one:bar:}, 'Session value preserved after forward from route';
 };
 
-Test::TCP::test_tcp( client => $client, server => $server );
+Test::TCP::test_tcp( client => $client, server => $server);
 
 done_testing;

@@ -2,7 +2,7 @@
 
 package Dancer2::Core::Response;
 {
-    $Dancer2::Core::Response::VERSION = '0.10';
+  $Dancer2::Core::Response::VERSION = '0.11';
 }
 
 use Moo;
@@ -35,6 +35,7 @@ has has_passed => (
 sub pass { shift->has_passed(1) }
 
 
+
 has serializer => (
     is        => 'ro',
     isa       => Maybe( ConsumerOf ['Dancer2::Core::Role::Serializer'] ),
@@ -42,11 +43,13 @@ has serializer => (
 );
 
 
+
 has is_encoded => (
     is      => 'rw',
     isa     => Bool,
     default => sub {0},
 );
+
 
 
 has is_halted => (
@@ -57,6 +60,7 @@ has is_halted => (
 
 
 sub halt { shift->is_halted(1) }
+
 
 
 has status => (
@@ -76,6 +80,7 @@ has status => (
 );
 
 
+
 has content => (
     is      => 'rw',
     isa     => Str,
@@ -89,16 +94,15 @@ has content => (
    # changes
     trigger => sub {
         my ( $self, $value ) = @_;
-        $self->has_passed
-          or $self->header( 'Content-Length' => length($value) );
+        $self->has_passed or $self->header( 'Content-Length' => length($value) );
         return $value;
     },
 );
 
 before content => sub {
     my $self = shift;
-    if ( ref( $_[0] ) and $self->has_serializer ) {
-        $_[0] = $self->serialize( $_[0] );
+    if (ref($_[0]) and $self->has_serializer) {
+        $_[0] = $self->serialize($_[0]);
     }
 };
 
@@ -122,10 +126,12 @@ sub encode_content {
 }
 
 
+
 sub to_psgi {
     my ($self) = @_;
     return [ $self->status, $self->headers_to_array, [ $self->content ], ];
 }
+
 
 
 # sugar for accessing the content_type header, with mimetype care
@@ -158,6 +164,7 @@ sub is_forwarded {
 }
 
 
+
 sub redirect {
     my ( $self, $destination, $status ) = @_;
     $self->status( $status || 302 );
@@ -165,6 +172,7 @@ sub redirect {
     # we want to stringify the $destination object (URI object)
     $self->header( 'Location' => "$destination" );
 }
+
 
 
 sub error {
@@ -180,14 +188,15 @@ sub error {
 }
 
 
+
 sub serialize {
-    my ( $self, $content ) = @_;
+    my ($self, $content) = @_;
     return unless $self->has_serializer;
 
     $content = $self->serializer->serialize($content)
-      or return;
+        or return;
 
-    $self->content_type( $self->serializer->content_type );
+    $self->content_type($self->serializer->content_type);
     return $content;
 }
 
@@ -203,7 +212,7 @@ Dancer2::Core::Response - Response object for Dancer2
 
 =head1 VERSION
 
-version 0.10
+version 0.11
 
 =head1 ATTRIBUTES
 
@@ -276,7 +285,7 @@ it against the response object. Returns the error object.
 
     $response->serialize( $content );
 
-Serialize and return $content with the respone's serializer.
+Serialize and return $content with the response's serializer.
 set content-type accordingly.
 
 =head1 AUTHOR

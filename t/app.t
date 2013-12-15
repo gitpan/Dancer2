@@ -182,7 +182,7 @@ my $regexp_route = {
 $app->add_route(%$regexp_route);
 
 # try to get an invalid engine
-eval { $app->engine('foo') };
+eval {$app->engine('foo')};
 ok $!, "Engine 'foo' does not exists";
 
 my $tmpl_engine = $app->engine('template');

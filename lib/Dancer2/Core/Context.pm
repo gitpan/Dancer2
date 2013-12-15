@@ -1,6 +1,6 @@
 package Dancer2::Core::Context;
 {
-    $Dancer2::Core::Context::VERSION = '0.10';
+  $Dancer2::Core::Context::VERSION = '0.11';
 }
 
 # ABSTRACT: handles everything proper to a request's context.
@@ -13,6 +13,7 @@ use Dancer2::Core::Types;
 use Dancer2::Core::Request;
 use Dancer2::Core::Response;
 use Dancer2::Core::Cookie;
+
 
 
 has app => (
@@ -45,17 +46,15 @@ sub _build_request {
 
     # If we have an app, get the serialization engine
     my $engine = $self->app->engine('serializer')
-      if $self->has_app;
+        if $self->has_app;
 
-    my $req = Dancer2::Core::Request->new(
-        env => $self->env,
+    my $req = Dancer2::Core::Request->new( env => $self->env,
         $engine ? ( serializer => $engine ) : (),
     );
 
     # Log deserialization errors
-    $self->app->log(
-        core => "Failed to deserialize the request : " . $engine->error )
-      if ( $engine && $engine->has_error );
+    $self->app->log( core => "Failed to deserialize the request : "
+        . $engine->error ) if ( $engine && $engine->has_error );
 
     return $req;
 }
@@ -88,13 +87,13 @@ has response => (
     default => sub {
         my $self = shift;
 
-        my $engine =
-            $self->has_app
-          ? $self->app->engine('serializer')
-          : undef;
+        my $engine = $self->has_app
+            ? $self->app->engine('serializer')
+            : undef;
 
         return Dancer2::Core::Response->new(
-            $engine ? ( serializer => $engine ) : () );
+            $engine ? (serializer => $engine) : ()
+        );
     },
 );
 
@@ -128,17 +127,28 @@ sub redirect {
         $destination = $self->request->uri_for( $destination, {}, 1 );
     }
 
-    $self->response->halt;
     $self->response->redirect( $destination, $status );
+    # Short circuit any remaining before hook / route code
+    # ('pass' and after hooks are still processed)
+    $self->with_return->($self->response) if $self->has_with_return;
+}
+
+
+sub halt {
+   my ($self) = @_;
+   $self->response->halt;
+   # Short citcuit any remaining hook/route code
+   $self->with_return->($self->response) if $self->has_with_return;
 }
 
 
 has session => (
-    is      => 'rw',
-    isa     => Session,
-    lazy    => 1,
-    builder => '_build_session',
-    clearer => 1,
+    is        => 'rw',
+    isa       => Session,
+    lazy      => 1,
+    builder   => '_build_session',
+    predicate => '_has_session',
+    clearer   => 1,
 );
 
 sub _build_session {
@@ -174,9 +184,9 @@ sub has_session {
 
     my $engine = $self->app->engine('session');
 
-    return $self->{session}
+    return $self->_has_session
       || ( $self->cookie( $engine->cookie_name )
-        && !$self->destroyed_session );
+        && !$self->has_destroyed_session );
 }
 
 
@@ -207,6 +217,14 @@ sub destroy_session {
     return;
 }
 
+
+
+has with_return => (
+    is        => 'rw',
+    predicate => 1,
+    clearer   => 'clear_with_response',
+);
+
 1;
 
 __END__
@@ -219,7 +237,7 @@ Dancer2::Core::Context - handles everything proper to a request's context.
 
 =head1 VERSION
 
-version 0.10
+version 0.11
 
 =head1 ATTRIBUTES
 
@@ -249,6 +267,10 @@ We cache a destroyed session here; once this is set we must not attempt to
 retrieve the session from the cookie in the request.  If no new session is
 created, this is set (with expiration) as a cookie to force the browser to
 expire the cookie.
+
+=head2 with_return
+
+Used to cache the coderef from L<Return::MultiLevel> within the dispatcher.
 
 =head1 METHODS
 
@@ -281,6 +303,13 @@ Get a cookie from the L<request> object, or set one in the L<response> object.
 Sets a redirect in the response object.  If $destination is not an absolute URI, then it will
 be made into an absolute URI, relative to the URI in the request.
 
+=head2 halt
+
+Flag the response object as 'halted'.
+
+If called during request dispatch, immediatly returns the response
+to the dispatcher and after hooks will not be run.
+
 =head2 has_session
 
 Returns true if session engine has been defined and if either a session object
@@ -289,7 +318,7 @@ subsequently invalidated.
 
 =head2 destroy_session
 
-Destroys the current session and ensures any subsquent session is created
+Destroys the current session and ensures any subsequent session is created
 from scratch and not from the request session cookie
 
 =head1 AUTHOR

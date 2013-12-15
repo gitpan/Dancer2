@@ -44,18 +44,17 @@ is dancer_response(
   )->content => 'bar : 2 : foo : 1', "using $_"
   for qw/ params data /;
 
-note "Verify Serializers decode into characters";
-{
+note "Verify Serializers decode into characters"; {
     my $utf8 = '∮ E⋅da = Q,  n → ∞, ∑ f(i) = ∏ g(i)';
 
-    for my $type (qw/Dumper JSON YAML/) {
+    for my $type ( qw/Dumper JSON YAML/ ) {
         my $class = "Dancer2::Serializer::$type";
         load_class($class);
 
         my $serializer = $class->new();
-        my $body = $serializer->serialize( { utf8 => $utf8 } );
+        my $body = $serializer->serialize({utf8 => $utf8});
 
-        my $r = dancer_response(
+        my $r    = dancer_response(
             Dancer2::Core::Request->new(
                 method       => 'PUT',
                 path         => '/from_params',
@@ -66,38 +65,30 @@ note "Verify Serializers decode into characters";
         );
 
         my $content = Encode::decode( 'UTF-8', $r->content );
-        is( $content, "utf8 : $utf8",
-            "utf-8 string returns the same using the $type serializer" );
+        is( $content, "utf8 : $utf8", "utf-8 string returns the same using the $type serializer" );
     }
 }
 
-note "Decoding of mixed route and deserialized body params";
-{
-
+note "Decoding of mixed route and deserialized body params"; {
     # Check integers from request body remain integers
     # but route params get decoded.
-    my $r = dancer_response(
-        Dancer2::Core::Request->new(
-            method => 'POST',
-            path   => "/from/D\x{c3}\x{bc}sseldorf",    # /from/d%C3%BCsseldorf
-            content_type => 'application/json',
-            body         => JSON::to_json( { population => 592393 } ),
-            serializer   => Dancer2::Serializer::JSON->new(),
-        )
-    );
+    my $r = dancer_response( Dancer2::Core::Request->new(
+        method       => 'POST',
+        path         => "/from/D\x{c3}\x{bc}sseldorf", # /from/d%C3%BCsseldorf
+        content_type => 'application/json',
+        body         => JSON::to_json({ population => 592393 }),
+        serializer   => Dancer2::Serializer::JSON->new(),
+    ));
 
     my $content = Encode::decode( 'UTF-8', $r->content );
-
     # Watch out for hash order randomization..
-    like( $content, qr/[{,]"population":592393/,
-        "Integer from JSON body remains integer" );
+    like( $content, qr/[{,]"population":592393/, "Integer from JSON body remains integer" );
     like( $content, qr/[{,]"town":"Düsseldorf"/, "Route params are decoded" );
 }
 
-note 'Check serialization errors';
-{
+note 'Check serialization errors'; {
     my $serializer = Dancer2::Serializer::JSON->new();
-    my $req        = Dancer2::Core::Request->new(
+    my $req = Dancer2::Core::Request->new(
         method       => 'PUT',
         path         => '/from_params',
         content_type => 'application/json',
@@ -106,6 +97,5 @@ note 'Check serialization errors';
     );
 
     ok $req->serializer->has_error, "Invalid JSON threw error in serializer";
-    like $req->serializer->error,   qr/malformed number/,
-      ".. of a 'malformed number'";
+    like $req->serializer->error, qr/malformed number/, ".. of a 'malformed number'";
 }

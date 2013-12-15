@@ -2,7 +2,7 @@
 
 package Dancer2::Core::HTTP;
 {
-    $Dancer2::Core::HTTP::VERSION = '0.10';
+  $Dancer2::Core::HTTP::VERSION = '0.11';
 }
 
 use strict;
@@ -19,24 +19,22 @@ my $HTTP_CODES = {
     200 => 'OK',
     201 => 'Created',
     202 => 'Accepted',
-    203 => 'Non-Authoritative Information',    # only on HTTP 1.1
+    203 => 'Non-Authoritative Information', # only on HTTP 1.1
     204 => 'No Content',
     205 => 'Reset Content',
     206 => 'Partial Content',
-    207 => 'Multi-Status',                     # WebDAV; RFC 4918
-    208 => 'Already Reported',                 # WebDAV; RFC 5842
-
+    207 => 'Multi-Status',           # WebDAV; RFC 4918
+    208 => 'Already Reported',       # WebDAV; RFC 5842
     # 226 => 'IM Used'               # RFC 3229
 
     # redirections
     301 => 'Moved Permanently',
     302 => 'Found',
-    303 => '303 See Other',                    # only on HTTP 1.1
+    303 => '303 See Other',          # only on HTTP 1.1
     304 => 'Not Modified',
-    305 => '305 Use Proxy',                    # only on HTTP 1.1
+    305 => '305 Use Proxy',          # only on HTTP 1.1
     306 => 'Switch Proxy',
-    307 => 'Temporary Redirect',               # only on HTTP 1.1
-
+    307 => 'Temporary Redirect',     # only on HTTP 1.1
     # 308 => 'Permanent Redirect'    # approved as experimental RFC
 
     # problems with request
@@ -58,13 +56,12 @@ my $HTTP_CODES = {
     415 => 'Unsupported Media Type',
     416 => 'Requested Range Not Satisfiable',
     417 => 'Expectation Failed',
-    418 => "I'm a teapot",                      # RFC 2324
-
+    418 => "I'm a teapot",             # RFC 2324
     # 419 => 'Authentication Timeout', # not in RFC 2616
     420 => 'Enhance Your Calm',
     422 => 'Unprocessable Entity',
     423 => 'Locked',
-    424 => 'Failed Dependency',                # Also used for 'Method Failure'
+    424 => 'Failed Dependency',        # Also used for 'Method Failure'
     425 => 'Unordered Collection',
     426 => 'Upgrade Required',
     428 => 'Precondition Required',
@@ -111,7 +108,7 @@ $HTTP_CODES->{error} = $HTTP_CODES->{internal_server_error};
 
 sub status {
     my ( $class, $status ) = @_;
-    return if !defined $status;
+    return if ! defined $status;
     return $status if $status =~ /^\d+$/;
     if ( exists $HTTP_CODES->{$status} ) {
         return $HTTP_CODES->{$status};
@@ -122,10 +119,10 @@ sub status {
 
 sub status_message {
     my ( $class, $status ) = @_;
-    return if !defined $status;
+    return if ! defined $status;
     my $code = $class->status($status);
-    return if !defined $code || !exists $HTTP_CODES->{$code};
-    return $HTTP_CODES->{$code};
+    return if ! defined $code || ! exists $HTTP_CODES->{$code};
+    return $HTTP_CODES->{ $code };
 }
 
 1;
@@ -140,7 +137,7 @@ Dancer2::Core::HTTP - helper for rendering HTTP status codes for Dancer2
 
 =head1 VERSION
 
-version 0.10
+version 0.11
 
 =head1 FUNCTIONS
 

@@ -26,8 +26,7 @@ sub process {
 ######################################################################
 # Main Tests
 
-process(
-    { foo => 'World' },
+process( { foo => 'World' },
     <<'END_TEMPLATE', <<'END_EXPECTED', 'Trivial ok' );
 Hello [% foo %]!
 END_TEMPLATE

@@ -2,7 +2,7 @@
 
 package Dancer2::Plugin::Ajax;
 {
-    $Dancer2::Plugin::Ajax::VERSION = '0.10';
+  $Dancer2::Plugin::Ajax::VERSION = '0.11';
 }
 
 use strict;
@@ -30,7 +30,7 @@ register 'ajax' => sub {
         # Default response content type is either what's defined in the
         # plugin setting or text/xml
         $dsl->response->header('Content-Type')
-          or $dsl->response->content_type($content_type);
+          or $dsl->response->content_type( $content_type );
 
         # disable layout
         my $layout = $dsl->setting('layout');
@@ -56,7 +56,7 @@ Dancer2::Plugin::Ajax - a plugin for adding Ajax route handlers
 
 =head1 VERSION
 
-version 0.10
+version 0.11
 
 =head1 SYNOPSIS
 

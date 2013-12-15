@@ -1,6 +1,6 @@
 package Dancer2::Core::Types;
 {
-    $Dancer2::Core::Types::VERSION = '0.10';
+  $Dancer2::Core::Types::VERSION = '0.11';
 }
 
 # ABSTRACT: Moo types for Dancer2 core.
@@ -14,6 +14,7 @@ use MooX::Types::MooseLike::Base qw/:all/;
 use Exporter 'import';
 our @EXPORT;
 our @EXPORT_OK;
+
 
 
 my $single_part = qr/
@@ -67,7 +68,7 @@ my $definitions = [
         },
         message => sub {
             return exception_message(
-                ( $_[0] && length( $_[0] ) ) ? $_[0] : 'Empty string',
+                ($_[0] && length( $_[0] )) ? $_[0] : 'Empty string',
                 'a Dancer2AppName'
             );
         },
@@ -138,7 +139,6 @@ MooX::Types::MooseLike::register_types( $definitions, __PACKAGE__ );
 
 1;
 
-
 __END__
 
 =pod
@@ -149,7 +149,7 @@ Dancer2::Core::Types - Moo types for Dancer2 core.
 
 =head1 VERSION
 
-version 0.10
+version 0.11
 
 =head1 DESCRIPTION
 

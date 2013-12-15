@@ -2,14 +2,14 @@
 
 package Dancer2::Serializer::JSON;
 {
-    $Dancer2::Serializer::JSON::VERSION = '0.10';
+  $Dancer2::Serializer::JSON::VERSION = '0.11';
 }
 use Moo;
 use JSON ();
 
 with 'Dancer2::Core::Role::Serializer';
 
-has '+content_type' => ( default => 'application/json' );
+has '+content_type' => (default => 'application/json');
 
 # helpers
 sub from_json {
@@ -51,6 +51,7 @@ sub deserialize {
 
 1;
 
+__END__
 
 =pod
 
@@ -60,7 +61,7 @@ Dancer2::Serializer::JSON - Serializer for handling JSON data
 
 =head1 VERSION
 
-version 0.10
+version 0.11
 
 =head1 DESCRIPTION
 
@@ -109,6 +110,3 @@ This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.
 
 =cut
-
-
-__END__

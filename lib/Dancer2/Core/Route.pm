@@ -2,7 +2,7 @@
 
 package Dancer2::Core::Route;
 {
-    $Dancer2::Core::Route::VERSION = '0.10';
+  $Dancer2::Core::Route::VERSION = '0.11';
 }
 
 use strict;
@@ -72,8 +72,8 @@ has _should_capture => (
 );
 
 has _match_data => (
-    is  => 'rw',
-    isa => HashRef,
+    is      => 'rw',
+    isa     => HashRef,
 );
 
 has _params => (
@@ -156,27 +156,27 @@ sub BUILDARGS {
     # regexp must have a leading /
     if ( ref($regexp) ne 'Regexp' ) {
         index( $regexp, '/', 0 ) == 0
-          or die "regexp must begin with /\n";
+            or die "regexp must begin with /\n";
     }
 
     # init prefix
-    if ($prefix) {
+    if ( $prefix ) {
         $args{regexp} =
-            ref($regexp) eq 'Regexp' ? qr{^\Q${prefix}\E${regexp}$}
-          : $regexp      eq '/'      ? qr{^\Q${prefix}\E/?$}
-          :                            $prefix . $regexp;
+            ref($regexp) eq 'Regexp' ? qr{^\Q${prefix}\E${regexp}$} :
+            $regexp eq '/'           ? qr{^\Q${prefix}\E/?$} :
+            $prefix . $regexp;
     }
 
     # init regexp
-    $regexp = $args{regexp};       # updated value
+    $regexp = $args{regexp}; # updated value
     $args{spec_route} = $regexp;
 
-    if ( ref($regexp) eq 'Regexp' ) {
+    if ( ref($regexp) eq 'Regexp') {
         $args{_should_capture} = 1;
     }
     else {
         @args{qw/ regexp _params _should_capture/} =
-          @{ _build_regexp_from_string($regexp) };
+            @{ _build_regexp_from_string($regexp) };
     }
 
     return \%args;
@@ -236,7 +236,7 @@ Dancer2::Core::Route - Dancer2's route handler
 
 =head1 VERSION
 
-version 0.10
+version 0.11
 
 =head1 ATTRIBUTES
 

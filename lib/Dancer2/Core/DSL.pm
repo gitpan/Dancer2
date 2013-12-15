@@ -2,7 +2,7 @@
 
 package Dancer2::Core::DSL;
 {
-    $Dancer2::Core::DSL::VERSION = '0.10';
+  $Dancer2::Core::DSL::VERSION = '0.11';
 }
 
 use Moo;
@@ -137,7 +137,7 @@ sub prefix {
       : $app->lexical_prefix(@_);
 }
 
-sub halt { shift->app->context->response->halt }
+sub halt { shift->app->context->halt }
 
 sub _route_parameters {
     my ( $regexp, $code, $options );
@@ -280,7 +280,7 @@ sub uri_for { shift->request->uri_for(@_) }
 
 sub splat { shift->request->splat }
 
-sub params { shift->request->params }
+sub params { shift->request->params(@_) }
 
 sub param { shift->request->param(@_) }
 
@@ -288,7 +288,7 @@ sub redirect { shift->context->redirect(@_) }
 
 sub forward {
     my $self = shift;
-    $self->request->forward( $self->context, @_ );
+    $self->request->forward($self->context, @_);
 }
 
 sub vars { shift->context->vars }
@@ -314,10 +314,10 @@ sub send_error {
     my ( $self, $message, $status ) = @_;
 
     my $serializer = $self->app->engine('serializer');
-    my $x          = Dancer2::Core::Error->new(
+    my $x = Dancer2::Core::Error->new(
         message => $message,
         context => $self->app->context,
-        ( status     => $status ) x !!$status,
+        ( status => $status ) x !!$status,
         ( serializer => $serializer ) x !!$serializer,
     )->throw;
 
@@ -379,7 +379,7 @@ Dancer2::Core::DSL - Dancer2's Domain Specific Language (DSL)
 
 =head1 VERSION
 
-version 0.10
+version 0.11
 
 =head1 FUNCTIONS
 

@@ -1,6 +1,6 @@
 package Dancer2::Core::Role::SessionFactory;
 {
-    $Dancer2::Core::Role::SessionFactory::VERSION = '0.10';
+  $Dancer2::Core::Role::SessionFactory::VERSION = '0.11';
 }
 
 #ABSTRACT: Role for session factories
@@ -89,6 +89,7 @@ has is_http_only => (
 );
 
 
+
 sub create {
     my ($self) = @_;
 
@@ -113,8 +114,8 @@ sub create {
 
 {
     my $COUNTER     = 0;
-    my $CPRNG_AVAIL = try_load_class('Math::Random::ISAAC::XS')
-      && try_load_class('Crypt::URandom');
+    my $CPRNG_AVAIL = try_load_class('Math::Random::ISAAC::XS') &&
+                      try_load_class('Crypt::URandom');
 
     # don't initialize until generate_id is called so the ISAAC algorithm
     # is seeded after any pre-forking
@@ -153,6 +154,7 @@ sub create {
 
     }
 }
+
 
 
 requires '_retrieve';
@@ -248,6 +250,7 @@ sub cookie {
 }
 
 
+
 requires '_sessions';
 
 sub sessions {
@@ -272,7 +275,7 @@ Dancer2::Core::Role::SessionFactory - Role for session factories
 
 =head1 VERSION
 
-version 0.10
+version 0.11
 
 =head1 DESCRIPTION
 
@@ -374,7 +377,7 @@ destroyed session if succeeded, triggers an exception otherwise.
     MySessionFactory->destroy(id => $id);
 
 The C<_destroy> method must be implemented. It must take C<$id> as a single
-argumenet and destroy the underlying data.
+argument and destroy the underlying data.
 
 =head2 flush
 

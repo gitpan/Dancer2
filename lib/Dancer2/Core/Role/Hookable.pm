@@ -2,7 +2,7 @@
 
 package Dancer2::Core::Role::Hookable;
 {
-    $Dancer2::Core::Role::Hookable::VERSION = '0.10';
+  $Dancer2::Core::Role::Hookable::VERSION = '0.11';
 }
 use Moo::Role;
 use Dancer2::Core;
@@ -43,9 +43,9 @@ sub hook_aliases {
         on_route_exception     => 'core.app.route_exception',
 
         # compatibility from Dancer1
-        before_error_render => 'core.error.before',
-        after_error_render  => 'core.error.after',
-        before_error_init   => 'core.error.init',
+        before_error_render    => 'core.error.before',
+        after_error_render     => 'core.error.after',
+        before_error_init      => 'core.error.init',
     };
 }
 
@@ -137,8 +137,8 @@ sub execute_hook {
     croak "Hook '$name' does not exist"
       if !$self->has_hook($name);
 
-    ref($self) eq 'Dancer2::Core::App'
-      && $self->engine('logger')->core("Entering hook $name");
+    ref($self) eq 'Dancer2::Core::App' &&
+        $self->engine('logger')->core("Entering hook $name");
 
     my $res;
     $res = $_->(@args) for @{ $self->hooks->{$name} };
@@ -157,7 +157,7 @@ Dancer2::Core::Role::Hookable - Role for hookable objects
 
 =head1 VERSION
 
-version 0.10
+version 0.11
 
 =head1 AUTHOR
 

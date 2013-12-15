@@ -1,8 +1,8 @@
 package Dancer2::Plugins;
 # ABSTRACT: Recommended Dancer2 plugins
 
-
 __END__
+
 =pod
 
 =head1 NAME
@@ -11,7 +11,7 @@ Dancer2::Plugins - Recommended Dancer2 plugins
 
 =head1 VERSION
 
-version 0.10
+version 0.11
 
 =head1 DESCRIPTION
 
@@ -132,4 +132,3 @@ This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.
 
 =cut
-

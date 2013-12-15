@@ -82,10 +82,9 @@ my $temp = File::Temp->new;
 print $temp 'testfile';
 close($temp);
 
-$file_response = dancer_response(
-    POST => '/upload',
-    { files => [ { filename => $temp->filename, name => 'test' } ] }
-);
+$file_response =
+  dancer_response( POST => '/upload',
+    { files => [ { filename => $temp->filename, name => 'test' } ] } );
 is $file_response->content, 'testfile', 'file uploaded with supplied filename';
 
 ## Check multiselect/multi parameters get through ok
@@ -95,20 +94,17 @@ get '/multi' => sub {
     my $p = join( '', @$t );
     return $p;
 };
-$param_response = dancer_response(
-    GET => '/multi',
-    { params => { test => [ 'foo', 'bar' ] } }
-);
+$param_response =
+  dancer_response( GET => '/multi',
+    { params => { test => [ 'foo', 'bar' ] } } );
 is $param_response->content, 'foobar',
   'multi values for same key get echoed back';
 
-my $russian_test = decode(
-    'UTF-8',
-    uri_unescape("%D0%B8%D1%81%D0%BF%D1%8B%D1%82%D0%B0%D0%BD%D0%B8%D0%B5")
-);
-$param_response = dancer_response(
-    GET => '/multi',
-    { params => { test => [ 'test/', $russian_test ] } }
-);
+my $russian_test =
+  decode( 'UTF-8',
+    uri_unescape("%D0%B8%D1%81%D0%BF%D1%8B%D1%82%D0%B0%D0%BD%D0%B8%D0%B5") );
+$param_response =
+  dancer_response( GET => '/multi',
+    { params => { test => [ 'test/', $russian_test ] } } );
 is $param_response->content, 'test/' . encode( 'UTF-8', $russian_test ),
   'multi utf8 value properly merge';

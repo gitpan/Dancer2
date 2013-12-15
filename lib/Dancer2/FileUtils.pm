@@ -2,7 +2,7 @@
 
 package Dancer2::FileUtils;
 {
-    $Dancer2::FileUtils::VERSION = '0.10';
+  $Dancer2::FileUtils::VERSION = '0.11';
 }
 
 use strict;
@@ -19,6 +19,7 @@ our @EXPORT_OK = qw(
   dirname open_file path read_file_content read_glob_content
   path_or_empty set_file_mode normalize_path
 );
+
 
 
 sub path {
@@ -69,6 +70,7 @@ sub read_file_content {
 }
 
 
+
 sub read_glob_content {
     my $fh = shift;
 
@@ -77,6 +79,7 @@ sub read_glob_content {
 
     return wantarray ? @content : join '', @content;
 }
+
 
 
 sub normalize_path {
@@ -111,7 +114,7 @@ Dancer2::FileUtils - File utility helpers
 
 =head1 VERSION
 
-version 0.10
+version 0.11
 
 =head1 SYNOPSIS
 

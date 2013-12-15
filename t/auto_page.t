@@ -4,7 +4,6 @@ use warnings;
 use Test::More;
 
 {
-
     package AutoPageTest;
     use Dancer2;
 
@@ -21,8 +20,7 @@ use Dancer2::Test apps => ['AutoPageTest'];
 my $r = dancer_response GET => '/auto_page';
 
 is $r->status, 200, 'Autopage found the page';
-like $r->content, qr/---\nHey! This is Auto Page working/,
-  '...with proper content';
+like $r->content, qr/---\nHey! This is Auto Page working/, '...with proper content';
 
 $r = dancer_response GET => '/folder/page';
 
@@ -35,7 +33,6 @@ is $r->status, 404, 'Autopage doesnt try to render nonexistent pages';
 $r = dancer_response GET => '/file.txt';
 is $r->status, 200, 'Found file on public with Autopage';
 
-like $r->headers->{'content-type'}, qr!text/plain!,
-  "Public served file as correct mime";
+like $r->headers->{'content-type'}, qr!text/plain!, "Public served file as correct mime";
 
 done_testing;

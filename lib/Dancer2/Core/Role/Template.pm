@@ -2,7 +2,7 @@
 
 package Dancer2::Core::Role::Template;
 {
-    $Dancer2::Core::Role::Template::VERSION = '0.10';
+  $Dancer2::Core::Role::Template::VERSION = '0.11';
 }
 
 use Dancer2::Core::Types;
@@ -136,10 +136,8 @@ sub apply_layout {
 
     my $full_content = $self->render_layout( $layout, $tokens, $content );
 
-    $self->execute_hook(
-        'engine.template.after_layout_render',
-        \$full_content
-    );
+    $self->execute_hook( 'engine.template.after_layout_render',
+        \$full_content );
 
     # make sure to avoid ( undef ) in list context return
     defined $full_content and return $full_content;
@@ -194,6 +192,7 @@ sub process {
 
 1;
 
+__END__
 
 =pod
 
@@ -203,7 +202,7 @@ Dancer2::Core::Role::Template - Role for template engines
 
 =head1 VERSION
 
-version 0.10
+version 0.11
 
 =head1 DESCRIPTION
 
@@ -282,6 +281,3 @@ This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.
 
 =cut
-
-
-__END__

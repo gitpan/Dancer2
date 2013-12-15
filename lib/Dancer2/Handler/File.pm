@@ -2,7 +2,7 @@
 
 package Dancer2::Handler::File;
 {
-    $Dancer2::Handler::File::VERSION = '0.10';
+  $Dancer2::Handler::File::VERSION = '0.11';
 }
 use Carp 'croak';
 use Moo;
@@ -83,10 +83,9 @@ sub code {
             $path =~ s/^\Q$prefix\E//;
         }
 
-        my @tokens = File::Spec->splitdir(
-            join '',
-            ( File::Spec->splitpath($path) )[ 1, 2 ]
-        );
+        my @tokens =
+          File::Spec->splitdir( join '',
+            ( File::Spec->splitpath($path) )[ 1, 2 ] );
         if ( grep $_ eq '..', @tokens ) {
             return $self->response_403($ctx);
         }
@@ -149,7 +148,7 @@ Dancer2::Handler::File - class for handling file content rendering
 
 =head1 VERSION
 
-version 0.10
+version 0.11
 
 =head1 AUTHOR
 

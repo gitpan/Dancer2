@@ -2,7 +2,7 @@
 
 package Dancer2::Core::Error;
 {
-    $Dancer2::Core::Error::VERSION = '0.10';
+  $Dancer2::Core::Error::VERSION = '0.11';
 }
 use Moo;
 use Carp;
@@ -10,6 +10,8 @@ use Dancer2::Core::Types;
 use Dancer2::Core::HTTP;
 use Data::Dumper;
 use Dancer2::FileUtils 'path';
+
+
 
 
 has show_errors => (
@@ -45,7 +47,7 @@ has title => (
 sub _build_title {
     my ($self) = @_;
     my $title = 'Error ' . $self->status;
-    if ( my $msg = Dancer2::Core::HTTP->status_message( $self->status ) ) {
+    if ( my $msg = Dancer2::Core::HTTP->status_message($self->status) ) {
         $title .= ' - ' . $msg;
     }
 
@@ -101,7 +103,8 @@ sub default_error_page {
 
     require Template::Tiny;
 
-    my $uri_base = $self->has_context ? $self->context->request->uri_base : '';
+    my $uri_base = $self->has_context ?
+        $self->context->request->uri_base : '';
     my $opts = {
         title    => $self->title,
         charset  => $self->charset,
@@ -132,6 +135,7 @@ END_TEMPLATE
 
     return $output;
 }
+
 
 
 has status => (
@@ -174,13 +178,14 @@ has context => (
 sub BUILD {
     my ($self) = @_;
 
-    $self->has_context
-      && $self->context->app->execute_hook( 'core.error.init', $self );
+    $self->has_context &&
+      $self->context->app->execute_hook( 'core.error.init', $self );
 }
 
 has exception => (
-    is  => 'ro',
-    isa => Str,
+    is        => 'ro',
+    isa       => Str,
+    predicate => 1,
 );
 
 has response => (
@@ -199,8 +204,8 @@ has content_type => (
     default => sub {
         my $self = shift;
         $self->has_serializer
-          ? $self->serializer->content_type
-          : 'text/html';
+            ? $self->serializer->content_type
+            : 'text/html'
     },
 );
 
@@ -218,7 +223,7 @@ has content => (
                 status  => $self->status,
             };
             $content->{exception} = $self->exception
-              if defined $self->{exception};
+              if $self->has_exception;
             return $self->serializer->serialize($content);
         }
 
@@ -251,8 +256,8 @@ sub throw {
 
     croak "error has no response to throw at" unless $self->response;
 
-    $self->has_context
-      && $self->context->app->execute_hook( 'core.error.before', $self );
+    $self->has_context &&
+        $self->context->app->execute_hook( 'core.error.before', $self );
 
     my $message = $self->content;
     $message .= "\n\n" . $self->exception
@@ -262,9 +267,8 @@ sub throw {
     $self->response->content_type( $self->content_type );
     $self->response->content($message);
 
-    $self->has_context
-      && $self->context->app->execute_hook( 'core.error.after',
-        $self->response );
+    $self->has_context &&
+        $self->context->app->execute_hook('core.error.after', $self->response);
 
     $self->response->halt(1);
     return $self->response;
@@ -330,6 +334,7 @@ sub backtrace {
 }
 
 
+
 sub tabulate {
     my ( $number, $max ) = @_;
     my $len = length($max);
@@ -356,6 +361,7 @@ sub dumper {
     }
     return $content;
 }
+
 
 
 sub environment {
@@ -387,6 +393,7 @@ sub environment {
     }
     return "$source $settings $session $env";
 }
+
 
 
 sub get_caller {
@@ -472,7 +479,7 @@ Dancer2::Core::Error - Class representing fatal errors
 
 =head1 VERSION
 
-version 0.10
+version 0.11
 
 =head1 SYNOPSIS
 
@@ -541,7 +548,7 @@ Create a backtrace of the code where the error is caused.
 This method tries to find out where the error appeared according to the actual
 error message (using the C<message> attribute) and tries to parse it (supporting
 the regular/default Perl warning or error pattern and the L<Devel::SimpleTrace>
-output) and then returns an error-higlighted C<message>.
+output) and then returns an error-highlighted C<message>.
 
 =head2 tabulate
 
@@ -554,7 +561,7 @@ C<get_caller>), the settings and environment (using C<dumper>) and more.
 
 =head2 get_caller
 
-Creates a strack trace of callers.
+Creates a stack trace of callers.
 
 =head1 FUNCTIONS
 

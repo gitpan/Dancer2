@@ -1,14 +1,12 @@
 use Test::Whitespaces {
 
-    dirs => [
-        qw(
-          lib
-          script
-          t
-          tools
-          xt
-          )
-    ],
+    dirs => [qw(
+        lib
+        script
+        t
+        tools
+        xt
+    )],
 
     ignore => [
         qr{t/sessions/},

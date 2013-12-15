@@ -1,7 +1,7 @@
 # ABSTRACT: encapsulation of Dancer2 packages
 package Dancer2::Core::App;
 {
-    $Dancer2::Core::App::VERSION = '0.10';
+  $Dancer2::Core::App::VERSION = '0.11';
 }
 
 use Moo;
@@ -68,7 +68,7 @@ has context => (
     trigger => sub {
         my ( $self, $ctx ) = @_;
         $self->_init_for_context($ctx),;
-        for my $type ( @{ $self->supported_engines } ) {
+        for my $type (@{$self->supported_engines}) {
             my $engine = $self->engine($type) or next;
             defined($ctx) ? $engine->context($ctx) : $engine->clear_context;
         }
@@ -122,7 +122,7 @@ around add_hook => sub {
     # if that hook belongs to the app, register it now and return
     return $self->$orig(@_) if $self->has_hook($name);
 
-    # at this point the hook name must be formated like:
+    # at this point the hook name must be formatted like:
     # '$type.$candidate.$name', eg: 'engine.template.before_render' or
     # 'plugin.database.before_dbi_connect'
     my ( $hookable_type, $hookable_name, $hook_name ) = split( /\./, $name );
@@ -173,12 +173,15 @@ sub _build_default_config {
         %{ $self->runner_config },
         template       => 'Tiny',
         route_handlers => [
-            [   File => {
-                    public_dir => $ENV{DANCER_PUBLIC}
-                      || path( $self->location, 'public' )
+            [
+                File => {
+                    public_dir => $ENV{DANCER_PUBLIC} ||
+                                  path( $self->location, 'public' )
                 }
             ],
-            [ AutoPage => 1 ],
+            [
+                AutoPage => 1
+            ],
         ],
     };
 }
@@ -254,7 +257,7 @@ sub api_version {2}
 
 sub register_plugin {
     my ( $self, $plugin ) = @_;
-    $self->log( core => "Registered $plugin" );
+    $self->log( core => "Registered $plugin");
     push @{ $self->plugins }, $plugin;
 }
 
@@ -268,7 +271,7 @@ sub engine {
     my ( $self, $name ) = @_;
 
     croak "Engine '$name' is not supported."
-      if !grep { $_ eq $name } @{ $self->supported_engines };
+        if !grep {$_ eq $name} @{$self->supported_engines};
 
     return $self->engines->{$name};
 }
@@ -314,7 +317,7 @@ sub hook_candidates {
     my ($self) = @_;
 
     my @engines;
-    for my $e ( @{ $self->supported_engines } ) {
+    for my $e (@{$self->supported_engines}) {
         my $engine = $self->engine($e) or next;
         push @engines, $engine;
     }
@@ -357,7 +360,7 @@ sub mime_type {
 }
 
 sub log {
-    my ( $self, $level, @args ) = @_;
+    my ($self, $level, @args)  = @_;
 
     my $logger = $self->engine('logger')
       or croak "No logger defined";
@@ -400,9 +403,7 @@ sub send_file {
     );
 
     # List shouldn't be too long, so we use 'grep' instead of 'first'
-    if ( my ($handler) =
-        grep { $_->{name} eq 'File' } @{ $self->route_handlers } )
-    {
+    if (my ($handler) = grep { $_->{name} eq 'File' } @{$self->route_handlers}) {
         for my $h ( keys %{ $handler->{handler}->hooks } ) {
             my $hooks = $handler->{handler}->hooks->{$h};
             $file_handler->replace_hook( $h, $hooks );
@@ -433,7 +434,7 @@ sub init_route_handlers {
 
     my $handlers_config = $self->config->{route_handlers};
     for my $handler_data ( @{$handlers_config} ) {
-        my ( $handler_name, $config ) = @{$handler_data};
+        my ($handler_name, $config) = @{$handler_data};
         $config = {} if !ref($config);
         $config->{app} = $self;
 
@@ -443,16 +444,16 @@ sub init_route_handlers {
             postponed_hooks => $self->postponed_hooks,
         );
 
-        push @{ $self->route_handlers },
-          { name    => $handler_name,
+        push @{ $self->route_handlers }, {
+            name    => $handler_name,
             handler => $handler,
-          };
+        };
     }
 }
 
 sub register_route_handlers {
     my ($self) = @_;
-    for my $handler ( @{ $self->{route_handlers} } ) {
+    for my $handler ( @{$self->route_handlers} ) {
         my $handler_code = $handler->{handler};
         $handler_code->register($self);
     }
@@ -536,6 +537,7 @@ sub routes_regexps_for {
 
 1;
 
+__END__
 
 =pod
 
@@ -545,7 +547,7 @@ Dancer2::Core::App - encapsulation of Dancer2 packages
 
 =head1 VERSION
 
-version 0.10
+version 0.11
 
 =head1 DESCRIPTION
 
@@ -624,6 +626,3 @@ This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.
 
 =cut
-
-
-__END__

@@ -36,7 +36,7 @@ subtest 'log level and capture' => sub {
     use Dancer2::Logger::Capture;
     use Dancer2;
 
-  # NOTE: this will read the config.yml under t/ that defines log level as info
+    # NOTE: this will read the config.yml under t/ that defines log level as info
     set logger => 'capture';
 
     warning "Danger!  Warning!";
@@ -67,18 +67,16 @@ subtest 'logger file' => sub {
             }
         }
     };
-
     # XXX this sucks, we need to set the engine *before* the logger
     # - Franck, 2013/08/03
-    set logger => 'file';
+    set logger  => 'file';
 
     warning "Danger! Warning!";
 
-    open my $log_file, '<', File::Spec->catfile( $dir, 'test' );
+    open my $log_file, '<', File::Spec->catfile($dir, 'test');
     my $txt = <$log_file>;
     like $txt, qr/Danger! Warning!/;
 };
-
 # Explicitly close the logger file handle for those systems that
 # do not allow "open" files to be unlinked (Windows). GH#424.
 my $log_engine = engine('logger');

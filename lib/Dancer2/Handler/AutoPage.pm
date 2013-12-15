@@ -2,7 +2,7 @@
 
 package Dancer2::Handler::AutoPage;
 {
-    $Dancer2::Handler::AutoPage::VERSION = '0.10';
+  $Dancer2::Handler::AutoPage::VERSION = '0.11';
 }
 use Moo;
 use Carp 'croak';
@@ -54,6 +54,7 @@ sub methods {qw(head get)}
 
 1;
 
+__END__
 
 =pod
 
@@ -63,7 +64,7 @@ Dancer2::Handler::AutoPage - Class for handling the AutoPage feature
 
 =head1 VERSION
 
-version 0.10
+version 0.11
 
 =head1 DESCRIPTION
 
@@ -116,6 +117,3 @@ This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.
 
 =cut
-
-
-__END__

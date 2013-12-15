@@ -2,7 +2,7 @@
 
 package Dancer2::Template::Simple;
 {
-    $Dancer2::Template::Simple::VERSION = '0.10';
+  $Dancer2::Template::Simple::VERSION = '0.11';
 }
 use strict;
 use warnings;
@@ -147,6 +147,7 @@ sub _interpolate_value {
 
 1;
 
+__END__
 
 =pod
 
@@ -156,7 +157,7 @@ Dancer2::Template::Simple - Pure Perl 5 template engine for Dancer2
 
 =head1 VERSION
 
-version 0.10
+version 0.11
 
 =head1 SYNOPSIS
 
@@ -219,6 +220,3 @@ This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.
 
 =cut
-
-
-__END__

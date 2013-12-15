@@ -11,6 +11,7 @@ my %module_build_args = (
   },
   "configure_requires" => {
     "ExtUtils::MakeMaker" => "6.30",
+    "File::ShareDir::Install" => "0.03",
     "Module::Build" => "0.3601"
   },
   "dist_abstract" => "Lightweight yet powerful web application framework",
@@ -18,7 +19,7 @@ my %module_build_args = (
     "Dancer Core Developers"
   ],
   "dist_name" => "Dancer2",
-  "dist_version" => "0.10",
+  "dist_version" => "0.11",
   "license" => "perl",
   "module_name" => "Dancer2",
   "recommends" => {
@@ -29,12 +30,14 @@ my %module_build_args = (
     "Plack::Request" => 0,
     "Pod::Simple::Search" => 0,
     "Pod::Simple::SimpleTree" => 0,
+    "Scope::Upper" => 0,
     "Test::Builder" => 0,
     "Test::More" => 0,
     "URL::Encode::XS" => 0
   },
   "recursive_test_files" => 1,
   "requires" => {
+    "App::Cmd::Setup" => 0,
     "Carp" => 0,
     "Class::Load" => 0,
     "Config::Any" => 0,
@@ -46,11 +49,12 @@ my %module_build_args = (
     "Fcntl" => 0,
     "File::Basename" => 0,
     "File::Copy" => 0,
+    "File::Find" => 0,
     "File::Path" => 0,
+    "File::ShareDir" => 0,
     "File::Spec" => 0,
     "File::Spec::Functions" => 0,
-    "File::Temp" => 0,
-    "Getopt::Long" => 0,
+    "File::Temp" => "0.22",
     "HTTP::Body" => 0,
     "HTTP::Date" => 0,
     "HTTP::Headers" => 0,
@@ -70,17 +74,16 @@ my %module_build_args = (
     "Plack::Request" => 0,
     "Pod::Simple::Search" => 0,
     "Pod::Simple::SimpleTree" => 0,
-    "Pod::Usage" => 0,
+    "Return::MultiLevel" => 0,
     "Role::Tiny" => "1.003000",
     "Scalar::Util" => 0,
     "Template" => 0,
     "Template::Tiny" => 0,
     "Test::Builder" => 0,
-    "Test::More" => 0,
+    "Test::More" => "0.92",
     "URI" => 0,
     "URI::Escape" => 0,
     "YAML::Any" => 0,
-    "constant" => 0,
     "overload" => 0,
     "parent" => 0,
     "perl" => "5.00503",
@@ -90,10 +93,12 @@ my %module_build_args = (
   "script_files" => [
     "script/dancer2"
   ],
+  "share_dir" => {
+    "dist" => "share"
+  },
   "test_requires" => {
     "Capture::Tiny" => "0.12",
     "ExtUtils::MakeMaker" => 0,
-    "File::Spec" => 0,
     "File::Temp" => "0.22",
     "FindBin" => 0,
     "HTTP::Body" => 0,
@@ -116,17 +121,34 @@ my %module_build_args = (
 );
 
 
+my %fallback_build_requires = (
+  "Capture::Tiny" => "0.12",
+  "ExtUtils::MakeMaker" => 0,
+  "File::Temp" => "0.22",
+  "FindBin" => 0,
+  "HTTP::Body" => 0,
+  "HTTP::Request::Common" => 0,
+  "HTTP::Server::Simple::PSGI" => 0,
+  "IO::Handle" => 0,
+  "IPC::Open3" => 0,
+  "LWP::Protocol::PSGI" => "0.06",
+  "Module::Build" => "0.3601",
+  "Test::Fatal" => 0,
+  "Test::MockTime" => 0,
+  "Test::More" => "0.92",
+  "Test::Script" => 0,
+  "Test::TCP" => "1.13",
+  "YAML" => 0,
+  "YAML::Any" => 0,
+  "lib" => 0,
+  "utf8" => 0,
+  "vars" => 0
+);
+
+
 unless ( eval { Module::Build->VERSION(0.4004) } ) {
-  my $tr = delete $module_build_args{test_requires};
-  my $br = $module_build_args{build_requires};
-  for my $mod ( keys %$tr ) {
-    if ( exists $br->{$mod} ) {
-      $br->{$mod} = $tr->{$mod} if $tr->{$mod} > $br->{$mod};
-    }
-    else {
-      $br->{$mod} = $tr->{$mod};
-    }
-  }
+  delete $module_build_args{test_requires};
+  $module_build_args{build_requires} = \%fallback_build_requires;
 }
 
 my $build = Module::Build->new(%module_build_args);

@@ -2,11 +2,12 @@
 
 package Dancer2::Logger::Diag;
 {
-    $Dancer2::Logger::Diag::VERSION = '0.10';
+  $Dancer2::Logger::Diag::VERSION = '0.11';
 }
 use Moo;
 use Test::More;
 with 'Dancer2::Core::Role::Logger';
+
 
 
 sub log {
@@ -27,7 +28,7 @@ Dancer2::Logger::Diag - Test::More diag() logging engine for Dancer2
 
 =head1 VERSION
 
-version 0.10
+version 0.11
 
 =head1 DESCRIPTION
 

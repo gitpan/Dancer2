@@ -2,7 +2,7 @@
 
 package Dancer2::Core::Server::PSGI;
 {
-    $Dancer2::Core::Server::PSGI::VERSION = '0.10';
+  $Dancer2::Core::Server::PSGI::VERSION = '0.11';
 }
 use Moo;
 use Carp;
@@ -30,7 +30,7 @@ Dancer2::Core::Server::PSGI - Dummy class for passing the PSGI app to a PSGI ser
 
 =head1 VERSION
 
-version 0.10
+version 0.11
 
 =head1 DESCRIPTION
 

@@ -2,7 +2,7 @@
 
 package Dancer2::Core::Role::Serializer;
 {
-    $Dancer2::Core::Role::Serializer::VERSION = '0.10';
+  $Dancer2::Core::Role::Serializer::VERSION = '0.11';
 }
 use Dancer2::Core::Types;
 
@@ -32,12 +32,11 @@ around serialize => sub {
     my ( $orig, $self, $content, $options ) = @_;
 
     $self->execute_hook( 'engine.serializer.before', $content );
-    my $serialized = eval { $self->$orig( $content, $options ); };
+    my $serialized = eval {$self->$orig($content, $options);};
 
     if ($@) {
         $self->error($@);
-    }
-    else {
+    }else{
         $self->execute_hook( 'engine.serializer.after', $serialized );
     }
     return $serialized;
@@ -45,7 +44,7 @@ around serialize => sub {
 
 around deserialize => sub {
     my ( $orig, $self, $content, $options ) = @_;
-    my $data = eval { $self->$orig( $content, $options ); };
+    my $data = eval { $self->$orig($content, $options); };
     $self->error($@) if $@;
     return $data;
 };
@@ -69,6 +68,7 @@ sub support_content_type {
 
 1;
 
+__END__
 
 =pod
 
@@ -78,7 +78,7 @@ Dancer2::Core::Role::Serializer - Role for Serializer engines
 
 =head1 VERSION
 
-version 0.10
+version 0.11
 
 =head1 DESCRIPTION
 
@@ -148,6 +148,3 @@ This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.
 
 =cut
-
-
-__END__

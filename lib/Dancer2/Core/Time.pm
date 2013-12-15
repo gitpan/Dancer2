@@ -1,12 +1,13 @@
 package Dancer2::Core::Time;
 {
-    $Dancer2::Core::Time::VERSION = '0.10';
+  $Dancer2::Core::Time::VERSION = '0.11';
 }
 
 #ABSTRACT: class to handle common helpers for time manipulations
 
 
 use Moo;
+
 
 
 has seconds => (
@@ -20,10 +21,11 @@ sub _build_seconds {
     my $seconds = $self->expression;
 
     return $seconds
-      if $seconds =~ /^\d+$/;
+        if $seconds =~ /^\d+$/;
 
-    return $self->_parse_duration($seconds);
+    return $self->_parse_duration($seconds)
 }
+
 
 
 has epoch => (
@@ -69,10 +71,10 @@ has expression => (
 );
 
 sub BUILDARGS {
-    my ( $class, %args ) = @_;
+    my ($class, %args) = @_;
 
     $args{epoch} = $args{expression}
-      if $args{expression} =~ /^\d+$/;
+        if $args{expression} =~ /^\d+$/;
 
     return \%args;
 }
@@ -142,7 +144,7 @@ Dancer2::Core::Time - class to handle common helpers for time manipulations
 
 =head1 VERSION
 
-version 0.10
+version 0.11
 
 =head1 SYNOPSIS
 

@@ -1,6 +1,6 @@
 package Dancer2::Plugin;
 {
-    $Dancer2::Plugin::VERSION = '0.10';
+  $Dancer2::Plugin::VERSION = '0.11';
 }
 
 # ABSTRACT: Extending Dancer2's DSL with plugins
@@ -174,7 +174,6 @@ sub execute_hook {
 # private
 
 my $dsl_deprecation_wrapper = 0;
-
 sub import {
     my $class  = shift;
     my $plugin = caller;
@@ -209,24 +208,26 @@ sub import {
  # their first argument).
  # These modified versions of the DSL are then exported in the namespace of the
  # plugin.
-    for my $symbol ( keys %{ $dsl->keywords } ) {
+    if (! grep { $_ eq ':no_dsl' } @_) {
+        for my $symbol ( keys %{ $dsl->keywords } ) {
 
-        # get the original symbol from the real DSL
-        no strict 'refs';
-        no warnings qw( redefine once );
-        my $code = *{"Dancer2::Core::DSL::$symbol"}{CODE};
+            # get the original symbol from the real DSL
+            no strict 'refs';
+            no warnings qw( redefine once );
+            my $code = *{"Dancer2::Core::DSL::$symbol"}{CODE};
 
-        # compile it with $caller->dsl
-        my $compiled = sub {
-            carp
-              "DEPRECATED: $plugin calls '$symbol' instead of '\$dsl->$symbol'.";
-            $code->( $dsl, @_ );
-        };
+            # compile it with $caller->dsl
+            my $compiled = sub {
+                carp
+                  "DEPRECATED: $plugin calls '$symbol' instead of '\$dsl->$symbol'.";
+                $code->( $dsl, @_ );
+            };
 
-        # bind the newly compiled symbol to the caller's namespace.
-        *{"${plugin}::${symbol}"} = $compiled;
+            # bind the newly compiled symbol to the caller's namespace.
+            *{"${plugin}::${symbol}"} = $compiled;
 
-        $dsl_deprecation_wrapper = $compiled if $symbol eq 'dsl';
+            $dsl_deprecation_wrapper = $compiled if $symbol eq 'dsl';
+        }
     }
 
     # Finally, make sure our caller becomes a Moo::Role
@@ -240,7 +241,7 @@ sub _get_dsl {
     my $deep = 2;
     while ( my $caller = caller( $deep++ ) ) {
         my $caller_dsl = $caller->can('dsl');
-        next if !$caller_dsl || $caller_dsl == $dsl_deprecation_wrapper;
+        next if ! $caller_dsl || $caller_dsl == $dsl_deprecation_wrapper;
         $dsl = $caller->dsl;
         last if defined $dsl && length( ref($dsl) );
     }
@@ -249,7 +250,6 @@ sub _get_dsl {
 }
 
 1;
-
 
 __END__
 
@@ -261,7 +261,7 @@ Dancer2::Plugin - Extending Dancer2's DSL with plugins
 
 =head1 VERSION
 
-version 0.10
+version 0.11
 
 =head1 DESCRIPTION
 

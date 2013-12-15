@@ -2,7 +2,7 @@
 
 package Dancer2::Core::MIME;
 {
-    $Dancer2::Core::MIME::VERSION = '0.10';
+  $Dancer2::Core::MIME::VERSION = '0.11';
 }
 
 use Moo;
@@ -81,6 +81,7 @@ sub for_name {
 
 1;
 
+__END__
 
 =pod
 
@@ -90,7 +91,7 @@ Dancer2::Core::MIME - Class to ease manipulation of MIME types
 
 =head1 VERSION
 
-version 0.10
+version 0.11
 
 =head1 SYNOPSIS
 
@@ -178,6 +179,3 @@ This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.
 
 =cut
-
-
-__END__

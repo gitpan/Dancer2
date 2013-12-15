@@ -2,7 +2,7 @@
 
 package Dancer2::Logger::File;
 {
-    $Dancer2::Logger::File::VERSION = '0.10';
+  $Dancer2::Logger::File::VERSION = '0.11';
 }
 use Carp 'carp';
 use Moo;
@@ -30,7 +30,7 @@ has log_dir => (
     },
 );
 
-sub _build_log_dir { File::Spec->catdir( $_[0]->location, 'logs' ) }
+sub _build_log_dir {File::Spec->catdir( $_[0]->location, 'logs' )}
 
 has file_name => (
     is      => 'ro',
@@ -39,10 +39,10 @@ has file_name => (
     lazy    => 1
 );
 
-sub _build_file_name { $_[0]->environment . ".log" }
+sub _build_file_name {$_[0]->environment . ".log"}
 
 has log_file => ( is => 'rw', isa => Str );
-has fh => ( is => 'rw' );
+has fh       => ( is => 'rw' );
 
 sub BUILD {
     my $self = shift;
@@ -75,6 +75,7 @@ sub log {
 
 1;
 
+__END__
 
 =pod
 
@@ -84,7 +85,7 @@ Dancer2::Logger::File - file-based logging engine for Dancer2
 
 =head1 VERSION
 
-version 0.10
+version 0.11
 
 =head1 DESCRIPTION
 
@@ -133,6 +134,3 @@ This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.
 
 =cut
-
-
-__END__

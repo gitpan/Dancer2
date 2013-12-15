@@ -2,7 +2,7 @@
 
 package Dancer2::Core::Role::Logger;
 {
-    $Dancer2::Core::Role::Logger::VERSION = '0.10';
+  $Dancer2::Core::Role::Logger::VERSION = '0.11';
 }
 use Dancer2::Core::Types;
 
@@ -167,6 +167,7 @@ sub error {
 
 1;
 
+__END__
 
 =pod
 
@@ -176,7 +177,7 @@ Dancer2::Core::Role::Logger - Role for logger engines
 
 =head1 VERSION
 
-version 0.10
+version 0.11
 
 =head1 DESCRIPTION
 
@@ -289,7 +290,7 @@ Log messages as B<error>.
 
 =head2 format_message
 
-Provides a common message formating.
+Provides a common message formatting.
 
 =head1 CONFIGURATION
 
@@ -317,6 +318,3 @@ This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.
 
 =cut
-
-
-__END__

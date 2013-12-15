@@ -1,7 +1,7 @@
 # ABSTRACT: Config role for Dancer2 core objects
 package Dancer2::Core::Role::Config;
 {
-    $Dancer2::Core::Role::Config::VERSION = '0.10';
+  $Dancer2::Core::Role::Config::VERSION = '0.11';
 }
 
 use Moo::Role;
@@ -83,7 +83,7 @@ has supported_engines => (
     is      => 'ro',
     isa     => ArrayRef,
     lazy    => 1,
-    default => sub { [qw/logger serializer session template/] },
+    default => sub {[qw/logger serializer session template/]},
 );
 
 has config_files => (
@@ -111,10 +111,8 @@ sub _build_config_files {
     my @files;
 
     foreach my $ext (@exts) {
-        foreach my $file (
-            [ $location,                    "config.$ext" ],
-            [ $self->environments_location, "$running_env.$ext" ]
-          )
+        foreach my $file ( [ $location, "config.$ext" ],
+            [ $self->environments_location, "$running_env.$ext" ] )
         {
             my $path = path( @{$file} );
             next if !-r $path;
@@ -253,14 +251,14 @@ sub _build_engines_triggers {
 
     my $triggers = {};
 
-    foreach my $engine ( @{ $self->supported_engines } ) {
+    foreach my $engine (@{$self->supported_engines}) {
         $triggers->{$engine} = sub {
-            my ( $self, $value, $config ) = @_;
+            my ($self, $value, $config) = @_;
 
             return $value if ref($value);
 
             my $method = "_build_engine_$engine";
-            my $e = $self->$method( $value, $config );
+            my $e = $self->$method($value, $config);
             $self->engines->{$engine} = $e;
             return $e;
         };
@@ -295,10 +293,9 @@ sub _compile_config_entry {
 
     my $trigger;
 
-    if ( grep { $name eq $_ } @{ $self->supported_engines } ) {
+    if (grep {$name eq $_} @{$self->supported_engines}) {
         $trigger = $self->_engines_triggers->{$name};
-    }
-    else {
+    }else{
         $trigger = $self->_config_triggers->{$name};
     }
 
@@ -324,9 +321,9 @@ sub _get_config_for_engine {
 
     # XXX we need to move the camilize function out from Core::Factory
     # - Franck, 2013/08/03
-    for my $config_key ( $name, Dancer2::Core::camelize($name) ) {
+    for my $config_key ($name, Dancer2::Core::camelize($name)) {
         $engine_config = $config->{engines}{$engine}{$config_key}
-          if defined $config->{engines}->{$engine}{$config_key};
+            if defined $config->{engines}->{$engine}{$config_key};
     }
     return { %{$default_config}, %{$engine_config}, } || $default_config;
 }
@@ -342,7 +339,7 @@ sub _build_engines {
 }
 
 sub _build_engine_logger {
-    my ( $self, $value, $config ) = @_;
+    my ($self, $value, $config) = @_;
 
     $config = $self->config     if !defined $config;
     $value  = $config->{logger} if !defined $value;
@@ -354,7 +351,7 @@ sub _build_engine_logger {
     $value = 'console' if !defined $value;
 
     my $engine_options =
-      $self->_get_config_for_engine( logger => $value, $config );
+        $self->_get_config_for_engine( logger => $value, $config );
 
     my $logger = Dancer2::Core::Factory->create(
         logger => $value,
@@ -363,22 +360,22 @@ sub _build_engine_logger {
         postponed_hooks => $self->get_postponed_hooks
     );
 
-    $logger->log_level( $config->{log} ) if exists $config->{log};
+    $logger->log_level($config->{log}) if exists $config->{log};
 
     return $logger;
 }
 
 sub _build_engine_session {
-    my ( $self, $value, $config ) = @_;
+    my ($self, $value, $config)  = @_;
 
     $config = $self->config        if !defined $config;
     $value  = $config->{'session'} if !defined $value;
 
     $value = 'simple' if !defined $value;
-    return $value if ref($value);
+    return $value     if ref($value);
 
     my $engine_options =
-      $self->_get_config_for_engine( session => $value, $config );
+          $self->_get_config_for_engine( session => $value, $config );
 
     return Dancer2::Core::Factory->create(
         session => $value,
@@ -388,7 +385,7 @@ sub _build_engine_session {
 }
 
 sub _build_engine_template {
-    my ( $self, $value, $config ) = @_;
+    my ($self, $value, $config)  = @_;
 
     $config = $self->config         if !defined $config;
     $value  = $config->{'template'} if !defined $value;
@@ -397,12 +394,12 @@ sub _build_engine_template {
     return $value if ref($value);
 
     my $engine_options =
-      $self->_get_config_for_engine( template => $value, $config );
+          $self->_get_config_for_engine( template => $value, $config );
 
     my $engine_attrs = { config => $engine_options };
     $engine_attrs->{layout} ||= $config->{layout};
     $engine_attrs->{views}  ||= $config->{views}
-      || path( $self->location, 'views' );
+        || path( $self->location, 'views' );
 
     return Dancer2::Core::Factory->create(
         template => $value,
@@ -412,7 +409,7 @@ sub _build_engine_template {
 }
 
 sub _build_engine_serializer {
-    my ( $self, $value, $config ) = @_;
+    my ($self, $value, $config) = @_;
 
     $config = $self->config         if !defined $config;
     $value  = $config->{serializer} if !defined $value;
@@ -421,7 +418,7 @@ sub _build_engine_serializer {
     return $value if ref($value);
 
     my $engine_options =
-      $self->_get_config_for_engine( serializer => $value, $config );
+        $self->_get_config_for_engine( serializer => $value, $config );
 
     return Dancer2::Core::Factory->create(
         serializer      => $value,
@@ -432,6 +429,7 @@ sub _build_engine_serializer {
 
 1;
 
+__END__
 
 =pod
 
@@ -441,7 +439,7 @@ Dancer2::Core::Role::Config - Config role for Dancer2 core objects
 
 =head1 VERSION
 
-version 0.10
+version 0.11
 
 =head1 DESCRIPTION
 
@@ -531,6 +529,3 @@ This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.
 
 =cut
-
-
-__END__

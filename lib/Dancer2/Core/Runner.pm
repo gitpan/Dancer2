@@ -1,7 +1,7 @@
 # ABSTRACT: Top-layer class to start a dancer app
 package Dancer2::Core::Runner;
 {
-    $Dancer2::Core::Runner::VERSION = '0.10';
+  $Dancer2::Core::Runner::VERSION = '0.11';
 }
 
 use Moo;
@@ -44,7 +44,7 @@ sub _build_server {
     my $server_name  = $self->config->{apphandler};
     my $server_class = "Dancer2::Core::Server::${server_name}";
 
-    my ( $ok, $error ) = try_load_class($server_class);
+    my ( $ok, $error ) =try_load_class($server_class);
     $ok or croak "Unable to load $server_class: $error\n";
 
     return $server_class->new(
@@ -73,7 +73,7 @@ sub default_config {
         is_daemon    => ( $ENV{DANCER_DAEMON}       || 0 ),
         views        => ( $ENV{DANCER_VIEWS}
               || path( $self->config_location, 'views' ) ),
-        appdir => $self->location,
+        appdir          => $self->location,
     };
 }
 
@@ -98,11 +98,9 @@ sub _build_location {
         #try to find .dancer_app file to determine the root of dancer app
         my $dancerdir = Dancer2::FileUtils::path( $subdir, '.dancer' );
 
-# if one of them is found, keep that; but skip ./blib since both lib and bin exist
-# under it, but views and public do not.
-        if (   ( $subdir !~ m!/blib/?$! && -d $libdir && -d $bindir )
-            || ( -f $dancerdir ) )
-        {
+        # if one of them is found, keep that; but skip ./blib since both lib and bin exist
+        # under it, but views and public do not.
+        if ( ( $subdir !~ m!/blib/?$! && -d $libdir && -d $bindir ) || ( -f $dancerdir ) ) {
             $subdir_found = 1;
             last;
         }
@@ -116,7 +114,7 @@ sub _build_location {
 
     # return if absolute
     File::Spec->file_name_is_absolute($path)
-      and return $path;
+        and return $path;
 
     # convert relative to absolute
     return File::Spec->rel2abs($path);
@@ -134,7 +132,7 @@ sub BUILD {
     # this can happen if you create one without going through Dancer2
     # which doesn't trigger the import that creates it
     defined $Dancer2::runner
-      or $Dancer2::runner = $self;
+        or $Dancer2::runner = $self;
 }
 
 sub start {
@@ -171,6 +169,7 @@ sub name {"runner"}
 #
 #Returns the environment. Same as C<< $object->environment >>.
 
+__END__
 
 =pod
 
@@ -180,7 +179,7 @@ Dancer2::Core::Runner - Top-layer class to start a dancer app
 
 =head1 VERSION
 
-version 0.10
+version 0.11
 
 =head1 DESCRIPTION
 
@@ -243,6 +242,3 @@ This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.
 
 =cut
-
-
-__END__

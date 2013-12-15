@@ -1,8 +1,8 @@
 package Dancer2::Cookbook;
 # ABSTRACT: Example-driven quick-start to the Dancer2 web framework
 
-
 __END__
+
 =pod
 
 =head1 NAME
@@ -11,7 +11,7 @@ Dancer2::Cookbook - Example-driven quick-start to the Dancer2 web framework
 
 =head1 VERSION
 
-version 0.10
+version 0.11
 
 =head1 DESCRIPTION
 
@@ -578,8 +578,9 @@ config file will look like this:
 
     charset: UTF-8
     engines:
-      template_toolkit:
-        ENCODING: utf8
+      template:
+        template_toolkit:
+          ENCODING: utf8
 
 =head2 TT's WRAPPER directive in Dancer2
 
@@ -611,8 +612,9 @@ Change the configuration of the template to Template Toolkit:
     # in config.yml
     # ...
     engines:
-        template_toolkit:
-            WRAPPER: layouts/main.tt
+        template:
+            template_toolkit:
+                WRAPPER: layouts/main.tt
 
 =back
 
@@ -624,7 +626,7 @@ variables.
 =head2 Configuration and environments
 
 Configuring a Dancer2 application can be done in many ways. The easiest one (and
-maybe the the dirtiest) is to put all your settings statements at the top of
+maybe the dirtiest) is to put all your settings statements at the top of
 your script, before calling the dance() method.
 
 Other ways are possible, you can define all your settings in the file
@@ -867,7 +869,16 @@ simply start your Dancer2 app using L<plackup> and L<Plack::Loader::Shotgun>:
 Point your browser at it. Files can now be changed in your favorite editor and
 the browser needs to be refreshed to see the saved changes.
 
-Please note that this is not recommended for production for performance reasons. This is the Dancer2 replacement solution of the old Dancer experimental C<auto_reload> option.
+Please note that this is not recommended for production for performance reasons.
+This is the Dancer2 replacement solution of the old Dancer experimental
+C<auto_reload> option.
+
+On Windows, Shotgun loader is known to cause huge memory leaks in a
+fork-emulation layer. If you are aware of this and still want to run the loader,
+please use the following command:
+
+    > set PLACK_SHOTGUN_MEMORY_LEAK=1 && plackup -L Shotgun bin\app.pl
+    HTTP::Server::PSGI: Accepting connections at http://0:5000/
 
 =head2 CGI and Fast-CGI
 
@@ -1032,7 +1043,7 @@ L<Plack::Builder> as such:
     use Plack::Builder;
 
     builder {
-        enable 'Deflator';
+        enable 'Deflater';
         enable 'Session', store => 'File';
         enable 'Debug', panels => [ qw<DBITrace Memory Timer> ];
         dance;
@@ -1062,8 +1073,8 @@ L<Plack::Builder> which uses L<Plack::App::URLMap>:
     my $special_handler = sub { ... };
 
     builder {
-        mount '/'        => dance,
-        mount '/special' => $special_handler,
+        mount '/'        => dance;
+        mount '/special' => $special_handler;
     };
 
 =head3 Running on Perl webservers with plackup
@@ -1111,7 +1122,7 @@ it to use L<Plack::Builder>, as described above:
     use Plack::Builder;
 
     builder {
-        enable 'Deflator';
+        enable 'Deflater';
         dance;
     };
 
@@ -1132,8 +1143,8 @@ Start by creating a simple app.psgi file:
     use Plack::Builder;
 
     builder {
-        mount '/wiki'  => OurWiki->dance,
-        mount '/forum' => OurForum->dance,
+        mount '/wiki'  => OurWiki->dance;
+        mount '/forum' => OurForum->dance;
     };
 
 and now use L<Starman>
@@ -1379,4 +1390,3 @@ This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.
 
 =cut
-

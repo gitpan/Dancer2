@@ -2,7 +2,7 @@
 
 package Dancer2::Core::Role::DSL;
 {
-    $Dancer2::Core::Role::DSL::VERSION = '0.10';
+  $Dancer2::Core::Role::DSL::VERSION = '0.11';
 }
 use Moo::Role;
 use Dancer2::Core::Types;
@@ -31,7 +31,7 @@ sub _build_dsl_keywords {
 sub register {
     my ( $self, $keyword, $is_global ) = @_;
     my $keywords = $self->keywords;
-    my $pkg      = ref($self);
+    my $pkg = ref($self);
     $pkg =~ s/__WITH__.+$//;
 
     if ( exists $keywords->{$keyword} ) {
@@ -88,12 +88,9 @@ sub _construct_export_map {
     my $keywords = $self->keywords;
     my %map;
     foreach my $keyword ( keys %$keywords ) {
-
         # check if the keyword were excluded from importation
         $args->{ '!' . $keyword } and next;
-        $map{$keyword} =
-          $self->_compile_keyword( $keyword,
-            $keywords->{$keyword}{is_global} );
+        $map{$keyword} = $self->_compile_keyword( $keyword, $keywords->{$keyword}{is_global} );
     }
     return \%map;
 }
@@ -110,7 +107,7 @@ Dancer2::Core::Role::DSL - Role for DSL
 
 =head1 VERSION
 
-version 0.10
+version 0.11
 
 =head1 AUTHOR
 

@@ -1,6 +1,6 @@
 package Dancer2::Template::Tiny;
 {
-    $Dancer2::Template::Tiny::VERSION = '0.10';
+  $Dancer2::Template::Tiny::VERSION = '0.11';
 }
 
 # ABSTRACT: Template::Tiny engine for Dancer2
@@ -43,6 +43,7 @@ sub render {
 
 1;
 
+__END__
 
 =pod
 
@@ -52,7 +53,7 @@ Dancer2::Template::Tiny - Template::Tiny engine for Dancer2
 
 =head1 VERSION
 
-version 0.10
+version 0.11
 
 =head1 SYNOPSIS
 
@@ -61,7 +62,7 @@ This template engine allows you to use L<Template::Tiny> in L<Dancer2>.
 L<Template::Tiny> is an implementation of a subset of L<Template::Toolkit> (the
 major parts) which takes much less memory and is faster. If you're only using
 the main functions of Template::Toolkit, you could use Template::Tiny. You can
-also seemlessly move back to Template::Toolkit whenever you want.
+also seamlessly move back to Template::Toolkit whenever you want.
 
 However, Dancer2 uses a modified version of L<Template::Tiny>, which is L<Dancer2::Template::Implementation::ForkedTiny>. It adds 2 features :
 
@@ -119,6 +120,3 @@ This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.
 
 =cut
-
-
-__END__

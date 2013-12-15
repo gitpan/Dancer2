@@ -33,13 +33,13 @@ my $content = Dancer2::FileUtils::read_file_content();
 is $content, undef;
 
 my $paths = [
-    [ undef         => 'undef' ],
-    [ '/foo/./bar/' => '/foo/bar/' ],
-    [ '/foo/../bar' => '/bar' ],
-    [ '/foo/bar/..' => '/foo/' ],
+   [ undef          => 'undef' ],
+   [ '/foo/./bar/'  => '/foo/bar/' ],
+   [ '/foo/../bar' => '/bar' ],
+   [ '/foo/bar/..'  => '/foo/' ],
 ];
 
-for my $case (@$paths) {
+for my $case ( @$paths ) {
     is Dancer2::FileUtils::normalize_path( $case->[0] ), $case->[1];
 }
 

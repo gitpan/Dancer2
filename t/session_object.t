@@ -23,21 +23,21 @@ subtest 'session attributes' => sub {
 
     my $id = $s1->id;
     ok defined($id), 'id is defined';
-    is( exception { $s1->id("new_$id") }, undef, 'id can be set' );
-    is( $s1->id, "new_$id", '... new value found for id' );
+    is(exception { $s1->id("new_$id") }, undef, 'id can be set');
+    is($s1->id, "new_$id", '... new value found for id');
 
     my $s2 = $ENGINE->create;
-    isnt( $s1->id, $s2->id, "IDs are not the same" );
+    isnt($s1->id, $s2->id, "IDs are not the same");
 };
 
 my $count = 10_000;
 subtest "$count session IDs and no dups" => sub {
     my $seen      = {};
     my $iteration = 0;
-    foreach my $i ( 1 .. $count ) {
+    foreach my $i (1 .. $count) {
         my $s1 = $ENGINE->create;
         my $id = $s1->id;
-        if ( exists $seen->{$id} ) {
+        if (exists $seen->{$id}) {
             last;
         }
         $seen->{$id} = 1;

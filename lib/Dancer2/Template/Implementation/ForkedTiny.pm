@@ -1,6 +1,6 @@
 package Dancer2::Template::Implementation::ForkedTiny;
 {
-    $Dancer2::Template::Implementation::ForkedTiny::VERSION = '0.10';
+  $Dancer2::Template::Implementation::ForkedTiny::VERSION = '0.11';
 }
 
 # ABSTRACT: Dancer2 own implementation of Template::Tiny
@@ -220,6 +220,7 @@ sub _expression {
 
 1;
 
+__END__
 
 =pod
 
@@ -229,7 +230,7 @@ Dancer2::Template::Implementation::ForkedTiny - Dancer2 own implementation of Te
 
 =head1 VERSION
 
-version 0.10
+version 0.11
 
 =head1 SYNOPSIS
 
@@ -392,6 +393,3 @@ This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.
 
 =cut
-
-
-__END__

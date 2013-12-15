@@ -1,6 +1,6 @@
 package Dancer2::Core::Request;
 {
-    $Dancer2::Core::Request::VERSION = '0.10';
+  $Dancer2::Core::Request::VERSION = '0.11';
 }
 
 # ABSTRACT: Interface for accessing incoming requests
@@ -19,6 +19,7 @@ use Dancer2::Core::Request::Upload;
 with 'Dancer2::Core::Role::Headers';
 
 
+
 # check presence of XS module to speedup request
 eval { require URL::Encode::XS; };
 our $XS_URL_DECODE = !$@;
@@ -29,25 +30,23 @@ our $XS_PARSE_QUERY_STRING = !$@;
 
 # add an attribute for each HTTP_* variables
 # (HOST is managed manually)
-my @http_env_keys = (
-    qw/
-      accept
-      accept_charset
-      accept_encoding
-      accept_language
-      accept_type
-      connection
-      keep_alive
-      referer
-      user_agent
-      x_requested_with
-      /
-);
+my @http_env_keys = (qw/
+    accept
+    accept_charset
+    accept_encoding
+    accept_language
+    accept_type
+    connection
+    keep_alive
+    referer
+    user_agent
+    x_requested_with
+/);
 
-foreach my $attr (@http_env_keys) {
+foreach my $attr ( @http_env_keys ) {
     has $attr => (
         is      => 'ro',
-        isa     => Str,
+        isa     => Maybe[Str],
         lazy    => 1,
         default => sub { $_[0]->env->{ 'HTTP_' . ( uc $attr ) } },
     );
@@ -60,6 +59,7 @@ has env => (
     isa     => HashRef,
     default => sub { {} },
 );
+
 
 
 has path => (
@@ -169,37 +169,37 @@ has _params => (
 
 has _body_params => (
     is      => 'ro',
-    isa     => Maybe(HashRef),
+    isa     => Maybe( HashRef ),
     default => sub {undef},
 );
 
 sub _set_body_params {
     my ( $self, $params ) = @_;
-    $self->{_body_params} = _decode($params);
+    $self->{_body_params} = _decode( $params );
     $self->_build_params();
 }
 
 has _query_params => (
     is      => 'ro',
-    isa     => Maybe(HashRef),
+    isa     => Maybe( HashRef ),
     default => sub {undef},
 );
 
 sub _set_query_params {
     my ( $self, $params ) = @_;
-    $self->{_query_params} = _decode($params);
+    $self->{_query_params} = _decode( $params );
     $self->_build_params();
 }
 
 has _route_params => (
     is      => 'ro',
     isa     => HashRef,
-    default => sub { {} },
+    default => sub {{}},
 );
 
 sub _set_route_params {
     my ( $self, $params ) = @_;
-    $self->{_route_params} = _decode($params);
+    $self->{_route_params} = _decode( $params );
     $self->_build_params();
 }
 
@@ -224,10 +224,15 @@ has is_behind_proxy => (
 sub host {
     my ($self) = @_;
 
-    return ( $self->is_behind_proxy )
-      ? ( $self->env->{HTTP_X_FORWARDED_HOST}
-          || $self->env->{X_FORWARDED_HOST} )
-      : $self->env->{HTTP_HOST};
+    if ( $self->is_behind_proxy ) {
+        my @hosts = split /\s*,\s*/, (
+          $self->env->{HTTP_X_FORWARDED_HOST} || $self->env->{X_FORWARDED_HOST}
+        );
+
+        return $hosts[0];
+    } else {
+        return $self->env->{'HTTP_HOST'};
+    }
 }
 
 
@@ -245,6 +250,7 @@ sub port                  { $_[0]->env->{SERVER_PORT} }
 sub request_uri           { $_[0]->env->{REQUEST_URI} }
 sub user                  { $_[0]->env->{REMOTE_USER} }
 sub script_name           { $_[0]->env->{SCRIPT_NAME} }
+
 
 
 sub scheme {
@@ -273,6 +279,8 @@ has serializer => (
 );
 
 
+
+
 has data => (
     is      => 'ro',
     lazy    => 1,
@@ -297,7 +305,7 @@ sub deserialize {
 
     # try to deserialize
     my $body = $self->_read_to_end();
-    my $data = $self->serializer->deserialize( $self->body );
+    my $data = $self->serializer->deserialize($self->body);
     return if !defined $data;
 
     # Set _body_params directly rather than using the setter. Deserializiation
@@ -340,8 +348,8 @@ sub BUILD {
       HTTP::Body->new( $self->content_type, $self->content_length );
     $self->{_http_body}->cleanup(1);
 
-    $self->data;         # Deserialize body
-    $self->_params();    # Decode query and body prams
+    $self->data;      # Deserialize body
+    $self->_params(); # Decode query and body prams
     $self->_build_uploads();
 }
 
@@ -390,9 +398,12 @@ sub forward {
         $new_request,
         $context,
     );
+    # halt the response, so no further processing is done on this request.
+    # (any after hooks will have already been run)
     $new_response->halt;
     $context->response($new_response);
-    return $new_response;
+    $context->with_return->($new_response) if $context->has_with_return;
+    return $new_response; # Should never be called..
 }
 
 sub _merge_params {
@@ -430,6 +441,7 @@ sub _common_uri {
 }
 
 
+
 sub uri_base {
     my $self  = shift;
     my $uri   = $self->_common_uri;
@@ -457,7 +469,6 @@ sub dispatch_path {
     # Remove base from front of path.
     $path =~ s|^(\Q$base\E)?||;
     $path =~ s|^/+|/|;
-
     # PSGI spec notes that '' should be considered '/'
     $path = '/' if $path eq '';
     return $path;
@@ -479,6 +490,7 @@ sub uri_for {
 
     return $dont_escape ? uri_unescape( $uri->canonical ) : $uri->canonical;
 }
+
 
 
 sub params {
@@ -560,7 +572,7 @@ sub _build_params {
     # _before_ we get there, so we have to save it first
     my $previous = $self->_has_params ? $self->_params : {};
 
-    # now parse environement params...
+    # now parse environment params...
     $self->_parse_get_params();
     if ( $self->body_is_parsed ) {
         $self->{_body_params} ||= {};
@@ -571,8 +583,8 @@ sub _build_params {
 
     # and merge everything
     $self->{_params} = {
-        %$previous, %{ $self->_query_params || {} },
-        %{ $self->_route_params }, %{ $self->_body_params || {} },
+        %$previous,                %{ $self->_query_params || {} },
+        %{ $self->_route_params }, %{ $self->_body_params  || {} },
     };
 
 }
@@ -604,8 +616,9 @@ sub _parse_get_params {
     return if !defined $source || $source eq '';
 
     if ($XS_PARSE_QUERY_STRING) {
-        $self->_set_query_params( CGI::Deurl::XS::parse_query_string($source)
-              || {} );
+        $self->_set_query_params(
+            CGI::Deurl::XS::parse_query_string($source) || {}
+        );
         return $self->_query_params;
     }
 
@@ -632,7 +645,7 @@ sub _parse_get_params {
             $query_params->{$key} = $val;
         }
     }
-    $self->_set_query_params($query_params);
+    $self->_set_query_params( $query_params );
     return $self->_query_params;
 }
 
@@ -765,7 +778,6 @@ sub _build_cookies {
 
 1;
 
-
 __END__
 
 =pod
@@ -776,7 +788,7 @@ Dancer2::Core::Request - Interface for accessing incoming requests
 
 =head1 VERSION
 
-version 0.10
+version 0.11
 
 =head1 SYNOPSIS
 
@@ -1035,7 +1047,7 @@ table provided by C<uploads()>. It looks at the calling context and returns a
 corresponding value.
 
 If you have many file uploads under the same name, and call C<upload('name')> in
-an array context, the accesor will unroll the ARRAY ref for you:
+an array context, the accessor will unroll the ARRAY ref for you:
 
     my @uploads = request->upload('many_uploads'); # OK
 

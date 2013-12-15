@@ -2,7 +2,7 @@
 
 package Dancer2::Core::Cookie;
 {
-    $Dancer2::Core::Cookie::VERSION = '0.10';
+  $Dancer2::Core::Cookie::VERSION = '0.11';
 }
 use Moo;
 use URI::Escape;
@@ -28,6 +28,7 @@ sub to_header {
 
     return join '; ', @headers;
 }
+
 
 
 has value => (
@@ -56,11 +57,13 @@ around value => sub {
 sub _get_value { shift->value }
 
 
+
 has name => (
     is       => 'rw',
     isa      => Str,
     required => 1,
 );
+
 
 
 has expires => (
@@ -71,6 +74,7 @@ has expires => (
         Dancer2::Core::Time->new( expression => $_[0] )->gmt_string;
     },
 );
+
 
 
 has domain => (
@@ -115,7 +119,7 @@ Dancer2::Core::Cookie - A cookie representing class
 
 =head1 VERSION
 
-version 0.10
+version 0.11
 
 =head1 SYNOPSIS
 
@@ -131,7 +135,7 @@ version 0.10
 
 =head1 DESCRIPTION
 
-Dancer2::Cookie provides a HTTP cookie object to work with cookies.
+Dancer2::Core::Cookie provides a HTTP cookie object to work with cookies.
 
 =head1 ATTRIBUTES
 
@@ -184,7 +188,7 @@ attribute to 0.
 
 =head1 METHODS
 
-=head2 my $cookie=new Dancer2::Cookie (%opts);
+=head2 my $cookie=Dancer2::Core::Cookie->new(%opts);
 
 Create a new Dancer2::Core::Cookie object.
 

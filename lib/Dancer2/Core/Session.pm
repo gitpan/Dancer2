@@ -1,6 +1,6 @@
 package Dancer2::Core::Session;
 {
-    $Dancer2::Core::Session::VERSION = '0.10';
+  $Dancer2::Core::Session::VERSION = '0.11';
 }
 
 #ABSTRACT: class to represent any session object
@@ -14,7 +14,6 @@ use Dancer2::Core::Time;
 
 
 has id => (
-
     # for some specific plugins this should be rw.
     # refer to https://github.com/PerlDancer/Dancer2/issues/460
     is       => 'rw',
@@ -48,10 +47,12 @@ has is_dirty => (
 );
 
 
+
 sub read {
     my ( $self, $key ) = @_;
     return $self->data->{$key};
 }
+
 
 
 sub write {
@@ -79,7 +80,7 @@ Dancer2::Core::Session - class to represent any session object
 
 =head1 VERSION
 
-version 0.10
+version 0.11
 
 =head1 DESCRIPTION
 
