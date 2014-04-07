@@ -2,7 +2,7 @@
 
 package Dancer2::Handler::File;
 {
-  $Dancer2::Handler::File::VERSION = '0.11';
+  $Dancer2::Handler::File::VERSION = '0.12';
 }
 use Carp 'croak';
 use Moo;
@@ -117,17 +117,14 @@ sub code {
 
         my @stat = stat $file_path;
 
-        $ctx->response->header('Content-Type')
-          or $ctx->response->header( 'Content-Type', $content_type );
+        $ctx->response->header( 'Content-Type', $content_type );
 
-        $ctx->response->header('Content-Length')
-          or $ctx->response->header( 'Content-Length', $stat[7] );
+        $ctx->response->header( 'Content-Length', $stat[7] );
 
-        $ctx->response->header('Last-Modified')
-          or $ctx->response->header(
+        $ctx->response->header(
             'Last-Modified',
             HTTP::Date::time2str( $stat[9] )
-          );
+        );
 
         $ctx->response->content($content);
         $ctx->response->is_encoded(1);    # bytes are already encoded
@@ -148,7 +145,7 @@ Dancer2::Handler::File - class for handling file content rendering
 
 =head1 VERSION
 
-version 0.11
+version 0.12
 
 =head1 AUTHOR
 

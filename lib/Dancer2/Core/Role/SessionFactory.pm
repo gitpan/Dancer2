@@ -1,6 +1,6 @@
 package Dancer2::Core::Role::SessionFactory;
 {
-  $Dancer2::Core::Role::SessionFactory::VERSION = '0.11';
+  $Dancer2::Core::Role::SessionFactory::VERSION = '0.12';
 }
 
 #ABSTRACT: Role for session factories
@@ -275,7 +275,7 @@ Dancer2::Core::Role::SessionFactory - Role for session factories
 
 =head1 VERSION
 
-version 0.11
+version 0.12
 
 =head1 DESCRIPTION
 

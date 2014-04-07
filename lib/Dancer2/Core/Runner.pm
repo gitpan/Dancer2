@@ -1,7 +1,7 @@
 # ABSTRACT: Top-layer class to start a dancer app
 package Dancer2::Core::Runner;
 {
-  $Dancer2::Core::Runner::VERSION = '0.11';
+  $Dancer2::Core::Runner::VERSION = '0.12';
 }
 
 use Moo;
@@ -179,7 +179,7 @@ Dancer2::Core::Runner - Top-layer class to start a dancer app
 
 =head1 VERSION
 
-version 0.11
+version 0.12
 
 =head1 DESCRIPTION
 

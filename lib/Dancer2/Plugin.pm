@@ -1,6 +1,6 @@
 package Dancer2::Plugin;
 {
-  $Dancer2::Plugin::VERSION = '0.11';
+  $Dancer2::Plugin::VERSION = '0.12';
 }
 
 # ABSTRACT: Extending Dancer2's DSL with plugins
@@ -261,7 +261,7 @@ Dancer2::Plugin - Extending Dancer2's DSL with plugins
 
 =head1 VERSION
 
-version 0.11
+version 0.12
 
 =head1 DESCRIPTION
 
@@ -332,7 +332,7 @@ For example, here is a way to install a hook in the importing app:
             Dancer2::Core::Hook->new(
                 name => 'before',
                 code => sub { ... },
-            );
+            )
         );
     };
 

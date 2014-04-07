@@ -38,6 +38,7 @@ my @modules = qw(
   HTTP::Body
   HTTP::Date
   HTTP::Headers
+  HTTP::Request
   HTTP::Request::Common
   HTTP::Server::Simple::PSGI
   Hash::Merge::Simple
@@ -59,6 +60,7 @@ my @modules = qw(
   MooX::Types::MooseLike::Base
   POSIX
   Plack::Request
+  Plack::Test
   Pod::Simple::Search
   Pod::Simple::SimpleTree
   Return::MultiLevel

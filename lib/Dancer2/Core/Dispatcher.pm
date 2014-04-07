@@ -2,7 +2,7 @@
 
 package Dancer2::Core::Dispatcher;
 {
-  $Dancer2::Core::Dispatcher::VERSION = '0.11';
+  $Dancer2::Core::Dispatcher::VERSION = '0.12';
 }
 use Moo;
 use Encode;
@@ -220,7 +220,7 @@ Dancer2::Core::Dispatcher - Class for dispatching request to the appropriate rou
 
 =head1 VERSION
 
-version 0.11
+version 0.12
 
 =head1 SYNOPSIS
 

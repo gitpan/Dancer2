@@ -2,7 +2,7 @@
 
 package Dancer2::Plugin::Ajax;
 {
-  $Dancer2::Plugin::Ajax::VERSION = '0.11';
+  $Dancer2::Plugin::Ajax::VERSION = '0.12';
 }
 
 use strict;
@@ -14,6 +14,15 @@ use Dancer2::Plugin;
 
 register 'ajax' => sub {
     my ( $dsl, $pattern, @rest ) = @_;
+
+    my $default_methods = [ 'get', 'post' ];
+
+    # If the given pattern is an ArrayRef, we override the defaults
+    # and pass these onto to DSL->any()
+    if( ref($pattern) eq "ARRAY" ) {
+        $default_methods = $pattern;
+        $pattern = shift(@rest);
+    }
 
     my $code;
     for my $e (@rest) { $code = $e if ( ref($e) eq 'CODE' ) }
@@ -40,7 +49,7 @@ register 'ajax' => sub {
         return $response;
     };
 
-    $dsl->any( [ 'get', 'post' ] => $pattern, $ajax_route );
+    $dsl->any( $default_methods => $pattern, $ajax_route );
 };
 
 register_plugin;
@@ -56,7 +65,7 @@ Dancer2::Plugin::Ajax - a plugin for adding Ajax route handlers
 
 =head1 VERSION
 
-version 0.11
+version 0.12
 
 =head1 SYNOPSIS
 
@@ -65,7 +74,13 @@ version 0.11
     use Dancer2;
     use Dancer2::Plugin::Ajax;
 
+    # For GET / POST
     ajax '/check_for_update' => sub {
+        # ... some Ajax code
+    };
+
+    # For all valid HTTP methods
+    ajax ['get', 'post', ... ] => '/check_for_more' => sub {
         # ... some Ajax code
     };
 
@@ -82,7 +97,7 @@ The route handler code will be compiled to behave like the following:
 
 =item *
 
-Pass if the request header X-Requested-With doesnt equal XMLHttpRequest
+Pass if the request header X-Requested-With doesn't equal XMLHttpRequest
 
 =item *
 
@@ -90,7 +105,7 @@ Disable the layout
 
 =item *
 
-The action built matches POST / GET requests.
+The action built matches POST / GET requests by default. This can be extended by passing it an ArrayRef of allowed HTTP methods.
 
 =back
 

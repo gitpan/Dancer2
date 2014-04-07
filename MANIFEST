@@ -183,6 +183,7 @@ t/runner.t
 t/serializer.t
 t/serializer_json.t
 t/server.t
+t/server_standalone.t
 t/session_config.t
 t/session_engines.t
 t/session_forward.t
@@ -220,11 +221,16 @@ t/sessions/UiNIHQAAb3tN7zHtZJRZY7ULJVTc4-bo.yml
 t/sessions/UjnvaAAAdx5B7BnSg2YxFz_25MpWqBwX.yml
 t/sessions/UjnwfgAACXJ9T98xUqd76qOfcABU4l0R.yml
 t/sessions/Uq2XMAAANZ8zV8FD1Emyu7XRdgIZekDJ.yml
+t/sessions/Uq40BAAAYEMgWjxMIvRwdxD5PJbiQqf8.yml
+t/sessions/Uq4w8QAAKfxODPaYx3AWbGAqcXiVxBIm.yml
 t/sessions/UqMKawAAe86AQqQeYQmzh8sUBp6GIdFY.yml
 t/sessions/UqMhtgAAbObthtU3fOj5q-ibplcfJI-A.yml
 t/sessions/UqMkygAAH92FRll2ucXas2hPHOmBwGxY.yml
 t/sessions/UqMo4AAAZlW25DoDlelvGZ9Mf1HPIxyI.yml
 t/sessions/UqMsHAAAHWKTi6hOv6wGnR-n8bIUQmYs.yml
+t/sessions/UzXj9AAACj99x6qpAKlKAvJQG4vSZA3r.yml
+t/sessions/UzrT0wAAQWB3d7CFaS3lIwGy9rUCnQs3.yml
+t/sessions/UzrUXQAASbvdoU5rNArltV7cYedp9_zH.yml
 t/shared_engines.t
 t/splat.t
 t/template.t

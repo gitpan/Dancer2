@@ -2,7 +2,7 @@
 
 package Dancer2::Core::Server::Standalone;
 {
-  $Dancer2::Core::Server::Standalone::VERSION = '0.11';
+  $Dancer2::Core::Server::Standalone::VERSION = '0.12';
 }
 
 use Moo;
@@ -61,6 +61,14 @@ sub print_banner {
     }
 
 }
+
+
+sub valid_http_method {
+    my $self   = shift;
+    my $method = shift or return 0;
+    return $method =~ /^(?:GET|POST|HEAD|PUT|DELETE|OPTIONS|PATCH)$/;
+}
+
 1;
 
 __END__
@@ -73,7 +81,7 @@ Dancer2::Core::Server::Standalone - Basic standalone HTTP server for Dancer2
 
 =head1 VERSION
 
-version 0.11
+version 0.12
 
 =head1 DESCRIPTION
 
@@ -97,6 +105,11 @@ The server's name: B<Standalone>.
 =head2 start
 
 Starts the server.
+
+=head2 valid_http_method
+
+Overrides method inherited from L<HTTP::Server::Simple>, allowing C<GET>, C<POST>,
+C<HEAD>, C<PUT>, C<DELETE>, C<OPTIONS> and C<PATCH> requests.
 
 =head1 AUTHOR
 

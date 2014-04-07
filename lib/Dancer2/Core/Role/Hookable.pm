@@ -2,7 +2,7 @@
 
 package Dancer2::Core::Role::Hookable;
 {
-  $Dancer2::Core::Role::Hookable::VERSION = '0.11';
+  $Dancer2::Core::Role::Hookable::VERSION = '0.12';
 }
 use Moo::Role;
 use Dancer2::Core;
@@ -140,9 +140,9 @@ sub execute_hook {
     ref($self) eq 'Dancer2::Core::App' &&
         $self->engine('logger')->core("Entering hook $name");
 
-    my $res;
-    $res = $_->(@args) for @{ $self->hooks->{$name} };
-    return $res;
+    for my $hook ( @{ $self->hooks->{$name} } ) {
+        $hook->(@args);
+    }
 }
 
 1;
@@ -157,7 +157,7 @@ Dancer2::Core::Role::Hookable - Role for hookable objects
 
 =head1 VERSION
 
-version 0.11
+version 0.12
 
 =head1 AUTHOR
 

@@ -1,8 +1,7 @@
 package Dancer2;
 {
-  $Dancer2::VERSION = '0.11';
+  $Dancer2::VERSION = '0.12';
 }
-
 # ABSTRACT: Lightweight yet powerful web application framework
 
 use strict;
@@ -20,11 +19,9 @@ our $AUTHORITY = 'SUKRIA';
 # the tests
 $Dancer2::VERSION ||= '0.09';    # 2.0.9
 
-
 our $runner;
 
 sub runner {$runner}
-
 
 sub import {
     my ( $class,  @args )   = @_;
@@ -125,7 +122,7 @@ Dancer2 - Lightweight yet powerful web application framework
 
 =head1 VERSION
 
-version 0.11
+version 0.12
 
 =head1 DESCRIPTION
 
@@ -145,8 +142,11 @@ Dancer2 is easy and fun:
 This is the main module for the Dancer2 distribution. It contains logic for
 creating a new Dancer2 application.
 
-You are welcome to joining our mailing list at dancer-users@perldancer.org,
-and we're also on IRC: #dancer on irc.perl.org.
+You are welcome to join our mailing list.
+For subscription information, mail address and archives see
+L<http://lists.preshweb.co.uk/mailman/listinfo/dancer-users>.
+
+We are also on IRC: #dancer on irc.perl.org.
 
 =head2 Documentation Index
 
@@ -222,6 +222,8 @@ Not implemented yet, do not use.
 
 Returns the current runner. It is of type L<Dancer2::Core::Runner>.
 
+=encoding UTF-8
+
 =head1 AUTHORS
 
 =head2 CORE DEVELOPERS
@@ -232,9 +234,11 @@ Returns the current runner. It is of type L<Dancer2::Core::Runner>.
     David Golden
     David Precious
     Franck Cuny
+    Mickey Nasriachi
     Russell Jenkins
     Sawyer X
     Stefan Hornburg (Racke)
+    Steven Humphrey
     Yanick Champoux
 
 =head2 CONTRIBUTORS
@@ -249,6 +253,7 @@ Returns the current runner. It is of type L<Dancer2::Core::Runner>.
     andrewsolomon
     Ashvini V
     B10m
+    baynes
     Blabos de Blebe
     Breno G. de Oliveira
     Celogeek
@@ -259,13 +264,17 @@ Returns the current runner. It is of type L<Dancer2::Core::Runner>.
     Dale Gallagher
     David Steinbrunner
     Dinis Rebolo
+    Erik Smit
     geistteufel
     Gideon D'souza
     Graham Knop
+    Gregor Herrmann
+    Grzegorz Rożniecki
     Hobbestigrou
     Ivan Bessarabov
     James Aitken
     Jason A. Crome
+    Jean Stebens
     Jonathan Scott Duff
     Julio Fraire
     Keith Broughton
@@ -274,7 +283,6 @@ Returns the current runner. It is of type L<Dancer2::Core::Runner>.
     Matt Phillips
     Matt S Trout
     Maurice
-    Mickey Nasriachi
     mokko
     Olivier Mengué
     Pau Amma
@@ -285,9 +293,8 @@ Returns the current runner. It is of type L<Dancer2::Core::Runner>.
     Shlomi Fish
     Slava Goltser
     smashz
-    Steven Humphrey
     Tom Hukins
-    Upasana Shukla
+    Upasana
     Vincent Bachelier
 
 =head1 AUTHOR

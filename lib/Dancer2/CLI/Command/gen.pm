@@ -1,7 +1,7 @@
 # ABSTRACT: create new Dancer2 application
 package Dancer2::CLI::Command::gen;
 {
-  $Dancer2::CLI::Command::gen::VERSION = '0.11';
+  $Dancer2::CLI::Command::gen::VERSION = '0.12';
 }
 
 use strict;
@@ -23,6 +23,7 @@ sub description { 'Helper script to create new Dancer2 applications' }
 sub opt_spec {
     return (
         [ 'application|a=s', 'application name' ],
+        [ 'directory|d=s',   'application folder (default: same as application name)' ],
         [ 'path|p=s',        'application path (default: current directory)',
             { default => '.' } ],
         [ 'overwrite|o',     'overwrite existing files' ],
@@ -60,6 +61,10 @@ sub execute {
     my $app_name = $opt->{application};
     my $app_file = _get_app_file($app_name);
     my $app_path = _get_app_path($opt->{path}, $app_name);
+
+    if( my $dir = $opt->{directory} ) {
+        $app_path = catdir( $opt->{path}, $dir );
+    }
 
     my $files_to_copy = _build_file_list($skel_dir, $app_path);
     foreach my $pair (@$files_to_copy) {
@@ -275,7 +280,7 @@ Dancer2::CLI::Command::gen - create new Dancer2 application
 
 =head1 VERSION
 
-version 0.11
+version 0.12
 
 =head1 AUTHOR
 

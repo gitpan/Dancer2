@@ -1,7 +1,7 @@
 # ABSTRACT: encapsulation of Dancer2 packages
 package Dancer2::Core::App;
 {
-  $Dancer2::Core::App::VERSION = '0.11';
+  $Dancer2::Core::App::VERSION = '0.12';
 }
 
 use Moo;
@@ -547,7 +547,7 @@ Dancer2::Core::App - encapsulation of Dancer2 packages
 
 =head1 VERSION
 
-version 0.11
+version 0.12
 
 =head1 DESCRIPTION
 

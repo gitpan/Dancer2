@@ -1,7 +1,7 @@
 # ABSTRACT: display version
 package Dancer2::CLI::Command::version;
 {
-  $Dancer2::CLI::Command::version::VERSION = '0.11';
+  $Dancer2::CLI::Command::version::VERSION = '0.12';
 }
 use App::Cmd::Setup -command;
 
@@ -29,7 +29,7 @@ Dancer2::CLI::Command::version - display version
 
 =head1 VERSION
 
-version 0.11
+version 0.12
 
 =head1 AUTHOR
 
