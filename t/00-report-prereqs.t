@@ -79,7 +79,6 @@ my @modules = qw(
   URI::Escape
   URL::Encode::XS
   YAML
-  YAML::Any
   lib
   overload
   parent

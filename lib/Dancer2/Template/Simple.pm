@@ -1,9 +1,7 @@
 #ABSTRACT: Pure Perl 5 template engine for Dancer2
 
 package Dancer2::Template::Simple;
-{
-  $Dancer2::Template::Simple::VERSION = '0.12';
-}
+$Dancer2::Template::Simple::VERSION = '0.13';
 use strict;
 use warnings;
 use Moo;
@@ -157,7 +155,7 @@ Dancer2::Template::Simple - Pure Perl 5 template engine for Dancer2
 
 =head1 VERSION
 
-version 0.12
+version 0.13
 
 =head1 SYNOPSIS
 
@@ -214,7 +212,7 @@ Dancer Core Developers
 
 =head1 COPYRIGHT AND LICENSE
 
-This software is copyright (c) 2013 by Alexis Sukrieh.
+This software is copyright (c) 2014 by Alexis Sukrieh.
 
 This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.

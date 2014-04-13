@@ -1,9 +1,7 @@
 # ABSTRACT: Role for Handlers
 
 package Dancer2::Core::Role::Handler;
-{
-  $Dancer2::Core::Role::Handler::VERSION = '0.12';
-}
+$Dancer2::Core::Role::Handler::VERSION = '0.13';
 use Moo::Role;
 use Dancer2::Core::Types;
 
@@ -28,7 +26,7 @@ Dancer2::Core::Role::Handler - Role for Handlers
 
 =head1 VERSION
 
-version 0.12
+version 0.13
 
 =head1 ATTRIBUTES
 
@@ -46,7 +44,7 @@ Dancer Core Developers
 
 =head1 COPYRIGHT AND LICENSE
 
-This software is copyright (c) 2013 by Alexis Sukrieh.
+This software is copyright (c) 2014 by Alexis Sukrieh.
 
 This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.

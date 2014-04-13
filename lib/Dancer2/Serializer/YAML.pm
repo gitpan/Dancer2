@@ -1,11 +1,10 @@
 # ABSTRACT: Serializer for handling YAML data
 
 package Dancer2::Serializer::YAML;
-{
-  $Dancer2::Serializer::YAML::VERSION = '0.12';
-}
+$Dancer2::Serializer::YAML::VERSION = '0.13';
 use Moo;
 use Carp 'croak';
+use Encode;
 with 'Dancer2::Core::Role::Serializer';
 
 has '+content_type' => (default => 'text/x-yaml');
@@ -26,17 +25,17 @@ sub to_yaml {
 
 # class definition
 
-sub BUILD { eval "use YAML::Any ()"; croak "Fail to load YAML: $@" if $@ }
+sub BUILD { eval "use YAML ()"; croak "Fail to load YAML: $@" if $@ }
 sub loaded {1}
 
 sub serialize {
     my ( $self, $entity ) = @_;
-    YAML::Any::Dump($entity);
+    encode('UTF-8', YAML::Dump($entity));
 }
 
 sub deserialize {
     my ( $self, $content ) = @_;
-    YAML::Any::Load($content);
+    YAML::Load(decode('UTF-8', $content));
 }
 
 1;
@@ -51,7 +50,7 @@ Dancer2::Serializer::YAML - Serializer for handling YAML data
 
 =head1 VERSION
 
-version 0.12
+version 0.13
 
 =head1 DESCRIPTION
 
@@ -94,7 +93,7 @@ Dancer Core Developers
 
 =head1 COPYRIGHT AND LICENSE
 
-This software is copyright (c) 2013 by Alexis Sukrieh.
+This software is copyright (c) 2014 by Alexis Sukrieh.
 
 This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.

@@ -1,9 +1,7 @@
 # ABSTRACT: Serializer for handling JSON data
 
 package Dancer2::Serializer::JSON;
-{
-  $Dancer2::Serializer::JSON::VERSION = '0.12';
-}
+$Dancer2::Serializer::JSON::VERSION = '0.13';
 use Moo;
 use JSON ();
 
@@ -61,7 +59,7 @@ Dancer2::Serializer::JSON - Serializer for handling JSON data
 
 =head1 VERSION
 
-version 0.12
+version 0.13
 
 =head1 DESCRIPTION
 
@@ -104,7 +102,7 @@ Dancer Core Developers
 
 =head1 COPYRIGHT AND LICENSE
 
-This software is copyright (c) 2013 by Alexis Sukrieh.
+This software is copyright (c) 2014 by Alexis Sukrieh.
 
 This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.

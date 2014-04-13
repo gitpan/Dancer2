@@ -1,13 +1,10 @@
 package Dancer2::Session::YAML;
-{
-  $Dancer2::Session::YAML::VERSION = '0.12';
-}
-
+$Dancer2::Session::YAML::VERSION = '0.13';
 # ABSTRACT: YAML-file-based session backend for Dancer2
 
 use Moo;
 use Dancer2::Core::Types;
-use YAML::Any;
+use YAML;
 
 has _suffix => (
     is      => 'ro',
@@ -19,13 +16,13 @@ with 'Dancer2::Core::Role::SessionFactory::File';
 
 sub _freeze_to_handle {
     my ( $self, $fh, $data ) = @_;
-    print {$fh} YAML::Any::Dump($data);
+    print {$fh} YAML::Dump($data);
     return;
 }
 
 sub _thaw_from_handle {
     my ( $self, $fh ) = @_;
-    return YAML::Any::LoadFile($fh);
+    return YAML::LoadFile($fh);
 }
 
 1;
@@ -40,7 +37,7 @@ Dancer2::Session::YAML - YAML-file-based session backend for Dancer2
 
 =head1 VERSION
 
-version 0.12
+version 0.13
 
 =head1 DESCRIPTION
 
@@ -87,7 +84,7 @@ Dancer Core Developers
 
 =head1 COPYRIGHT AND LICENSE
 
-This software is copyright (c) 2013 by Alexis Sukrieh.
+This software is copyright (c) 2014 by Alexis Sukrieh.
 
 This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.

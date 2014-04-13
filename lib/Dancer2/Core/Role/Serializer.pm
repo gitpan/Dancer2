@@ -1,9 +1,7 @@
 # ABSTRACT: Role for Serializer engines
 
 package Dancer2::Core::Role::Serializer;
-{
-  $Dancer2::Core::Role::Serializer::VERSION = '0.12';
-}
+$Dancer2::Core::Role::Serializer::VERSION = '0.13';
 use Dancer2::Core::Types;
 
 use Moo::Role;
@@ -78,7 +76,7 @@ Dancer2::Core::Role::Serializer - Role for Serializer engines
 
 =head1 VERSION
 
-version 0.12
+version 0.13
 
 =head1 DESCRIPTION
 
@@ -86,7 +84,7 @@ Any class that consumes this role will be able to be used as a
 serializer under Dancer2.
 
 In order to implement this role, the consumer B<must> implement the
-methods C<serialize>, <deserialize> and C<loaded>, and should define
+methods C<serialize>, C<deserialize> and C<loaded>, and should define
 the C<content_type> attribute value.
 
 =head1 ATTRIBUTES
@@ -117,6 +115,9 @@ content type defined by the C<content_type> attribute.
 A third optional argument is a hash reference of options to the
 serializer.
 
+The serialize method must return bytes and therefore has to handle any
+encoding.
+
 =head2 deserialize($content, [\%options])
 
 The inverse method of C<serialize>. Receives the serializer class
@@ -125,6 +126,9 @@ return a reference to the deserialized Perl data structure.
 
 A third optional argument is a hash reference of options to the
 serializer.
+
+The deserialize method receives encoded bytes and must therefore
+handle any decoding required.
 
 =head2 loaded
 
@@ -142,7 +146,7 @@ Dancer Core Developers
 
 =head1 COPYRIGHT AND LICENSE
 
-This software is copyright (c) 2013 by Alexis Sukrieh.
+This software is copyright (c) 2014 by Alexis Sukrieh.
 
 This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.

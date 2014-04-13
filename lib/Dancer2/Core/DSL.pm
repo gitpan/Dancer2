@@ -1,10 +1,7 @@
 # ABSTRACT: Dancer2's Domain Specific Language (DSL)
 
 package Dancer2::Core::DSL;
-{
-  $Dancer2::Core::DSL::VERSION = '0.12';
-}
-
+$Dancer2::Core::DSL::VERSION = '0.13';
 use Moo;
 use Carp;
 use Class::Load 'load_class';
@@ -379,7 +376,7 @@ Dancer2::Core::DSL - Dancer2's Domain Specific Language (DSL)
 
 =head1 VERSION
 
-version 0.12
+version 0.13
 
 =head1 FUNCTIONS
 
@@ -408,7 +405,7 @@ Dancer Core Developers
 
 =head1 COPYRIGHT AND LICENSE
 
-This software is copyright (c) 2013 by Alexis Sukrieh.
+This software is copyright (c) 2014 by Alexis Sukrieh.
 
 This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.

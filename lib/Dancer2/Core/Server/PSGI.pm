@@ -1,9 +1,7 @@
 # ABSTRACT: Dummy class for passing the PSGI app to a PSGI server
 
 package Dancer2::Core::Server::PSGI;
-{
-  $Dancer2::Core::Server::PSGI::VERSION = '0.12';
-}
+$Dancer2::Core::Server::PSGI::VERSION = '0.13';
 use Moo;
 use Carp;
 use Plack::Request;
@@ -30,7 +28,7 @@ Dancer2::Core::Server::PSGI - Dummy class for passing the PSGI app to a PSGI ser
 
 =head1 VERSION
 
-version 0.12
+version 0.13
 
 =head1 DESCRIPTION
 
@@ -52,7 +50,7 @@ Dancer Core Developers
 
 =head1 COPYRIGHT AND LICENSE
 
-This software is copyright (c) 2013 by Alexis Sukrieh.
+This software is copyright (c) 2014 by Alexis Sukrieh.
 
 This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.

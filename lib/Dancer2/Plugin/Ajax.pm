@@ -1,10 +1,7 @@
 # ABSTRACT: a plugin for adding Ajax route handlers
 
 package Dancer2::Plugin::Ajax;
-{
-  $Dancer2::Plugin::Ajax::VERSION = '0.12';
-}
-
+$Dancer2::Plugin::Ajax::VERSION = '0.13';
 use strict;
 use warnings;
 
@@ -65,7 +62,7 @@ Dancer2::Plugin::Ajax - a plugin for adding Ajax route handlers
 
 =head1 VERSION
 
-version 0.12
+version 0.13
 
 =head1 SYNOPSIS
 
@@ -126,7 +123,7 @@ Dancer Core Developers
 
 =head1 COPYRIGHT AND LICENSE
 
-This software is copyright (c) 2013 by Alexis Sukrieh.
+This software is copyright (c) 2014 by Alexis Sukrieh.
 
 This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.
