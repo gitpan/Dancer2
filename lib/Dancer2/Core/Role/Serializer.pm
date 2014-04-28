@@ -1,10 +1,9 @@
-# ABSTRACT: Role for Serializer engines
-
 package Dancer2::Core::Role::Serializer;
-$Dancer2::Core::Role::Serializer::VERSION = '0.13';
+# ABSTRACT: Role for Serializer engines
+$Dancer2::Core::Role::Serializer::VERSION = '0.140000';
 use Dancer2::Core::Types;
-
 use Moo::Role;
+
 with 'Dancer2::Core::Role::Engine';
 
 sub supported_hooks {
@@ -76,7 +75,7 @@ Dancer2::Core::Role::Serializer - Role for Serializer engines
 
 =head1 VERSION
 
-version 0.13
+version 0.140000
 
 =head1 DESCRIPTION
 

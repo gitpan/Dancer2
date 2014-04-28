@@ -1,12 +1,12 @@
-# ABSTRACT: Role for logger engines
-
 package Dancer2::Core::Role::Logger;
-$Dancer2::Core::Role::Logger::VERSION = '0.13';
+# ABSTRACT: Role for logger engines
+$Dancer2::Core::Role::Logger::VERSION = '0.140000';
 use Dancer2::Core::Types;
 
-use POSIX qw/strftime/;
-use Data::Dumper;
 use Moo::Role;
+use POSIX 'strftime';
+use Data::Dumper;
+
 with 'Dancer2::Core::Role::Engine';
 
 sub supported_hooks {
@@ -175,7 +175,7 @@ Dancer2::Core::Role::Logger - Role for logger engines
 
 =head1 VERSION
 
-version 0.13
+version 0.140000
 
 =head1 DESCRIPTION
 

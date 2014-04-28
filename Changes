@@ -1,12 +1,32 @@
-0.13      2014-04-13 19:17:45CEST+0200 Europe/Amsterdam
+0.140000  2014-04-28 23:14:31CEST+0200 Europe/Amsterdam
 
     [ ENHANCEMENTS ]
-    GH #562: Change YAML::Any to YAML (Steven Humphrey, Russell Jenkins).
+    * Replace Config role with better ConfigReader role.
+      (Mickey Nasriachi, Stefan Hornburg, Sawyer X)
+    * Move App-related attributes (engines) to App instead of config role.
+      (Mickey Nasriachi, Stefan Hornburg, Sawyer X)
+    * Untangle Runner-Server (removing Server entirely).
+      (Mickey Nasriachi, Stefan Hornburg, Sawyer X)
+    * Replace HTTP::Server::Simple::PSGI with HTTP::Server::PSGI.
+      (Mickey Nasriachi, Stefan Hornburg, Sawyer X)
+    * GH #527: Build request cookie objects from request headers, not env.
+      (Russell Jenkins)
+    * GH #569: Transform cookie using the HTTP_COOKIE header, per PSGI spec.
+      (Russell Jenkins)
+    * GH #559, #544: Use Plack middleware for HEAD request content removal.
+      (Russell Jenkins)
+    * GH #513, #483: Deserialize body content for DELETE requests.
+      (Russell Jenkins, Yanick Champoux, Sawyer X)
+
+0.13      2014-04-13 19:19:44CEST+0200 Europe/Amsterdam
+
+    [ ENHANCEMENTS ]
+    * GH #562: Change YAML::Any to YAML (Steven Humphrey, Russell Jenkins).
 
     [ BUG FIXES ]
-    GH #524: Double encoding for YAML sessions.
-    GH #557: Switch to using YAML::Old.
-    GH #548: Deserializer test failure.
+    * GH #524: Double encoding for YAML sessions.
+    * GH #557: Switch to using YAML::Old.
+    * GH #548: Deserializer test failure.
 
 0.12      2014-04-07 22:42:12 Europe/Amsterdam
 

@@ -16,7 +16,7 @@ subtest 'basic redirects' => sub {
         get '/redirect_querystring' => sub { redirect '/login?failed=1' };
     }
 
-    my $app = Dancer2->runner->server->psgi_app;
+    my $app = Dancer2->runner->psgi_app;
     is( ref $app, 'CODE', 'Got app' );
 
     test_psgi $app, sub {
@@ -86,7 +86,7 @@ subtest 'absolute and relative redirects' => sub {
         get '/relative' => sub { redirect "somewhere/else"; };
     }
 
-    my $app = Dancer2->runner->server->psgi_app;
+    my $app = Dancer2->runner->psgi_app;
     is( ref $app, 'CODE', 'Got app' );
 
     test_psgi $app, sub {
@@ -133,7 +133,7 @@ subtest 'redirect behind a proxy' => sub {
         get '/bounce' => sub { redirect '/test2' };
     }
 
-    my $app = Dancer2->runner->server->psgi_app;
+    my $app = Dancer2->runner->psgi_app;
     is( ref $app, 'CODE', 'Got app' );
 
     test_psgi $app, sub {
@@ -173,6 +173,18 @@ subtest 'redirect behind a proxy' => sub {
                 '... or from X_FORWARDED_PROTOCOL',
             );
         }
+
+        {
+            is(
+                $cb->(
+                    GET '/test2/bounce',
+                    'X-FORWARDED-HOST'  => 'nice.host.name',
+                    'X-FORWARDED-PROTO' => 'https',
+                )->headers->header('Location'),
+                'https://nice.host.name/test2',
+                '... or from X_FORWARDED_PROTO',
+            );
+        }
     };
 };
 
@@ -186,7 +198,7 @@ subtest 'redirect behind multiple proxies' => sub {
         get '/bounce' => sub { redirect '/test2' };
     }
 
-    my $app = Dancer2->runner->server->psgi_app;
+    my $app = Dancer2->runner->psgi_app;
     is( ref $app, 'CODE', 'Got app' );
 
     test_psgi $app, sub {

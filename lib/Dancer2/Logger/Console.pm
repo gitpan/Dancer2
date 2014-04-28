@@ -1,8 +1,8 @@
-# ABSTRACT: Console logger
-
 package Dancer2::Logger::Console;
-$Dancer2::Logger::Console::VERSION = '0.13';
+# ABSTRACT: Console logger
+$Dancer2::Logger::Console::VERSION = '0.140000';
 use Moo;
+
 with 'Dancer2::Core::Role::Logger';
 
 sub log {
@@ -22,7 +22,7 @@ Dancer2::Logger::Console - Console logger
 
 =head1 VERSION
 
-version 0.13
+version 0.140000
 
 =head1 DESCRIPTION
 

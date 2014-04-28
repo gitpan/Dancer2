@@ -1,5 +1,5 @@
 package Dancer2::Core::Request;
-$Dancer2::Core::Request::VERSION = '0.13';
+$Dancer2::Core::Request::VERSION = '0.140000';
 # ABSTRACT: Interface for accessing incoming requests
 
 use Moo;
@@ -14,15 +14,6 @@ use Dancer2::Core::Types;
 use Dancer2::Core::Request::Upload;
 
 with 'Dancer2::Core::Role::Headers';
-
-
-
-# check presence of XS module to speedup request
-eval { require URL::Encode::XS; };
-our $XS_URL_DECODE = !$@;
-
-eval { require CGI::Deurl::XS; };
-our $XS_PARSE_QUERY_STRING = !$@;
 
 
 # add an attribute for each HTTP_* variables
@@ -48,6 +39,15 @@ foreach my $attr ( @http_env_keys ) {
         default => sub { $_[0]->env->{ 'HTTP_' . ( uc $attr ) } },
     );
 }
+
+
+# check presence of XS module to speedup request
+eval { require URL::Encode::XS; };
+our $XS_URL_DECODE = !$@;
+
+eval { require CGI::Deurl::XS; };
+our $XS_PARSE_QUERY_STRING = !$@;
+
 
 
 # then all the native attributes
@@ -222,10 +222,7 @@ sub host {
     my ($self) = @_;
 
     if ( $self->is_behind_proxy ) {
-        my @hosts = split /\s*,\s*/, (
-          $self->env->{HTTP_X_FORWARDED_HOST} || $self->env->{X_FORWARDED_HOST}
-        );
-
+        my @hosts = split /\s*,\s*/, $self->env->{HTTP_X_FORWARDED_HOST}, 2;
         return $hosts[0];
     } else {
         return $self->env->{'HTTP_HOST'};
@@ -239,7 +236,7 @@ sub host {
 # aliases, kept for backward compat
 sub agent                 { $_[0]->user_agent }
 sub remote_address        { $_[0]->address }
-sub forwarded_for_address { $_[0]->env->{'X_FORWARDED_FOR'} }
+sub forwarded_for_address { $_[0]->env->{HTTP_X_FORWARDED_FOR} }
 sub address               { $_[0]->env->{REMOTE_ADDR} }
 sub remote_host           { $_[0]->env->{REMOTE_HOST} }
 sub protocol              { $_[0]->env->{SERVER_PROTOCOL} }
@@ -254,9 +251,9 @@ sub scheme {
     my ($self) = @_;
     my $scheme;
     if ( $self->is_behind_proxy ) {
+        # Note the 'HTTP_' prefix the PSGI spec adds to headers.
         $scheme =
-             $self->env->{'X_FORWARDED_PROTOCOL'}
-          || $self->env->{'HTTP_X_FORWARDED_PROTOCOL'}
+             $self->env->{'HTTP_X_FORWARDED_PROTOCOL'}
           || $self->env->{'HTTP_X_FORWARDED_PROTO'}
           || $self->env->{'HTTP_FORWARDED_PROTO'}
           || "";
@@ -297,8 +294,11 @@ sub deserialize {
 
     return unless $self->serializer->support_content_type($content_type);
 
+    # The latest draft of the RFC does not forbid DELETE to have content,
+    # rather the behaviour is undefined. Take the most lenient route and
+    # deserialize any content on delete as well.
     return
-      unless grep { $self->method eq $_ } qw/ PUT POST PATCH /;
+      unless grep { $self->method eq $_ } qw/ PUT POST PATCH DELETE /;
 
     # try to deserialize
     my $body = $self->_read_to_end();
@@ -390,7 +390,7 @@ sub forward {
     my ( $self, $context, $url, $params, $options ) = @_;
     my $new_request = $self->make_forward_to( $url, $params, $options );
 
-    my $new_response = Dancer2->runner->server->dispatcher->dispatch(
+    my $new_response = Dancer2->runner->dispatcher->dispatch(
         $new_request->env,
         $new_request,
         $context,
@@ -700,7 +700,7 @@ sub _init_request_headers {
                 ( my $field = $_ ) =~ s/^HTTPS?_//;
                 ( $field => $env->{$_} );
               }
-              grep {/^(?:HTTP|CONTENT|COOKIE)/i} keys %$env
+              grep {/^(?:HTTP|CONTENT)/i} keys %$env
         )
     );
 }
@@ -749,13 +749,10 @@ has cookies => (
 );
 
 sub _build_cookies {
-    my ($self) = @_;
-
-    my $env_str = $self->env->{COOKIE} || $self->env->{HTTP_COOKIE};
-    return {} unless defined $env_str;
-
+    my $self    = shift;
     my $cookies = {};
-    foreach my $cookie ( split( /[,;]\s/, $env_str ) ) {
+
+    foreach my $cookie ( $self->header('COOKIE') ) {
 
         # here, we don't want more than the 2 first elements
         # a cookie string can contains something like:
@@ -785,7 +782,7 @@ Dancer2::Core::Request - Interface for accessing incoming requests
 
 =head1 VERSION
 
-version 0.13
+version 0.140000
 
 =head1 SYNOPSIS
 
@@ -811,7 +808,7 @@ a Dancer2 application.
 
 =head2 env()
 
-Return the current environment (C<%ENV>), as a hashref.
+Return the current PSGI environment hash reference.
 
 =head2 path()
 
@@ -864,7 +861,7 @@ objects.
 
 It uses the environment hash table given to build the request object:
 
-    Dancer2::Core::Request->new(env => \%ENV);
+    Dancer2::Core::Request->new(env => \%env);
 
 It also accepts the C<body_is_parsed> boolean flag, if the new request object should
 not parse request body.
@@ -1061,11 +1058,10 @@ C<uploads>.
 Returns a reference to a hash containing cookies, where the keys are the names of the
 cookies and values are L<Dancer2::Core::Cookie> objects.
 
-=head1 HTTP environment variables
+=head1 Common HTTP request headers
 
-All HTTP environment variables that are in %ENV will be provided in the
-L<Dancer2::Core::Request> object through specific accessors, here are those
-supported:
+Commonly used client-supplied HTTP request headers are available through
+specific accessors, here are those supported:
 
 =over 4
 
@@ -1104,6 +1100,13 @@ supported:
 =item C<x_requested_with>
 
 =back
+
+With the exception of C<host>, these accessors are lookups into the PSGI env
+hash reference.
+
+Note that the L<PSGI> specification prefixes client-supplied request headers with
+C<HTTP_>. For example, a C<X-Requested-With> header has the key
+C<HTTP_X_REQUESTED_WITH> in the PSGI env hashref.
 
 =head1 EXTRA SPEED
 

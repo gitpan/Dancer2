@@ -3,7 +3,7 @@
 use strict;
 use warnings;
 
-use 5.005030;
+use 5.006;
 
 use ExtUtils::MakeMaker 6.30;
 
@@ -50,6 +50,7 @@ my %WriteMakefileArgs = (
     "HTTP::Body" => 0,
     "HTTP::Date" => 0,
     "HTTP::Headers" => 0,
+    "HTTP::Server::PSGI" => 0,
     "HTTP::Server::Simple::PSGI" => 0,
     "Hash::Merge::Simple" => 0,
     "IO::File" => 0,
@@ -63,6 +64,7 @@ my %WriteMakefileArgs = (
     "MooX::Types::MooseLike" => "0.16",
     "MooX::Types::MooseLike::Base" => 0,
     "POSIX" => 0,
+    "Plack::Builder" => 0,
     "Plack::Request" => 0,
     "Pod::Simple::Search" => 0,
     "Pod::Simple::SimpleTree" => 0,
@@ -84,6 +86,7 @@ my %WriteMakefileArgs = (
   "TEST_REQUIRES" => {
     "Capture::Tiny" => "0.12",
     "ExtUtils::MakeMaker" => 0,
+    "File::Spec" => 0,
     "File::Temp" => "0.22",
     "FindBin" => 0,
     "HTTP::Body" => 0,
@@ -104,7 +107,7 @@ my %WriteMakefileArgs = (
     "utf8" => 0,
     "vars" => 0
   },
-  "VERSION" => "0.13",
+  "VERSION" => "0.140000",
   "test" => {
     "TESTS" => "t/*.t t/dsl/*.t t/roles/*.t t/route-pod-coverage/*.t t/template_tiny/*.t"
   }
@@ -138,6 +141,7 @@ my %FallbackPrereqs = (
   "HTTP::Headers" => 0,
   "HTTP::Request" => 0,
   "HTTP::Request::Common" => 0,
+  "HTTP::Server::PSGI" => 0,
   "HTTP::Server::Simple::PSGI" => 0,
   "Hash::Merge::Simple" => 0,
   "IO::File" => 0,
@@ -155,6 +159,7 @@ my %FallbackPrereqs = (
   "MooX::Types::MooseLike" => "0.16",
   "MooX::Types::MooseLike::Base" => 0,
   "POSIX" => 0,
+  "Plack::Builder" => 0,
   "Plack::Request" => 0,
   "Plack::Test" => 0,
   "Pod::Simple::Search" => 0,

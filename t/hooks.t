@@ -116,8 +116,7 @@ my $tests_flags = {};
 
 }
 
-$_->finish for @{ Dancer2->runner->server->apps };
-my $app = Dancer2->runner->server->psgi_app;
+my $app = Dancer2->runner->psgi_app;
 is( ref $app, 'CODE', 'Got app' );
 
 test_psgi $app, sub {

@@ -1,7 +1,6 @@
-# ABSTRACT: A cookie representing class
-
 package Dancer2::Core::Cookie;
-$Dancer2::Core::Cookie::VERSION = '0.13';
+# ABSTRACT: A cookie representing class
+$Dancer2::Core::Cookie::VERSION = '0.140000';
 use Moo;
 use URI::Escape;
 use Dancer2::Core::Types;
@@ -117,7 +116,7 @@ Dancer2::Core::Cookie - A cookie representing class
 
 =head1 VERSION
 
-version 0.13
+version 0.140000
 
 =head1 SYNOPSIS
 

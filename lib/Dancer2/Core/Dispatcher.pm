@@ -1,7 +1,6 @@
-# ABSTRACT: Class for dispatching request to the appropriate route handler
-
 package Dancer2::Core::Dispatcher;
-$Dancer2::Core::Dispatcher::VERSION = '0.13';
+# ABSTRACT: Class for dispatching request to the appropriate route handler
+$Dancer2::Core::Dispatcher::VERSION = '0.140000';
 use Moo;
 use Encode;
 
@@ -153,21 +152,6 @@ sub _dispatch_route {
     return $response;
 }
 
-# In the case of a HEAD request, we need to drop the body, but we also
-# need to keep the value of the Content-Length header.
-# Because there's a trigger on the content field to change the value of
-# the C-L header every time we change the value, we need to modify a around
-# modifier to change the value of content and restore the length.
-around 'dispatch' => sub {
-    my ( $orig, $self, $env, $request, $curr_context ) = @_;
-    my $response = $orig->( $self, $env, $request, $curr_context );
-    return $response unless defined $request && $request->is_head;
-    my $cl = $response->header('Content-Length');
-    $response->content('');
-    $response->header( 'Content-Length' => $cl );
-    return $response;
-};
-
 sub response_internal_error {
     my ( $self, $context, $error ) = @_;
 
@@ -192,7 +176,7 @@ sub response_not_found {
         environment     => Dancer2->runner->environment,
         location        => Dancer2->runner->location,
         runner_config   => Dancer2->runner->config,
-        postponed_hooks => Dancer2->runner->server->postponed_hooks,
+        postponed_hooks => Dancer2->runner->postponed_hooks,
         api_version     => 2,
     );
 
@@ -218,7 +202,7 @@ Dancer2::Core::Dispatcher - Class for dispatching request to the appropriate rou
 
 =head1 VERSION
 
-version 0.13
+version 0.140000
 
 =head1 SYNOPSIS
 

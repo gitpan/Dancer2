@@ -1,12 +1,12 @@
 package Dancer2;
 # ABSTRACT: Lightweight yet powerful web application framework
-$Dancer2::VERSION = '0.13';
+$Dancer2::VERSION = '0.140000';
 use strict;
 use warnings;
 use Class::Load 'load_class';
 use Dancer2::Core;
-use Dancer2::Core::Runner;
 use Dancer2::Core::App;
+use Dancer2::Core::Runner;
 use Dancer2::FileUtils;
 
 our $AUTHORITY = 'SUKRIA';
@@ -53,11 +53,8 @@ sub import {
     if ( not defined $runner ) {
 
         # TODO should support commandline options as well
-
-        $runner = Dancer2::Core::Runner->new( caller => $script, );
+        $runner = Dancer2::Core::Runner->new( caller => $script );
     }
-
-    my $server = $runner->server;
 
     # the app object
     # populating with the server's postponed hooks in advance
@@ -66,13 +63,13 @@ sub import {
         environment     => $runner->environment,
         location        => $runner->location,
         runner_config   => $runner->config,
-        postponed_hooks => $server->postponed_hooks,
+        postponed_hooks => $runner->postponed_hooks,
     );
 
     _set_import_method_to_caller($caller);
 
     # register the app within the runner instance
-    $server->register_application($app);
+    $runner->register_application($app);
 
     # load the DSL, defaulting to Dancer2::Core::DSL
     load_class( $final_args{dsl} );
@@ -119,7 +116,7 @@ Dancer2 - Lightweight yet powerful web application framework
 
 =head1 VERSION
 
-version 0.13
+version 0.140000
 
 =head1 DESCRIPTION
 

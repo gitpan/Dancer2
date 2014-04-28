@@ -1,7 +1,6 @@
-# ABSTRACT: file-based logging engine for Dancer2
-
 package Dancer2::Logger::File;
-$Dancer2::Logger::File::VERSION = '0.13';
+# ABSTRACT: file-based logging engine for Dancer2
+$Dancer2::Logger::File::VERSION = '0.140000';
 use Carp 'carp';
 use Moo;
 use Dancer2::Core::Types;
@@ -83,7 +82,7 @@ Dancer2::Logger::File - file-based logging engine for Dancer2
 
 =head1 VERSION
 
-version 0.13
+version 0.140000
 
 =head1 DESCRIPTION
 

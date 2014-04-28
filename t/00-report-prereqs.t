@@ -40,6 +40,7 @@ my @modules = qw(
   HTTP::Headers
   HTTP::Request
   HTTP::Request::Common
+  HTTP::Server::PSGI
   HTTP::Server::Simple::PSGI
   Hash::Merge::Simple
   IO::File
@@ -59,6 +60,7 @@ my @modules = qw(
   MooX::Types::MooseLike
   MooX::Types::MooseLike::Base
   POSIX
+  Plack::Builder
   Plack::Request
   Plack::Test
   Pod::Simple::Search

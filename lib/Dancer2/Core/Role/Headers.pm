@@ -1,7 +1,7 @@
 # ABSTRACT: Role for handling headers
 
 package Dancer2::Core::Role::Headers;
-$Dancer2::Core::Role::Headers::VERSION = '0.13';
+$Dancer2::Core::Role::Headers::VERSION = '0.140000';
 
 use Moo::Role;
 use Dancer2::Core::Types;
@@ -80,7 +80,7 @@ Dancer2::Core::Role::Headers - Role for handling headers
 
 =head1 VERSION
 
-version 0.13
+version 0.140000
 
 =head1 DESCRIPTION
 

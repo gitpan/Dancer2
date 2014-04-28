@@ -1,7 +1,7 @@
 # ABSTRACT: Class to ease manipulation of MIME types
 
 package Dancer2::Core::MIME;
-$Dancer2::Core::MIME::VERSION = '0.13';
+$Dancer2::Core::MIME::VERSION = '0.140000';
 use Moo;
 
 use MIME::Types;
@@ -88,7 +88,7 @@ Dancer2::Core::MIME - Class to ease manipulation of MIME types
 
 =head1 VERSION
 
-version 0.13
+version 0.140000
 
 =head1 SYNOPSIS
 
