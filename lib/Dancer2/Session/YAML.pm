@@ -1,5 +1,5 @@
 package Dancer2::Session::YAML;
-$Dancer2::Session::YAML::VERSION = '0.140000';
+$Dancer2::Session::YAML::VERSION = '0.140001';
 # ABSTRACT: YAML-file-based session backend for Dancer2
 
 use Moo;
@@ -37,7 +37,7 @@ Dancer2::Session::YAML - YAML-file-based session backend for Dancer2
 
 =head1 VERSION
 
-version 0.140000
+version 0.140001
 
 =head1 DESCRIPTION
 

@@ -1,5 +1,5 @@
 package Dancer2::Core::Context;
-$Dancer2::Core::Context::VERSION = '0.140000';
+$Dancer2::Core::Context::VERSION = '0.140001';
 # ABSTRACT: handles everything proper to a request's context.
 
 use Moo;
@@ -234,7 +234,7 @@ Dancer2::Core::Context - handles everything proper to a request's context.
 
 =head1 VERSION
 
-version 0.140000
+version 0.140001
 
 =head1 ATTRIBUTES
 

@@ -41,7 +41,6 @@ my @modules = qw(
   HTTP::Request
   HTTP::Request::Common
   HTTP::Server::PSGI
-  HTTP::Server::Simple::PSGI
   Hash::Merge::Simple
   IO::File
   IO::Handle
@@ -60,8 +59,8 @@ my @modules = qw(
   MooX::Types::MooseLike
   MooX::Types::MooseLike::Base
   POSIX
+  Plack
   Plack::Builder
-  Plack::Request
   Plack::Test
   Pod::Simple::Search
   Pod::Simple::SimpleTree

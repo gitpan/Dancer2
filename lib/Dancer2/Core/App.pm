@@ -1,6 +1,6 @@
 # ABSTRACT: encapsulation of Dancer2 packages
 package Dancer2::Core::App;
-$Dancer2::Core::App::VERSION = '0.140000';
+$Dancer2::Core::App::VERSION = '0.140001';
 use Moo;
 use File::Spec;
 use Scalar::Util 'blessed';
@@ -189,8 +189,6 @@ sub _get_config_for_engine {
 
     my $engine_config = {};
 
-    # XXX we need to move the camilize function out from Core::Factory
-    # - Franck, 2013/08/03
     for my $config_key ($name, Dancer2::Core::camelize($name)) {
         $engine_config = $config->{engines}{$engine}{$config_key}
             if defined $config->{engines}->{$engine}{$config_key};
@@ -718,7 +716,7 @@ Dancer2::Core::App - encapsulation of Dancer2 packages
 
 =head1 VERSION
 
-version 0.140000
+version 0.140001
 
 =head1 DESCRIPTION
 

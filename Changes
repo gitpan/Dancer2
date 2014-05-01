@@ -1,3 +1,14 @@
+0.140001  2014-05-01 10:49:25CEST+0200 Europe/Amsterdam
+
+    [ BUG FIXES ]
+    * Bugfix for extracting multiple cookies within a request.
+      (Cymon, Russell Jenkins)
+    * Require minimum version of Plack to make sure we can add the Head
+      middleware. Not exactly a bug, but not a feature. (Sawyer X)
+
+    [ DOCUMENTATION ]
+    * Correct reference to HTTP::Server::Simple::PSGI. (Russell Jenkins)
+
 0.140000  2014-04-28 23:14:31CEST+0200 Europe/Amsterdam
 
     [ ENHANCEMENTS ]
