@@ -1,10 +1,12 @@
 # ABSTRACT: encapsulation of Dancer2 packages
 package Dancer2::Core::App;
-$Dancer2::Core::App::VERSION = '0.140001';
+$Dancer2::Core::App::VERSION = '0.140900_01';
 use Moo;
+use Carp            'croak';
+use List::Util      'first';
+use Scalar::Util    'blessed';
+use Module::Runtime 'is_module_name';
 use File::Spec;
-use Scalar::Util 'blessed';
-use Carp 'croak';
 
 use Dancer2::FileUtils 'path', 'read_file_content';
 use Dancer2::Core;
@@ -99,6 +101,9 @@ sub _build_logger_engine {
     # a runner.
     $value = 'console' if !defined $value;
 
+    is_module_name($value)
+        or croak "Cannot load logger engine '$value': illegal module name";
+
     my $engine_options =
         $self->_get_config_for_engine( logger => $value, $config );
 
@@ -123,6 +128,9 @@ sub _build_session_engine {
     $value = 'simple' if !defined $value;
     return $value     if ref($value);
 
+    is_module_name($value)
+        or croak "Cannot load session engine '$value': illegal module name";
+
     my $engine_options =
           $self->_get_config_for_engine( session => $value, $config );
 
@@ -141,6 +149,9 @@ sub _build_template_engine {
 
     return undef  if !defined $value;
     return $value if ref($value);
+
+    is_module_name($value)
+        or croak "Cannot load template engine '$value': illegal module name";
 
     my $engine_options =
           $self->_get_config_for_engine( template => $value, $config );
@@ -179,21 +190,19 @@ sub _build_serializer_engine {
 sub _get_config_for_engine {
     my ( $self, $engine, $name, $config ) = @_;
 
-    my $default_config = {
-        environment => $self->environment,
-        location    => $self->config_location,
-    };
-
     defined $config->{'engines'} && defined $config->{'engines'}{$engine}
-        or return $default_config;
+        or return {};
 
+    # try both camelized name and regular name
     my $engine_config = {};
-
-    for my $config_key ($name, Dancer2::Core::camelize($name)) {
-        $engine_config = $config->{engines}{$engine}{$config_key}
-            if defined $config->{engines}->{$engine}{$config_key};
+    foreach my $engine_name ( $name, Dancer2::Core::camelize($name) ) {
+        if ( defined $config->{'engines'}{$engine}{$engine_name} ) {
+            $engine_config = $config->{'engines'}{$engine}{$engine_name};
+            last;
+        }
     }
-    return { %{$default_config}, %{$engine_config}, } || $default_config;
+
+    return $engine_config;
 }
 
 
@@ -580,7 +589,8 @@ sub send_file {
     }
 
     $self->context->request->path_info($path);
-    return $file_handler->code->( $self->context, $self->prefix );
+    $file_handler->code( $self->prefix )->( $self->context ); # slurp file
+    $self->context->with_return->( $self->context->response ) if $self->context->has_with_return;
 
     # TODO Streaming support
 }
@@ -716,7 +726,7 @@ Dancer2::Core::App - encapsulation of Dancer2 packages
 
 =head1 VERSION
 
-version 0.140001
+version 0.140900_01
 
 =head1 DESCRIPTION
 

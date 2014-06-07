@@ -1,3 +1,22 @@
+0.140900_01 2014-06-07 23:32:56IDT+0300 Asia/Jerusalem
+
+    [ BUG FIXES ]
+    * GH #447: Setting the apphandler now triggers the Dancer Runner
+      configuration change, which works. (Sawyer X)
+    * GH #578: Remove the default engine configurations. (Sawyer X)
+    * GH #567: Check for proper module names in loading engines. Might help
+      with taint mode. (Sawyer X)
+    * GH #585, #595: Return 405 Method Not Allowed instead of 500.
+      (Omar M. Othman)
+    * GH #570, #579: Ensure keywords pass, send_error and send_file
+      exit immediatly when executed. (Russell Jenkins)
+
+    [ ENHANCEMENTS ]
+    * GH #587: Serializer::Mutable alive! (Pedro Bruno)
+
+    [ DOCUMENTATION ]
+    * Fix doc for params(). Ported from Dancer#1025 (Stefan Hornburg)
+
 0.140001  2014-05-01 10:49:25CEST+0200 Europe/Amsterdam
 
     [ BUG FIXES ]

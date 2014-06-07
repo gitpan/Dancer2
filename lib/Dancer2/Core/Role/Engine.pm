@@ -1,16 +1,11 @@
 package Dancer2::Core::Role::Engine;
 # ABSTRACT: Role for engines
-$Dancer2::Core::Role::Engine::VERSION = '0.140001';
+$Dancer2::Core::Role::Engine::VERSION = '0.140900_01';
 use Moo::Role;
 use Dancer2::Core::Types;
 
 
 with 'Dancer2::Core::Role::Hookable';
-
-
-has environment => ( is => 'ro' );
-
-has location => ( is => 'ro' );
 
 
 has context => (
@@ -39,7 +34,7 @@ Dancer2::Core::Role::Engine - Role for engines
 
 =head1 VERSION
 
-version 0.140001
+version 0.140900_01
 
 =head1 DESCRIPTION
 
@@ -49,10 +44,6 @@ shared logic for engines.
 This role consumes the L<Dancer2::Core::Role::Hookable> role.
 
 =head1 ATTRIBUTES
-
-=head2 environment
-
-The value of the current environment
 
 =head2 context
 

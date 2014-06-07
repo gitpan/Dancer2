@@ -1,10 +1,10 @@
 package Dancer2::Test;
 # ABSTRACT: Useful routines for testing Dancer2 apps
-$Dancer2::Test::VERSION = '0.140001';
+$Dancer2::Test::VERSION = '0.140900_01';
 use strict;
 use warnings;
 
-use Carp 'croak';
+use Carp qw<carp croak>;
 use Test::More;
 use Test::Builder;
 use URI::Escape;
@@ -47,6 +47,9 @@ use Dancer2::Core::Request;
 # singleton to store all the apps
 my $_dispatcher = Dancer2::Core::Dispatcher->new;
 
+# prevent deprecation warnings
+our $NO_WARN = 0;
+
 
 # can be called with the ($method, $path, $option) triplet,
 # or can be fed a request object directly, or can be fed
@@ -54,6 +57,8 @@ my $_dispatcher = Dancer2::Core::Dispatcher->new;
 # or can be fed a response (which is passed through without
 # any modification)
 sub dancer_response {
+    carp 'Dancer2::Test is deprecated, please use Plack::Test instead'
+        unless $NO_WARN;
 
     _find_dancer_apps_for_dispatcher();
 
@@ -200,6 +205,8 @@ sub _build_env_from_request {
 
 sub response_status_is {
     my ( $req, $status, $test_name ) = @_;
+    carp 'Dancer2::Test is deprecated, please use Plack::Test instead'
+        unless $NO_WARN;
 
     $test_name ||= "response status is $status for " . _req_label($req);
 
@@ -210,19 +217,49 @@ sub response_status_is {
     $tb->is_eq( $response->status, $status, $test_name );
 }
 
+sub _find_route_match {
+    my ( $request, $env ) =
+      ref $_[0] eq 'Dancer2::Core::Request'
+      ? _build_env_from_request(@_)
+      : _build_request_from_env(@_);
+
+    for my $app (@{$_dispatcher->apps}) {
+        for my $route (@{$app->routes->{lc($request->method)}}) {
+            if ( $route->match($request) ) {
+                return 1;
+            }
+        }
+    }
+    return 0;
+}
+
 
 sub route_exists {
-    response_status_is( $_[0], 200, $_[1] );
+    carp 'Dancer2::Test is deprecated, please use Plack::Test instead'
+        unless $NO_WARN;
+
+    my $tb = Test::Builder->new;
+    local $Test::Builder::Level = $Test::Builder::Level + 1;
+    $tb->ok( _find_route_match($_[0]), $_[1]);
 }
 
 
 sub route_doesnt_exist {
-    response_status_is( $_[0], 404, $_[1] );
+    carp 'Dancer2::Test is deprecated, please use Plack::Test instead'
+        unless $NO_WARN;
+
+    my $tb = Test::Builder->new;
+    local $Test::Builder::Level = $Test::Builder::Level + 1;
+    $tb->ok( !_find_route_match($_[0]), $_[1]);
 }
 
 
 sub response_status_isnt {
     my ( $req, $status, $test_name ) = @_;
+
+    carp 'Dancer2::Test is deprecated, please use Plack::Test instead'
+        unless $NO_WARN;
+
     $test_name ||= "response status is not $status for " . _req_label($req);
 
     my $response = dancer_response($req);
@@ -262,24 +299,32 @@ sub response_status_isnt {
 
 
 sub response_content_is {
+    carp 'Dancer2::Test is deprecated, please use Plack::Test instead'
+        unless $NO_WARN;
     local $Test::Builder::Level = $Test::Builder::Level + 1;
     _cmp_response_content( @_, 'is_eq' );
 }
 
 
 sub response_content_isnt {
+    carp 'Dancer2::Test is deprecated, please use Plack::Test instead'
+        unless $NO_WARN;
     local $Test::Builder::Level = $Test::Builder::Level + 1;
     _cmp_response_content( @_, 'isnt_eq' );
 }
 
 
 sub response_content_like {
+    carp 'Dancer2::Test is deprecated, please use Plack::Test instead'
+        unless $NO_WARN;
     local $Test::Builder::Level = $Test::Builder::Level + 1;
     _cmp_response_content( @_, 'like' );
 }
 
 
 sub response_content_unlike {
+    carp 'Dancer2::Test is deprecated, please use Plack::Test instead'
+        unless $NO_WARN;
     local $Test::Builder::Level = $Test::Builder::Level + 1;
     _cmp_response_content( @_, 'unlike' );
 }
@@ -287,6 +332,8 @@ sub response_content_unlike {
 
 sub response_content_is_deeply {
     my ( $req, $matcher, $test_name ) = @_;
+    carp 'Dancer2::Test is deprecated, please use Plack::Test instead'
+        unless $NO_WARN;
     $test_name ||= "response content looks good for " . _req_label($req);
 
     local $Test::Builder::Level = $Test::Builder::Level + 1;
@@ -297,6 +344,8 @@ sub response_content_is_deeply {
 
 sub response_is_file {
     my ( $req, $test_name ) = @_;
+    carp 'Dancer2::Test is deprecated, please use Plack::Test instead'
+        unless $NO_WARN;
     $test_name ||= "a file is returned for " . _req_label($req);
 
     my $response = _get_file_response($req);
@@ -308,6 +357,8 @@ sub response_is_file {
 
 sub response_headers_are_deeply {
     my ( $req, $expected, $test_name ) = @_;
+    carp 'Dancer2::Test is deprecated, please use Plack::Test instead'
+        unless $NO_WARN;
     $test_name ||= "headers are as expected for " . _req_label($req);
 
     local $Test::Builder::Level = $Test::Builder::Level + 1;
@@ -322,6 +373,8 @@ sub response_headers_are_deeply {
 
 sub response_headers_include {
     my ( $req, $expected, $test_name ) = @_;
+    carp 'Dancer2::Test is deprecated, please use Plack::Test instead'
+        unless $NO_WARN;
     $test_name ||= "headers include expected data for " . _req_label($req);
     my $tb = Test::Builder->new;
 
@@ -566,11 +619,21 @@ Dancer2::Test - Useful routines for testing Dancer2 apps
 
 =head1 VERSION
 
-version 0.140001
+version 0.140900_01
 
 =head1 DESCRIPTION
 
-provides useful routines to test Dancer2 apps.
+DEPRECATED - Please use L<Plack::Test> instead.
+
+This module will warn for a while until we actually remove it. This is to
+provide enough time to fully remove it from your system.
+
+If you need to remove the warnings, for now, you can set:
+
+    $Dancer::Test::NO_WARN = 1;
+
+This module provides useful routines to test Dancer2 apps. They are, however,
+buggy and unnecessary. L<Plack:Test> is advised instead.
 
 $test_name is always optional.
 
@@ -638,7 +701,14 @@ one given.
 =head2 route_exists([$method, $path], $test_name)
 
 Asserts that the given request matches a route handler in Dancer2's
-registry.
+registry. If the route would have returned a 404, the route still exists
+and this test will pass.
+
+Note that because Dancer2 uses the default route handler
+L<Dancer2::Handler::File> to match files in the public folder when
+no other route matches, this test will always pass.
+You can disable the default route handlers in the configs but you probably
+want L<Dancer2::Test/response_status_is> or L<Dancer2::Test/dancer_response>
 
     route_exists [GET => '/'], "GET / is handled";
 
@@ -646,6 +716,10 @@ registry.
 
 Asserts that the given request does not match any route handler
 in Dancer2's registry.
+
+Note that this test is likely to always fail as any route not matched will
+be handled by the default route handler in L<Dancer2::Handler::File>.
+This can be disabled in the configs.
 
     route_doesnt_exist [GET => '/bogus_path'], "GET /bogus_path is not handled";
 

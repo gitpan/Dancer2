@@ -1,6 +1,6 @@
 package Dancer2::Core::Role::Serializer;
 # ABSTRACT: Role for Serializer engines
-$Dancer2::Core::Role::Serializer::VERSION = '0.140001';
+$Dancer2::Core::Role::Serializer::VERSION = '0.140900_01';
 use Dancer2::Core::Types;
 use Moo::Role;
 
@@ -51,6 +51,7 @@ has content_type => (
     is       => 'ro',
     isa      => Str,
     required => 1,
+    writer   => 'set_content_type'
 );
 
 # most serializer don't have to overload this one
@@ -75,7 +76,7 @@ Dancer2::Core::Role::Serializer - Role for Serializer engines
 
 =head1 VERSION
 
-version 0.140001
+version 0.140900_01
 
 =head1 DESCRIPTION
 

@@ -58,6 +58,7 @@ my %WriteMakefileArgs = (
     "List::Util" => 0,
     "MIME::Base64" => "3.13",
     "MIME::Types" => 0,
+    "Module::Runtime" => 0,
     "Moo" => "1.003000",
     "Moo::Role" => 0,
     "MooX::Types::MooseLike" => "0.16",
@@ -105,9 +106,9 @@ my %WriteMakefileArgs = (
     "utf8" => 0,
     "vars" => 0
   },
-  "VERSION" => "0.140001",
+  "VERSION" => "0.140900_01",
   "test" => {
-    "TESTS" => "t/*.t t/dsl/*.t t/roles/*.t t/route-pod-coverage/*.t t/template_tiny/*.t"
+    "TESTS" => "t/*.t t/dsl/*.t t/logger/*.t t/roles/*.t t/route-pod-coverage/*.t t/template_tiny/*.t"
   }
 );
 
@@ -151,6 +152,7 @@ my %FallbackPrereqs = (
   "MIME::Base64" => "3.13",
   "MIME::Types" => 0,
   "Module::Build" => "0.3601",
+  "Module::Runtime" => 0,
   "Moo" => "1.003000",
   "Moo::Role" => 0,
   "MooX::Types::MooseLike" => "0.16",

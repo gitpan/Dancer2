@@ -1,6 +1,6 @@
 package Dancer2::Core::Dispatcher;
 # ABSTRACT: Class for dispatching request to the appropriate route handler
-$Dancer2::Core::Dispatcher::VERSION = '0.140001';
+$Dancer2::Core::Dispatcher::VERSION = '0.140900_01';
 use Moo;
 use Encode;
 
@@ -140,7 +140,6 @@ sub _dispatch_route {
                 'Content-Type' => $self->default_content_type );
         }
     }
-
     if ( ref $content eq 'Dancer2::Core::Response' ) {
         $response = $context->response($content);
     }
@@ -202,7 +201,7 @@ Dancer2::Core::Dispatcher - Class for dispatching request to the appropriate rou
 
 =head1 VERSION
 
-version 0.140001
+version 0.140900_01
 
 =head1 SYNOPSIS
 

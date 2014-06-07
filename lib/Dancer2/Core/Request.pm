@@ -1,5 +1,5 @@
 package Dancer2::Core::Request;
-$Dancer2::Core::Request::VERSION = '0.140001';
+$Dancer2::Core::Request::VERSION = '0.140900_01';
 # ABSTRACT: Interface for accessing incoming requests
 
 use Moo;
@@ -773,7 +773,6 @@ sub _build_cookies {
     return $cookies;
 }
 
-
 1;
 
 __END__
@@ -786,7 +785,7 @@ Dancer2::Core::Request - Interface for accessing incoming requests
 
 =head1 VERSION
 
-version 0.140001
+version 0.140900_01
 
 =head1 SYNOPSIS
 

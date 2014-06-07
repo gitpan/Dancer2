@@ -1,6 +1,6 @@
 # ABSTRACT: Config role for Dancer2 core objects
 package Dancer2::Core::Role::ConfigReader;
-$Dancer2::Core::Role::ConfigReader::VERSION = '0.140001';
+$Dancer2::Core::Role::ConfigReader::VERSION = '0.140900_01';
 use Moo::Role;
 
 use File::Spec;
@@ -83,6 +83,11 @@ has global_triggers => (
             my ( $self, $traces ) = @_;
             require Carp;
             $Carp::Verbose = $traces ? 1 : 0;
+        },
+
+        apphandler => sub {
+            my ( $self, $handler ) = @_;
+            Dancer2->runner->config->{'apphandler'} = $handler;
         },
     } },
 );
@@ -266,7 +271,7 @@ Dancer2::Core::Role::ConfigReader - Config role for Dancer2 core objects
 
 =head1 VERSION
 
-version 0.140001
+version 0.140900_01
 
 =head1 DESCRIPTION
 

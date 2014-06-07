@@ -4,7 +4,7 @@ use warnings;
 
 # this test was generated with Dist::Zilla::Plugin::Test::Compile 2.040
 
-use Test::More  tests => 58 + ($ENV{AUTHOR_TESTING} ? 1 : 0);
+use Test::More  tests => 59 + ($ENV{AUTHOR_TESTING} ? 1 : 0);
 
 
 
@@ -58,6 +58,7 @@ my @module_files = (
     'Dancer2/Plugin/Ajax.pm',
     'Dancer2/Serializer/Dumper.pm',
     'Dancer2/Serializer/JSON.pm',
+    'Dancer2/Serializer/Mutable.pm',
     'Dancer2/Serializer/YAML.pm',
     'Dancer2/Session/Simple.pm',
     'Dancer2/Session/YAML.pm',

@@ -1,6 +1,6 @@
 # ABSTRACT: A gentle introduction to Dancer2
 package Dancer2::Manual;
-$Dancer2::Manual::VERSION = '0.140001';
+$Dancer2::Manual::VERSION = '0.140900_01';
 __END__
 
 =pod
@@ -11,7 +11,7 @@ Dancer2::Manual - A gentle introduction to Dancer2
 
 =head1 VERSION
 
-version 0.140001
+version 0.140900_01
 
 =head1 DESCRIPTION
 
@@ -1058,8 +1058,9 @@ commonly-used methods are summarized below:
 
 I<This method should be called from a route handler>.
 It's an alias for the
-L<Dancer2::Core::Request params accessor|Dancer2::Core::Request/"params">. It
-returns an hash reference to all defined parameters. Check C<param> below to
+L<Dancer2::Core::Request params accessor|Dancer2::Core::Request/"params-source">.
+It returns a hash (in list context) or a hash reference (in scalar context)
+to all defined parameters. Check C<param> below to
 access quickly to a single parameter value.
 
 =head2 param

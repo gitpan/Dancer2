@@ -1,5 +1,5 @@
 package Dancer2::Core::Context;
-$Dancer2::Core::Context::VERSION = '0.140001';
+$Dancer2::Core::Context::VERSION = '0.140900_01';
 # ABSTRACT: handles everything proper to a request's context.
 
 use Moo;
@@ -139,6 +139,14 @@ sub halt {
 }
 
 
+sub pass {
+   my ($self) = @_;
+   $self->response->pass;
+   # Short citcuit any remaining hook/route code
+   $self->with_return->($self->response) if $self->has_with_return;
+}
+
+
 has session => (
     is        => 'rw',
     isa       => Session,
@@ -234,7 +242,7 @@ Dancer2::Core::Context - handles everything proper to a request's context.
 
 =head1 VERSION
 
-version 0.140001
+version 0.140900_01
 
 =head1 ATTRIBUTES
 
@@ -306,6 +314,13 @@ Flag the response object as 'halted'.
 
 If called during request dispatch, immediatly returns the response
 to the dispatcher and after hooks will not be run.
+
+=head2 pass
+
+Flag the response object as 'passed'.
+
+If called during request dispatch, immediatly returns the response
+to the dispatcher.
 
 =head2 has_session
 

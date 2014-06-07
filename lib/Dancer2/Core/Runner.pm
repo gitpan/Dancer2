@@ -1,6 +1,6 @@
 package Dancer2::Core::Runner;
 # ABSTRACT: Top-layer class to start a dancer app
-$Dancer2::Core::Runner::VERSION = '0.140001';
+$Dancer2::Core::Runner::VERSION = '0.140900_01';
 use Moo;
 use Dancer2::Core::MIME;
 use Dancer2::Core::Types;
@@ -226,6 +226,15 @@ sub psgi_app {
         my $env = shift;
         my $response;
 
+        # pre-request sanity check
+        my $method = uc $env->{'REQUEST_METHOD'};
+        $Dancer2::Core::Types::supported_http_methods{$method}
+            or return [
+                405,
+                [ 'Content-Type' => 'text/plain' ],
+                [ "Method Not Allowed\n\n$method is not supported." ]
+            ];
+
         eval {
             $response = $self->dispatcher->dispatch($env)->to_psgi;
             1;
@@ -282,7 +291,7 @@ Dancer2::Core::Runner - Top-layer class to start a dancer app
 
 =head1 VERSION
 
-version 0.140001
+version 0.140900_01
 
 =head1 AUTHOR
 

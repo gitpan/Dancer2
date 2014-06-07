@@ -1,5 +1,5 @@
 package Dancer2::Core::Types;
-$Dancer2::Core::Types::VERSION = '0.140001';
+$Dancer2::Core::Types::VERSION = '0.140900_01';
 # ABSTRACT: Moo types for Dancer2 core.
 
 use strict;
@@ -11,6 +11,10 @@ use MooX::Types::MooseLike::Base qw/:all/;
 use Exporter 'import';
 our @EXPORT;
 our @EXPORT_OK;
+
+our %supported_http_methods = map +( $_ => 1 ), qw<
+    GET HEAD POST PUT DELETE OPTIONS PATCH
+>;
 
 
 
@@ -75,7 +79,7 @@ my $definitions = [
         subtype_of => 'Str',
         from       => 'MooX::Types::MooseLike::Base',
         test       => sub {
-            grep {/^$_[0]$/} qw(get head post put delete options patch);
+            grep {/^$_[0]$/} map +( lc ), keys %supported_http_methods
         },
         message =>
           sub { return exception_message( $_[0], 'a Dancer2Method' ) },
@@ -85,7 +89,7 @@ my $definitions = [
         subtype_of => 'Str',
         from       => 'MooX::Types::MooseLike::Base',
         test       => sub {
-            grep {/^$_[0]$/} qw(GET HEAD POST PUT DELETE OPTIONS PATCH);
+            grep {/^$_[0]$/} keys %supported_http_methods
         },
         message =>
           sub { return exception_message( $_[0], 'a Dancer2HTTPMethod' ) },
@@ -146,7 +150,7 @@ Dancer2::Core::Types - Moo types for Dancer2 core.
 
 =head1 VERSION
 
-version 0.140001
+version 0.140900_01
 
 =head1 DESCRIPTION
 
