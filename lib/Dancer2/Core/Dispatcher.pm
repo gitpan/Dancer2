@@ -1,6 +1,6 @@
 package Dancer2::Core::Dispatcher;
 # ABSTRACT: Class for dispatching request to the appropriate route handler
-$Dancer2::Core::Dispatcher::VERSION = '0.140900_01';
+$Dancer2::Core::Dispatcher::VERSION = '0.141000';
 use Moo;
 use Encode;
 
@@ -201,7 +201,7 @@ Dancer2::Core::Dispatcher - Class for dispatching request to the appropriate rou
 
 =head1 VERSION
 
-version 0.140900_01
+version 0.141000
 
 =head1 SYNOPSIS
 

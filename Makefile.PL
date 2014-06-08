@@ -106,7 +106,7 @@ my %WriteMakefileArgs = (
     "utf8" => 0,
     "vars" => 0
   },
-  "VERSION" => "0.140900_01",
+  "VERSION" => "0.141000",
   "test" => {
     "TESTS" => "t/*.t t/dsl/*.t t/logger/*.t t/roles/*.t t/route-pod-coverage/*.t t/template_tiny/*.t"
   }

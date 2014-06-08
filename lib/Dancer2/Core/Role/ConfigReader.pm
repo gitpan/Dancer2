@@ -1,6 +1,6 @@
 # ABSTRACT: Config role for Dancer2 core objects
 package Dancer2::Core::Role::ConfigReader;
-$Dancer2::Core::Role::ConfigReader::VERSION = '0.140900_01';
+$Dancer2::Core::Role::ConfigReader::VERSION = '0.141000';
 use Moo::Role;
 
 use File::Spec;
@@ -271,7 +271,7 @@ Dancer2::Core::Role::ConfigReader - Config role for Dancer2 core objects
 
 =head1 VERSION
 
-version 0.140900_01
+version 0.141000
 
 =head1 DESCRIPTION
 

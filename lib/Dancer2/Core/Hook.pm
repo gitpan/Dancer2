@@ -1,6 +1,6 @@
 package Dancer2::Core::Hook;
 # ABSTRACT: Manipulate hooks with Dancer2
-$Dancer2::Core::Hook::VERSION = '0.140900_01';
+$Dancer2::Core::Hook::VERSION = '0.141000';
 use Moo;
 use Dancer2::Core::Types;
 use Carp;
@@ -51,7 +51,7 @@ Dancer2::Core::Hook - Manipulate hooks with Dancer2
 
 =head1 VERSION
 
-version 0.140900_01
+version 0.141000
 
 =head1 SYNOPSIS
 

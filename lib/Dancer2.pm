@@ -1,6 +1,6 @@
 package Dancer2;
 # ABSTRACT: Lightweight yet powerful web application framework
-$Dancer2::VERSION = '0.140900_01';
+$Dancer2::VERSION = '0.141000';
 use strict;
 use warnings;
 use Class::Load 'load_class';
@@ -104,7 +104,7 @@ Dancer2 - Lightweight yet powerful web application framework
 
 =head1 VERSION
 
-version 0.140900_01
+version 0.141000
 
 =head1 DESCRIPTION
 
