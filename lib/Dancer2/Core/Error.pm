@@ -1,6 +1,6 @@
 package Dancer2::Core::Error;
 # ABSTRACT: Class representing fatal errors
-$Dancer2::Core::Error::VERSION = '0.141000';
+$Dancer2::Core::Error::VERSION = '0.142000';
 use Moo;
 use Carp;
 use Dancer2::Core::Types;
@@ -157,9 +157,18 @@ sub full_message {
 
 has serializer => (
     is        => 'ro',
-    isa       => ConsumerOf ['Dancer2::Core::Role::Serializer'],
-    predicate => 1,
+    isa       => Maybe[ConsumerOf ['Dancer2::Core::Role::Serializer']],
+    builder   => '_build_serializer',
 );
+
+sub _build_serializer {
+    my ($self) = @_;
+
+    if ( $self->has_context && $self->context->has_app ) {
+        return $self->context->app->engine('serializer');
+    }
+    return;
+}
 
 has session => (
     is  => 'ro',
@@ -200,7 +209,7 @@ has content_type => (
     lazy    => 1,
     default => sub {
         my $self = shift;
-        $self->has_serializer
+        $self->serializer
             ? $self->serializer->content_type
             : 'text/html'
     },
@@ -213,7 +222,7 @@ has content => (
         my $self = shift;
 
         # Apply serializer
-        if ( $self->has_serializer ) {
+        if ( $self->serializer ) {
             my $content = {
                 message => $self->message,
                 title   => $self->title,
@@ -476,7 +485,7 @@ Dancer2::Core::Error - Class representing fatal errors
 
 =head1 VERSION
 
-version 0.141000
+version 0.142000
 
 =head1 SYNOPSIS
 

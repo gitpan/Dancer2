@@ -1,7 +1,7 @@
 # ABSTRACT: Response object for Dancer2
 
 package Dancer2::Core::Response;
-$Dancer2::Core::Response::VERSION = '0.141000';
+$Dancer2::Core::Response::VERSION = '0.142000';
 use Moo;
 
 use Encode;
@@ -105,9 +105,18 @@ before content => sub {
 };
 
 
+has default_content_type => (
+    is      => 'rw',
+    isa     => Str,
+    default => sub {'text/html'},
+);
+
+
 sub encode_content {
     my ($self) = @_;
     return if $self->is_encoded;
+    # Apply default content type if none set.
+    $self->content_type or $self->content_type($self->default_content_type);
     return if $self->content_type !~ /^text/;
 
     # we don't want to encode an empty string, it will break the output
@@ -127,6 +136,10 @@ sub encode_content {
 
 sub to_psgi {
     my ($self) = @_;
+    # It is possible to have no content and/or no content type set
+    # e.g. if all routes 'pass'. Apply defaults here..
+    $self->content_type or $self->content_type($self->default_content_type);
+    $self->content('') if ! defined $self->content;
     return [ $self->status, $self->headers_to_array, [ $self->content ], ];
 }
 
@@ -210,7 +223,7 @@ Dancer2::Core::Response - Response object for Dancer2
 
 =head1 VERSION
 
-version 0.141000
+version 0.142000
 
 =head1 ATTRIBUTES
 
@@ -233,6 +246,11 @@ response will try coerce it to a string via double quote interpolation.
 
 Whenever the content changes, it recalculates and updates the Content-Length header,
 unless the response has_passed.
+
+=head2 default_content_type
+
+Default mime type to use for the response Content-Type header
+if nothing was specified
 
 =head1 METHODS
 

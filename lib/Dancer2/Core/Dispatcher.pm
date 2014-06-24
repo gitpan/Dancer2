@@ -1,6 +1,6 @@
 package Dancer2::Core::Dispatcher;
 # ABSTRACT: Class for dispatching request to the appropriate route handler
-$Dancer2::Core::Dispatcher::VERSION = '0.141000';
+$Dancer2::Core::Dispatcher::VERSION = '0.142000';
 use Moo;
 use Encode;
 
@@ -14,12 +14,6 @@ has apps => (
     is      => 'rw',
     isa     => ArrayRef,
     default => sub { [] },
-);
-
-has default_content_type => (
-    is      => 'ro',
-    isa     => Str,
-    default => sub {'text/html'},
 );
 
 # take the list of applications and an $env hash, return a Response object.
@@ -128,23 +122,18 @@ sub _dispatch_route {
         }
     }
 
-    # routes should use 'content_type' as default, or 'text/html'
-    # (Content-Type header needs to be set to encode content below..)
-    if ( !$response->header('Content-type') ) {
-        if ( exists( $app->config->{content_type} ) ) {
-            $response->header(
-                'Content-Type' => $app->config->{content_type} );
-        }
-        else {
-            $response->header(
-                'Content-Type' => $self->default_content_type );
-        }
-    }
     if ( ref $content eq 'Dancer2::Core::Response' ) {
         $response = $context->response($content);
     }
-    else {
-        $response->content( defined $content ? $content : '' );
+    elsif ( defined $content ) {
+        # The response object has no back references to the content or app
+        # Update the default_content_type of the response if any value set in
+        # config so it can be applied when the response is encoded/returned.
+        if ( exists $app->config->{content_type}
+          && $app->config->{content_type} ) {
+            $response->default_content_type($app->config->{content_type});
+        }
+        $response->content($content);
         $response->encode_content;
     }
 
@@ -201,7 +190,7 @@ Dancer2::Core::Dispatcher - Class for dispatching request to the appropriate rou
 
 =head1 VERSION
 
-version 0.141000
+version 0.142000
 
 =head1 SYNOPSIS
 

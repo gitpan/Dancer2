@@ -1,6 +1,6 @@
 package Dancer2;
 # ABSTRACT: Lightweight yet powerful web application framework
-$Dancer2::VERSION = '0.141000';
+$Dancer2::VERSION = '0.142000';
 use strict;
 use warnings;
 use Class::Load 'load_class';
@@ -104,7 +104,7 @@ Dancer2 - Lightweight yet powerful web application framework
 
 =head1 VERSION
 
-version 0.141000
+version 0.142000
 
 =head1 DESCRIPTION
 
@@ -244,6 +244,7 @@ Returns the current runner. It is of type L<Dancer2::Core::Runner>.
     Grzegorz Rożniecki
     Hobbestigrou
     Ivan Bessarabov
+    Jakob Voss
     James Aitken
     Jason A. Crome
     Jean Stebens

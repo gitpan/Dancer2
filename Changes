@@ -1,3 +1,15 @@
+0.142000  2014-06-24 15:16:42CEST+0200 Europe/Amsterdam
+
+    [ BUG FIXES ]
+    * GH #550, #555: Allow the content type to be set when using send_file
+      as per the documentation. (Russell Jenkins, Steven Humphrey)
+
+    [ ENHANCEMENTS ]
+    * GH #512, #520, #602: Pass all settings into JSON serializer engine.
+      (Jakob Voss, Russell Jenkins)
+    * GH #532: Serialize runtime errors such as those produced by die if a
+      serializer exists. (Steven Humphrey) 
+
 0.141000  2014-06-08 22:27:03CEST+0200 Europe/Amsterdam
 
     * No functional changes.

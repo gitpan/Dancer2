@@ -1,5 +1,5 @@
 package Dancer2::Core::Request;
-$Dancer2::Core::Request::VERSION = '0.141000';
+$Dancer2::Core::Request::VERSION = '0.142000';
 # ABSTRACT: Interface for accessing incoming requests
 
 use Moo;
@@ -785,7 +785,7 @@ Dancer2::Core::Request - Interface for accessing incoming requests
 
 =head1 VERSION
 
-version 0.141000
+version 0.142000
 
 =head1 SYNOPSIS
 
