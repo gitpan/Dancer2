@@ -1,7 +1,7 @@
 # ABSTRACT: Core libraries for Dancer2 2.0
 
 package Dancer2::Core;
-$Dancer2::Core::VERSION = '0.142000';
+$Dancer2::Core::VERSION = '0.143000';
 use strict;
 use warnings;
 
@@ -29,7 +29,7 @@ Dancer2::Core - Core libraries for Dancer2 2.0
 
 =head1 VERSION
 
-version 0.142000
+version 0.143000
 
 =head1 FUNCTIONS
 

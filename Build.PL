@@ -20,7 +20,7 @@ my %module_build_args = (
     "Dancer Core Developers"
   ],
   "dist_name" => "Dancer2",
-  "dist_version" => "0.142000",
+  "dist_version" => "0.143000",
   "license" => "perl",
   "module_name" => "Dancer2",
   "recommends" => {

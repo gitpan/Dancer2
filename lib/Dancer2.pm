@@ -1,6 +1,6 @@
 package Dancer2;
 # ABSTRACT: Lightweight yet powerful web application framework
-$Dancer2::VERSION = '0.142000';
+$Dancer2::VERSION = '0.143000';
 use strict;
 use warnings;
 use Class::Load 'load_class';
@@ -14,11 +14,12 @@ our $AUTHORITY = 'SUKRIA';
 # set version in dist.ini now
 # but we still need a basic version for
 # the tests
-$Dancer2::VERSION ||= '0.140001'; # 2.14.1
+$Dancer2::VERSION ||= '0.143000'; # 2.14.3
 
 our $runner;
 
-sub runner {$runner}
+sub runner   {$runner}
+sub psgi_app { __PACKAGE__->runner->psgi_app }
 
 sub import {
     my ( $class,  @args   ) = @_;
@@ -104,7 +105,7 @@ Dancer2 - Lightweight yet powerful web application framework
 
 =head1 VERSION
 
-version 0.142000
+version 0.143000
 
 =head1 DESCRIPTION
 

@@ -1,5 +1,5 @@
 package Dancer2::Core::Role::SessionFactory::File;
-$Dancer2::Core::Role::SessionFactory::File::VERSION = '0.142000';
+$Dancer2::Core::Role::SessionFactory::File::VERSION = '0.143000';
 #ABSTRACT: Role for file-based session factories
 
 
@@ -114,7 +114,7 @@ Dancer2::Core::Role::SessionFactory::File - Role for file-based session factorie
 
 =head1 VERSION
 
-version 0.142000
+version 0.143000
 
 =head1 DESCRIPTION
 

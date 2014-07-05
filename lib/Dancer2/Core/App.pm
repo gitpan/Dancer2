@@ -1,6 +1,6 @@
 # ABSTRACT: encapsulation of Dancer2 packages
 package Dancer2::Core::App;
-$Dancer2::Core::App::VERSION = '0.142000';
+$Dancer2::Core::App::VERSION = '0.143000';
 use Moo;
 use Carp            'croak';
 use List::Util      'first';
@@ -726,7 +726,7 @@ Dancer2::Core::App - encapsulation of Dancer2 packages
 
 =head1 VERSION
 
-version 0.142000
+version 0.143000
 
 =head1 DESCRIPTION
 

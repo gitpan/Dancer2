@@ -1,6 +1,6 @@
 package Dancer2::Tutorial;
 # ABSTRACT: An example to get you dancing
-$Dancer2::Tutorial::VERSION = '0.142000';
+$Dancer2::Tutorial::VERSION = '0.143000';
 __END__
 
 =pod
@@ -11,7 +11,7 @@ Dancer2::Tutorial - An example to get you dancing
 
 =head1 VERSION
 
-version 0.142000
+version 0.143000
 
 =head1 What is Dancer2?
 

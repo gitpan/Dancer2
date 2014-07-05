@@ -38,7 +38,7 @@ subtest 'basic defaults of Error object' => sub {
     my $e = Dancer2::Core::Error->new( context => $c, );
     is $e->status,  500,                                 'code';
     is $e->title,   'Error 500 - Internal Server Error', 'title';
-    is $e->message, undef,                               'message';
+    is $e->message, '',                               'message';
     like $e->content, qr!http://localhost:5000/foo/css!,
         "error content contains css path relative to uri_base";
 };
@@ -160,4 +160,37 @@ subtest 'App dies with serialized error' => sub {
     };
 };
 
+subtest 'Error with exception object' => sub {
+    local $@;
+    eval { MyTestException->throw('a test exception object') };
+    my $err = Dancer2::Core::Error->new(
+        context     => $c,
+        exception   => $@,
+        show_errors => 1,
+    )->throw;
+
+    like $err->content, qr/a test exception object/, 'Error content contains exception message';
+};
+
 done_testing;
+
+
+{   # Simple test exception class
+    package MyTestException;
+
+    use overload '""' => \&as_str;
+
+    sub new {
+        return bless {};
+    }
+
+    sub throw {
+        my ( $class, $error ) = @_;
+        my $self = ref($class) ? $class : $class->new;
+        $self->{error} = $error;
+
+        die $self;
+    }
+
+    sub as_str { return $_[0]->{error} }
+}

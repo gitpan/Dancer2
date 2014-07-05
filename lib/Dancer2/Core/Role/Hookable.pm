@@ -1,6 +1,6 @@
 package Dancer2::Core::Role::Hookable;
 # ABSTRACT: Role for hookable objects
-$Dancer2::Core::Role::Hookable::VERSION = '0.142000';
+$Dancer2::Core::Role::Hookable::VERSION = '0.143000';
 use Moo::Role;
 use Dancer2::Core;
 use Dancer2::Core::Types;
@@ -154,7 +154,7 @@ Dancer2::Core::Role::Hookable - Role for hookable objects
 
 =head1 VERSION
 
-version 0.142000
+version 0.143000
 
 =head1 AUTHOR
 
