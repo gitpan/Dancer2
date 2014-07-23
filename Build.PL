@@ -20,7 +20,7 @@ my %module_build_args = (
     "Dancer Core Developers"
   ],
   "dist_name" => "Dancer2",
-  "dist_version" => "0.143000",
+  "dist_version" => "0.149000_01",
   "license" => "perl",
   "module_name" => "Dancer2",
   "recommends" => {
@@ -78,6 +78,7 @@ my %module_build_args = (
     "Pod::Simple::SimpleTree" => 0,
     "Return::MultiLevel" => 0,
     "Role::Tiny" => "1.003000",
+    "Safe::Isa" => 0,
     "Scalar::Util" => 0,
     "Template" => 0,
     "Template::Tiny" => 0,

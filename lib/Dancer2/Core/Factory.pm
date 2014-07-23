@@ -1,6 +1,6 @@
 package Dancer2::Core::Factory;
 # ABSTRACT: Instantiate components by type and name
-$Dancer2::Core::Factory::VERSION = '0.143000';
+$Dancer2::Core::Factory::VERSION = '0.149000_01';
 use strict;
 use warnings;
 
@@ -33,7 +33,7 @@ Dancer2::Core::Factory - Instantiate components by type and name
 
 =head1 VERSION
 
-version 0.143000
+version 0.149000_01
 
 =head1 AUTHOR
 

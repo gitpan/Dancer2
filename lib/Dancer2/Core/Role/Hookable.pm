@@ -1,6 +1,6 @@
 package Dancer2::Core::Role::Hookable;
 # ABSTRACT: Role for hookable objects
-$Dancer2::Core::Role::Hookable::VERSION = '0.143000';
+$Dancer2::Core::Role::Hookable::VERSION = '0.149000_01';
 use Moo::Role;
 use Dancer2::Core;
 use Dancer2::Core::Types;
@@ -10,7 +10,7 @@ requires 'supported_hooks';
 
 # The hooks registry
 has hooks => (
-    is      => 'rw',
+    is      => 'ro',
     isa     => HashRef,
     builder => '_build_hooks',
     lazy    => 1,
@@ -154,7 +154,7 @@ Dancer2::Core::Role::Hookable - Role for hookable objects
 
 =head1 VERSION
 
-version 0.143000
+version 0.149000_01
 
 =head1 AUTHOR
 

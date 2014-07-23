@@ -1,18 +1,18 @@
 package Dancer2::Core::Role::Engine;
 # ABSTRACT: Role for engines
-$Dancer2::Core::Role::Engine::VERSION = '0.143000';
+$Dancer2::Core::Role::Engine::VERSION = '0.149000_01';
 use Moo::Role;
 use Dancer2::Core::Types;
 
 
 with 'Dancer2::Core::Role::Hookable';
 
-
-has context => (
-    is        => 'rw',
-    isa       => InstanceOf ['Dancer2::Core::Context'],
-    clearer   => 'clear_context',
-    predicate => 1,
+has session => (
+    is        => 'ro',
+    isa       => InstanceOf['Dancer2::Core::Session'],
+    writer    => 'set_session',
+    clearer   => 'clear_session',
+    predicate => 'has_session',
 );
 
 
@@ -34,7 +34,7 @@ Dancer2::Core::Role::Engine - Role for engines
 
 =head1 VERSION
 
-version 0.143000
+version 0.149000_01
 
 =head1 DESCRIPTION
 
@@ -44,10 +44,6 @@ shared logic for engines.
 This role consumes the L<Dancer2::Core::Role::Hookable> role.
 
 =head1 ATTRIBUTES
-
-=head2 context
-
-A L<Dancer2::Core::Context> object
 
 =head2 config
 

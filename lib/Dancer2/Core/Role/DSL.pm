@@ -1,6 +1,6 @@
 package Dancer2::Core::Role::DSL;
 # ABSTRACT: Role for DSL
-$Dancer2::Core::Role::DSL::VERSION = '0.143000';
+$Dancer2::Core::Role::DSL::VERSION = '0.149000_01';
 use Moo::Role;
 use Dancer2::Core::Types;
 use Carp 'croak';
@@ -71,8 +71,8 @@ sub _compile_keyword {
     if ( !$is_global ) {
         my $code = $compiled_code;
         $compiled_code = sub {
-            croak "Function '$keyword' must be called from a route handler"
-              unless defined $self->app->context;
+            $self->app->has_request or
+                croak "Function '$keyword' must be called from a route handler";
             $code->(@_);
         };
     }
@@ -104,7 +104,7 @@ Dancer2::Core::Role::DSL - Role for DSL
 
 =head1 VERSION
 
-version 0.143000
+version 0.149000_01
 
 =head1 AUTHOR
 

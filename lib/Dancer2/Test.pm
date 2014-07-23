@@ -1,6 +1,6 @@
 package Dancer2::Test;
 # ABSTRACT: Useful routines for testing Dancer2 apps
-$Dancer2::Test::VERSION = '0.143000';
+$Dancer2::Test::VERSION = '0.149000_01';
 use strict;
 use warnings;
 
@@ -619,7 +619,7 @@ Dancer2::Test - Useful routines for testing Dancer2 apps
 
 =head1 VERSION
 
-version 0.143000
+version 0.149000_01
 
 =head1 DESCRIPTION
 

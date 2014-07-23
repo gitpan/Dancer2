@@ -1,6 +1,6 @@
 package Dancer2::Serializer::Mutable;
 # ABSTRACT: Serialize and deserialize content based on HTTP header
-$Dancer2::Serializer::Mutable::VERSION = '0.143000';
+$Dancer2::Serializer::Mutable::VERSION = '0.149000_01';
 use Moo;
 use Carp 'croak';
 use Encode;
@@ -20,16 +20,16 @@ my $formats = {
 
 my $serializer = {
     'YAML'   => {
-        to      => sub { return Dancer2::Core::DSL::to_yaml(@_);   },
-        from    => sub { return Dancer2::Core::DSL::from_yaml(@_); },
+        to      => sub { Dancer2::Core::DSL::to_yaml(@_)   },
+        from    => sub { Dancer2::Core::DSL::from_yaml(@_) },
     },
     'Dumper' => {
-        to      => sub { return Dancer2::Core::DSL::to_dumper(@_);   },
-        from    => sub { return Dancer2::Core::DSL::from_dumper(@_); },
+        to      => sub { Dancer2::Core::DSL::to_dumper(@_)   },
+        from    => sub { Dancer2::Core::DSL::from_dumper(@_) },
     },
     'JSON'   => {
-        to      => sub { return Dancer2::Core::DSL::to_json(@_);   },
-        from    => sub { return Dancer2::Core::DSL::from_json(@_); },
+        to      => sub { Dancer2::Core::DSL::to_json(@_)   },
+        from    => sub { Dancer2::Core::DSL::from_json(@_) },
     },
 };
 
@@ -57,7 +57,7 @@ sub serialize {
 
     # Match format with a serializer and return
     $format and return $serializer->{$format}{'to'}->(
-        $self->context, $entity
+        $self, $entity
     );
 
     # If none is found then just return the entity without change
@@ -77,14 +77,14 @@ sub deserialize {
 
 sub _get_content_type {
     my $self    = shift;
-    my $request = $self->context->request
+    my $headers = $self->{'extra_headers'}
         or return;
 
     # Search for the first HTTP header variable which
     # specifies supported content.
     foreach my $method ( qw<content_type accept accept_type> ) {
-        if ( my $value = $request->$method ) {
-            if( exists $formats->{$value} ) {
+        if ( my $value = $headers->{$method} ) {
+            if ( exists $formats->{$value} ) {
                 $self->set_content_type($value);
                 return $formats->{$value};
             }
@@ -107,7 +107,7 @@ Dancer2::Serializer::Mutable - Serialize and deserialize content based on HTTP h
 
 =head1 VERSION
 
-version 0.143000
+version 0.149000_01
 
 =head1 SYNOPSIS
 

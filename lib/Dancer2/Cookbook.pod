@@ -1,6 +1,6 @@
 package Dancer2::Cookbook;
 # ABSTRACT: Example-driven quick-start to the Dancer2 web framework
-$Dancer2::Cookbook::VERSION = '0.143000';
+$Dancer2::Cookbook::VERSION = '0.149000_01';
 __END__
 
 =pod
@@ -11,7 +11,7 @@ Dancer2::Cookbook - Example-driven quick-start to the Dancer2 web framework
 
 =head1 VERSION
 
-version 0.143000
+version 0.149000_01
 
 =head1 DESCRIPTION
 
@@ -370,7 +370,7 @@ for you.
 
 When you're done with your session, you can destroy it:
 
-    context->destroy_session
+    app->destroy_session
 
 =head2 Sessions and logging in
 

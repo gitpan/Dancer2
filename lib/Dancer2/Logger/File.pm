@@ -1,6 +1,6 @@
 package Dancer2::Logger::File;
 # ABSTRACT: file-based logging engine for Dancer2
-$Dancer2::Logger::File::VERSION = '0.143000';
+$Dancer2::Logger::File::VERSION = '0.149000_01';
 use Carp 'carp';
 use Moo;
 use Dancer2::Core::Types;
@@ -16,14 +16,14 @@ use IO::File;
 has environment => (
     is      => 'ro',
     lazy    => 1,
-    default => sub { $_[0]->context->app->environment },
+    default => sub { $_[0]->app->environment },
 );
 
 # FIXME: this is not a good way to do this
 has location => (
     is      => 'ro',
     lazy    => 1,
-    default => sub { $_[0]->context->app->config_location },
+    default => sub { $_[0]->app->config_location },
 );
 
 has log_dir => (
@@ -112,7 +112,7 @@ Dancer2::Logger::File - file-based logging engine for Dancer2
 
 =head1 VERSION
 
-version 0.143000
+version 0.149000_01
 
 =head1 DESCRIPTION
 

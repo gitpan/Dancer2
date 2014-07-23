@@ -1,6 +1,6 @@
 package Dancer2::Core::Role::Serializer;
 # ABSTRACT: Role for Serializer engines
-$Dancer2::Core::Role::Serializer::VERSION = '0.143000';
+$Dancer2::Core::Role::Serializer::VERSION = '0.149000_01';
 use Dancer2::Core::Types;
 use Moo::Role;
 
@@ -76,7 +76,7 @@ Dancer2::Core::Role::Serializer - Role for Serializer engines
 
 =head1 VERSION
 
-version 0.143000
+version 0.149000_01
 
 =head1 DESCRIPTION
 

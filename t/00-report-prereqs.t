@@ -67,6 +67,7 @@ my @modules = qw(
   Pod::Simple::SimpleTree
   Return::MultiLevel
   Role::Tiny
+  Safe::Isa
   Scalar::Util
   Scope::Upper
   Template

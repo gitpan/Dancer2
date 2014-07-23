@@ -1,5 +1,5 @@
 package Dancer2::Plugin;
-$Dancer2::Plugin::VERSION = '0.143000';
+$Dancer2::Plugin::VERSION = '0.149000_01';
 # ABSTRACT: Extending Dancer2's DSL with plugins
 
 
@@ -258,7 +258,7 @@ Dancer2::Plugin - Extending Dancer2's DSL with plugins
 
 =head1 VERSION
 
-version 0.143000
+version 0.149000_01
 
 =head1 DESCRIPTION
 
@@ -294,11 +294,10 @@ with them directly.
         my $dsl = shift;
         my @args = @_;
 
-        my $app = $dsl->app;
-        my $context = $app->context;
-        my $request = $context->request;
+        my $app     = $dsl->app;
+        my $request = $app->request;
 
-        if ( $app->session( "logged_in" ) ) {
+        if ( $app->session->read('logged_in') ) {
             ...
         }
     };
@@ -419,13 +418,13 @@ the config file as C<after_logout>.
   use Dancer2::Plugin;
 
   register logout => sub {
-    my $dsl     = shift;
-    my $context = $dsl->app->context;
-    my $conf    = plugin_setting();
+    my $dsl  = shift;
+    my $app  = $dsl->app;
+    my $conf = plugin_setting();
 
-    $context->destroy_session;
+    $app->destroy_session;
 
-    return $context->redirect( $conf->{after_logout} );
+    return $app->redirect( $conf->{after_logout} );
   };
 
   register_plugin for_versions => [ 2 ] ;

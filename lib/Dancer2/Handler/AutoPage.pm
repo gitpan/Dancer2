@@ -1,6 +1,6 @@
 package Dancer2::Handler::AutoPage;
 # ABSTRACT: Class for handling the AutoPage feature
-$Dancer2::Handler::AutoPage::VERSION = '0.143000';
+$Dancer2::Handler::AutoPage::VERSION = '0.149000_01';
 use Moo;
 use Carp 'croak';
 use Dancer2::Core::Types;
@@ -22,26 +22,27 @@ sub register {
 
 sub code {
     sub {
-        my $ctx = shift;
+        my $app    = shift;
+        my $prefix = shift;
 
-        my $page = $ctx->request->path_info;
+        my $page = $app->request->path_info;
 
-        my $template = $ctx->app->engine('template');
+        my $template = $app->engine('template');
         if ( !defined $template ) {
-            $ctx->response->has_passed(1);
+            $app->response->has_passed(1);
             return;
         }
 
         my $view_path = $template->view_pathname($page);
 
         if ( !-f $view_path ) {
-            $ctx->response->has_passed(1);
+            $app->response->has_passed(1);
             return;
         }
 
-        my $ct = $template->process($page);
-        $ctx->response->header( 'Content-Length', length($ct) );
-        return ( $ctx->request->method eq 'GET' ) ? $ct : '';
+        my $ct = $template->process( $app->request, $page );
+        $app->response->header( 'Content-Length', length($ct) );
+        return ( $app->request->method eq 'GET' ) ? $ct : '';
     };
 }
 
@@ -61,7 +62,7 @@ Dancer2::Handler::AutoPage - Class for handling the AutoPage feature
 
 =head1 VERSION
 
-version 0.143000
+version 0.149000_01
 
 =head1 DESCRIPTION
 

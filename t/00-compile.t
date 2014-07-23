@@ -4,7 +4,7 @@ use warnings;
 
 # this test was generated with Dist::Zilla::Plugin::Test::Compile 2.040
 
-use Test::More  tests => 59 + ($ENV{AUTHOR_TESTING} ? 1 : 0);
+use Test::More  tests => 58 + ($ENV{AUTHOR_TESTING} ? 1 : 0);
 
 
 
@@ -15,7 +15,6 @@ my @module_files = (
     'Dancer2/CLI/Command/version.pm',
     'Dancer2/Core.pm',
     'Dancer2/Core/App.pm',
-    'Dancer2/Core/Context.pm',
     'Dancer2/Core/Cookie.pm',
     'Dancer2/Core/DSL.pm',
     'Dancer2/Core/Dispatcher.pm',

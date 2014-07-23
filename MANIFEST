@@ -17,7 +17,6 @@ lib/Dancer2/Config.pod
 lib/Dancer2/Cookbook.pod
 lib/Dancer2/Core.pm
 lib/Dancer2/Core/App.pm
-lib/Dancer2/Core/Context.pm
 lib/Dancer2/Core/Cookie.pm
 lib/Dancer2/Core/DSL.pm
 lib/Dancer2/Core/Dispatcher.pm
@@ -119,8 +118,6 @@ t/config_app1.t
 t/config_app2.t
 t/config_app3.t
 t/config_settings.t
-t/context.t
-t/context_trigger.t
 t/cookie.t
 t/corpus/pretty/505.tt
 t/corpus/pretty_public/404.html
@@ -233,6 +230,14 @@ t/sessions/U4dhegAAAw5gU_GDhdYOAgg7AtnGvHoB.yml
 t/sessions/U4uQKwAAc0S31MjwWDgsnGg-wkwCcUp-.yml
 t/sessions/U7g83AAAD40GMDKZZbYNAi9jRU6lJlmd.yml
 t/sessions/U7hR3AAAME4JbYM_IBVWT5sQq-OlHt5v.yml
+t/sessions/U8-0IAAAIo7quaDrMsrwW_vaalYuLN5G.yml
+t/sessions/U8-x8wAAH8c5NFaIXyuTBQ1qaMYVXtms.yml
+t/sessions/U8-yGQAAIIeUD3g5pCfu12mGyb9jdFpA.yml
+t/sessions/U8EjygAAC9a8v1m7XkjynBlJ8JKWkXsr.yml
+t/sessions/U8FTogAARfIT33ImUZSd5ffmiDvPjQ1k.yml
+t/sessions/U8q6bgAAY5J_az3iLVXSgmzZBpzsGZdn.yml
+t/sessions/U8qxAQAAVNrEmBCFpYG_oFJEBuv5Oo1T.yml
+t/sessions/U8sClAAAQzB77au98B9OAeDZsoejrJ6L.yml
 t/sessions/Uf-CrAAAdd2mP4pJAIBzc6YRqXnqeNUt.yml
 t/sessions/Uf-GsQAANz9OaEztWyuSfJKegUq3zD1V.yml
 t/sessions/Uf-HDgAAPPOeyDGX2_IgTLzBg6iBsFkk.yml

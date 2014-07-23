@@ -70,6 +70,7 @@ my %WriteMakefileArgs = (
     "Pod::Simple::SimpleTree" => 0,
     "Return::MultiLevel" => 0,
     "Role::Tiny" => "1.003000",
+    "Safe::Isa" => 0,
     "Scalar::Util" => 0,
     "Template" => 0,
     "Template::Tiny" => 0,
@@ -106,7 +107,7 @@ my %WriteMakefileArgs = (
     "utf8" => 0,
     "vars" => 0
   },
-  "VERSION" => "0.143000",
+  "VERSION" => "0.149000_01",
   "test" => {
     "TESTS" => "t/*.t t/dsl/*.t t/logger/*.t t/roles/*.t t/route-pod-coverage/*.t t/template_tiny/*.t"
   }
@@ -165,6 +166,7 @@ my %FallbackPrereqs = (
   "Pod::Simple::SimpleTree" => 0,
   "Return::MultiLevel" => 0,
   "Role::Tiny" => "1.003000",
+  "Safe::Isa" => 0,
   "Scalar::Util" => 0,
   "Template" => 0,
   "Template::Tiny" => 0,

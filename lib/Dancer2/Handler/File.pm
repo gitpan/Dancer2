@@ -1,6 +1,6 @@
 package Dancer2::Handler::File;
 # ABSTRACT: class for handling file content rendering
-$Dancer2::Handler::File::VERSION = '0.143000';
+$Dancer2::Handler::File::VERSION = '0.149000_01';
 use Carp 'croak';
 use Moo;
 use HTTP::Date;
@@ -31,23 +31,22 @@ has encoding => (
     default => sub {'utf-8'},
 );
 
-has public_dir => ( is => 'rw', );
+has public_dir => (
+    is      => 'ro',
+    lazy    => 1,
+    builder => '_build_public_dir',
+);
 
 has regexp => (
     is      => 'ro',
     default => sub {'/**'},
 );
 
-sub BUILD {
-    my ($self) = @_;
-    if ( !defined $self->public_dir ) {
-        my $public =
-             $self->app->config->{public}
-          || $ENV{DANCER_PUBLIC}
-          || path( $self->app->location, 'public' );
-
-        $self->public_dir($public);
-    }
+sub _build_public_dir {
+    my $self = shift;
+    return $self->app->config->{public}
+        || $ENV{DANCER_PUBLIC}
+        || path( $self->app->location, 'public' );
 }
 
 sub register {
@@ -69,11 +68,12 @@ sub code {
     my ( $self, $prefix ) = @_;
 
     sub {
-        my $ctx  = shift;
-        my $path = $ctx->request->path_info;
+        my $app    = shift;
+        my $prefix = shift;
+        my $path   = $app->request->path_info;
 
         if ( $path =~ /\0/ ) {
-            return $self->response_400($ctx);
+            return $self->response_400($app);
         }
 
         if ( $prefix && $prefix ne '/' ) {
@@ -84,18 +84,18 @@ sub code {
           File::Spec->splitdir( join '',
             ( File::Spec->splitpath($path) )[ 1, 2 ] );
         if ( grep $_ eq '..', @tokens ) {
-            return $self->response_403($ctx);
+            return $self->response_403($app);
         }
 
         my $file_path = path( $self->public_dir, @tokens );
 
         if ( !-f $file_path ) {
-            $ctx->response->has_passed(1);
+            $app->response->has_passed(1);
             return;
         }
 
         if ( !-r $file_path ) {
-            return $self->response_403($ctx);
+            return $self->response_403($app);
         }
 
         # Now we are sure we can render the file...
@@ -114,22 +114,22 @@ sub code {
 
         my @stat = stat $file_path;
 
-        $ctx->response->header('Content-Type')
-          or $ctx->response->header( 'Content-Type', $content_type );
+        $app->response->header('Content-Type')
+          or $app->response->header( 'Content-Type', $content_type );
 
-        $ctx->response->header('Content-Length')
-          or $ctx->response->header( 'Content-Length', $stat[7] );
+        $app->response->header('Content-Length')
+          or $app->response->header( 'Content-Length', $stat[7] );
 
-        $ctx->response->header('Last-Modified')
-          or $ctx->response->header(
+        $app->response->header('Last-Modified')
+          or $app->response->header(
             'Last-Modified',
             HTTP::Date::time2str( $stat[9] )
           );
 
-        $ctx->response->content($content);
-        $ctx->response->is_encoded(1);    # bytes are already encoded
-        $self->execute_hook( 'handler.file.after_render', $ctx->response );
-        return ( $ctx->request->method eq 'GET' ) ? $content : '';
+        $app->response->content($content);
+        $app->response->is_encoded(1);    # bytes are already encoded
+        $self->execute_hook( 'handler.file.after_render', $app->response );
+        return ( $app->request->method eq 'GET' ) ? $content : '';
     };
 }
 
@@ -145,7 +145,7 @@ Dancer2::Handler::File - class for handling file content rendering
 
 =head1 VERSION
 
-version 0.143000
+version 0.149000_01
 
 =head1 AUTHOR
 

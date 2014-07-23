@@ -1,6 +1,6 @@
 package Dancer2::Core::Runner;
 # ABSTRACT: Top-layer class to start a dancer app
-$Dancer2::Core::Runner::VERSION = '0.143000';
+$Dancer2::Core::Runner::VERSION = '0.149000_01';
 use Moo;
 use Dancer2::Core::MIME;
 use Dancer2::Core::Types;
@@ -40,7 +40,7 @@ has apps => (
 );
 
 has dispatcher => (
-    is      => 'rw',
+    is      => 'ro',
     isa     => InstanceOf ['Dancer2::Core::Dispatcher'],
     lazy    => 1,
     builder => '_build_dispatcher',
@@ -58,7 +58,7 @@ has host => (
     lazy    => 1,
     default => sub { $_[0]->config->{'host'} },
 );
-    
+
 has port => (
     is      => 'ro',
     lazy    => 1,
@@ -73,7 +73,6 @@ has timeout => (
 
 sub _build_dispatcher {
     my $self = shift;
-    # FIXME: ::Dispatcher::apps attr is readwrite, why?
     return Dancer2::Core::Dispatcher->new( apps => $self->apps );
 }
 
@@ -291,7 +290,7 @@ Dancer2::Core::Runner - Top-layer class to start a dancer app
 
 =head1 VERSION
 
-version 0.143000
+version 0.149000_01
 
 =head1 AUTHOR
 
