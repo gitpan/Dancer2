@@ -1,6 +1,6 @@
 package Dancer2::Core::Error;
 # ABSTRACT: Class representing fatal errors
-$Dancer2::Core::Error::VERSION = '0.149000_01';
+$Dancer2::Core::Error::VERSION = '0.149000_02';
 use Moo;
 use Carp;
 use Dancer2::Core::Types;
@@ -77,7 +77,7 @@ sub _build_error_template {
       if -f $self->app->engine('template')
           ->view_pathname( $self->status );
 
-    return undef;
+    return;
 }
 
 has static_page => (
@@ -96,7 +96,7 @@ sub _build_static_page {
 
     my $filename = sprintf "%s/%d.html", $public_dir, $self->status;
 
-    open my $fh, $filename or return undef;
+    open my $fh, $filename or return;
 
     local $/ = undef;    # slurp time
 
@@ -508,7 +508,7 @@ Dancer2::Core::Error - Class representing fatal errors
 
 =head1 VERSION
 
-version 0.149000_01
+version 0.149000_02
 
 =head1 SYNOPSIS
 

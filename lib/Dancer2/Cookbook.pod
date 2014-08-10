@@ -1,6 +1,6 @@
 package Dancer2::Cookbook;
 # ABSTRACT: Example-driven quick-start to the Dancer2 web framework
-$Dancer2::Cookbook::VERSION = '0.149000_01';
+$Dancer2::Cookbook::VERSION = '0.149000_02';
 __END__
 
 =pod
@@ -11,7 +11,7 @@ Dancer2::Cookbook - Example-driven quick-start to the Dancer2 web framework
 
 =head1 VERSION
 
-version 0.149000_01
+version 0.149000_02
 
 =head1 DESCRIPTION
 
@@ -1143,8 +1143,8 @@ Start by creating a simple app.psgi file:
     use Plack::Builder;
 
     builder {
-        mount '/wiki'  => OurWiki->dance;
-        mount '/forum' => OurForum->dance;
+        mount '/wiki'  => OurWiki->psgi_app;
+        mount '/forum' => OurForum->psgi_app;
     };
 
 and now use L<Starman>

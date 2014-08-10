@@ -1,7 +1,7 @@
 # ABSTRACT: Dancer2's Domain Specific Language (DSL)
 
 package Dancer2::Core::DSL;
-$Dancer2::Core::DSL::VERSION = '0.149000_01';
+$Dancer2::Core::DSL::VERSION = '0.149000_02';
 use Moo;
 use Carp;
 use Class::Load 'load_class';
@@ -55,6 +55,7 @@ sub dsl_keywords {
         path                 => { is_global => 1 },
         post                 => { is_global => 1 },
         prefix               => { is_global => 1 },
+        psgi_app             => { is_global => 1 },
         push_header          => { is_global => 0 },
         put                  => { is_global => 1 },
         redirect             => { is_global => 0 },
@@ -99,7 +100,6 @@ sub false {0}
 
 sub dirname { shift and Dancer2::FileUtils::dirname(@_) }
 sub path    { shift and Dancer2::FileUtils::path(@_) }
-
 
 sub config { shift->app->settings }
 
@@ -276,6 +276,12 @@ sub start { shift->runner->start }
 
 sub dance { shift->start(@_) }
 
+sub psgi_app {
+    my $self = shift;
+
+    $self->runner->psgi_app( [ $self->app ] );
+}
+
 #
 # Response alterations
 #
@@ -407,7 +413,7 @@ Dancer2::Core::DSL - Dancer2's Domain Specific Language (DSL)
 
 =head1 VERSION
 
-version 0.149000_01
+version 0.149000_02
 
 =head1 FUNCTIONS
 

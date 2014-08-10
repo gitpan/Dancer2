@@ -72,6 +72,7 @@ my %WriteMakefileArgs = (
     "Role::Tiny" => "1.003000",
     "Safe::Isa" => 0,
     "Scalar::Util" => 0,
+    "Sub::Quote" => 0,
     "Template" => 0,
     "Template::Tiny" => 0,
     "Test::Builder" => 0,
@@ -107,7 +108,7 @@ my %WriteMakefileArgs = (
     "utf8" => 0,
     "vars" => 0
   },
-  "VERSION" => "0.149000_01",
+  "VERSION" => "0.149000_02",
   "test" => {
     "TESTS" => "t/*.t t/dsl/*.t t/logger/*.t t/roles/*.t t/route-pod-coverage/*.t t/template_tiny/*.t"
   }
@@ -168,6 +169,7 @@ my %FallbackPrereqs = (
   "Role::Tiny" => "1.003000",
   "Safe::Isa" => 0,
   "Scalar::Util" => 0,
+  "Sub::Quote" => 0,
   "Template" => 0,
   "Template::Tiny" => 0,
   "Test::Builder" => 0,

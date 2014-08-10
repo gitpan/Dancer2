@@ -20,7 +20,7 @@ my %module_build_args = (
     "Dancer Core Developers"
   ],
   "dist_name" => "Dancer2",
-  "dist_version" => "0.149000_01",
+  "dist_version" => "0.149000_02",
   "license" => "perl",
   "module_name" => "Dancer2",
   "recommends" => {
@@ -80,6 +80,7 @@ my %module_build_args = (
     "Role::Tiny" => "1.003000",
     "Safe::Isa" => 0,
     "Scalar::Util" => 0,
+    "Sub::Quote" => 0,
     "Template" => 0,
     "Template::Tiny" => 0,
     "Test::Builder" => 0,

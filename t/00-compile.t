@@ -4,7 +4,7 @@ use warnings;
 
 # this test was generated with Dist::Zilla::Plugin::Test::Compile 2.040
 
-use Test::More  tests => 58 + ($ENV{AUTHOR_TESTING} ? 1 : 0);
+use Test::More  tests => 59 + ($ENV{AUTHOR_TESTING} ? 1 : 0);
 
 
 
@@ -30,6 +30,7 @@ my @module_files = (
     'Dancer2/Core/Role/DSL.pm',
     'Dancer2/Core/Role/Engine.pm',
     'Dancer2/Core/Role/Handler.pm',
+    'Dancer2/Core/Role/HasLocation.pm',
     'Dancer2/Core/Role/Headers.pm',
     'Dancer2/Core/Role/Hookable.pm',
     'Dancer2/Core/Role/Logger.pm',

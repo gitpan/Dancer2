@@ -1,8 +1,9 @@
 package Dancer2;
 # ABSTRACT: Lightweight yet powerful web application framework
-$Dancer2::VERSION = '0.149000_01';
+$Dancer2::VERSION = '0.149000_02';
 use strict;
 use warnings;
+use List::Util  'first';
 use Class::Load 'load_class';
 use Dancer2::Core;
 use Dancer2::Core::App;
@@ -46,27 +47,37 @@ sub import {
 
     my %final_args = @final_args;
 
-    $final_args{dsl} ||= 'Dancer2::Core::DSL';
+    my $appname = delete $final_args{appname};
+    $appname ||= $caller;
 
     # never instantiated the runner, should do it now
     if ( not defined $runner ) {
-        $runner = Dancer2::Core::Runner->new( caller => $script );
+        $runner = Dancer2::Core::Runner->new();
     }
 
-    # the app object
-    # populating with the server's postponed hooks in advance
-    my $app = Dancer2::Core::App->new(
-        name            => $caller,
-        environment     => $runner->environment,
-        location        => $runner->location,
-        runner_config   => $runner->config,
-        postponed_hooks => $runner->postponed_hooks,
-    );
+    # Search through registered apps, creating a new app object
+    # if we do not find one with the same name.
+    my $app;
+    ($app) = first { $_->name eq $appname } @{ $runner->apps };
+
+    if ( ! $app ) {
+        # populating with the server's postponed hooks in advance
+        $app = Dancer2::Core::App->new(
+            name            => $appname,
+            caller          => $script,
+            environment     => $runner->environment,
+            postponed_hooks => $runner->postponed_hooks,
+        );
+
+        # register the app within the runner instance
+        $runner->register_application($app);
+    }
 
     _set_import_method_to_caller($caller);
 
-    # register the app within the runner instance
-    $runner->register_application($app);
+    # use config dsl class, must extend Dancer2::Core::DSL
+    my $config_dsl = $app->setting('dsl_class') || 'Dancer2::Core::DSL';
+    $final_args{dsl} ||= $config_dsl;
 
     # load the DSL, defaulting to Dancer2::Core::DSL
     load_class( $final_args{dsl} );
@@ -105,7 +116,7 @@ Dancer2 - Lightweight yet powerful web application framework
 
 =head1 VERSION
 
-version 0.149000_01
+version 0.149000_02
 
 =head1 DESCRIPTION
 
@@ -186,8 +197,9 @@ Import gets called when you use Dancer2. You can specify import options giving
 you control over the keywords that will be imported into your webapp and other
 things:
 
-    use Dancer2 ( foo => 'bar' ); # sets option foo to bar
     use Dancer2 '!quux'; # Don't import DSL keyword quux
+    use Dancer2 appname => 'MyAwesomeApp'; # Add routes and hooks to MyAwesomeApp
+    use Dancer2 ( foo => 'bar' ); # sets option foo to bar (currently not implemented)
 
 =head1 FUNCTIONS
 
@@ -247,6 +259,7 @@ Returns the current runner. It is of type L<Dancer2::Core::Runner>.
     Jakob Voss
     James Aitken
     Jason A. Crome
+    Javier Rojas
     Jean Stebens
     Jonathan Scott Duff
     Julio Fraire

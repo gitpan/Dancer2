@@ -1,6 +1,6 @@
 package Dancer2::Test;
 # ABSTRACT: Useful routines for testing Dancer2 apps
-$Dancer2::Test::VERSION = '0.149000_01';
+$Dancer2::Test::VERSION = '0.149000_02';
 use strict;
 use warnings;
 
@@ -619,7 +619,7 @@ Dancer2::Test - Useful routines for testing Dancer2 apps
 
 =head1 VERSION
 
-version 0.149000_01
+version 0.149000_02
 
 =head1 DESCRIPTION
 
@@ -633,7 +633,7 @@ If you need to remove the warnings, for now, you can set:
     $Dancer::Test::NO_WARN = 1;
 
 This module provides useful routines to test Dancer2 apps. They are, however,
-buggy and unnecessary. L<Plack:Test> is advised instead.
+buggy and unnecessary. L<Plack::Test> is advised instead.
 
 $test_name is always optional.
 

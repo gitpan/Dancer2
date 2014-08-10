@@ -1,6 +1,6 @@
 package Dancer2::Core::Dispatcher;
 # ABSTRACT: Class for dispatching request to the appropriate route handler
-$Dancer2::Core::Dispatcher::VERSION = '0.149000_01';
+$Dancer2::Core::Dispatcher::VERSION = '0.149000_02';
 use Moo;
 use Encode;
 use Safe::Isa;
@@ -18,17 +18,22 @@ has apps => (
 
 # take the list of applications and an $env hash, return a Response object.
 sub dispatch {
-    my ( $self, $env, $request, $curr_session ) = @_;
+    my ( $self, $env, $request ) = @_;
+
+    my %preexisting_sessions;
 
     # warn "dispatching ".$env->{PATH_INFO}
     #    . " with ".join(", ", map { $_->name } @{$self->apps });
 
+DISPATCH:
+    while (1) {
     foreach my $app ( @{ $self->apps } ) {
         # warn "walking through routes of ".$app->name;
 
         # create request if we didn't get any
         $request ||= $self->build_request( $env, $app );
 
+        my $cname       = $app->engine('session')->cookie_name;
         my $http_method = lc $request->method;
         my $path_info   =    $request->path_info;
 
@@ -44,10 +49,13 @@ sub dispatch {
             my $match = $route->match($request)
                 or next ROUTE;
 
-            $curr_session and $app->set_session($curr_session);
-
             $request->_set_route_params($match);
             $app->set_request($request);
+            # Add session to app *if* we have a session and the request
+            # has the appropriate cookie header for _this_ app.
+
+            $preexisting_sessions{$cname}
+                and $app->set_session( $preexisting_sessions{$cname} );
 
             my $response = with_return {
                 my ($return) = @_;
@@ -61,6 +69,24 @@ sub dispatch {
 
             # Ensure we clear the with_return handler
             $app->clear_with_response;
+
+            # handle forward requests
+            if ( ref $response eq 'Dancer2::Core::Request' ) {
+                # this is actually a request, not response
+                $request = $response;
+
+                # Get the session object from the app before we clean up
+                # the request context, so we can propogate this to the
+                # next dispatch cycle (if required).
+                $app->_has_session
+                    and $preexisting_sessions{$cname} = $app->session;
+
+                $app->cleanup;
+
+                next DISPATCH;
+            }
+
+            # from here we assume the response is a Dancer2::Core::Response
 
             # No further processing of this response if its halted
             if ( $response->is_halted ) {
@@ -85,8 +111,14 @@ sub dispatch {
             return $response;
         }
 
+        # Get current session object to allow propogation to next app.
+        $app->_has_session
+            and $preexisting_sessions{$cname} = $app->session;
         $app->cleanup;
     }
+
+        last;
+    } # while
 
     return $self->response_not_found( $env );
 }
@@ -183,13 +215,15 @@ my $not_found_app;
 sub response_not_found {
     my ( $self, $env ) = @_;
 
+    # There may be more than one app;
+    # Use the first one for caller and location
     $not_found_app ||= Dancer2::Core::App->new(
         name            => 'file_not_found',
         # FIXME: are these two still global with the merging of
         #        feature/fix-remove-default-engine-config?
         environment     => Dancer2->runner->environment,
-        location        => Dancer2->runner->location,
-        runner_config   => Dancer2->runner->config,
+        caller          => $self->apps->[0]->caller,
+        location        => $self->apps->[0]->location,
         postponed_hooks => Dancer2->runner->postponed_hooks,
         api_version     => 2,
     );
@@ -215,7 +249,7 @@ Dancer2::Core::Dispatcher - Class for dispatching request to the appropriate rou
 
 =head1 VERSION
 
-version 0.149000_01
+version 0.149000_02
 
 =head1 SYNOPSIS
 

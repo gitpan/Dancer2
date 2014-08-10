@@ -1,6 +1,6 @@
 package Dancer2::Config;
 # ABSTRACT: Configure Dancer2 to suit your needs
-$Dancer2::Config::VERSION = '0.149000_01';
+$Dancer2::Config::VERSION = '0.149000_02';
 __END__
 
 =pod
@@ -11,7 +11,7 @@ Dancer2::Config - Configure Dancer2 to suit your needs
 
 =head1 VERSION
 
-version 0.149000_01
+version 0.149000_02
 
 =head1 DESCRIPTION
 
@@ -450,6 +450,20 @@ C</foo/bar.tt>.
 Dancer2 will honor your C<before_template_render> code, and all default
 variables. They will be accessible and interpolated on automatic
 served pages.
+
+=head2 dsl_class
+
+For complex applications that require extended DSL keywords or other
+functionality the DSL class used can be specified at import time or in the
+config settings.
+
+    dsl_class: 'My::DSL'
+
+This is the same as specifying
+
+    use Dancer2 dsl => 'My::DSL'
+
+in your module. dsl_class defaults to L<Dancer2::Core::DSL> if not specified
 
 =head2 DANCER_CONFDIR and DANCER_ENVDIR
 

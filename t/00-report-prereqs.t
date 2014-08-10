@@ -70,6 +70,7 @@ my @modules = qw(
   Safe::Isa
   Scalar::Util
   Scope::Upper
+  Sub::Quote
   Template
   Template::Tiny
   Test::Builder

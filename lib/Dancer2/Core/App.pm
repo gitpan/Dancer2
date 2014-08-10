@@ -1,6 +1,6 @@
 # ABSTRACT: encapsulation of Dancer2 packages
 package Dancer2::Core::App;
-$Dancer2::Core::App::VERSION = '0.149000_01';
+$Dancer2::Core::App::VERSION = '0.149000_02';
 use Moo;
 use Carp            'croak';
 use Scalar::Util    'blessed';
@@ -9,6 +9,7 @@ use File::Spec;
 
 use Dancer2::FileUtils 'path';
 use Dancer2::Core;
+use Dancer2::Core::Cookie;
 use Dancer2::Core::Types;
 use Dancer2::Core::Route;
 use Dancer2::Core::Hook;
@@ -66,6 +67,14 @@ has '+local_triggers' => (
                 my $self  = shift;
                 my $value = shift;
                 $self->template_engine->layout($value);
+            },
+
+            log => sub {
+                my ( $self, $value, $config ) = @_;
+
+                # This will allow to set the log level
+                # using: set log => warning
+                $self->logger_engine->log_level($value);
             },
         };
 
@@ -155,7 +164,7 @@ sub _build_template_engine {
     defined $config or $config = $self->config;
     defined $value  or $value  = $config->{'template'};
 
-    defined $value or return undef;
+    defined $value or return;
     ref $value    and return $value;
 
     is_module_name($value)
@@ -184,7 +193,7 @@ sub _build_serializer_engine {
     defined $config or $config = $self->config;
     defined $value  or $value  = $config->{serializer};
 
-    defined $value or return undef;
+    defined $value or return;
     ref $value    and return $value;
 
     my $engine_options =
@@ -228,12 +237,6 @@ has plugins => (
     is      => 'rw',
     isa     => ArrayRef,
     default => sub { [] },
-);
-
-has runner_config => (
-    is      => 'ro',
-    isa     => HashRef,
-    default => sub { {} },
 );
 
 has route_handlers => (
@@ -379,7 +382,7 @@ has prefix => (
     predicate => 1,
     coerce    => sub {
         my $prefix = shift;
-        defined($prefix) and $prefix eq "/" and return undef;
+        defined($prefix) and $prefix eq "/" and return;
         return $prefix;
     },
 );
@@ -470,7 +473,12 @@ sub _build_default_config {
     my $self = shift;
 
     return {
-        %{ $self->runner_config },
+        content_type   => ( $ENV{DANCER_CONTENT_TYPE} || 'text/html' ),
+        charset        => ( $ENV{DANCER_CHARSET}      || '' ),
+        logger         => ( $ENV{DANCER_LOGGER}       || 'console' ),
+        views          => ( $ENV{DANCER_VIEWS}
+                            || path( $self->config_location, 'views' ) ),
+        appdir         => $self->location,
         template       => 'Tiny',
         route_handlers => [
             [
@@ -873,21 +881,10 @@ sub forward {
 
     my $new_request = $self->make_forward_to( $url, $params, $options );
 
-    my $new_response = Dancer2->runner->dispatcher->dispatch(
-        $new_request->env,
-        $new_request,
-        ($self->session)x!! $self->has_session,
-    );
-
-    # halt the response, so no further processing is done on this request.
-    # (any after hooks will have already been run)
-    $new_response->halt;
-    $self->set_response($new_response);
-
     $self->has_with_return
-        and $self->with_return->($new_response);
+        and $self->with_return->($new_request);
 
-    return $new_response; # Should never be called..
+    # nothing else will run after this
 }
 
 # Create a new request which is a clone of the current one, apart
@@ -920,6 +917,15 @@ sub make_forward_to {
     $new_request->{body}          = $request->body;
     $new_request->{headers}       = $request->headers;
 
+    # If a session object was created during processing of the original request
+    # i.e. a session object exists but no cookie existed
+    # add a cookie so the dispatcher can assign the session to the appropriate app
+    my $engine = $self->engine('session');
+    $engine && $self->_has_session or return $new_request;
+    my $name = $engine->cookie_name;
+    exists $new_request->cookies->{$name} and return $new_request;
+    $new_request->cookies->{$name} =
+        Dancer2::Core::Cookie->new( name => $name, value => $self->session->id );
     return $new_request;
 }
 
@@ -933,6 +939,8 @@ sub _merge_params {
     return $params;
 }
 
+sub app { shift }
+
 1;
 
 __END__
@@ -945,7 +953,7 @@ Dancer2::Core::App - encapsulation of Dancer2 packages
 
 =head1 VERSION
 
-version 0.149000_01
+version 0.149000_02
 
 =head1 DESCRIPTION
 
@@ -1063,6 +1071,32 @@ Sugar for getting the ordered list of all registered route regexps by method.
     my $regexps = $app->routes_regexps_for( 'get' );
 
 Returns an ArrayRef with the results.
+
+=head2 app
+
+Returns itself. This is simply available as a shim to help transition from
+a previous version in which hooks were sent a context object (originally
+C<Dancer2::Core::Context>) which has since been removed.
+
+    # before
+    hook before => sub {
+        my $ctx = shift;
+        my $app = $ctx->app;
+    };
+
+    # after
+    hook before => sub {
+        my $app = shift;
+    };
+
+This meant that C<< $app->app >> would fail, so this method has been provided
+to make it work.
+
+    # now
+    hook before => sub {
+        my $WannaBeCtx = shift;
+        my $app        = $WannaBeContext->app; # works
+    };
 
 =head1 AUTHOR
 

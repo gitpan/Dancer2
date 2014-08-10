@@ -1,3 +1,29 @@
+0.149000_02 2014-08-10 13:50:39CEST+0200 Europe/Amsterdam
+
+    [ ENHANCEMENT ]
+    * GH #641: Adding a shim layer to prevent available hooks (and
+      thus plugins) from breaking.
+    * Each App can now define its own configuration. The Runner's
+      application-specific configure has been untangled.
+      (Russell @veryrusty Jenkins, Sawyer X, Mickey Nasriachi)
+    * Multiple Dancer App support. You can now create a App-specific
+      PSGI application using MyApp->psgi_app.
+      (Russell @veryrusty Jenkins, Sawyer X, Mickey Nasriachi)
+    * Add routes and hooks to an existing app on import.
+      (Russell @veryrusty Jenkins, Stevan Humphrey, Stefan racke
+      Hornburg, Jean Stebens, Chunzi, Sawyer X, Mickey Nasriachi)
+    * Allow DSL class to be specified in configuration file.
+      (Stevan Humphrey)
+    * forward() now returns a new request which is then just runs
+      the dispatching loop again. (Sawyer X, Mickey Nasriachi)
+
+    [ BUG FIXES ]
+    * GH #336: Set log level correctly.
+      (Andrew Solomon, Pedro Bruno)
+    * GH #627, #607: Remove potential context issues with returning
+      undef explicitly. (Javier Rojas)
+    * GH #646: Fix whitespacing for tests. (DavsX)
+
 0.149000_01 2014-07-23 21:31:21CEST+0200 Europe/Amsterdam
 
     *************************** NOTICE ***************************
