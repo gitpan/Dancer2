@@ -75,6 +75,7 @@ my @modules = qw(
   Template::Tiny
   Test::Builder
   Test::Fatal
+  Test::Memory::Cycle
   Test::MockTime
   Test::More
   Test::Script

@@ -1,6 +1,6 @@
 package Dancer2::Core::Role::Handler;
 # ABSTRACT: Role for Handlers
-$Dancer2::Core::Role::Handler::VERSION = '0.149000_02';
+$Dancer2::Core::Role::Handler::VERSION = '0.150000';
 use Moo::Role;
 use Dancer2::Core::Types;
 
@@ -11,6 +11,7 @@ requires 'register';
 has app => (
     is  => 'ro',
     isa => InstanceOf ['Dancer2::Core::App'],
+    weak_ref => 1,
 );
 
 1;
@@ -25,7 +26,7 @@ Dancer2::Core::Role::Handler - Role for Handlers
 
 =head1 VERSION
 
-version 0.149000_02
+version 0.150000
 
 =head1 ATTRIBUTES
 

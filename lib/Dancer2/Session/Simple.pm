@@ -1,6 +1,6 @@
 package Dancer2::Session::Simple;
 # ABSTRACT: in-memory session backend for Dancer2
-$Dancer2::Session::Simple::VERSION = '0.149000_02';
+$Dancer2::Session::Simple::VERSION = '0.150000';
 use Moo;
 use Dancer2::Core::Types;
 use Carp;
@@ -48,7 +48,7 @@ Dancer2::Session::Simple - in-memory session backend for Dancer2
 
 =head1 VERSION
 
-version 0.149000_02
+version 0.150000
 
 =head1 DESCRIPTION
 

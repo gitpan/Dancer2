@@ -1,5 +1,5 @@
 package Dancer2::Core::Role::SessionFactory;
-$Dancer2::Core::Role::SessionFactory::VERSION = '0.149000_02';
+$Dancer2::Core::Role::SessionFactory::VERSION = '0.150000';
 #ABSTRACT: Role for session factories
 
 
@@ -272,12 +272,15 @@ Dancer2::Core::Role::SessionFactory - Role for session factories
 
 =head1 VERSION
 
-version 0.149000_02
+version 0.150000
 
 =head1 DESCRIPTION
 
 Any class that consumes this role will be able to store, create, retrieve and
 destroy session objects.
+
+The default values for attributes can be overridden in your Dancer2
+configuration. See L<Dancer2::Config/Session-engine>.
 
 =head1 ATTRIBUTES
 

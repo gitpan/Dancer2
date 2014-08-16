@@ -1,7 +1,8 @@
 package Dancer2::Core::Runner;
 # ABSTRACT: Top-layer class to start a dancer app
-$Dancer2::Core::Runner::VERSION = '0.149000_02';
+$Dancer2::Core::Runner::VERSION = '0.150000';
 use Moo;
+use Carp 'croak';
 use Dancer2::Core::MIME;
 use Dancer2::Core::Types;
 use Dancer2::Core::Dispatcher;
@@ -128,15 +129,16 @@ sub register_application {
     push @{ $self->apps }, $app;
 
     # add postponed hooks to our psgi app
-    $self->add_postponed_hooks( $app->postponed_hooks );
+    $self->add_postponed_hooks( $app->name, $app->postponed_hooks );
 }
 
 sub add_postponed_hooks {
     my $self  = shift;
+    my $name  = shift;
     my $hooks = shift;
 
     # merge postponed hooks
-    @{ $self->{'postponed_hooks'} }{ keys %{$hooks} } = values %{$hooks};
+    @{ $self->{'postponed_hooks'}{$name} }{ keys %{$hooks} } = values %{$hooks};
 }
 
 # decide what to start
@@ -168,9 +170,33 @@ sub start_server {
 sub psgi_app {
     my ($self, $apps) = @_;
 
-    # dispatch over all apps by default
-    defined $apps or $apps = $self->apps;
-    foreach my $app ( @$apps ) {
+    if ( $apps && @{$apps} ) {
+        my @found_apps = ();
+
+        foreach my $app_req ( @{$apps} ) {
+            if ( ref $app_req eq 'Regexp' ) {
+                # find it in the apps registry
+                push @found_apps,
+                    grep +( $_->name =~ $app_req ), @{ $self->apps };
+            } elsif ( ref $app_req eq 'Dancer2::Core::App' ) {
+                # use it directly
+                push @found_apps, $app_req;
+            } elsif ( ! ref $app_req ) {
+                # find it in the apps registry
+                push @found_apps,
+                    grep +( $_->name eq $app_req ), @{ $self->apps };
+            } else {
+                croak "Invalid input to psgi_app: $app_req";
+            }
+        }
+
+        $apps = \@found_apps;
+    } else {
+        # dispatch over all apps by default
+        $apps = $self->apps;
+    }
+
+    foreach my $app ( @{$apps} ) {
         $app->finish;
     }
 
@@ -245,7 +271,7 @@ Dancer2::Core::Runner - Top-layer class to start a dancer app
 
 =head1 VERSION
 
-version 0.149000_02
+version 0.150000
 
 =head1 AUTHOR
 

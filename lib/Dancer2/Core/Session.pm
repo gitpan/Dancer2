@@ -1,5 +1,5 @@
 package Dancer2::Core::Session;
-$Dancer2::Core::Session::VERSION = '0.149000_02';
+$Dancer2::Core::Session::VERSION = '0.150000';
 #ABSTRACT: class to represent any session object
 
 
@@ -77,7 +77,7 @@ Dancer2::Core::Session - class to represent any session object
 
 =head1 VERSION
 
-version 0.149000_02
+version 0.150000
 
 =head1 DESCRIPTION
 

@@ -1,6 +1,6 @@
 # ABSTRACT: encapsulation of Dancer2 packages
 package Dancer2::Core::App;
-$Dancer2::Core::App::VERSION = '0.149000_02';
+$Dancer2::Core::App::VERSION = '0.150000';
 use Moo;
 use Carp            'croak';
 use Scalar::Util    'blessed';
@@ -273,7 +273,7 @@ has with_return => (
     is        => 'ro',
     predicate => 1,
     writer    => 'set_with_return',
-    clearer   => 'clear_with_response',
+    clearer   => 'clear_with_return',
 );
 
 
@@ -499,14 +499,18 @@ sub _init_hooks {
 
  # Hook to flush the session at the end of the request, this way, we're sure we
  # flush only once per request
+ #
+ # Note: we create a weakened copy $self before closing over the weakened copy
+ # to avoid circular memory refs.
+    Scalar::Util::weaken(my $app = $self);
     $self->add_hook(
         Dancer2::Core::Hook->new(
             name => 'core.app.after_request',
             code => sub {
-                my $response = $self->response;
+                my $response = $app->response;
 
                 # make sure an engine is defined, if not, nothing to do
-                my $engine = $self->session_engine;
+                my $engine = $app->session_engine;
                 defined $engine or return;
 
                 # if a session has been instantiated or we already had a
@@ -514,16 +518,16 @@ sub _init_hooks {
                 # update the session ID if needed, then set the session cookie
                 # in the response
 
-                if ( $self->has_session ) {
-                    my $session = $self->session;
+                if ( $app->has_session ) {
+                    my $session = $app->session;
                     $session->is_dirty and $engine->flush( session => $session );
                     $engine->set_cookie_header(
                         response => $response,
                         session  => $session
                     );
                 }
-                elsif ( $self->has_destroyed_session ) {
-                    my $session = $self->destroyed_session;
+                elsif ( $app->has_destroyed_session ) {
+                    my $session = $app->destroyed_session;
                     $engine->set_cookie_header(
                         response  => $response,
                         session   => $session,
@@ -670,10 +674,9 @@ sub send_file {
     # pretending it's a file (on-the-fly file sending)
     ref $path eq 'SCALAR' and return $$path;
 
-    my $conf = { app => $self };
     my $file_handler = Dancer2::Core::Factory->create(
         Handler => 'File',
-        %$conf,
+        app     => $self,
         postponed_hooks => $self->postponed_hooks,
         ( public_dir => File::Spec->rootdir )x!! $options{system_path},
     );
@@ -712,11 +715,11 @@ sub init_route_handlers {
     my $handlers_config = $self->config->{route_handlers};
     for my $handler_data ( @{$handlers_config} ) {
         my ($handler_name, $config) = @{$handler_data};
-        ref $config or $config = {};
-        $config->{app} = $self;
+        $config = {} if !ref($config);
 
         my $handler = Dancer2::Core::Factory->create(
             Handler => $handler_name,
+            app     => $self,
             %$config,
             postponed_hooks => $self->postponed_hooks,
         );
@@ -748,7 +751,10 @@ sub compile_hooks {
                     and return;
 
                 eval  { $hook->(@_); 1; }
-                or do { croak "Exception caught in '$position' filter: $@" };
+                or do {
+                    $self->log('error', "Exception caught in '$position' filter: $@");
+                    croak "Exception caught in '$position' filter: $@";
+                };
             };
 
             push @{$compiled_hooks}, $compiled;
@@ -953,7 +959,7 @@ Dancer2::Core::App - encapsulation of Dancer2 packages
 
 =head1 VERSION
 
-version 0.149000_02
+version 0.150000
 
 =head1 DESCRIPTION
 

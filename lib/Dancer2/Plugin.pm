@@ -1,5 +1,5 @@
 package Dancer2::Plugin;
-$Dancer2::Plugin::VERSION = '0.149000_02';
+$Dancer2::Plugin::VERSION = '0.150000';
 # ABSTRACT: Extending Dancer2's DSL with plugins
 
 
@@ -258,7 +258,7 @@ Dancer2::Plugin - Extending Dancer2's DSL with plugins
 
 =head1 VERSION
 
-version 0.149000_02
+version 0.150000
 
 =head1 DESCRIPTION
 

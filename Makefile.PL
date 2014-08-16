@@ -99,6 +99,7 @@ my %WriteMakefileArgs = (
     "LWP::Protocol::PSGI" => "0.06",
     "Plack::Test" => 0,
     "Test::Fatal" => 0,
+    "Test::Memory::Cycle" => "1.04",
     "Test::MockTime" => 0,
     "Test::More" => "0.92",
     "Test::Script" => 0,
@@ -108,7 +109,7 @@ my %WriteMakefileArgs = (
     "utf8" => 0,
     "vars" => 0
   },
-  "VERSION" => "0.149000_02",
+  "VERSION" => "0.150000",
   "test" => {
     "TESTS" => "t/*.t t/dsl/*.t t/logger/*.t t/roles/*.t t/route-pod-coverage/*.t t/template_tiny/*.t"
   }
@@ -174,6 +175,7 @@ my %FallbackPrereqs = (
   "Template::Tiny" => 0,
   "Test::Builder" => 0,
   "Test::Fatal" => 0,
+  "Test::Memory::Cycle" => "1.04",
   "Test::MockTime" => 0,
   "Test::More" => "0.92",
   "Test::Script" => 0,

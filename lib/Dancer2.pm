@@ -1,6 +1,6 @@
 package Dancer2;
 # ABSTRACT: Lightweight yet powerful web application framework
-$Dancer2::VERSION = '0.149000_02';
+$Dancer2::VERSION = '0.150000';
 use strict;
 use warnings;
 use List::Util  'first';
@@ -20,7 +20,7 @@ $Dancer2::VERSION ||= '0.143000'; # 2.14.3
 our $runner;
 
 sub runner   {$runner}
-sub psgi_app { __PACKAGE__->runner->psgi_app }
+sub psgi_app { shift->runner->psgi_app(@_) }
 
 sub import {
     my ( $class,  @args   ) = @_;
@@ -66,7 +66,7 @@ sub import {
             name            => $appname,
             caller          => $script,
             environment     => $runner->environment,
-            postponed_hooks => $runner->postponed_hooks,
+            postponed_hooks => $runner->postponed_hooks->{$appname} || {},
         );
 
         # register the app within the runner instance
@@ -116,7 +116,7 @@ Dancer2 - Lightweight yet powerful web application framework
 
 =head1 VERSION
 
-version 0.149000_02
+version 0.150000
 
 =head1 DESCRIPTION
 
@@ -239,6 +239,7 @@ Returns the current runner. It is of type L<Dancer2::Core::Runner>.
     B10m
     baynes
     Blabos de Blebe
+    Bas Bloemsaat
     Breno G. de Oliveira
     Celogeek
     Cesare Gargano

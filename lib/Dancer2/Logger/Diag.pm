@@ -1,6 +1,6 @@
 package Dancer2::Logger::Diag;
 # ABSTRACT: Test::More diag() logging engine for Dancer2
-$Dancer2::Logger::Diag::VERSION = '0.149000_02';
+$Dancer2::Logger::Diag::VERSION = '0.150000';
 use Moo;
 use Test::More;
 
@@ -26,7 +26,7 @@ Dancer2::Logger::Diag - Test::More diag() logging engine for Dancer2
 
 =head1 VERSION
 
-version 0.149000_02
+version 0.150000
 
 =head1 DESCRIPTION
 

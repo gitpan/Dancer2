@@ -1,6 +1,6 @@
 # ABSTRACT: Dancer2 cli application
 package Dancer2::CLI;
-$Dancer2::CLI::VERSION = '0.149000_02';
+$Dancer2::CLI::VERSION = '0.150000';
 use App::Cmd::Setup -app;
 
 1;
@@ -15,7 +15,7 @@ Dancer2::CLI - Dancer2 cli application
 
 =head1 VERSION
 
-version 0.149000_02
+version 0.150000
 
 =head1 AUTHOR
 
