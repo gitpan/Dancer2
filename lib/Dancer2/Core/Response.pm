@@ -1,7 +1,7 @@
 # ABSTRACT: Response object for Dancer2
 
 package Dancer2::Core::Response;
-$Dancer2::Core::Response::VERSION = '0.150000';
+$Dancer2::Core::Response::VERSION = '0.151000';
 use Moo;
 
 use Encode;
@@ -28,10 +28,7 @@ has has_passed => (
     default => sub {0},
 );
 
-
 sub pass { shift->has_passed(1) }
-
-
 
 has serializer => (
     is        => 'ro',
@@ -39,15 +36,11 @@ has serializer => (
     predicate => 1,
 );
 
-
-
 has is_encoded => (
     is      => 'rw',
     isa     => Bool,
     default => sub {0},
 );
-
-
 
 has is_halted => (
     is      => 'rw',
@@ -55,10 +48,7 @@ has is_halted => (
     default => sub {0},
 );
 
-
 sub halt { shift->is_halted(1) }
-
-
 
 has status => (
     is      => 'rw',
@@ -75,8 +65,6 @@ has status => (
         $value;
     },
 );
-
-
 
 has content => (
     is      => 'rw',
@@ -104,13 +92,11 @@ before content => sub {
     }
 };
 
-
 has default_content_type => (
     is      => 'rw',
     isa     => Str,
     default => sub {'text/html'},
 );
-
 
 sub encode_content {
     my ($self) = @_;
@@ -132,8 +118,6 @@ sub encode_content {
     return $content;
 }
 
-
-
 sub to_psgi {
     my ($self) = @_;
     # It is possible to have no content and/or no content type set
@@ -142,8 +126,6 @@ sub to_psgi {
     $self->content('') if ! defined $self->content;
     return [ $self->status, $self->headers_to_array, [ $self->content ], ];
 }
-
-
 
 # sugar for accessing the content_type header, with mimetype care
 sub content_type {
@@ -174,8 +156,6 @@ sub is_forwarded {
     $self->_forward;
 }
 
-
-
 sub redirect {
     my ( $self, $destination, $status ) = @_;
     $self->status( $status || 302 );
@@ -183,8 +163,6 @@ sub redirect {
     # we want to stringify the $destination object (URI object)
     $self->header( 'Location' => "$destination" );
 }
-
-
 
 sub error {
     my $self = shift;
@@ -197,8 +175,6 @@ sub error {
     $error->throw;
     return $error;
 }
-
-
 
 sub serialize {
     my ($self, $content) = @_;
@@ -217,13 +193,15 @@ __END__
 
 =pod
 
+=encoding UTF-8
+
 =head1 NAME
 
 Dancer2::Core::Response - Response object for Dancer2
 
 =head1 VERSION
 
-version 0.150000
+version 0.151000
 
 =head1 ATTRIBUTES
 

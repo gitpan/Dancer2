@@ -1,8 +1,6 @@
 package Dancer2::Core::Role::SessionFactory;
-$Dancer2::Core::Role::SessionFactory::VERSION = '0.150000';
 #ABSTRACT: Role for session factories
-
-
+$Dancer2::Core::Role::SessionFactory::VERSION = '0.151000';
 use strict;
 use warnings;
 use Carp 'croak';
@@ -36,13 +34,11 @@ sub _build_type {
     'SessionFactory';
 }    # XXX vs 'Session'?  Unused, so I can't tell -- xdg
 
-
 has cookie_name => (
     is      => 'ro',
     isa     => Str,
     default => sub {'dancer.session'},
 );
-
 
 has cookie_domain => (
     is        => 'ro',
@@ -50,13 +46,11 @@ has cookie_domain => (
     predicate => 1,
 );
 
-
 has cookie_path => (
     is      => 'ro',
     isa     => Str,
     default => sub {"/"},
 );
-
 
 has cookie_duration => (
     is        => 'ro',
@@ -64,13 +58,11 @@ has cookie_duration => (
     predicate => 1,
 );
 
-
 has session_duration => (
     is        => 'ro',
     isa       => Num,
     predicate => 1,
 );
-
 
 has is_secure => (
     is      => 'rw',
@@ -78,14 +70,11 @@ has is_secure => (
     default => sub {0},
 );
 
-
 has is_http_only => (
     is      => 'rw',
     isa     => Bool,
     default => sub {1},
 );
-
-
 
 sub create {
     my ($self) = @_;
@@ -107,7 +96,6 @@ sub create {
     $self->execute_hook( 'engine.session.after_create', $session );
     return $session;
 }
-
 
 {
     my $COUNTER     = 0;
@@ -152,8 +140,6 @@ sub create {
     }
 }
 
-
-
 requires '_retrieve';
 
 sub retrieve {
@@ -180,7 +166,6 @@ sub retrieve {
     return $session;
 }
 
-
 requires '_destroy';
 
 sub destroy {
@@ -195,7 +180,6 @@ sub destroy {
     $self->execute_hook( 'engine.session.after_destroy', $id );
     return $id;
 }
-
 
 requires '_flush';
 
@@ -212,7 +196,6 @@ sub flush {
     return $session->id;
 }
 
-
 sub set_cookie_header {
     my ( $self, %params ) = @_;
     $params{response}->push_header(
@@ -220,7 +203,6 @@ sub set_cookie_header {
         $self->cookie( session => $params{session} )->to_header
     );
 }
-
 
 sub cookie {
     my ( $self, %params ) = @_;
@@ -246,8 +228,6 @@ sub cookie {
     return Dancer2::Core::Cookie->new(%cookie);
 }
 
-
-
 requires '_sessions';
 
 sub sessions {
@@ -266,13 +246,15 @@ __END__
 
 =pod
 
+=encoding UTF-8
+
 =head1 NAME
 
 Dancer2::Core::Role::SessionFactory - Role for session factories
 
 =head1 VERSION
 
-version 0.150000
+version 0.151000
 
 =head1 DESCRIPTION
 
@@ -427,6 +409,28 @@ Useful to create cleaning scripts, in conjunction with session's creation time.
 
 The C<_sessions> method must be implemented.  It must return an array reference
 of session IDs (or an empty array reference).
+
+=head1 CONFIGURATION
+
+If there are configuration values specific to your session factory in your config.yml or
+environment, those will be passed to the constructor of the session factory automatically.
+In order to accept and store them, you need to define accessors for them.
+
+    engines:
+      session:
+        Example:
+          database_connection: "some_data"
+
+In your session factory:
+
+    package Dancer2::Session::Example;
+    use Moo;
+    with "Dancer2::Core::Role::SessionFactory";
+
+    has database_connection => ( is => "ro" );
+
+You need to do this for every configuration key. The ones that do not have accessors
+defined will just go to the void.
 
 =head1 AUTHOR
 

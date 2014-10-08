@@ -1,15 +1,12 @@
 package Dancer2::Core::Error;
 # ABSTRACT: Class representing fatal errors
-$Dancer2::Core::Error::VERSION = '0.150000';
+$Dancer2::Core::Error::VERSION = '0.151000';
 use Moo;
 use Carp;
 use Dancer2::Core::Types;
 use Dancer2::Core::HTTP;
 use Data::Dumper;
 use Dancer2::FileUtils qw/path open_file/;
-
-
-
 
 has app => (
     is        => 'ro',
@@ -28,20 +25,17 @@ has show_errors => (
     },
 );
 
-
 has charset => (
     is      => 'ro',
     isa     => Str,
     default => sub {'UTF-8'},
 );
 
-
 has type => (
     is      => 'ro',
     isa     => Str,
     default => sub {'Runtime Error'},
 );
-
 
 has title => (
     is      => 'ro',
@@ -103,7 +97,6 @@ sub _build_static_page {
     return <$fh>;
 }
 
-
 sub default_error_page {
     my $self = shift;
 
@@ -148,14 +141,11 @@ END_TEMPLATE
     return $output;
 }
 
-
-
 has status => (
     is      => 'ro',
     default => sub {500},
     isa     => Num,
 );
-
 
 has message => (
     is      => 'ro',
@@ -271,7 +261,6 @@ has content => (
     },
 );
 
-
 sub throw {
     my $self = shift;
     $self->set_response(shift) if @_;
@@ -294,7 +283,6 @@ sub throw {
     $self->response->halt(1);
     return $self->response;
 }
-
 
 sub backtrace {
     my ($self) = @_;
@@ -356,11 +344,8 @@ sub backtrace {
     }
     $backtrace .= "</pre>";
 
-
     return $backtrace;
 }
-
-
 
 sub tabulate {
     my ( $number, $max ) = @_;
@@ -368,7 +353,6 @@ sub tabulate {
     return $number if length($number) == $len;
     return " $number";
 }
-
 
 sub dumper {
     my $obj = shift;
@@ -388,8 +372,6 @@ sub dumper {
     }
     return $content;
 }
-
-
 
 sub environment {
     my ($self) = @_;
@@ -421,8 +403,6 @@ sub environment {
     return "$source $settings $session $env";
 }
 
-
-
 sub get_caller {
     my ($self) = @_;
     my @stack;
@@ -439,7 +419,6 @@ sub get_caller {
 
 # Given a hashref, censor anything that looks sensitive.  Returns number of
 # items which were "censored".
-
 
 sub _censor {
     my $hash = shift;
@@ -461,7 +440,6 @@ sub _censor {
 
     return $censored;
 }
-
 
 # Replaces the entities that are illegal in (X)HTML.
 sub _html_encode {
@@ -502,13 +480,15 @@ __END__
 
 =pod
 
+=encoding UTF-8
+
 =head1 NAME
 
 Dancer2::Core::Error - Class representing fatal errors
 
 =head1 VERSION
 
-version 0.150000
+version 0.151000
 
 =head1 SYNOPSIS
 

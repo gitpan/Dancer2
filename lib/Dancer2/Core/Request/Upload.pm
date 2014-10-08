@@ -1,6 +1,6 @@
 package Dancer2::Core::Request::Upload;
-$Dancer2::Core::Request::Upload::VERSION = '0.150000';
 # ABSTRACT: Class representing file upload requests
+$Dancer2::Core::Request::Upload::VERSION = '0.151000';
 use Moo;
 
 use Carp;
@@ -9,32 +9,25 @@ use File::Spec;
 use Dancer2::Core::Types;
 use Dancer2::FileUtils qw(open_file);
 
-
 has filename => (
     is  => 'ro',
     isa => Str,
 );
-
-
 
 has tempname => (
     is  => 'ro',
     isa => Str,
 );
 
-
 has headers => (
     is  => 'ro',
     isa => HashRef,
 );
 
-
 has size => (
     is  => 'ro',
     isa => Num,
 );
-
-
 
 sub file_handle {
     my ($self) = @_;
@@ -43,20 +36,16 @@ sub file_handle {
     $self->{_fh} = $fh;
 }
 
-
-
 sub copy_to {
     my ( $self, $target ) = @_;
     require File::Copy;
     File::Copy::copy( $self->tempname, $target );
 }
 
-
 sub link_to {
     my ( $self, $target ) = @_;
     CORE::link( $self->tempname, $target );
 }
-
 
 sub content {
     my ( $self, $layer ) = @_;
@@ -77,14 +66,11 @@ sub content {
     $self->{_content} = $content;
 }
 
-
 sub basename {
     my ($self) = @_;
     require File::Basename;
     File::Basename::basename( $self->filename );
 }
-
-
 
 sub type {
     my $self = shift;
@@ -97,13 +83,15 @@ __END__
 
 =pod
 
+=encoding UTF-8
+
 =head1 NAME
 
 Dancer2::Core::Request::Upload - Class representing file upload requests
 
 =head1 VERSION
 
-version 0.150000
+version 0.151000
 
 =head1 DESCRIPTION
 

@@ -1,11 +1,7 @@
 package Dancer2::Core::Time;
-$Dancer2::Core::Time::VERSION = '0.150000';
 #ABSTRACT: class to handle common helpers for time manipulations
-
-
+$Dancer2::Core::Time::VERSION = '0.151000';
 use Moo;
-
-
 
 has seconds => (
     is      => 'ro',
@@ -23,8 +19,6 @@ sub _build_seconds {
     return $self->_parse_duration($seconds)
 }
 
-
-
 has epoch => (
     is      => 'ro',
     lazy    => 1,
@@ -36,7 +30,6 @@ sub _build_epoch {
     return $self->seconds if $self->seconds !~ /^[\-\+]?\d+$/;
     $self->seconds + time;
 }
-
 
 has gmt_string => (
     is      => 'ro',
@@ -61,7 +54,6 @@ sub _build_gmt_string {
       $hour, $min, $sec;
 }
 
-
 has expression => (
     is       => 'ro',
     required => 1,
@@ -75,7 +67,6 @@ sub BUILDARGS {
 
     return \%args;
 }
-
 
 # private
 
@@ -135,13 +126,15 @@ __END__
 
 =pod
 
+=encoding UTF-8
+
 =head1 NAME
 
 Dancer2::Core::Time - class to handle common helpers for time manipulations
 
 =head1 VERSION
 
-version 0.150000
+version 0.151000
 
 =head1 SYNOPSIS
 

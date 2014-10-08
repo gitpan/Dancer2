@@ -1,7 +1,7 @@
 # ABSTRACT: Dancer2's route handler
 
 package Dancer2::Core::Route;
-$Dancer2::Core::Route::VERSION = '0.150000';
+$Dancer2::Core::Route::VERSION = '0.151000';
 use strict;
 use warnings;
 
@@ -9,20 +9,17 @@ use Moo;
 use Dancer2::Core::Types;
 use Carp 'croak';
 
-
 has method => (
     is       => 'ro',
     isa      => Dancer2Method,
     required => 1,
 );
 
-
 has code => (
     is       => 'ro',
     required => 1,
     isa      => CodeRef,
 );
-
 
 has regexp => (
     is       => 'ro',
@@ -31,13 +28,11 @@ has regexp => (
 
 has spec_route => ( is => 'ro' );
 
-
 has prefix => (
     is        => 'ro',
     isa       => Maybe [Dancer2Prefix],
     predicate => 1,
 );
-
 
 has options => (
     is        => 'ro',
@@ -78,7 +73,6 @@ has _params => (
     isa     => ArrayRef,
     default => sub { [] },
 );
-
 
 sub match {
     my ( $self, $request ) = @_;
@@ -135,7 +129,6 @@ sub match {
 
     return $self->_match_data( {} );
 }
-
 
 sub execute {
     my ( $self, @args ) = @_;
@@ -227,13 +220,15 @@ __END__
 
 =pod
 
+=encoding UTF-8
+
 =head1 NAME
 
 Dancer2::Core::Route - Dancer2's route handler
 
 =head1 VERSION
 
-version 0.150000
+version 0.151000
 
 =head1 ATTRIBUTES
 

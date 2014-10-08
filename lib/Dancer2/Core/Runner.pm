@@ -1,6 +1,6 @@
 package Dancer2::Core::Runner;
 # ABSTRACT: Top-layer class to start a dancer app
-$Dancer2::Core::Runner::VERSION = '0.150000';
+$Dancer2::Core::Runner::VERSION = '0.151000';
 use Moo;
 use Carp 'croak';
 use Dancer2::Core::MIME;
@@ -196,43 +196,30 @@ sub psgi_app {
         $apps = $self->apps;
     }
 
-    foreach my $app ( @{$apps} ) {
-        $app->finish;
-    }
-
     my $dispatcher = Dancer2::Core::Dispatcher->new( apps => $apps );
 
-    # eval entire request to catch any internal errors
-    my $psgi = sub {
+    # initialize psgi_apps
+    # (calls ->finish on the apps and create their PSGI apps)
+    # the dispatcher caches that in the attribute
+    # so ->finish isn't actually called again if you run this method
+    $dispatcher->apps_psgi;
+
+    return sub {
         my $env = shift;
-        my $response;
 
-        # pre-request sanity check
-        my $method = uc $env->{'REQUEST_METHOD'};
-        $Dancer2::Core::Types::supported_http_methods{$method}
-            or return [
-                405,
-                [ 'Content-Type' => 'text/plain' ],
-                [ "Method Not Allowed\n\n$method is not supported." ]
-            ];
+        # mark it as an old-style dispatching
+        $self->{'internal_dispatch'} = 1;
 
-        eval {
-            $response = $dispatcher->dispatch($env)->to_psgi;
-            1;
-        } or do {
-            return [
-                500,
-                [ 'Content-Type' => 'text/plain' ],
-                [ "Internal Server Error\n\n$@"  ],
-            ];
-        };
+        my $response = $dispatcher->dispatch($env);
+
+        # unmark it
+        delete $self->{'internal_dispatch'};
+
+        # cleanup
+        delete $self->{'internal_sessions'};
 
         return $response;
     };
-
-    my $builder = Plack::Builder->new;
-    $builder->add_middleware('Head');
-    return $builder->wrap($psgi);
 }
 
 sub print_banner {
@@ -265,13 +252,15 @@ __END__
 
 =pod
 
+=encoding UTF-8
+
 =head1 NAME
 
 Dancer2::Core::Runner - Top-layer class to start a dancer app
 
 =head1 VERSION
 
-version 0.150000
+version 0.151000
 
 =head1 AUTHOR
 

@@ -1,6 +1,6 @@
 package Dancer2::Test;
 # ABSTRACT: Useful routines for testing Dancer2 apps
-$Dancer2::Test::VERSION = '0.150000';
+$Dancer2::Test::VERSION = '0.151000';
 use strict;
 use warnings;
 
@@ -43,13 +43,11 @@ our @EXPORT = qw(
 use Dancer2::Core::Dispatcher;
 use Dancer2::Core::Request;
 
-
 # singleton to store all the apps
 my $_dispatcher = Dancer2::Core::Dispatcher->new;
 
 # prevent deprecation warnings
 our $NO_WARN = 0;
-
 
 # can be called with the ($method, $path, $option) triplet,
 # or can be fed a request object directly, or can be fed
@@ -70,8 +68,26 @@ sub dancer_response {
       ? _build_env_from_request(@_)
       : _build_request_from_env(@_);
 
-    return $_dispatcher->dispatch( $env, $request );
+    # override the set_request so it actually sets our request instead
+    {
+        no warnings qw<redefine once>;
+        *Dancer2::Core::App::set_request = sub {
+            my $self = shift;
+            $self->{'request'} = $request;
+        };
+    }
+
+    # since the response is a PSGI response
+    # we create a Response object which was originally expected
+    my $psgi_response = $_dispatcher->dispatch($env);
+    return Dancer2::Core::Response->new(
+        status  => $psgi_response->[0],
+        headers => $psgi_response->[1],
+        content => $psgi_response->[2][0],
+    );
 }
+
+
 
 sub _build_request_from_env {
 
@@ -202,7 +218,6 @@ sub _build_env_from_request {
     return ( $request, $env );
 }
 
-
 sub response_status_is {
     my ( $req, $status, $test_name ) = @_;
     carp 'Dancer2::Test is deprecated, please use Plack::Test instead'
@@ -214,7 +229,7 @@ sub response_status_is {
 
     my $tb = Test::Builder->new;
     local $Test::Builder::Level = $Test::Builder::Level + 1;
-    $tb->is_eq( $response->status, $status, $test_name );
+    $tb->is_eq( $response->[0], $status, $test_name );
 }
 
 sub _find_route_match {
@@ -233,7 +248,6 @@ sub _find_route_match {
     return 0;
 }
 
-
 sub route_exists {
     carp 'Dancer2::Test is deprecated, please use Plack::Test instead'
         unless $NO_WARN;
@@ -243,7 +257,6 @@ sub route_exists {
     $tb->ok( _find_route_match($_[0]), $_[1]);
 }
 
-
 sub route_doesnt_exist {
     carp 'Dancer2::Test is deprecated, please use Plack::Test instead'
         unless $NO_WARN;
@@ -252,7 +265,6 @@ sub route_doesnt_exist {
     local $Test::Builder::Level = $Test::Builder::Level + 1;
     $tb->ok( !_find_route_match($_[0]), $_[1]);
 }
-
 
 sub response_status_isnt {
     my ( $req, $status, $test_name ) = @_;
@@ -266,11 +278,10 @@ sub response_status_isnt {
 
     my $tb = Test::Builder->new;
     local $Test::Builder::Level = $Test::Builder::Level + 1;
-    $tb->isnt_eq( $response->status, $status, $test_name );
+    $tb->isnt_eq( $response->[0], $status, $test_name );
 }
 
 {
-
     # Map comparison operator names to human-friendly ones
     my %cmp_name = (
         is_eq   => "is",
@@ -293,10 +304,9 @@ sub response_status_isnt {
 
         my $tb = Test::Builder->new;
         local $Test::Builder::Level = $Test::Builder::Level + 1;
-        $tb->$cmp( $response->content, $want, $test_name );
+        $tb->$cmp( $response->[2][0], $want, $test_name );
     }
 }
-
 
 sub response_content_is {
     carp 'Dancer2::Test is deprecated, please use Plack::Test instead'
@@ -305,14 +315,12 @@ sub response_content_is {
     _cmp_response_content( @_, 'is_eq' );
 }
 
-
 sub response_content_isnt {
     carp 'Dancer2::Test is deprecated, please use Plack::Test instead'
         unless $NO_WARN;
     local $Test::Builder::Level = $Test::Builder::Level + 1;
     _cmp_response_content( @_, 'isnt_eq' );
 }
-
 
 sub response_content_like {
     carp 'Dancer2::Test is deprecated, please use Plack::Test instead'
@@ -321,14 +329,12 @@ sub response_content_like {
     _cmp_response_content( @_, 'like' );
 }
 
-
 sub response_content_unlike {
     carp 'Dancer2::Test is deprecated, please use Plack::Test instead'
         unless $NO_WARN;
     local $Test::Builder::Level = $Test::Builder::Level + 1;
     _cmp_response_content( @_, 'unlike' );
 }
-
 
 sub response_content_is_deeply {
     my ( $req, $matcher, $test_name ) = @_;
@@ -340,7 +346,6 @@ sub response_content_is_deeply {
     my $response = _req_to_response($req);
     is_deeply $response->[2][0], $matcher, $test_name;
 }
-
 
 sub response_is_file {
     my ( $req, $test_name ) = @_;
@@ -354,7 +359,6 @@ sub response_is_file {
     return $tb->ok( defined($response), $test_name );
 }
 
-
 sub response_headers_are_deeply {
     my ( $req, $expected, $test_name ) = @_;
     carp 'Dancer2::Test is deprecated, please use Plack::Test instead'
@@ -365,11 +369,10 @@ sub response_headers_are_deeply {
     my $response = dancer_response( _expand_req($req) );
 
     is_deeply(
-        _sort_headers( $response->headers_to_array ),
+        _sort_headers( $response->[1] ),
         _sort_headers($expected), $test_name
     );
 }
-
 
 sub response_headers_include {
     my ( $req, $expected, $test_name ) = @_;
@@ -382,15 +385,14 @@ sub response_headers_include {
     local $Test::Builder::Level = $Test::Builder::Level + 1;
 
     print STDERR "Headers are: "
-      . Dumper( $response->headers_to_array )
+      . Dumper( $response->[1] )
       . "\n Expected to find header: "
       . Dumper($expected)
       if !$tb->ok(
-        _include_in_headers( $response->headers_to_array, $expected ),
+        _include_in_headers( $response->[1], $expected ),
         $test_name
       );
 }
-
 
 sub route_pod_coverage {
 
@@ -470,7 +472,6 @@ sub route_pod_coverage {
     return $all_routes;
 }
 
-
 sub is_pod_covered {
     my ($test_name) = @_;
 
@@ -496,7 +497,6 @@ sub is_pod_covered {
         );
     }
 }
-
 
 sub import {
     my ( $class, %options ) = @_;
@@ -613,13 +613,15 @@ __END__
 
 =pod
 
+=encoding UTF-8
+
 =head1 NAME
 
 Dancer2::Test - Useful routines for testing Dancer2 apps
 
 =head1 VERSION
 
-version 0.150000
+version 0.151000
 
 =head1 DESCRIPTION
 

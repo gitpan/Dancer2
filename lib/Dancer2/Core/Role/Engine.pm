@@ -1,9 +1,8 @@
 package Dancer2::Core::Role::Engine;
 # ABSTRACT: Role for engines
-$Dancer2::Core::Role::Engine::VERSION = '0.150000';
+$Dancer2::Core::Role::Engine::VERSION = '0.151000';
 use Moo::Role;
 use Dancer2::Core::Types;
-
 
 with 'Dancer2::Core::Role::Hookable';
 
@@ -14,7 +13,6 @@ has session => (
     clearer   => 'clear_session',
     predicate => 'has_session',
 );
-
 
 has config => (
     is      => 'rw',
@@ -28,13 +26,15 @@ __END__
 
 =pod
 
+=encoding UTF-8
+
 =head1 NAME
 
 Dancer2::Core::Role::Engine - Role for engines
 
 =head1 VERSION
 
-version 0.150000
+version 0.151000
 
 =head1 DESCRIPTION
 

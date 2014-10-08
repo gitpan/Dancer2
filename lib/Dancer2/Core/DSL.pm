@@ -1,7 +1,7 @@
 # ABSTRACT: Dancer2's Domain Specific Language (DSL)
 
 package Dancer2::Core::DSL;
-$Dancer2::Core::DSL::VERSION = '0.150000';
+$Dancer2::Core::DSL::VERSION = '0.151000';
 use Moo;
 use Carp;
 use Class::Load 'load_class';
@@ -71,6 +71,7 @@ sub dsl_keywords {
         start                => { is_global => 1 },
         status               => { is_global => 0 },
         template             => { is_global => 0 },
+        to_app               => { is_global => 1 },
         to_dumper            => { is_global => 1 },
         to_json              => { is_global => 1 },
         to_yaml              => { is_global => 1 },
@@ -105,9 +106,7 @@ sub config { shift->app->settings }
 
 sub engine { shift->app->engine(@_) }
 
-
 sub setting { shift->app->setting(@_) }
-
 
 sub set { shift->setting(@_) }
 
@@ -279,8 +278,10 @@ sub dance { shift->start(@_) }
 sub psgi_app {
     my $self = shift;
 
-    $self->runner->psgi_app( [ $self->app ] );
+    $self->app->to_app;
 }
+
+sub to_app { shift->app->to_app }
 
 #
 # Response alterations
@@ -400,12 +401,13 @@ sub to_dumper {
 
 sub log { shift->app->log(@_) }
 
-
 1;
 
 __END__
 
 =pod
+
+=encoding UTF-8
 
 =head1 NAME
 
@@ -413,7 +415,7 @@ Dancer2::Core::DSL - Dancer2's Domain Specific Language (DSL)
 
 =head1 VERSION
 
-version 0.150000
+version 0.151000
 
 =head1 FUNCTIONS
 

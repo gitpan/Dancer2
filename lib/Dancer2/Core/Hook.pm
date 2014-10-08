@@ -1,10 +1,9 @@
 package Dancer2::Core::Hook;
 # ABSTRACT: Manipulate hooks with Dancer2
-$Dancer2::Core::Hook::VERSION = '0.150000';
+$Dancer2::Core::Hook::VERSION = '0.151000';
 use Moo;
 use Dancer2::Core::Types;
 use Carp;
-
 
 has name => (
     is       => 'rw',
@@ -38,12 +37,13 @@ has code => (
     },
 );
 
-
 1;
 
 __END__
 
 =pod
+
+=encoding UTF-8
 
 =head1 NAME
 
@@ -51,7 +51,7 @@ Dancer2::Core::Hook - Manipulate hooks with Dancer2
 
 =head1 VERSION
 
-version 0.150000
+version 0.151000
 
 =head1 SYNOPSIS
 

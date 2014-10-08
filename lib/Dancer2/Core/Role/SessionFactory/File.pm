@@ -1,8 +1,6 @@
 package Dancer2::Core::Role::SessionFactory::File;
-$Dancer2::Core::Role::SessionFactory::File::VERSION = '0.150000';
 #ABSTRACT: Role for file-based session factories
-
-
+$Dancer2::Core::Role::SessionFactory::File::VERSION = '0.151000';
 use strict;
 use warnings;
 use Carp 'croak';
@@ -26,7 +24,6 @@ requires '_freeze_to_handle';    # given handle and data, serialize it
 #--------------------------------------------------------------------------#
 # Attributes and methods
 #--------------------------------------------------------------------------#
-
 
 has session_dir => (
     is      => 'ro',
@@ -108,13 +105,15 @@ __END__
 
 =pod
 
+=encoding UTF-8
+
 =head1 NAME
 
 Dancer2::Core::Role::SessionFactory::File - Role for file-based session factories
 
 =head1 VERSION
 
-version 0.150000
+version 0.151000
 
 =head1 DESCRIPTION
 

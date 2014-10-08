@@ -1,6 +1,6 @@
 package Dancer2::Session::Simple;
 # ABSTRACT: in-memory session backend for Dancer2
-$Dancer2::Session::Simple::VERSION = '0.150000';
+$Dancer2::Session::Simple::VERSION = '0.151000';
 use Moo;
 use Dancer2::Core::Types;
 use Carp;
@@ -9,7 +9,6 @@ with 'Dancer2::Core::Role::SessionFactory';
 
 # The singleton that contains all the session objects created
 my $SESSIONS = {};
-
 
 sub _sessions {
     my ($self) = @_;
@@ -42,13 +41,15 @@ __END__
 
 =pod
 
+=encoding UTF-8
+
 =head1 NAME
 
 Dancer2::Session::Simple - in-memory session backend for Dancer2
 
 =head1 VERSION
 
-version 0.150000
+version 0.151000
 
 =head1 DESCRIPTION
 

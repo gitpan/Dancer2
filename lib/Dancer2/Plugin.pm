@@ -1,12 +1,9 @@
 package Dancer2::Plugin;
-$Dancer2::Plugin::VERSION = '0.150000';
 # ABSTRACT: Extending Dancer2's DSL with plugins
-
-
+$Dancer2::Plugin::VERSION = '0.151000';
 use Moo::Role;
 use Carp 'croak', 'carp';
 use Dancer2::Core::DSL;
-
 
 # singleton for storing all keywords,
 # their code and the plugin they come from
@@ -45,14 +42,12 @@ sub register {
       [ $keyword, $code, $options->{is_global} ];
 }
 
-
 sub on_plugin_import(&) {
     my $code   = shift;
     my $plugin = caller;
     $_on_import->{$plugin} ||= [];
     push @{ $_on_import->{$plugin} }, $code;
 }
-
 
 sub register_plugin {
     my $plugin = caller;
@@ -112,9 +107,7 @@ sub register_plugin {
     # The plugin is ready now.
 }
 
-
 sub plugin_args {@_}
-
 
 sub plugin_setting {
     my $plugin = caller;
@@ -123,7 +116,6 @@ sub plugin_setting {
     my $app = $dsl->dancer_app;
     return $app->config->{'plugins'}->{$plugin_name} ||= {};
 }
-
 
 sub register_hook {
     my $caller = caller;
@@ -159,7 +151,6 @@ sub register_hook {
         *{"${caller}::hook_aliases"}    = sub {$current_aliases};
     }
 }
-
 
 sub execute_hook {
     my $position = shift;
@@ -252,13 +243,15 @@ __END__
 
 =pod
 
+=encoding UTF-8
+
 =head1 NAME
 
 Dancer2::Plugin - Extending Dancer2's DSL with plugins
 
 =head1 VERSION
 
-version 0.150000
+version 0.151000
 
 =head1 DESCRIPTION
 

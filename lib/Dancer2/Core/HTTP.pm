@@ -1,7 +1,7 @@
 # ABSTRACT: helper for rendering HTTP status codes for Dancer2
 
 package Dancer2::Core::HTTP;
-$Dancer2::Core::HTTP::VERSION = '0.150000';
+$Dancer2::Core::HTTP::VERSION = '0.151000';
 use strict;
 use warnings;
 
@@ -102,7 +102,6 @@ for my $code ( keys %$HTTP_CODES ) {
 
 $HTTP_CODES->{error} = $HTTP_CODES->{internal_server_error};
 
-
 sub status {
     my ( $class, $status ) = @_;
     return if ! defined $status;
@@ -112,7 +111,6 @@ sub status {
     }
     return;
 }
-
 
 sub status_message {
     my ( $class, $status ) = @_;
@@ -128,13 +126,15 @@ __END__
 
 =pod
 
+=encoding UTF-8
+
 =head1 NAME
 
 Dancer2::Core::HTTP - helper for rendering HTTP status codes for Dancer2
 
 =head1 VERSION
 
-version 0.150000
+version 0.151000
 
 =head1 FUNCTIONS
 

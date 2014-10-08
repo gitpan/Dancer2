@@ -1,10 +1,8 @@
-# ABSTRACT: Core libraries for Dancer2 2.0
-
 package Dancer2::Core;
-$Dancer2::Core::VERSION = '0.150000';
+# ABSTRACT: Core libraries for Dancer2 2.0
+$Dancer2::Core::VERSION = '0.151000';
 use strict;
 use warnings;
-
 
 sub camelize {
     my ($value) = @_;
@@ -23,13 +21,15 @@ __END__
 
 =pod
 
+=encoding UTF-8
+
 =head1 NAME
 
 Dancer2::Core - Core libraries for Dancer2 2.0
 
 =head1 VERSION
 
-version 0.150000
+version 0.151000
 
 =head1 FUNCTIONS
 

@@ -1,5 +1,5 @@
 package Dancer2::Template::Implementation::ForkedTiny;
-$Dancer2::Template::Implementation::ForkedTiny::VERSION = '0.150000';
+$Dancer2::Template::Implementation::ForkedTiny::VERSION = '0.151000';
 # ABSTRACT: Dancer2 own implementation of Template::Tiny
 
 use 5.00503;
@@ -221,13 +221,15 @@ __END__
 
 =pod
 
+=encoding UTF-8
+
 =head1 NAME
 
 Dancer2::Template::Implementation::ForkedTiny - Dancer2 own implementation of Template::Tiny
 
 =head1 VERSION
 
-version 0.150000
+version 0.151000
 
 =head1 SYNOPSIS
 

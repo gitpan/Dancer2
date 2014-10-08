@@ -1,13 +1,12 @@
 # ABSTRACT: a plugin for adding Ajax route handlers
 
 package Dancer2::Plugin::Ajax;
-$Dancer2::Plugin::Ajax::VERSION = '0.150000';
+$Dancer2::Plugin::Ajax::VERSION = '0.151000';
 use strict;
 use warnings;
 
 use Dancer2;
 use Dancer2::Plugin;
-
 
 register 'ajax' => sub {
     my ( $dsl, $pattern, @rest ) = @_;
@@ -56,13 +55,15 @@ __END__
 
 =pod
 
+=encoding UTF-8
+
 =head1 NAME
 
 Dancer2::Plugin::Ajax - a plugin for adding Ajax route handlers
 
 =head1 VERSION
 
-version 0.150000
+version 0.151000
 
 =head1 SYNOPSIS
 
@@ -102,14 +103,15 @@ Disable the layout
 
 =item *
 
-The action built matches POST / GET requests by default. This can be extended by passing it an ArrayRef of allowed HTTP methods.
+The action built matches POST / GET requests by default. This can be
+extended by passing it an ArrayRef of allowed HTTP methods.
 
 =back
 
 =head1 CONFIGURATION
 
-By default the plugin will use a content-type of 'text/xml' but this can be overridden
-with plugin setting 'content_type'.
+By default the plugin will use a content-type of 'text/xml' but this can be
+overridden with plugin setting 'content_type'.
 
 Here is example to use JSON:
 

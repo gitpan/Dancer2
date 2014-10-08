@@ -1,6 +1,6 @@
 package Dancer2::Handler::File;
 # ABSTRACT: class for handling file content rendering
-$Dancer2::Handler::File::VERSION = '0.150000';
+$Dancer2::Handler::File::VERSION = '0.151000';
 use Carp 'croak';
 use Moo;
 use HTTP::Date;
@@ -139,13 +139,15 @@ __END__
 
 =pod
 
+=encoding UTF-8
+
 =head1 NAME
 
 Dancer2::Handler::File - class for handling file content rendering
 
 =head1 VERSION
 
-version 0.150000
+version 0.151000
 
 =head1 AUTHOR
 

@@ -1,12 +1,10 @@
 # ABSTRACT: Role for handling headers
 
 package Dancer2::Core::Role::Headers;
-$Dancer2::Core::Role::Headers::VERSION = '0.150000';
-
+$Dancer2::Core::Role::Headers::VERSION = '0.151000';
 use Moo::Role;
 use Dancer2::Core::Types;
 use HTTP::Headers;
-
 
 has headers => (
     is     => 'rw',
@@ -22,7 +20,6 @@ has headers => (
     },
 );
 
-
 sub header {
     my $self   = shift;
     my $header = shift;
@@ -34,7 +31,6 @@ sub header {
         return $self->headers->header($header);
     }
 }
-
 
 sub push_header {
     my $self   = shift;
@@ -49,7 +45,6 @@ sub push_header {
         return $self->headers->header($header);
     }
 }
-
 
 sub headers_to_array {
     my $self = shift;
@@ -74,13 +69,15 @@ __END__
 
 =pod
 
+=encoding UTF-8
+
 =head1 NAME
 
 Dancer2::Core::Role::Headers - Role for handling headers
 
 =head1 VERSION
 
-version 0.150000
+version 0.151000
 
 =head1 DESCRIPTION
 

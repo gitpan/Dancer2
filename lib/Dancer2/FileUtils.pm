@@ -1,7 +1,6 @@
-# ABSTRACT: File utility helpers
-
 package Dancer2::FileUtils;
-$Dancer2::FileUtils::VERSION = '0.150000';
+# ABSTRACT: File utility helpers
+$Dancer2::FileUtils::VERSION = '0.151000';
 use strict;
 use warnings;
 
@@ -10,13 +9,11 @@ use File::Spec;
 use Carp;
 use Cwd 'realpath';
 
-
 use Exporter 'import';
 our @EXPORT_OK = qw(
   dirname open_file path read_file_content read_glob_content
   path_or_empty set_file_mode normalize_path
 );
-
 
 
 sub path {
@@ -26,7 +23,6 @@ sub path {
     return normalize_path($path);
 }
 
-
 sub path_or_empty {
     my @parts = @_;
     my $path  = path(@parts);
@@ -35,9 +31,7 @@ sub path_or_empty {
     return -e $path ? $path : '';
 }
 
-
 sub dirname { File::Basename::dirname(@_) }
-
 
 sub set_file_mode {
     my $fh      = shift;
@@ -45,7 +39,6 @@ sub set_file_mode {
     binmode $fh, ":encoding($charset)";
     return $fh;
 }
-
 
 sub open_file {
     my ( $mode, $filename ) = @_;
@@ -56,7 +49,6 @@ sub open_file {
     return set_file_mode($fh);
 }
 
-
 sub read_file_content {
     my $file = shift or return;
     my $fh = open_file( '<', $file );
@@ -66,8 +58,6 @@ sub read_file_content {
       : scalar read_glob_content($fh);
 }
 
-
-
 sub read_glob_content {
     my $fh = shift;
 
@@ -76,8 +66,6 @@ sub read_glob_content {
 
     return wantarray ? @content : join '', @content;
 }
-
-
 
 sub normalize_path {
 
@@ -105,13 +93,15 @@ __END__
 
 =pod
 
+=encoding UTF-8
+
 =head1 NAME
 
 Dancer2::FileUtils - File utility helpers
 
 =head1 VERSION
 
-version 0.150000
+version 0.151000
 
 =head1 SYNOPSIS
 

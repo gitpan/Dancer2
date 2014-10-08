@@ -1,5 +1,5 @@
 package Dancer2::Core::Request;
-$Dancer2::Core::Request::VERSION = '0.150000';
+$Dancer2::Core::Request::VERSION = '0.151000';
 # ABSTRACT: Interface for accessing incoming requests
 
 use Moo;
@@ -15,7 +15,6 @@ use Dancer2::Core::Request::Upload;
 use Dancer2::Core::Cookie;
 
 with 'Dancer2::Core::Role::Headers';
-
 
 # add an attribute for each HTTP_* variables
 # (HOST is managed manually)
@@ -41,15 +40,12 @@ foreach my $attr ( @http_env_keys ) {
     );
 }
 
-
 # check presence of XS module to speedup request
 eval { require URL::Encode::XS; };
 our $XS_URL_DECODE = !$@;
 
 eval { require CGI::Deurl::XS; };
 our $XS_PARSE_QUERY_STRING = !$@;
-
-
 
 # then all the native attributes
 has env => (
@@ -58,7 +54,6 @@ has env => (
     default => sub { {} },
 );
 
-
 # a buffer for per-request variables
 has vars => (
     is      => 'ro',
@@ -66,15 +61,12 @@ has vars => (
     default => sub { {} },
 );
 
-
 sub var {
     my $self = shift;
     @_ == 2
       ? $self->vars->{ $_[0] } = $_[1]
       : $self->vars->{ $_[0] };
 }
-
-
 
 has path => (
     is      => 'ro',
@@ -124,7 +116,6 @@ sub _build_path_info {
     return $self->path;
 }
 
-
 has method => (
     is      => 'rw',
     isa     => Dancer2HTTPMethod,
@@ -135,7 +126,6 @@ has method => (
     coerce => sub { uc $_[0] },
 );
 
-
 has content_type => (
     is      => 'ro',
     isa     => Str,
@@ -145,7 +135,6 @@ has content_type => (
     },
 );
 
-
 has content_length => (
     is      => 'ro',
     isa     => Num,
@@ -154,7 +143,6 @@ has content_length => (
         $_[0]->env->{CONTENT_LENGTH} || 0;
     },
 );
-
 
 has body => (
     is      => 'ro',
@@ -218,7 +206,6 @@ sub _set_route_params {
     $self->_build_params();
 }
 
-
 has uploads => (
     is  => 'ro',
     isa => HashRef,
@@ -248,10 +235,6 @@ sub host {
     }
 }
 
-
-#from Dancer2::Core::Role::Headers
-
-
 # aliases, kept for backward compat
 sub agent                 { $_[0]->user_agent }
 sub remote_address        { $_[0]->address }
@@ -263,8 +246,6 @@ sub port                  { $_[0]->env->{SERVER_PORT} }
 sub request_uri           { $_[0]->env->{REQUEST_URI} }
 sub user                  { $_[0]->env->{REMOTE_USER} }
 sub script_name           { $_[0]->env->{SCRIPT_NAME} }
-
-
 
 sub scheme {
     my ($self) = @_;
@@ -284,15 +265,11 @@ sub scheme {
       || "";
 }
 
-
 has serializer => (
     is        => 'ro',
     isa       => Maybe( ConsumerOf ['Dancer2::Core::Role::Serializer'] ),
     predicate => 1,
 );
-
-
-
 
 has data => (
     is      => 'ro',
@@ -334,7 +311,6 @@ sub deserialize {
     return $data;
 }
 
-
 sub secure    { $_[0]->scheme   eq 'https' }
 sub uri       { $_[0]->request_uri }
 sub is_head   { $_[0]->{method} eq 'HEAD' }
@@ -369,12 +345,10 @@ sub BUILD {
     $self->_build_uploads();
 }
 
-
 sub to_string {
     my ($self) = @_;
     return "[#" . $self->id . "] " . $self->method . " " . $self->path;
 }
-
 
 sub base {
     my $self = shift;
@@ -400,8 +374,6 @@ sub _common_uri {
     return $uri;
 }
 
-
-
 sub uri_base {
     my $self  = shift;
     my $uri   = $self->_common_uri;
@@ -413,7 +385,6 @@ sub uri_base {
 
     return $canon;
 }
-
 
 sub dispatch_path {
     my $self = shift;
@@ -434,7 +405,6 @@ sub dispatch_path {
     return $path;
 }
 
-
 sub uri_for {
     my ( $self, $part, $params, $dont_escape ) = @_;
 
@@ -450,8 +420,6 @@ sub uri_for {
 
     return $dont_escape ? uri_unescape( $uri->canonical ) : $uri->canonical;
 }
-
-
 
 sub params {
     my ( $self, $source ) = @_;
@@ -504,7 +472,6 @@ sub _decode {
     return $h;
 }
 
-
 sub is_ajax {
     my $self = shift;
 
@@ -513,7 +480,6 @@ sub is_ajax {
     return 0 if $self->header('X-Requested-With') ne 'XMLHttpRequest';
     return 1;
 }
-
 
 # context-aware accessor for uploads
 sub upload {
@@ -703,7 +669,6 @@ sub _build_uploads {
     $self->_build_params();
 }
 
-
 has cookies => (
     is      => 'ro',
     isa     => HashRef,
@@ -741,13 +706,15 @@ __END__
 
 =pod
 
+=encoding UTF-8
+
 =head1 NAME
 
 Dancer2::Core::Request - Interface for accessing incoming requests
 
 =head1 VERSION
 
-version 0.150000
+version 0.151000
 
 =head1 SYNOPSIS
 

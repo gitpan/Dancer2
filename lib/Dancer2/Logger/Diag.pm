@@ -1,12 +1,10 @@
 package Dancer2::Logger::Diag;
 # ABSTRACT: Test::More diag() logging engine for Dancer2
-$Dancer2::Logger::Diag::VERSION = '0.150000';
+$Dancer2::Logger::Diag::VERSION = '0.151000';
 use Moo;
 use Test::More;
 
 with 'Dancer2::Core::Role::Logger';
-
-
 
 sub log {
     my ( $self, $level, $message ) = @_;
@@ -20,13 +18,15 @@ __END__
 
 =pod
 
+=encoding UTF-8
+
 =head1 NAME
 
 Dancer2::Logger::Diag - Test::More diag() logging engine for Dancer2
 
 =head1 VERSION
 
-version 0.150000
+version 0.151000
 
 =head1 DESCRIPTION
 

@@ -1,6 +1,6 @@
 package Dancer2::Core::Role::DSL;
 # ABSTRACT: Role for DSL
-$Dancer2::Core::Role::DSL::VERSION = '0.150000';
+$Dancer2::Core::Role::DSL::VERSION = '0.151000';
 use Moo::Role;
 use Dancer2::Core::Types;
 use Carp 'croak';
@@ -98,13 +98,15 @@ __END__
 
 =pod
 
+=encoding UTF-8
+
 =head1 NAME
 
 Dancer2::Core::Role::DSL - Role for DSL
 
 =head1 VERSION
 
-version 0.150000
+version 0.151000
 
 =head1 AUTHOR
 

@@ -1,8 +1,7 @@
 package Dancer2::Core::Role::StandardResponses;
 # ABSTRACT: Role to provide commonly used responses
-$Dancer2::Core::Role::StandardResponses::VERSION = '0.150000';
+$Dancer2::Core::Role::StandardResponses::VERSION = '0.151000';
 use Moo::Role;
-
 
 sub response {
     my ( $self, $app, $code, $message ) = @_;
@@ -11,18 +10,15 @@ sub response {
     return $message;
 }
 
-
 sub response_400 {
     my ( $self, $app ) = @_;
     $self->response( $app, 400, 'Bad Request' );
 }
 
-
 sub response_404 {
     my ( $self, $app ) = @_;
     $self->response( $app, 404, 'Not Found' );
 }
-
 
 sub response_403 {
     my ( $self, $app ) = @_;
@@ -35,13 +31,15 @@ __END__
 
 =pod
 
+=encoding UTF-8
+
 =head1 NAME
 
 Dancer2::Core::Role::StandardResponses - Role to provide commonly used responses
 
 =head1 VERSION
 
-version 0.150000
+version 0.151000
 
 =head1 METHODS
 

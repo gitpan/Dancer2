@@ -1,7 +1,6 @@
 package Dancer2::Core::Types;
-$Dancer2::Core::Types::VERSION = '0.150000';
 # ABSTRACT: Moo types for Dancer2 core.
-
+$Dancer2::Core::Types::VERSION = '0.151000';
 use strict;
 use warnings;
 use Scalar::Util 'blessed', 'looks_like_number';
@@ -16,8 +15,6 @@ our %supported_http_methods = map +( $_ => 1 ), qw<
     GET HEAD POST PUT DELETE OPTIONS PATCH
 >;
 
-
-
 my $single_part = qr/
     [A-Za-z]              # must start with letter
     (?: [A-Za-z0-9_]+ )? # can continue with letters, numbers or underscore
@@ -29,7 +26,6 @@ my $namespace = qr/
     (?: (?: \:\: $single_part )+ )? # optional part starting with double colon
     $
 /x;
-
 
 my $definitions = [
     {   name => 'ReadableFilePath',
@@ -144,13 +140,15 @@ __END__
 
 =pod
 
+=encoding UTF-8
+
 =head1 NAME
 
 Dancer2::Core::Types - Moo types for Dancer2 core.
 
 =head1 VERSION
 
-version 0.150000
+version 0.151000
 
 =head1 DESCRIPTION
 

@@ -1,13 +1,12 @@
 package Dancer2::Core::Cookie;
 # ABSTRACT: A cookie representing class
-$Dancer2::Core::Cookie::VERSION = '0.150000';
+$Dancer2::Core::Cookie::VERSION = '0.151000';
 use Moo;
 use URI::Escape;
 use Dancer2::Core::Types;
 use Dancer2::Core::Time;
 use Carp 'croak';
 use overload '""' => \&_get_value;
-
 
 sub to_header {
     my $self   = shift;
@@ -25,8 +24,6 @@ sub to_header {
 
     return join '; ', @headers;
 }
-
-
 
 has value => (
     is       => 'rw',
@@ -53,15 +50,11 @@ around value => sub {
 # attribute accessor won't be available at that point.
 sub _get_value { shift->value }
 
-
-
 has name => (
     is       => 'rw',
     isa      => Str,
     required => 1,
 );
-
-
 
 has expires => (
     is       => 'rw',
@@ -72,14 +65,11 @@ has expires => (
     },
 );
 
-
-
 has domain => (
     is       => 'rw',
     isa      => Str,
     required => 0,
 );
-
 
 has path => (
     is        => 'rw',
@@ -88,14 +78,12 @@ has path => (
     predicate => 1,
 );
 
-
 has secure => (
     is       => 'rw',
     isa      => Bool,
     required => 0,
     default  => sub {0},
 );
-
 
 has http_only => (
     is       => 'rw',
@@ -110,13 +98,15 @@ __END__
 
 =pod
 
+=encoding UTF-8
+
 =head1 NAME
 
 Dancer2::Core::Cookie - A cookie representing class
 
 =head1 VERSION
 
-version 0.150000
+version 0.151000
 
 =head1 SYNOPSIS
 

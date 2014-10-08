@@ -1,6 +1,6 @@
 package Dancer2;
 # ABSTRACT: Lightweight yet powerful web application framework
-$Dancer2::VERSION = '0.150000';
+$Dancer2::VERSION = '0.151000';
 use strict;
 use warnings;
 use List::Util  'first';
@@ -15,7 +15,7 @@ our $AUTHORITY = 'SUKRIA';
 # set version in dist.ini now
 # but we still need a basic version for
 # the tests
-$Dancer2::VERSION ||= '0.143000'; # 2.14.3
+$Dancer2::VERSION ||= '0.150000'; # 2.14.3
 
 our $runner;
 
@@ -110,13 +110,15 @@ __END__
 
 =pod
 
+=encoding UTF-8
+
 =head1 NAME
 
 Dancer2 - Lightweight yet powerful web application framework
 
 =head1 VERSION
 
-version 0.150000
+version 0.151000
 
 =head1 DESCRIPTION
 
@@ -206,8 +208,6 @@ things:
 =head2 my $runner=runner();
 
 Returns the current runner. It is of type L<Dancer2::Core::Runner>.
-
-=encoding UTF-8
 
 =head1 AUTHORS
 

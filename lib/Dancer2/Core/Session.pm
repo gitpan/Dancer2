@@ -1,14 +1,12 @@
 package Dancer2::Core::Session;
-$Dancer2::Core::Session::VERSION = '0.150000';
+$Dancer2::Core::Session::VERSION = '0.151000';
 #ABSTRACT: class to represent any session object
-
 
 use strict;
 use warnings;
 use Moo;
 use Dancer2::Core::Types;
 use Dancer2::Core::Time;
-
 
 has id => (
     # for some specific plugins this should be rw.
@@ -18,13 +16,11 @@ has id => (
     required => 1,
 );
 
-
 has data => (
     is      => 'ro',
     lazy    => 1,
     default => sub { {} },
 );
-
 
 has expires => (
     is     => 'rw',
@@ -36,13 +32,11 @@ has expires => (
     },
 );
 
-
 has is_dirty => (
     is      => 'rw',
     isa     => Bool,
     default => sub {0},
 );
-
 
 
 sub read {
@@ -51,13 +45,11 @@ sub read {
 }
 
 
-
 sub write {
     my ( $self, $key, $value ) = @_;
     $self->is_dirty(1);
     $self->data->{$key} = $value;
 }
-
 
 sub delete {
     my ( $self, $key, $value ) = @_;
@@ -71,13 +63,15 @@ __END__
 
 =pod
 
+=encoding UTF-8
+
 =head1 NAME
 
 Dancer2::Core::Session - class to represent any session object
 
 =head1 VERSION
 
-version 0.150000
+version 0.151000
 
 =head1 DESCRIPTION
 

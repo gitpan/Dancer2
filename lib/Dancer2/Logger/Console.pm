@@ -1,6 +1,6 @@
 package Dancer2::Logger::Console;
 # ABSTRACT: Console logger
-$Dancer2::Logger::Console::VERSION = '0.150000';
+$Dancer2::Logger::Console::VERSION = '0.151000';
 use Moo;
 
 with 'Dancer2::Core::Role::Logger';
@@ -16,13 +16,15 @@ __END__
 
 =pod
 
+=encoding UTF-8
+
 =head1 NAME
 
 Dancer2::Logger::Console - Console logger
 
 =head1 VERSION
 
-version 0.150000
+version 0.151000
 
 =head1 DESCRIPTION
 
