@@ -20,7 +20,7 @@ my %module_build_args = (
     "Dancer Core Developers"
   ],
   "dist_name" => "Dancer2",
-  "dist_version" => "0.151000",
+  "dist_version" => "0.152000",
   "license" => "perl",
   "module_name" => "Dancer2",
   "recommends" => {
@@ -112,6 +112,7 @@ my %module_build_args = (
     "IO::Handle" => 0,
     "IPC::Open3" => 0,
     "LWP::Protocol::PSGI" => "0.06",
+    "Plack::Response" => 0,
     "Plack::Test" => 0,
     "Test::Fatal" => 0,
     "Test::Memory::Cycle" => "1.04",
@@ -141,6 +142,7 @@ my %fallback_build_requires = (
   "IPC::Open3" => 0,
   "LWP::Protocol::PSGI" => "0.06",
   "Module::Build" => "0.3601",
+  "Plack::Response" => 0,
   "Plack::Test" => 0,
   "Test::Fatal" => 0,
   "Test::Memory::Cycle" => "1.04",

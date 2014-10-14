@@ -1,6 +1,6 @@
 package Dancer2::Manual::Migration;
 # ABSTRACT: Migrating from Dancer to Dancer2
-$Dancer2::Manual::Migration::VERSION = '0.151000';
+$Dancer2::Manual::Migration::VERSION = '0.152000';
 use strict;
 use warnings;
 
@@ -18,7 +18,7 @@ Dancer2::Manual::Migration - Migrating from Dancer to Dancer2
 
 =head1 VERSION
 
-version 0.151000
+version 0.152000
 
 =head2 Migration from Dancer1 to Dancer2
 
@@ -150,6 +150,9 @@ Other modules that could be used for testing are:
 =back
 
 =head4 Logs
+
+The C<logger_format> in the Logger role (L<Dancer2::Core::Role::Logger>)
+is now C<log_format>.
 
 C<read_logs> can no longer be used, as with L<Dancer2::Test>. Instead,
 L<Dancer2::Logger::Capture> could be used for testing, to capture all

@@ -99,6 +99,7 @@ my %WriteMakefileArgs = (
     "IO::Handle" => 0,
     "IPC::Open3" => 0,
     "LWP::Protocol::PSGI" => "0.06",
+    "Plack::Response" => 0,
     "Plack::Test" => 0,
     "Test::Fatal" => 0,
     "Test::Memory::Cycle" => "1.04",
@@ -111,9 +112,9 @@ my %WriteMakefileArgs = (
     "utf8" => 0,
     "vars" => 0
   },
-  "VERSION" => "0.151000",
+  "VERSION" => "0.152000",
   "test" => {
-    "TESTS" => "t/*.t t/dsl/*.t t/logger/*.t t/roles/*.t t/route-pod-coverage/*.t t/template_tiny/*.t"
+    "TESTS" => "t/*.t t/classes/Dancer2-Core-Factory/*.t t/classes/Dancer2-Core-Hook/*.t t/classes/Dancer2-Core-Response/*.t t/classes/Dancer2-Core-Role-Engine/*.t t/classes/Dancer2-Core-Role-Handler/*.t t/classes/Dancer2-Core-Role-HasLocation/*.t t/classes/Dancer2-Core-Role-StandardResponses/*.t t/classes/Dancer2-Core-Runner/*.t t/classes/Dancer2-Core/*.t t/classes/Dancer2/*.t t/dsl/*.t t/issues/*.t t/logger/*.t t/roles/*.t t/route-pod-coverage/*.t t/template_tiny/*.t"
   }
 );
 
@@ -165,6 +166,7 @@ my %FallbackPrereqs = (
   "POSIX" => 0,
   "Plack" => "1.0016",
   "Plack::Builder" => 0,
+  "Plack::Response" => 0,
   "Plack::Test" => 0,
   "Pod::Simple::Search" => 0,
   "Pod::Simple::SimpleTree" => 0,

@@ -1,6 +1,6 @@
 package Dancer2::Serializer::Mutable;
 # ABSTRACT: Serialize and deserialize content based on HTTP header
-$Dancer2::Serializer::Mutable::VERSION = '0.151000';
+$Dancer2::Serializer::Mutable::VERSION = '0.152000';
 use Moo;
 use Carp 'croak';
 use Encode;
@@ -77,13 +77,12 @@ sub deserialize {
 
 sub _get_content_type {
     my $self    = shift;
-    my $headers = $self->{'extra_headers'}
-        or return;
+    $self->has_request or return;
 
     # Search for the first HTTP header variable which
     # specifies supported content.
     foreach my $method ( qw<content_type accept accept_type> ) {
-        if ( my $value = $headers->{$method} ) {
+        if ( my $value = $self->request->header($method) ) {
             if ( exists $formats->{$value} ) {
                 $self->set_content_type($value);
                 return $formats->{$value};
@@ -109,7 +108,7 @@ Dancer2::Serializer::Mutable - Serialize and deserialize content based on HTTP h
 
 =head1 VERSION
 
-version 0.151000
+version 0.152000
 
 =head1 SYNOPSIS
 

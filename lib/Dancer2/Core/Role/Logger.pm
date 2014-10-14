@@ -1,6 +1,6 @@
 package Dancer2::Core::Role::Logger;
 # ABSTRACT: Role for logger engines
-$Dancer2::Core::Role::Logger::VERSION = '0.151000';
+$Dancer2::Core::Role::Logger::VERSION = '0.152000';
 use Dancer2::Core::Types;
 
 use Moo::Role;
@@ -177,7 +177,7 @@ Dancer2::Core::Role::Logger - Role for logger engines
 
 =head1 VERSION
 
-version 0.151000
+version 0.152000
 
 =head1 DESCRIPTION
 
@@ -302,7 +302,7 @@ You can change it either in your config.yml file:
     logger: "console"
 
 The log format can also be configured,
-please see L<Dancer2::Core::Role::Logger/"logger_format"> for details.
+please see L<Dancer2::Core::Role::Logger/"log_format"> for details.
 
 =head1 METHODS
 

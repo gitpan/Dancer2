@@ -1,7 +1,7 @@
 # ABSTRACT: Dancer2's Domain Specific Language (DSL)
 
 package Dancer2::Core::DSL;
-$Dancer2::Core::DSL::VERSION = '0.151000';
+$Dancer2::Core::DSL::VERSION = '0.152000';
 use Moo;
 use Carp;
 use Class::Load 'load_class';
@@ -20,6 +20,7 @@ sub dsl_keywords {
         app                  => { is_global => 1 },
         captures             => { is_global => 0 },
         config               => { is_global => 1 },
+        content              => { is_global => 0 },
         content_type         => { is_global => 0 },
         context              => { is_global => 0 },
         cookie               => { is_global => 0 },
@@ -291,6 +292,7 @@ sub status       { shift->response->status(@_) }
 sub push_header  { shift->response->push_header(@_) }
 sub header       { shift->response->header(@_) }
 sub headers      { shift->response->header(@_) }
+sub content      { shift->response->content(@_) }
 sub content_type { shift->response->content_type(@_) }
 sub pass         { shift->app->pass }
 
@@ -415,7 +417,7 @@ Dancer2::Core::DSL - Dancer2's Domain Specific Language (DSL)
 
 =head1 VERSION
 
-version 0.151000
+version 0.152000
 
 =head1 FUNCTIONS
 

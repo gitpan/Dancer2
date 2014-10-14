@@ -1,7 +1,7 @@
 # ABSTRACT: Response object for Dancer2
 
 package Dancer2::Core::Response;
-$Dancer2::Core::Response::VERSION = '0.151000';
+$Dancer2::Core::Response::VERSION = '0.152000';
 use Moo;
 
 use Encode;
@@ -69,7 +69,6 @@ has status => (
 has content => (
     is      => 'rw',
     isa     => Str,
-    default => sub {''},
     coerce  => sub {
         my $value = shift;
         return "$value";
@@ -82,6 +81,9 @@ has content => (
         $self->has_passed or $self->header( 'Content-Length' => length($value) );
         return $value;
     },
+
+    predicate => 'has_content',
+    clearer   => 'clear_content',
 );
 
 before content => sub {
@@ -116,6 +118,26 @@ sub encode_content {
     my $content = $self->content( Encode::encode( 'UTF-8', $self->content ) );
 
     return $content;
+}
+
+sub new_from_plack {
+    my ($self, $psgi_res) = @_;
+
+    return Dancer2::Core::Response->new(
+        status  => $psgi_res->status,
+        headers => $psgi_res->headers,
+        content => $psgi_res->body,
+    );
+}
+
+sub new_from_array {
+    my ($self, $arrayref) = @_;
+
+    return Dancer2::Core::Response->new(
+        status  => $arrayref->[0],
+        headers => $arrayref->[1],
+        content => $arrayref->[2][0],
+    );
 }
 
 sub to_psgi {
@@ -201,7 +223,7 @@ Dancer2::Core::Response - Response object for Dancer2
 
 =head1 VERSION
 
-version 0.151000
+version 0.152000
 
 =head1 ATTRIBUTES
 
@@ -253,6 +275,14 @@ Interally, it uses the L<is_encoded> flag to make sure that content is not encod
 
 If it encodes the content, then it will return the encoded content.  In all other
 cases it returns C<false>.
+
+=head2 new_from_plack
+
+Creates a new response object from a L<Plack::Response> object.
+
+=head2 new_from_array
+
+Creates a new response object from a PSGI arrayref.
 
 =head2 to_psgi
 

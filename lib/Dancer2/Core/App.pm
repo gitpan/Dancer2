@@ -1,6 +1,6 @@
 # ABSTRACT: encapsulation of Dancer2 packages
 package Dancer2::Core::App;
-$Dancer2::Core::App::VERSION = '0.151000';
+$Dancer2::Core::App::VERSION = '0.152000';
 use Moo;
 use Carp               'croak';
 use Scalar::Util       'blessed';
@@ -17,13 +17,20 @@ use Dancer2::Core::Types;
 use Dancer2::Core::Route;
 use Dancer2::Core::Hook;
 use Dancer2::Core::Request;
-
+use Dancer2::Core::Factory;
 
 # we have hooks here
 with 'Dancer2::Core::Role::Hookable';
 with 'Dancer2::Core::Role::ConfigReader';
 
 sub supported_engines { [ qw<logger serializer session template> ] }
+
+has _factory => (
+    is      => 'ro',
+    isa     => Object['Dancer2::Core::Factory'],
+    lazy    => 1,
+    default => sub { Dancer2::Core::Factory->new },
+);
 
 has logger_engine => (
     is      => 'ro',
@@ -126,7 +133,7 @@ sub _build_logger_engine {
     my $engine_options =
         $self->_get_config_for_engine( logger => $value, $config );
 
-    my $logger = Dancer2::Core::Factory->create(
+    my $logger = $self->_factory->create(
         logger => $value,
         %{$engine_options},
         app_name        => $self->name,
@@ -154,7 +161,7 @@ sub _build_session_engine {
     my $engine_options =
           $self->_get_config_for_engine( session => $value, $config );
 
-    return Dancer2::Core::Factory->create(
+    return $self->_factory->create(
         session => $value,
         %{$engine_options},
         postponed_hooks => $self->get_postponed_hooks,
@@ -183,7 +190,7 @@ sub _build_template_engine {
     $engine_attrs->{views}  ||= $config->{views}
         || path( $self->location, 'views' );
 
-    return Dancer2::Core::Factory->create(
+    return $self->_factory->create(
         template => $value,
         %{$engine_attrs},
         postponed_hooks => $self->get_postponed_hooks,
@@ -204,7 +211,7 @@ sub _build_serializer_engine {
     my $engine_options =
         $self->_get_config_for_engine( serializer => $value, $config );
 
-    return Dancer2::Core::Factory->create(
+    return $self->_factory->create(
         serializer      => $value,
         config          => $engine_options,
         postponed_hooks => $self->get_postponed_hooks,
@@ -518,10 +525,23 @@ sub _init_hooks {
                 # session, first flush the session so cookie-based sessions can
                 # update the session ID if needed, then set the session cookie
                 # in the response
+                #
+                # if there is NO session object but the request has a cookie with
+                # a session key, create a dummy session with the same ID (without
+                # actually retrieving and flushing immediately) and generate the
+                # cookie header from the dummy session. Lazy Sessions FTW!
 
                 if ( $app->has_session ) {
-                    my $session = $app->session;
-                    $session->is_dirty and $engine->flush( session => $session );
+                    my $session;
+                    if ( $app->_has_session ) { # Session object exists
+                        $session = $app->session;
+                        $session->is_dirty and $engine->flush( session => $session );
+                    }
+                    else { # Cookie header exists. Create a dummy session object
+                        my $cookie = $app->cookie( $engine->cookie_name );
+                        my $session_id = $cookie->value;
+                        $session = Dancer2::Core::Session->new( id => $session_id );
+                    }
                     $engine->set_cookie_header(
                         response => $response,
                         session  => $session
@@ -575,6 +595,13 @@ sub cleanup {
     $self->clear_response;
     $self->clear_session;
     $self->clear_destroyed_session;
+    # Clear engine attributes
+    for my $type ( @{ $self->supported_engines } ) {
+        my $attr   = "${type}_engine";
+        my $engine = $self->$attr or next;
+        $engine->has_session && $engine->clear_session;
+        $engine->has_request && $engine->clear_request;
+    }
 }
 
 sub engine {
@@ -595,7 +622,7 @@ sub template {
     $template->set_settings( $self->config );
 
     # return content
-    return $template->process( $self->request, @_ );
+    return $template->process( @_ );
 }
 
 sub hook_candidates {
@@ -675,7 +702,7 @@ sub send_file {
     # pretending it's a file (on-the-fly file sending)
     ref $path eq 'SCALAR' and return $$path;
 
-    my $file_handler = Dancer2::Core::Factory->create(
+    my $file_handler = $self->_factory->create(
         Handler => 'File',
         app     => $self,
         postponed_hooks => $self->postponed_hooks,
@@ -718,7 +745,7 @@ sub init_route_handlers {
         my ($handler_name, $config) = @{$handler_data};
         $config = {} if !ref($config);
 
-        my $handler = Dancer2::Core::Factory->create(
+        my $handler = $self->_factory->create(
             Handler => $handler_name,
             app     => $self,
             %$config,
@@ -1008,7 +1035,13 @@ DISPATCH:
 
             $request->_set_route_params($match);
 
+            # Add request to app and engines
             $self->set_request($request);
+            for my $type ( @{ $self->supported_engines } ) {
+                my $attr   = "${type}_engine";
+                my $engine = $self->$attr or next;
+                $engine->set_request( $request );
+            }
 
             # Add session to app *if* we have a session and the request
             # has the appropriate cookie header for _this_ app.
@@ -1072,6 +1105,10 @@ DISPATCH:
                     and delete $request->{_params}{splat};
 
                 $response->has_passed(0); # clear for the next round
+
+                # clear the content because if you pass it,
+                # the next route is in charge of catching it
+                $response->clear_content;
                 next ROUTE;
             }
 
@@ -1091,7 +1128,13 @@ DISPATCH:
 
     # make sure Core::Dispatcher recognizes this failure
     # so it can try the next Core::App
-    Dancer2->runner->{'internal_404'} = 1;
+    # and set the created request so we don't create it again
+    # (this is important so we don't ignore the previous body)
+    if ( Dancer2->runner->{'internal_dispatch'} ) {
+        Dancer2->runner->{'internal_404'}     = 1;
+        Dancer2->runner->{'internal_request'} = $request;
+    }
+
     return $self->response_not_found($request);
 }
 
@@ -1105,15 +1148,6 @@ sub build_request {
           is_behind_proxy => Dancer2->runner->config->{'behind_proxy'} || 0,
         ( serializer      => $engine )x!! $engine,
     );
-
-    # if it's a mutable serializer, we add more headers
-    # so it can be set properly
-    # I don't like doing this... -- Sawyer
-    if ( $engine->$_isa('Dancer2::Serializer::Mutable') ) {
-        $engine->{'extra_headers'} = {
-            map +( $_ => $request->$_ ), qw<content_type accept accept_type>
-        }
-    }
 
     # Log deserialization errors
     if ($engine) {
@@ -1130,9 +1164,6 @@ sub build_request {
 sub _dispatch_route {
     my ( $self, $route ) = @_;
 
-    # FIXME: check for memory leak here
-    # perhaps we need to weaken $self, perhaps not
-    # would it matter if we do? could it be a problem?
     $self->execute_hook( 'core.app.before_request', $self );
     my $response = $self->response;
 
@@ -1142,21 +1173,18 @@ sub _dispatch_route {
         $content = $response->content;
     }
     else {
-        # FIXME: check for memory leak here
-        # perhaps we need to weaken $self, perhaps not
-        # would it matter if we do? could it be a problem?
         $content = eval { $route->execute($self) };
 
         my $error = $@;
         if ($error) {
             $self->log( error => "Route exception: $error" );
-            # FIXME: check for memory leak here
-            # perhaps we need to weaken $self, perhaps not
-            # would it matter if we do? could it be a problem?
             $self->execute_hook( 'core.app.route_exception', $self, $error );
             return $self->response_internal_error($error);
         }
     }
+
+    $response->has_content
+        and $content = $response->content;
 
     if ( ref $content eq 'Dancer2::Core::Response' ) {
         $response = $self->set_response($content);
@@ -1219,7 +1247,7 @@ Dancer2::Core::App - encapsulation of Dancer2 packages
 
 =head1 VERSION
 
-version 0.151000
+version 0.152000
 
 =head1 DESCRIPTION
 

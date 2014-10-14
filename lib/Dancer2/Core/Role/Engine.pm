@@ -1,6 +1,6 @@
 package Dancer2::Core::Role::Engine;
 # ABSTRACT: Role for engines
-$Dancer2::Core::Role::Engine::VERSION = '0.151000';
+$Dancer2::Core::Role::Engine::VERSION = '0.152000';
 use Moo::Role;
 use Dancer2::Core::Types;
 
@@ -15,9 +15,17 @@ has session => (
 );
 
 has config => (
-    is      => 'rw',
+    is      => 'ro',
     isa     => HashRef,
     default => sub { {} },
+);
+
+has request => (
+    is        => 'ro',
+    isa       => InstanceOf['Dancer2::Core::Request'],
+    writer    => 'set_request',
+    clearer   => 'clear_request',
+    predicate => 'has_request',
 );
 
 1;
@@ -34,7 +42,7 @@ Dancer2::Core::Role::Engine - Role for engines
 
 =head1 VERSION
 
-version 0.151000
+version 0.152000
 
 =head1 DESCRIPTION
 
