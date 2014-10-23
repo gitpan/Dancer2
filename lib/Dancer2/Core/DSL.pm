@@ -1,12 +1,11 @@
 # ABSTRACT: Dancer2's Domain Specific Language (DSL)
 
 package Dancer2::Core::DSL;
-$Dancer2::Core::DSL::VERSION = '0.152000';
+$Dancer2::Core::DSL::VERSION = '0.153000';
 use Moo;
 use Carp;
 use Class::Load 'load_class';
 use Dancer2::Core::Hook;
-use Dancer2::Core::Error;
 use Dancer2::FileUtils;
 
 with 'Dancer2::Core::Role::DSL';
@@ -142,6 +141,8 @@ sub session {
         $session->delete($key);
     }
 }
+
+sub send_error { shift->app->send_error(@_) }
 
 sub send_file { shift->app->send_file(@_) }
 
@@ -343,24 +344,6 @@ sub mime {
     }
 }
 
-sub send_error {
-    my ( $self, $message, $status ) = @_;
-
-    my $serializer = $self->app->engine('serializer');
-    my $x = Dancer2::Core::Error->new(
-          message    => $message,
-          app        => $self->app,
-        ( status     => $status     )x!! $status,
-        ( serializer => $serializer )x!! $serializer,
-    )->throw;
-
-    # return if there is a with_return coderef
-    $self->app->with_return->($x)
-      if $self->app->has_with_return;
-
-    return $x;
-}
-
 #
 # engines
 #
@@ -417,7 +400,7 @@ Dancer2::Core::DSL - Dancer2's Domain Specific Language (DSL)
 
 =head1 VERSION
 
-version 0.152000
+version 0.153000
 
 =head1 FUNCTIONS
 

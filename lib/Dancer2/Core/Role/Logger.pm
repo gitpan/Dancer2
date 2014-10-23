@@ -1,6 +1,6 @@
 package Dancer2::Core::Role::Logger;
 # ABSTRACT: Role for logger engines
-$Dancer2::Core::Role::Logger::VERSION = '0.152000';
+$Dancer2::Core::Role::Logger::VERSION = '0.153000';
 use Dancer2::Core::Types;
 
 use Moo::Role;
@@ -177,7 +177,7 @@ Dancer2::Core::Role::Logger - Role for logger engines
 
 =head1 VERSION
 
-version 0.152000
+version 0.153000
 
 =head1 DESCRIPTION
 

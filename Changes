@@ -1,3 +1,22 @@
+0.153000  2014-10-23 23:45:36+02:00 Europe/Amsterdam
+
+    [ ENHANCEMENT ]
+    * Internal: Move the implementation of send_file from DSL to App.
+      (Russell Jenkins)
+
+    [ BUG FIXES ]
+    * GH #634, #687: Fix file logger defaults.
+      (Russell Jenkins, Dávid Kovács, Sawyer X)
+    * GH #730: Make App use app-level config for behind_proxy. (Sawyer X)
+    * GH #727: Disable regex metachars when calculating app location in tests
+      (Gregor Herrmann)
+    * GH #681, #682, #712: Clear session engine within destroy_session.
+      (DavX, Russell Jenkins)
+    * Ignore :tests in importing, don't suggest :script. (Sawyer X)
+
+    [ DOCUMENTATION ]
+    * GH #728: Typos in Policy document. (Olaf Alders, Sawyer X)
+
 0.152000  2014-10-14 04:30:59+02:00 Europe/Amsterdam
 
     [ BUG FIXES ]

@@ -1,6 +1,6 @@
 package Dancer2::Policy;
 # ABSTRACT: Dancer core and community policy and standards of conduct
-$Dancer2::Policy::VERSION = '0.152000';
+$Dancer2::Policy::VERSION = '0.153000';
 use strict;
 use warnings;
 
@@ -18,7 +18,7 @@ Dancer2::Policy - Dancer core and community policy and standards of conduct
 
 =head1 VERSION
 
-version 0.152000
+version 0.153000
 
 =head1 DESCRIPTION
 
@@ -31,7 +31,7 @@ remains a safe space for all of its members, without exception.
 
 =head1 STANDARDS OF CONDUCT
 
-These standards applies anywhere the community comes together as a group.
+These standards apply anywhere the community comes together as a group.
 This includes, but is not limited to, the Dancer IRC channel, the Dancer
 mailing list, Dancer hackathons, and Dancer conferences.
 
@@ -80,12 +80,12 @@ foster at the Dancer community. This means anyone and everyone in the
 community - in the channel, on the list, at an event - has the ability to
 call out unacceptable behavior and incivility to others in the community.
 
-Moderators are responsibe for issuing warnings and take disciplenary actions,
+Moderators are responsible for issuing warnings and take disciplinary actions,
 but anyone may - and is encouraged - to publicly make note of unacceptable
 treatment of others.
 
 As a core principle, abuse is never tolerated. One cannot berate, insult,
-debase, deride, put-down, or vilify anyone, or act towards anyone in a way
+debase, deride, put down, or vilify anyone, or act towards anyone in a way
 intending to hurt them.
 
 The community specifically considers as abuse any attempts to otherize anyone,

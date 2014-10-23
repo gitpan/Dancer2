@@ -1,6 +1,6 @@
 package Dancer2::Cookbook;
 # ABSTRACT: Example-driven quick-start to the Dancer2 web framework
-$Dancer2::Cookbook::VERSION = '0.152000';
+$Dancer2::Cookbook::VERSION = '0.153000';
 __END__
 
 =pod
@@ -13,7 +13,7 @@ Dancer2::Cookbook - Example-driven quick-start to the Dancer2 web framework
 
 =head1 VERSION
 
-version 0.152000
+version 0.153000
 
 =head1 DESCRIPTION
 

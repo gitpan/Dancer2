@@ -20,7 +20,7 @@ my %module_build_args = (
     "Dancer Core Developers"
   ],
   "dist_name" => "Dancer2",
-  "dist_version" => "0.152000",
+  "dist_version" => "0.153000",
   "license" => "perl",
   "module_name" => "Dancer2",
   "recommends" => {
@@ -72,7 +72,7 @@ my %module_build_args = (
     "MooX::Types::MooseLike" => "0.16",
     "MooX::Types::MooseLike::Base" => 0,
     "POSIX" => 0,
-    "Plack" => "1.0016",
+    "Plack" => "1.0029",
     "Plack::Builder" => 0,
     "Pod::Simple::Search" => 0,
     "Pod::Simple::SimpleTree" => 0,

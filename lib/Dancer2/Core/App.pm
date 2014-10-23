@@ -1,6 +1,6 @@
 # ABSTRACT: encapsulation of Dancer2 packages
 package Dancer2::Core::App;
-$Dancer2::Core::App::VERSION = '0.152000';
+$Dancer2::Core::App::VERSION = '0.153000';
 use Moo;
 use Carp               'croak';
 use Scalar::Util       'blessed';
@@ -13,6 +13,7 @@ use Plack::Builder;
 use Dancer2::FileUtils 'path';
 use Dancer2::Core;
 use Dancer2::Core::Cookie;
+use Dancer2::Core::Error;
 use Dancer2::Core::Types;
 use Dancer2::Core::Route;
 use Dancer2::Core::Hook;
@@ -63,6 +64,16 @@ has serializer_engine => (
     builder => '_build_serializer_engine',
     writer  => 'set_serializer_engine',
 );
+
+sub defined_engines {
+    my $self = shift;
+    return map {
+        my $type   = "${_}_engine";
+        my $engine = $self->$type;
+
+        defined $engine ? $engine : ()
+    } @{ $self->supported_engines };
+}
 
 has '+local_triggers' => (
     default => sub {
@@ -136,6 +147,8 @@ sub _build_logger_engine {
     my $logger = $self->_factory->create(
         logger => $value,
         %{$engine_options},
+        location        => $self->config_location,
+        environment     => $self->environment,
         app_name        => $self->name,
         postponed_hooks => $self->get_postponed_hooks
     );
@@ -364,9 +377,11 @@ sub destroy_session {
     $session->expires(-86400);    # yesterday
     $engine->destroy( id => $session->id );
 
-    # Clear session and invalidate session cookie in request
+    # Invalidate session cookie in request
+    # and clear session in app and engines
     $self->set_destroyed_session($session);
     $self->clear_session;
+    $_->clear_session for $self->defined_engines;
 
     return;
 }
@@ -374,10 +389,7 @@ sub destroy_session {
 sub setup_session {
     my $self = shift;
 
-    for my $type ( @{ $self->supported_engines } ) {
-        my $attr   = "${type}_engine";
-        my $engine = $self->$attr or next;
-
+    for my $engine ( $self->defined_engines ) {
         $self->has_session                         ?
             $engine->set_session( $self->session ) :
             $engine->clear_session;
@@ -596,11 +608,9 @@ sub cleanup {
     $self->clear_session;
     $self->clear_destroyed_session;
     # Clear engine attributes
-    for my $type ( @{ $self->supported_engines } ) {
-        my $attr   = "${type}_engine";
-        my $engine = $self->$attr or next;
-        $engine->has_session && $engine->clear_session;
-        $engine->has_request && $engine->clear_request;
+    for my $engine ( $self->defined_engines ) {
+        $engine->clear_session;
+        $engine->clear_request;
     }
 }
 
@@ -628,12 +638,7 @@ sub template {
 sub hook_candidates {
     my $self = shift;
 
-    my @engines;
-    for my $e ( @{ $self->supported_engines } ) {
-        my $attr   = "${e}_engine";
-        my $engine = $self->$attr or next;
-        push @engines, $engine;
-    }
+    my @engines = $self->defined_engines;
 
     my @route_handlers;
     for my $handler ( @{ $self->route_handlers } ) {
@@ -678,6 +683,23 @@ sub log {
       or croak "No logger defined";
 
     $logger->$level(@_);
+}
+
+sub send_error {
+    my $self = shift;
+    my ( $message, $status ) = @_;
+
+    my $serializer = $self->engine('serializer');
+    my $err = Dancer2::Core::Error->new(
+          message    => $message,
+          app        => $self,
+        ( status     => $status     )x!! $status,
+        ( serializer => $serializer )x!! $serializer,
+    )->throw;
+
+    # Immediately return to dispatch if with_return coderef exists
+    $self->has_with_return && $self->with_return->($err);
+    return $err;
 }
 
 sub send_file {
@@ -1037,11 +1059,7 @@ DISPATCH:
 
             # Add request to app and engines
             $self->set_request($request);
-            for my $type ( @{ $self->supported_engines } ) {
-                my $attr   = "${type}_engine";
-                my $engine = $self->$attr or next;
-                $engine->set_request( $request );
-            }
+            $_->set_request( $request ) for $self->defined_engines;
 
             # Add session to app *if* we have a session and the request
             # has the appropriate cookie header for _this_ app.
@@ -1145,7 +1163,7 @@ sub build_request {
     my $engine  = $self->serializer_engine;
     my $request = Dancer2::Core::Request->new(
           env             => $env,
-          is_behind_proxy => Dancer2->runner->config->{'behind_proxy'} || 0,
+          is_behind_proxy => $self->settings->{'behind_proxy'} || 0,
         ( serializer      => $engine )x!! $engine,
     );
 
@@ -1247,7 +1265,7 @@ Dancer2::Core::App - encapsulation of Dancer2 packages
 
 =head1 VERSION
 
-version 0.152000
+version 0.153000
 
 =head1 DESCRIPTION
 

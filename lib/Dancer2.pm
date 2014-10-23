@@ -1,6 +1,6 @@
 package Dancer2;
 # ABSTRACT: Lightweight yet powerful web application framework
-$Dancer2::VERSION = '0.152000';
+$Dancer2::VERSION = '0.153000';
 use strict;
 use warnings;
 use List::Util  'first';
@@ -15,7 +15,7 @@ our $AUTHORITY = 'SUKRIA';
 # set version in dist.ini now
 # but we still need a basic version for
 # the tests
-$Dancer2::VERSION ||= '0.150000'; # 2.14.3
+$Dancer2::VERSION ||= '0.153000'; # 2.153.0
 
 our $runner;
 
@@ -32,7 +32,7 @@ sub import {
 
     my @final_args;
     foreach my $arg (@args) {
-        grep +( $arg eq $_ ), qw<:script :syntax>
+        grep +( $arg eq $_ ), qw<:script :syntax :tests>
             and next;
 
         if ( substr( $arg, 0, 1 ) eq '!' ) {
@@ -43,7 +43,7 @@ sub import {
     }
 
     scalar @final_args % 2
-      and die q{parameters must be key/value pairs, ':script' or '!keyword'};
+      and die q{parameters must be key/value pairs or '!keyword'};
 
     my %final_args = @final_args;
 
@@ -118,7 +118,7 @@ Dancer2 - Lightweight yet powerful web application framework
 
 =head1 VERSION
 
-version 0.152000
+version 0.153000
 
 =head1 DESCRIPTION
 

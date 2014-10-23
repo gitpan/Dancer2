@@ -1,6 +1,6 @@
 # ABSTRACT: create new Dancer2 application
 package Dancer2::CLI::Command::gen;
-$Dancer2::CLI::Command::gen::VERSION = '0.152000';
+$Dancer2::CLI::Command::gen::VERSION = '0.153000';
 use strict;
 use warnings;
 
@@ -279,7 +279,7 @@ Dancer2::CLI::Command::gen - create new Dancer2 application
 
 =head1 VERSION
 
-version 0.152000
+version 0.153000
 
 =head1 AUTHOR
 
