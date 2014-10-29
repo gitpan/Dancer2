@@ -1,8 +1,12 @@
-0.153000  2014-10-23 23:45:36+02:00 Europe/Amsterdam
+0.153001  2014-10-27 12:39:54+01:00 Europe/Amsterdam
 
-    [ ENHANCEMENT ]
-    * Internal: Move the implementation of send_file from DSL to App.
-      (Russell Jenkins)
+    [ BUG FIXES ]
+    * GH #734: Failing tests on Windows. (Sawyer X)
+
+    [ DOCUMENTATION ]
+    * GH #724: Plack::Test example in Dancer2::Test. (Jakob Voss)
+
+0.153000  2014-10-23 23:45:36+02:00 Europe/Amsterdam
 
     [ BUG FIXES ]
     * GH #634, #687: Fix file logger defaults.
@@ -13,6 +17,10 @@
     * GH #681, #682, #712: Clear session engine within destroy_session.
       (DavX, Russell Jenkins)
     * Ignore :tests in importing, don't suggest :script. (Sawyer X)
+
+    [ ENHANCEMENT ]
+    * Internal: Move the implementation of send_file from DSL to App.
+      (Russell Jenkins)
 
     [ DOCUMENTATION ]
     * GH #728: Typos in Policy document. (Olaf Alders, Sawyer X)

@@ -1,6 +1,6 @@
 package Dancer2::Test;
 # ABSTRACT: Useful routines for testing Dancer2 apps
-$Dancer2::Test::VERSION = '0.153000';
+$Dancer2::Test::VERSION = '0.153001';
 use strict;
 use warnings;
 
@@ -621,11 +621,28 @@ Dancer2::Test - Useful routines for testing Dancer2 apps
 
 =head1 VERSION
 
-version 0.153000
+version 0.153001
+
+=head1 SYNOPSIS
+
+    use Test::More;
+    use Plack::Test;
+    use HTTP::Request::Common; # install separately
+
+    use YourDancerApp;
+
+    my $app  = YourDancerApp->to_app;
+    my $test = Plack::Test->create($app);
+
+    my $res = $test->request( GET '/' );
+    is( $res->code, 200, '[GET /] Request successful' );
+    like( $res->content, qr/hello, world/, '[GET /] Correct content';
+
+    done_testing;
 
 =head1 DESCRIPTION
 
-DEPRECATED - Please use L<Plack::Test> instead.
+B<DEPRECATED>.  Please use L<Plack::Test> instead as shown in the SYNOPSIS!
 
 This module will warn for a while until we actually remove it. This is to
 provide enough time to fully remove it from your system.
