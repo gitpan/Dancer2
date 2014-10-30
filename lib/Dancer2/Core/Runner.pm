@@ -1,6 +1,6 @@
 package Dancer2::Core::Runner;
 # ABSTRACT: Top-layer class to start a dancer app
-$Dancer2::Core::Runner::VERSION = '0.153001';
+$Dancer2::Core::Runner::VERSION = '0.153002';
 use Moo;
 use Carp 'croak';
 use Dancer2::Core::MIME;
@@ -260,7 +260,7 @@ Dancer2::Core::Runner - Top-layer class to start a dancer app
 
 =head1 VERSION
 
-version 0.153001
+version 0.153002
 
 =head1 AUTHOR
 

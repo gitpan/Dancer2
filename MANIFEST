@@ -28,7 +28,6 @@ lib/Dancer2/Core/MIME.pm
 lib/Dancer2/Core/Request.pm
 lib/Dancer2/Core/Request/Upload.pm
 lib/Dancer2/Core/Response.pm
-lib/Dancer2/Core/Role/.Hookable.pm.swp
 lib/Dancer2/Core/Role/ConfigReader.pm
 lib/Dancer2/Core/Role/DSL.pm
 lib/Dancer2/Core/Role/Engine.pm

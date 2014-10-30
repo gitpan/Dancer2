@@ -1,6 +1,6 @@
 package Dancer2::Plugin;
 # ABSTRACT: Extending Dancer2's DSL with plugins
-$Dancer2::Plugin::VERSION = '0.153001';
+$Dancer2::Plugin::VERSION = '0.153002';
 use Moo::Role;
 use Carp 'croak', 'carp';
 use Dancer2::Core::DSL;
@@ -251,7 +251,7 @@ Dancer2::Plugin - Extending Dancer2's DSL with plugins
 
 =head1 VERSION
 
-version 0.153001
+version 0.153002
 
 =head1 DESCRIPTION
 
