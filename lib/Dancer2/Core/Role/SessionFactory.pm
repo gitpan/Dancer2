@@ -1,6 +1,6 @@
 package Dancer2::Core::Role::SessionFactory;
 #ABSTRACT: Role for session factories
-$Dancer2::Core::Role::SessionFactory::VERSION = '0.153002';
+$Dancer2::Core::Role::SessionFactory::VERSION = '0.154000';
 use strict;
 use warnings;
 use Carp 'croak';
@@ -33,6 +33,13 @@ sub supported_hooks {
 sub _build_type {
     'SessionFactory';
 }    # XXX vs 'Session'?  Unused, so I can't tell -- xdg
+
+has logger => (
+    is        => 'ro',
+    isa       => Object['Dancer2::Core::Logger'],
+    handles   => ['log'],
+    predicate => 'has_logger',
+);
 
 has cookie_name => (
     is      => 'ro',
@@ -254,7 +261,7 @@ Dancer2::Core::Role::SessionFactory - Role for session factories
 
 =head1 VERSION
 
-version 0.153002
+version 0.154000
 
 =head1 DESCRIPTION
 

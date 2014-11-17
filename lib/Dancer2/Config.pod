@@ -1,6 +1,6 @@
 package Dancer2::Config;
 # ABSTRACT: Configure Dancer2 to suit your needs
-$Dancer2::Config::VERSION = '0.153002';
+$Dancer2::Config::VERSION = '0.154000';
 __END__
 
 =pod
@@ -13,7 +13,7 @@ Dancer2::Config - Configure Dancer2 to suit your needs
 
 =head1 VERSION
 
-version 0.153002
+version 0.154000
 
 =head1 DESCRIPTION
 
@@ -285,12 +285,12 @@ If set to true, tells Dancer2 to consider all warnings as blocking errors.
 If set to true, Dancer2 will display full stack traces when a warning or a
 die occurs. (Internally sets Carp::Verbose). Default to false.
 
-=head3 server_tokens (boolean)
+=head3 no_server_tokens (boolean)
 
-If set to true, Dancer2 will add an "X-Powered-By" header and also append
-the Dancer2 version to the "Server" header. Default to true.
+If set to true, Dancer2 will B<not> add an "X-Powered-By" header and also append
+the Dancer2 version to the "Server" header. Default to false - adding.
 
-You can also use the environment variable C<DANCER_SERVER_TOKENS>.
+You can also use the environment variable C<DANCER_NO_SERVER_TOKENS>.
 
 =head3 logger (enum)
 

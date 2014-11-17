@@ -1,12 +1,12 @@
 package Dancer2::Serializer::JSON;
 # ABSTRACT: Serializer for handling JSON data
-$Dancer2::Serializer::JSON::VERSION = '0.153002';
+$Dancer2::Serializer::JSON::VERSION = '0.154000';
 use Moo;
 use JSON ();
 
 with 'Dancer2::Core::Role::Serializer';
 
-has '+content_type' => (default => 'application/json');
+has '+content_type' => ( default => sub {'application/json'} );
 
 # helpers
 sub from_json {
@@ -20,8 +20,6 @@ sub to_json {
 }
 
 # class definition
-sub loaded {1}
-
 sub serialize {
     my ( $self, $entity, $options ) = @_;
 
@@ -57,7 +55,7 @@ Dancer2::Serializer::JSON - Serializer for handling JSON data
 
 =head1 VERSION
 
-version 0.153002
+version 0.154000
 
 =head1 DESCRIPTION
 

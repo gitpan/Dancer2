@@ -1,3 +1,50 @@
+0.154000  2014-11-17 15:36:31+01:00 Europe/Amsterdam
+
+    [ BUG FIXES ]
+    * GH #744: Serialize anything, not just references. (Sawyer X)
+    * GH #744: Serialize regardless of content_type of serializer. (Sawyer X)
+    * GH #764: Catch template render errors. (Russell Jenkins, Steven Humphrey)
+    * Calling uri_for(undef) doesn't crash. (Sawyer X)
+    * GH #732: Correct name for 403 (Forbidden, not Unauthorized).
+      (Theo van Hoesel, Sawyer X, Mickey Nasriachi, Omar M. Othman)
+    * GH #753: Syntax of parameterized types. (Russell Jenkins)
+    * GH #734: Failing tests on Windows. (Russell Jenkins, Sawyer X)
+
+    [ ENHANCEMENTS ]
+    * GH #664, #684, #715: Handler::File replaced for static files with
+      Plack::Middleware::Static, allowing files to be served *before* routes.
+      This means hooks do not apply to static files anymore!
+      (Russell Jenkins, DavsX)
+    * Engines now have "logger" attribute to log errors. It sends the
+      Dancer2::Logger:: object, if one exists. (Sawyer X)
+    * Serializers do not need to implement "loaded" method. (Sawyer X)
+    * GH #733: In core: response_xxx removed in favor of generic
+      standard_response. (Sawyer X, Mickey Nasriachi, Omar M. Othman)
+    * GH #514, #642, #729: Allow mixing named params, splat, and
+      megasplat. (Russell Jenkins, Johan Spade, Dávid Kovács)
+    * GH #596: no_server_tokens works, as well as DANCER_NO_SERVER_TOKENS.
+      (Omar M. Othman, Sawyer X, Mickey Nasriachi)
+    * GH #639: Validate engine types in configuration.
+      (Sawyer X, Omar M. Othman, Mickey Nasriachi, Russell Jenkins)
+    * GH #663, #741: Remove "accept_type" attribute and other references.
+      (Mickey Nasriachi, Theo van Hoesel)
+    * GH #748: Provide forwarded_host, forwarded_protocol. (Sawyer X)
+    * GH #748: Do not provide a default env, require env for a request.
+      (Sawyer X)
+    * GH #742: Update test skeleton to use to_app. (Dávid Kovács)
+    * GH #636: Use Plack::Test in more tests. (Dávid Kovács)
+
+    [ DOCUMENTATION ]
+    * GH #656: Dancer2::Manual::Testing as a guide for testing Dancer2
+      applications. (Sawyer X)
+    * Improved documentation of route matching. (Russell Jenkins)
+    * Migration document update relating to enhancements.
+      (Sawyer X, Mickey Nasriachi)
+    * GH #731: Document changes in session.
+      (racke, Sawyer X, Mickey Nasriachi, Omar M. Othman)
+    * Document "id" attribute in Request object. (Sawyer X)
+    * Correct Cookbook examples on command line scripts. (Sawyer X)
+
 0.153002  2014-10-30 09:23:52+01:00 Europe/Amsterdam
 
     [ BUG FIXES ]

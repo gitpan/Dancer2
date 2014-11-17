@@ -1,6 +1,6 @@
 # ABSTRACT: A gentle introduction to Dancer2
 package Dancer2::Manual;
-$Dancer2::Manual::VERSION = '0.153002';
+$Dancer2::Manual::VERSION = '0.154000';
 __END__
 
 =pod
@@ -13,7 +13,7 @@ Dancer2::Manual - A gentle introduction to Dancer2
 
 =head1 VERSION
 
-version 0.153002
+version 0.154000
 
 =head1 DESCRIPTION
 
@@ -176,6 +176,37 @@ will be returned in an arrayref, accessible via the C<splat> keyword.
         # do something with $file.$ext here
     };
 
+An extensive, greedier wildcard represented by C<**> (A.K.A. "megasplat") can be
+used to define a route. The additional path is broken down and returned as an
+ArrayRef:
+
+    get '/entry/*/tags/**' => sub {
+        my ( $entry_id, $tags ) = splat;
+        my @tags = @{$tags};
+    };
+
+=head3 Mixed named and wildcard matching
+
+A route can combine named (token) matching and wildcard matching.
+This is useful when chaining actions:
+
+    get '/team/:team/**' => sub {
+        var team => param('team');
+        pass;
+    };
+
+    prefix '/team/:team';
+
+    get '/player/*' => sub {
+        my ($player) = splat;
+
+        # etc...
+    };
+
+    get '/score' => sub {
+        return score_for( vars->{'team'} );
+    };
+
 =head3 Regular Expression Matching
 
 A route can be defined with a Perl regular expression.
@@ -188,10 +219,13 @@ must be defined explicitly with C<qr{}>, like the following:
         return "Hello $name";
     };
 
+For Perl 5.10+, a route regex may use named capture groups. The C<captures>
+keyword will return a reference to a copy of C<%+>.
+
 =head3 Conditional Matching
 
-Routes may include some matching conditions (on the useragent and the
-hostname at the moment):
+Routes may include some matching conditions (on content_type, agent,
+user_agent, content_length and path_info):
 
     get '/foo', {agent => 'Songbird (\d\.\d)[\d\/]*?'} => sub {
       'foo method for songbird'
@@ -1212,14 +1246,6 @@ Defines a route for HTTP B<PATCH> requests to the given URL:
 intended to work as a "partial-PUT", transferring just the changes; please
 see L<http://tools.ietf.org/html/rfc5789|RFC5789> for further details.)
 
-Please be aware that, if you run your app in standalone mode, C<PATCH>
-requests will not reach your app unless you have a new version of
-L<HTTP::Server::Simple> which accepts C<PATCH> as a valid verb.  The current
-version at time of writing, C<0.44>, does not.  A pull request has been
-submitted to add this support, which you can find at:
-
-L<https://github.com/bestpractical/http-server-simple/pull/1>
-
 =head2 path
 
 Concatenates multiple paths together, without worrying about the underlying
@@ -1562,26 +1588,6 @@ path is broken down and returned as an ArrayRef:
     get '/entry/*/tags/**' => sub {
         my ( $entry_id, $tags ) = splat;
         my @tags = @{$tags};
-    };
-
-This helps with chained actions:
-
-    get '/team/*/**' => sub {
-        my ($team) = splat;
-        var team => $team;
-        pass;
-    };
-
-    prefix '/team/*';
-
-    get '/player/*' => sub {
-        my ($player) = splat;
-
-        # etc...
-    };
-
-    get '/score' => sub {
-        return score_for( vars->{'team'} );
     };
 
 =head2 start

@@ -1,7 +1,7 @@
 # ABSTRACT: a plugin for adding Ajax route handlers
 
 package Dancer2::Plugin::Ajax;
-$Dancer2::Plugin::Ajax::VERSION = '0.153002';
+$Dancer2::Plugin::Ajax::VERSION = '0.154000';
 use strict;
 use warnings;
 
@@ -63,7 +63,7 @@ Dancer2::Plugin::Ajax - a plugin for adding Ajax route handlers
 
 =head1 VERSION
 
-version 0.153002
+version 0.154000
 
 =head1 SYNOPSIS
 

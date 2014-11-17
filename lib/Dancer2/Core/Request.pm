@@ -1,5 +1,5 @@
 package Dancer2::Core::Request;
-$Dancer2::Core::Request::VERSION = '0.153002';
+$Dancer2::Core::Request::VERSION = '0.154000';
 # ABSTRACT: Interface for accessing incoming requests
 
 use Moo;
@@ -9,6 +9,7 @@ use Encode;
 use HTTP::Body;
 use URI;
 use URI::Escape;
+use Class::Load 'try_load_class';
 
 use Dancer2::Core::Types;
 use Dancer2::Core::Request::Upload;
@@ -23,7 +24,6 @@ my @http_env_keys = (qw/
     accept_charset
     accept_encoding
     accept_language
-    accept_type
     connection
     keep_alive
     referer
@@ -41,17 +41,14 @@ foreach my $attr ( @http_env_keys ) {
 }
 
 # check presence of XS module to speedup request
-eval { require URL::Encode::XS; };
-our $XS_URL_DECODE = !$@;
-
-eval { require CGI::Deurl::XS; };
-our $XS_PARSE_QUERY_STRING = !$@;
+our $XS_URL_DECODE         = try_load_class('URL::Encode::XS');
+our $XS_PARSE_QUERY_STRING = try_load_class('CGI::Deurl::XS');
 
 # then all the native attributes
 has env => (
-    is      => 'ro',
-    isa     => HashRef,
-    default => sub { {} },
+    is       => 'ro',
+    isa      => HashRef,
+    required => 1,
 );
 
 # a buffer for per-request variables
@@ -72,49 +69,16 @@ has path => (
     is      => 'ro',
     isa     => Str,
     lazy    => 1,
-    builder => '_build_path',
+    default => sub { $_[0]->path_info || '/' },
 );
-
-sub _build_path {
-    my $self = shift;
-
-    # Written from PSGI specs:
-    # http://search.cpan.org/dist/PSGI/PSGI.pod
-
-    my $path = "";
-
-    $path .= $self->script_name if defined $self->script_name;
-    $path .= $self->env->{PATH_INFO} if defined $self->env->{PATH_INFO};
-
-    # fallback to REQUEST_URI if nothing found
-    # we have to decode it, according to PSGI specs.
-    if ( defined $self->request_uri ) {
-        $path ||= $self->_url_decode( $self->request_uri );
-    }
-
-    croak "Cannot resolve path" if not $path;
-
-    return $path;
-}
 
 has path_info => (
     is      => 'ro',
     isa     => Str,
     lazy    => 1,
     writer  => 'set_path_info',
-    builder => '_build_path_info',
+    default => sub { $_[0]->env->{'PATH_INFO'} },
 );
-
-sub _build_path_info {
-    my $self = shift;
-
-    my $info = $self->env->{PATH_INFO};
-
-    # Empty path info will be interpreted as "root".
-    return $info || '/' if defined $info;
-
-    return $self->path;
-}
 
 has method => (
     is      => 'rw',
@@ -130,18 +94,14 @@ has content_type => (
     is      => 'ro',
     isa     => Str,
     lazy    => 1,
-    default => sub {
-        $_[0]->env->{CONTENT_TYPE} || '';
-    },
+    default => sub { $_[0]->env->{CONTENT_TYPE} || '' },
 );
 
 has content_length => (
     is      => 'ro',
     isa     => Num,
     lazy    => 1,
-    default => sub {
-        $_[0]->env->{CONTENT_LENGTH} || 0;
-    },
+    default => sub { $_[0]->env->{CONTENT_LENGTH} || 0 },
 );
 
 has body => (
@@ -172,7 +132,7 @@ has _params => (
 
 has _body_params => (
     is      => 'ro',
-    isa     => Maybe( HashRef ),
+    isa     => Maybe[HashRef],
     default => sub {undef},
 );
 
@@ -184,7 +144,7 @@ sub _set_body_params {
 
 has _query_params => (
     is      => 'ro',
-    isa     => Maybe( HashRef ),
+    isa     => Maybe[HashRef],
     default => sub {undef},
 );
 
@@ -239,6 +199,7 @@ sub host {
 sub agent                 { $_[0]->user_agent }
 sub remote_address        { $_[0]->address }
 sub forwarded_for_address { $_[0]->env->{HTTP_X_FORWARDED_FOR} }
+sub forwarded_host        { $_[0]->env->{HTTP_X_FORWARDED_HOST} }
 sub address               { $_[0]->env->{REMOTE_ADDR} }
 sub remote_host           { $_[0]->env->{REMOTE_HOST} }
 sub protocol              { $_[0]->env->{SERVER_PROTOCOL} }
@@ -246,6 +207,12 @@ sub port                  { $_[0]->env->{SERVER_PORT} }
 sub request_uri           { $_[0]->env->{REQUEST_URI} }
 sub user                  { $_[0]->env->{REMOTE_USER} }
 sub script_name           { $_[0]->env->{SCRIPT_NAME} }
+
+# there are two options
+sub forwarded_protocol    {
+    $_[0]->env->{HTTP_X_FORWARDED_PROTO} ||
+    $_[0]->env->{HTTP_X_FORWARDED_PROTOCOL}
+}
 
 sub scheme {
     my ($self) = @_;
@@ -256,18 +223,15 @@ sub scheme {
              $self->env->{'HTTP_X_FORWARDED_PROTOCOL'}
           || $self->env->{'HTTP_X_FORWARDED_PROTO'}
           || $self->env->{'HTTP_FORWARDED_PROTO'}
-          || "";
+          || '';
     }
-    return
-         $scheme
-      || $self->env->{'psgi.url_scheme'}
-      || $self->env->{'PSGI.URL_SCHEME'}
-      || "";
+
+    return $scheme || $self->env->{'psgi.url_scheme'} || '';
 }
 
 has serializer => (
     is        => 'ro',
-    isa       => Maybe( ConsumerOf ['Dancer2::Core::Role::Serializer'] ),
+    isa       => Maybe[ ConsumerOf['Dancer2::Core::Role::Serializer'] ],
     predicate => 1,
 );
 
@@ -281,14 +245,6 @@ sub deserialize {
     my $self = shift;
 
     return unless $self->has_serializer;
-
-    # Content-Type may contain additional parameters
-    # (http://www.w3.org/Protocols/rfc2616/rfc2616-sec3.html#sec3.7)
-    # which should be safe to ignore at this level.
-    # So accept either e.g. text/xml or text/xml; charset=utf-8
-    my ($content_type) = split /\s*;/, $self->content_type, 2;
-
-    return unless $self->serializer->support_content_type($content_type);
 
     # The latest draft of the RFC does not forbid DELETE to have content,
     # rather the behaviour is undefined. Take the most lenient route and
@@ -322,7 +278,7 @@ sub is_patch  { $_[0]->{method} eq 'PATCH' }
 
 # public interface compat with CGI.pm objects
 sub request_method { method(@_) }
-sub input_handle { $_[0]->env->{'psgi.input'} || $_[0]->env->{'PSGI.INPUT'} }
+sub input_handle { $_[0]->env->{'psgi.input'} }
 
 our $_count = 0;
 
@@ -408,6 +364,7 @@ sub dispatch_path {
 sub uri_for {
     my ( $self, $part, $params, $dont_escape ) = @_;
 
+    $part ||= '';
     my $uri = $self->base;
 
     # Make sure there's exactly one slash between the base and the new part
@@ -714,7 +671,7 @@ Dancer2::Core::Request - Interface for accessing incoming requests
 
 =head1 VERSION
 
-version 0.153002
+version 0.154000
 
 =head1 SYNOPSIS
 
@@ -753,6 +710,14 @@ returns the value of 'some_variable', while
   $request->var('some_variable' => 'value');
 
 will set it.
+
+=head2 id()
+
+The ID of the request. This allows you to trace a specific request in loggers,
+per the string created using C<to_string>.
+
+The ID of the request is essentially the number of requests run in the current
+class.
 
 =head2 path()
 
@@ -1003,8 +968,6 @@ specific accessors, here are those supported:
 =item C<accept_encoding>
 
 =item C<accept_language>
-
-=item C<accept_type>
 
 =item C<agent> (alias for C<user_agent>)
 

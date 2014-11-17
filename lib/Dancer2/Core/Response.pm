@@ -1,7 +1,7 @@
 # ABSTRACT: Response object for Dancer2
 
 package Dancer2::Core::Response;
-$Dancer2::Core::Response::VERSION = '0.153002';
+$Dancer2::Core::Response::VERSION = '0.154000';
 use Moo;
 
 use Encode;
@@ -16,11 +16,6 @@ use overload
 
 with 'Dancer2::Core::Role::Headers';
 
-sub BUILD {
-    my ($self) = @_;
-    $self->header( 'Server' => "Perl Dancer2 $Dancer2::VERSION" );
-}
-
 # boolean to tell if the route passes or not
 has has_passed => (
     is      => 'rw',
@@ -32,7 +27,7 @@ sub pass { shift->has_passed(1) }
 
 has serializer => (
     is        => 'ro',
-    isa       => Maybe( ConsumerOf ['Dancer2::Core::Role::Serializer'] ),
+    isa       => Maybe[ ConsumerOf ['Dancer2::Core::Role::Serializer'] ],
     predicate => 1,
 );
 
@@ -56,14 +51,6 @@ has status => (
     default => sub {200},
     lazy    => 1,
     coerce  => sub { Dancer2::Core::HTTP->status(shift) },
-
-    # This trigger makes sure we drop the content whenever
-    # we set the status to [23]04.
-    trigger => sub {
-        my ( $self, $value ) = @_;
-        $self->content('') if $value =~ /^(?:1\d{2}|[23]04)$/;
-        $value;
-    },
 );
 
 has content => (
@@ -73,25 +60,20 @@ has content => (
         my $value = shift;
         return "$value";
     },
-
-   # This trigger makes sure we have a good content-length whenever the content
-   # changes
-    trigger => sub {
-        my ( $self, $value ) = @_;
-        $self->has_passed or $self->header( 'Content-Length' => length($value) );
-        return $value;
-    },
-
     predicate => 'has_content',
     clearer   => 'clear_content',
 );
 
-before content => sub {
+around content => sub {
+    my $orig = shift;
     my $self = shift;
-    if (ref($_[0]) and $self->has_serializer) {
+
+    if ( @_ && $self->has_serializer ) {
         $_[0] = $self->serialize($_[0]);
         $self->is_encoded(1); # All serializers return byte strings
     }
+
+    return $self->$orig(@_);
 };
 
 has default_content_type => (
@@ -142,6 +124,10 @@ sub new_from_array {
 
 sub to_psgi {
     my ($self) = @_;
+
+    Dancer2->runner->config->{'no_server_tokens'}
+        or $self->header( 'Server' => "Perl Dancer2 $Dancer2::VERSION" );
+
     # It is possible to have no content and/or no content type set
     # e.g. if all routes 'pass'. Apply defaults here..
     $self->content_type or $self->content_type($self->default_content_type);
@@ -223,7 +209,7 @@ Dancer2::Core::Response - Response object for Dancer2
 
 =head1 VERSION
 
-version 0.153002
+version 0.154000
 
 =head1 ATTRIBUTES
 
@@ -243,9 +229,6 @@ The HTTP status for the response.
 
 The content for the response, stored as a string.  If a reference is passed, the
 response will try coerce it to a string via double quote interpolation.
-
-Whenever the content changes, it recalculates and updates the Content-Length header,
-unless the response has_passed.
 
 =head2 default_content_type
 

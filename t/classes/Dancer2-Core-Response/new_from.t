@@ -2,8 +2,8 @@
 
 use strict;
 use warnings;
-use Test::More tests => 3;
 
+use Test::More tests => 3;
 use Plack::Response;
 use Dancer2::Core::Response;
 
@@ -40,10 +40,7 @@ subtest 'new_from_array' => sub {
 
     is_deeply(
         \%headers,
-        {
-            'Server' => "Perl Dancer2 $Dancer2::VERSION",
-            %default_headers,
-        },
+        \%default_headers,
         'All headers correct',
     );
 };
@@ -70,10 +67,7 @@ subtest 'new_from_plack' => sub {
 
     is_deeply(
         \%headers,
-        {
-            'Server' => "Perl Dancer2 $Dancer2::VERSION",
-            %default_headers,
-        },
+        \%default_headers,
         'All headers correct',
     );
 };

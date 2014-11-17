@@ -1,7 +1,8 @@
 package Dancer2::Core::Role::StandardResponses;
 # ABSTRACT: Role to provide commonly used responses
-$Dancer2::Core::Role::StandardResponses::VERSION = '0.153002';
+$Dancer2::Core::Role::StandardResponses::VERSION = '0.154000';
 use Moo::Role;
+use Dancer2::Core::HTTP;
 
 sub response {
     my ( $self, $app, $code, $message ) = @_;
@@ -10,19 +11,14 @@ sub response {
     return $message;
 }
 
-sub response_400 {
-    my ( $self, $app ) = @_;
-    $self->response( $app, 400, 'Bad Request' );
-}
+sub standard_response {
+    my ( $self, $app, $status_code ) = @_;
 
-sub response_404 {
-    my ( $self, $app ) = @_;
-    $self->response( $app, 404, 'Not Found' );
-}
-
-sub response_403 {
-    my ( $self, $app ) = @_;
-    $self->response( $app, 403, 'Unauthorized' );
+    return $self->response(
+        $app,
+        $status_code,
+        Dancer2::Core::HTTP->status_message($status_code),
+    );
 }
 
 1;
@@ -39,27 +35,26 @@ Dancer2::Core::Role::StandardResponses - Role to provide commonly used responses
 
 =head1 VERSION
 
-version 0.153002
+version 0.154000
 
 =head1 METHODS
 
 =head2 response
 
-Generic method that produces a response given with a code and a message:
+Generic method that produces a custom response given with a code and a message:
 
-    $self->response( $app, 404, "not found" );
+    $self->response( $app, 404, 'Not Found' );
 
-=head2 response_400
+This could be used to create your own, which is separate from the standard one:
 
-Produces a 400 response
+    $self->response( $app, 404, 'File missing in action' );
 
-=head2 response_404
+=head2 standard_response
 
-Produces a 404 response
+Produces a standard response using the code.
 
-=head2 response_403
-
-Produces a 403 response
+    # first example can be more easily written as
+    $self->standard_response( $app, 404 );
 
 =head1 AUTHOR
 

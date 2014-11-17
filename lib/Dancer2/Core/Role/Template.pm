@@ -1,7 +1,7 @@
 # ABSTRACT: Role for template engines
 
 package Dancer2::Core::Role::Template;
-$Dancer2::Core::Role::Template::VERSION = '0.153002';
+$Dancer2::Core::Role::Template::VERSION = '0.154000';
 use Dancer2::Core::Types;
 use Dancer2::FileUtils qw'path';
 use Carp 'croak';
@@ -22,6 +22,13 @@ sub supported_hooks {
 sub _build_type {'Template'}
 
 requires 'render';
+
+has logger => (
+    is        => 'ro',
+    isa       => Object['Dancer2::Core::Logger'],
+    handles   => ['log'],
+    predicate => 'has_logger',
+);
 
 has name => (
     is      => 'ro',
@@ -207,7 +214,7 @@ Dancer2::Core::Role::Template - Role for template engines
 
 =head1 VERSION
 
-version 0.153002
+version 0.154000
 
 =head1 DESCRIPTION
 

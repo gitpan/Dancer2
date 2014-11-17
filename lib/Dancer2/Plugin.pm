@@ -1,6 +1,6 @@
 package Dancer2::Plugin;
 # ABSTRACT: Extending Dancer2's DSL with plugins
-$Dancer2::Plugin::VERSION = '0.153002';
+$Dancer2::Plugin::VERSION = '0.154000';
 use Moo::Role;
 use Carp 'croak', 'carp';
 use Dancer2::Core::DSL;
@@ -111,10 +111,12 @@ sub plugin_args {@_}
 
 sub plugin_setting {
     my $plugin = caller;
-    my $dsl    = _get_dsl();
+    my $dsl    = _get_dsl()
+        or croak 'No DSL object found';
+
     ( my $plugin_name = $plugin ) =~ s/Dancer2::Plugin:://;
-    my $app = $dsl->dancer_app;
-    return $app->config->{'plugins'}->{$plugin_name} ||= {};
+
+    return $dsl->app->config->{'plugins'}->{$plugin_name} ||= {};
 }
 
 sub register_hook {
@@ -251,7 +253,7 @@ Dancer2::Plugin - Extending Dancer2's DSL with plugins
 
 =head1 VERSION
 
-version 0.153002
+version 0.154000
 
 =head1 DESCRIPTION
 

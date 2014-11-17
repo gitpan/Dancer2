@@ -1,14 +1,12 @@
 package Dancer2::Serializer::Mutable;
 # ABSTRACT: Serialize and deserialize content based on HTTP header
-$Dancer2::Serializer::Mutable::VERSION = '0.153002';
+$Dancer2::Serializer::Mutable::VERSION = '0.154000';
 use Moo;
 use Carp 'croak';
 use Encode;
 with 'Dancer2::Core::Role::Serializer';
 
-has '+content_type' => (
-    default => 'application/json',
-);
+has '+content_type' => ( default => sub {'application/json'} );
 
 my $formats = {
     'text/x-yaml'        => 'YAML',
@@ -32,8 +30,6 @@ my $serializer = {
         from    => sub { Dancer2::Core::DSL::from_json(@_) },
     },
 };
-
-sub loaded {1}
 
 sub support_content_type {
     my ( $self, $ct ) = @_;
@@ -81,7 +77,7 @@ sub _get_content_type {
 
     # Search for the first HTTP header variable which
     # specifies supported content.
-    foreach my $method ( qw<content_type accept accept_type> ) {
+    foreach my $method ( qw<content_type accept> ) {
         if ( my $value = $self->request->header($method) ) {
             if ( exists $formats->{$value} ) {
                 $self->set_content_type($value);
@@ -108,7 +104,7 @@ Dancer2::Serializer::Mutable - Serialize and deserialize content based on HTTP h
 
 =head1 VERSION
 
-version 0.153002
+version 0.154000
 
 =head1 SYNOPSIS
 
@@ -142,10 +138,6 @@ The B<content_type> from the request headers
 =item
 
 the B<accept> from the request headers
-
-=item
-
-the B<accept_type> from the request headers
 
 =item
 

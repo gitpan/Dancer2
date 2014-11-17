@@ -1,6 +1,6 @@
 # ABSTRACT: encapsulation of Dancer2 packages
 package Dancer2::Core::App;
-$Dancer2::Core::App::VERSION = '0.153002';
+$Dancer2::Core::App::VERSION = '0.154000';
 use Moo;
 use Carp               'croak';
 use Scalar::Util       'blessed';
@@ -8,7 +8,13 @@ use Module::Runtime    'is_module_name';
 use Return::MultiLevel ();
 use Safe::Isa;
 use File::Spec;
-use Plack::Builder;
+
+use Plack::Middleware::Conditional;
+use Plack::Middleware::ContentLength;
+use Plack::Middleware::FixMissingBodyInRedirect;
+use Plack::Middleware::Head;
+use Plack::Middleware::RemoveRedundantBody;
+use Plack::Middleware::Static;
 
 use Dancer2::FileUtils 'path';
 use Dancer2::Core;
@@ -21,8 +27,10 @@ use Dancer2::Core::Request;
 use Dancer2::Core::Factory;
 
 # we have hooks here
-with 'Dancer2::Core::Role::Hookable';
-with 'Dancer2::Core::Role::ConfigReader';
+with qw<
+    Dancer2::Core::Role::Hookable
+    Dancer2::Core::Role::ConfigReader
+>;
 
 sub supported_engines { [ qw<logger serializer session template> ] }
 
@@ -34,11 +42,12 @@ has _factory => (
 );
 
 has logger_engine => (
-    is      => 'ro',
-    isa     => Maybe[ConsumerOf['Dancer2::Core::Role::Logger']],
-    lazy    => 1,
-    builder => '_build_logger_engine',
-    writer  => 'set_logger_engine',
+    is        => 'ro',
+    isa       => Maybe[ConsumerOf['Dancer2::Core::Role::Logger']],
+    lazy      => 1,
+    builder   => '_build_logger_engine',
+    predicate => 'has_logger_engine',
+    writer    => 'set_logger_engine',
 );
 
 has session_engine => (
@@ -145,7 +154,7 @@ sub _build_logger_engine {
         $self->_get_config_for_engine( logger => $value, $config );
 
     my $logger = $self->_factory->create(
-        logger => $value,
+        logger          => $value,
         %{$engine_options},
         location        => $self->config_location,
         environment     => $self->environment,
@@ -175,9 +184,15 @@ sub _build_session_engine {
           $self->_get_config_for_engine( session => $value, $config );
 
     return $self->_factory->create(
-        session => $value,
+        session         => $value,
         %{$engine_options},
         postponed_hooks => $self->get_postponed_hooks,
+
+        # do NOT change to Enterprise operator
+        # because it will call the builder
+        $self->has_logger_engine         ?
+      ( logger => $self->logger_engine ) :
+        (),
     );
 }
 
@@ -204,9 +219,15 @@ sub _build_template_engine {
         || path( $self->location, 'views' );
 
     return $self->_factory->create(
-        template => $value,
+        template        => $value,
         %{$engine_attrs},
         postponed_hooks => $self->get_postponed_hooks,
+
+        # do NOT change to Enterprise operator
+        # because it will call the builder
+        $self->has_logger_engine         ?
+      ( logger => $self->logger_engine ) :
+        (),
     );
 }
 
@@ -228,6 +249,12 @@ sub _build_serializer_engine {
         serializer      => $value,
         config          => $engine_options,
         postponed_hooks => $self->get_postponed_hooks,
+
+        # do NOT change to Enterprise operator
+        # because it will call the builder
+        $self->has_logger_engine         ?
+      ( logger => $self->logger_engine ) :
+        (),
     );
 }
 
@@ -300,7 +327,6 @@ has with_return => (
     clearer   => 'clear_with_return',
 );
 
-
 has session => (
     is        => 'ro',
     isa       => InstanceOf['Dancer2::Core::Session'],
@@ -310,6 +336,17 @@ has session => (
     clearer   => 'clear_session',
     predicate => '_has_session',
 );
+
+around _build_config => sub {
+    my ( $orig, $self ) = @_;
+    my $config          = $self->$orig;
+
+    if ( $config && $config->{'engines'} ) {
+        $self->_validate_engine($_) for keys %{ $config->{'engines'} };
+    }
+
+    return $config;
+};
 
 sub _build_response {
     my $self   = shift;
@@ -492,6 +529,7 @@ around execute_hook => sub {
 sub _build_default_config {
     my $self = shift;
 
+    my $public = $ENV{DANCER_PUBLIC} || path( $self->location, 'public' );
     return {
         content_type   => ( $ENV{DANCER_CONTENT_TYPE} || 'text/html' ),
         charset        => ( $ENV{DANCER_CHARSET}      || '' ),
@@ -499,14 +537,10 @@ sub _build_default_config {
         views          => ( $ENV{DANCER_VIEWS}
                             || path( $self->config_location, 'views' ) ),
         appdir         => $self->location,
+        public_dir     => $public,
+        static_handler => ( -d $public ),
         template       => 'Tiny',
         route_handlers => [
-            [
-                File => {
-                    public_dir => $ENV{DANCER_PUBLIC} ||
-                                  path( $self->location, 'public' )
-                }
-            ],
             [
                 AutoPage => 1
             ],
@@ -614,12 +648,19 @@ sub cleanup {
     }
 }
 
+sub _validate_engine {
+    my $self = shift;
+    my $name = shift;
+
+    grep +( $_ eq $name ), @{ $self->supported_engines }
+        or croak "Engine '$name' is not supported.";
+}
+
 sub engine {
     my $self = shift;
     my $name = shift;
 
-    grep { $_ eq $name } @{ $self->supported_engines }
-        or croak "Engine '$name' is not supported.";
+    $self->_validate_engine($name);
 
     my $attr_name = "${name}_engine";
     return $self->$attr_name;
@@ -746,7 +787,6 @@ sub send_file {
     # TODO Streaming support
 }
 
-
 sub BUILD {
     my $self = shift;
     $self->init_route_handlers();
@@ -768,8 +808,8 @@ sub init_route_handlers {
         $config = {} if !ref($config);
 
         my $handler = $self->_factory->create(
-            Handler => $handler_name,
-            app     => $self,
+            Handler         => $handler_name,
+            app             => $self,
             %$config,
             postponed_hooks => $self->postponed_hooks,
         );
@@ -862,6 +902,7 @@ sub route_exists {
         $existing_route->spec_route eq $route->spec_route
             and return 1;
     }
+
     return 0;
 }
 
@@ -978,6 +1019,7 @@ sub make_forward_to {
     exists $new_request->cookies->{$name} and return $new_request;
     $new_request->cookies->{$name} =
         Dancer2::Core::Cookie->new( name => $name, value => $self->session->id );
+
     return $new_request;
 }
 
@@ -1026,9 +1068,26 @@ sub to_app {
         return $response;
     };
 
-    my $builder = Plack::Builder->new;
-    $builder->add_middleware('Head');
-    return $builder->wrap($psgi);
+    # Wrap with common middleware
+    # RemoveRedundantBody, FixMissingBodyInRedirect, ContentLength
+    $psgi = Plack::Middleware::RemoveRedundantBody->wrap( $psgi );
+    $psgi = Plack::Middleware::FixMissingBodyInRedirect->wrap( $psgi );
+    $psgi = Plack::Middleware::ContentLength->wrap( $psgi );
+
+    # Static content passes through to app on 404, conditionally applied.
+    $psgi = Plack::Middleware::Conditional->wrap(
+        $psgi,
+        builder => sub { Plack::Middleware::Static->wrap(
+            $psgi,
+            path => sub { -f path( $self->config->{public_dir}, shift ) },
+            root => $self->config->{public_dir},
+        ) },
+        condition => sub { $self->config->{static_handler} },
+    );
+
+    # Apply Head. After static so a HEAD request on static content DWIM.
+    $psgi = Plack::Middleware::Head->wrap( $psgi );
+    return $psgi;
 }
 
 sub dispatch {
@@ -1167,14 +1226,6 @@ sub build_request {
         ( serializer      => $engine )x!! $engine,
     );
 
-    # Log deserialization errors
-    if ($engine) {
-        $engine->has_error and $self->log(
-            core => "Failed to deserialize the request : " .
-                    $engine->error
-        );
-    }
-
     return $request;
 }
 
@@ -1265,7 +1316,7 @@ Dancer2::Core::App - encapsulation of Dancer2 packages
 
 =head1 VERSION
 
-version 0.153002
+version 0.154000
 
 =head1 DESCRIPTION
 

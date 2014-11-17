@@ -1,6 +1,6 @@
 package Dancer2::Core::Role::HasLocation;
 # ABSTRACT: Role for application location "guessing"
-$Dancer2::Core::Role::HasLocation::VERSION = '0.153002';
+$Dancer2::Core::Role::HasLocation::VERSION = '0.154000';
 use Moo::Role;
 use Dancer2::Core::Types;
 use Dancer2::FileUtils;
@@ -50,7 +50,10 @@ sub _build_location {
 
         # if one of them is found, keep that; but skip ./blib since both lib and bin exist
         # under it, but views and public do not.
-        if ( ( $subdir !~ m!/blib/?$! && -d $libdir && -d $bindir ) || ( -f $dancerdir ) ) {
+        if (
+            ( $subdir !~ m![\\/]blib[\\/]?$! && -d $libdir && -d $bindir ) ||
+            ( -f $dancerdir )
+        ) {
             $subdir_found = 1;
             last;
         }
@@ -84,7 +87,7 @@ Dancer2::Core::Role::HasLocation - Role for application location "guessing"
 
 =head1 VERSION
 
-version 0.153002
+version 0.154000
 
 =head1 AUTHOR
 

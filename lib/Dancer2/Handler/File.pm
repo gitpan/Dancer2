@@ -1,6 +1,6 @@
 package Dancer2::Handler::File;
 # ABSTRACT: class for handling file content rendering
-$Dancer2::Handler::File::VERSION = '0.153002';
+$Dancer2::Handler::File::VERSION = '0.154000';
 use Carp 'croak';
 use Moo;
 use HTTP::Date;
@@ -9,9 +9,11 @@ use Dancer2::Core::MIME;
 use Dancer2::Core::Types;
 use File::Spec;
 
-with 'Dancer2::Core::Role::Handler';
-with 'Dancer2::Core::Role::StandardResponses';
-with 'Dancer2::Core::Role::Hookable';
+with qw<
+    Dancer2::Core::Role::Handler
+    Dancer2::Core::Role::StandardResponses
+    Dancer2::Core::Role::Hookable
+>;
 
 sub supported_hooks {
     qw(
@@ -73,7 +75,7 @@ sub code {
         my $path   = $app->request->path_info;
 
         if ( $path =~ /\0/ ) {
-            return $self->response_400($app);
+            return $self->standard_response( $app, 400 );
         }
 
         if ( $prefix && $prefix ne '/' ) {
@@ -84,7 +86,7 @@ sub code {
           File::Spec->splitdir( join '',
             ( File::Spec->splitpath($path) )[ 1, 2 ] );
         if ( grep $_ eq '..', @tokens ) {
-            return $self->response_403($app);
+            return $self->standard_response( $app, 403 );
         }
 
         my $file_path = path( $self->public_dir, @tokens );
@@ -95,7 +97,7 @@ sub code {
         }
 
         if ( !-r $file_path ) {
-            return $self->response_403($app);
+            return $self->standard_response( $app, 403 );
         }
 
         # Now we are sure we can render the file...
@@ -147,7 +149,7 @@ Dancer2::Handler::File - class for handling file content rendering
 
 =head1 VERSION
 
-version 0.153002
+version 0.154000
 
 =head1 AUTHOR
 

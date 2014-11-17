@@ -1,12 +1,14 @@
 package Dancer2::Handler::AutoPage;
 # ABSTRACT: Class for handling the AutoPage feature
-$Dancer2::Handler::AutoPage::VERSION = '0.153002';
+$Dancer2::Handler::AutoPage::VERSION = '0.154000';
 use Moo;
 use Carp 'croak';
 use Dancer2::Core::Types;
 
-with 'Dancer2::Core::Role::Handler';
-with 'Dancer2::Core::Role::StandardResponses';
+with qw<
+    Dancer2::Core::Role::Handler
+    Dancer2::Core::Role::StandardResponses
+>;
 
 sub register {
     my ( $self, $app ) = @_;
@@ -64,7 +66,7 @@ Dancer2::Handler::AutoPage - Class for handling the AutoPage feature
 
 =head1 VERSION
 
-version 0.153002
+version 0.154000
 
 =head1 DESCRIPTION
 

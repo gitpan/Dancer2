@@ -1,7 +1,7 @@
 use strict;
 use warnings;
 
-use Test::More tests => 56;
+use Test::More tests => 41;
 use Dancer2::Serializer::Mutable;
 use Plack::Test;
 use HTTP::Request::Common;
@@ -11,18 +11,14 @@ use YAML;
 
 {
     package MyApp;
-
     use Dancer2;
-
     set serializer => 'Mutable';
 
-    get '/serialize'  => sub {
-        return { bar => 'baz' }
-    };
+    get '/serialize'     => sub { +{ bar => 'baz' } };
     post '/deserialize'  => sub {
         return request->data &&
                ref request->data eq 'HASH' &&
-               request->data->{bar} ? request->data->{bar} : '?';
+               request->data->{bar} ? { bar => request->data->{bar} } : { ret => '?' };
     };
 }
 
@@ -37,26 +33,30 @@ test_psgi $app, sub {
         yaml    => {
                 types       => [ qw(text/x-yaml text/html) ],
                 value       => encode('UTF-8', YAML::Dump({ bar => 'baz' })),
+                last_val    => "---bar:baz",
             },
         dumper  => {
                 types       => [ qw(text/x-data-dumper) ],
                 value       => Data::Dumper::Dumper({ bar => 'baz' }),
+                last_val    => "\$VAR1={'bar'=>'baz'};",
             },
         json    => {
                 types       => [ qw(text/x-json application/json) ],
                 value       => JSON::to_json({ bar => 'baz' }),
+                last_val    => '{"bar":"baz"}',
             },
     };
 
     {
         for my $format (keys %$d) {
+            diag("Format: $format");
 
             my $s = $d->{$format};
 
             # Response with implicit call to the serializer
             for my $content_type ( @{ $s->{types} } ) {
 
-                for my $ct (qw/Content-Type Accept Accept-Type/) {
+                for my $ct (qw/Content-Type Accept/) {
 
                     # Test getting the value serialized in the correct format
                     my $res = $cb->( GET '/serialize', $ct => $content_type );
@@ -76,8 +76,10 @@ test_psgi $app, sub {
                                  'Content-Type' => $content_type,
                                  content        => $s->{value} );
 
+                my $content = $req->content;
+                $content =~ s/\s//g;
                 is( $req->code, 200, "[/$format] Correct status" );
-                is( $req->content, 'baz', "[/$format] Correct content" );
+                is( $content, $s->{last_val}, "[/$format] Correct content" );
             } #/ for my $content_type
         } #/ for my $format
     }

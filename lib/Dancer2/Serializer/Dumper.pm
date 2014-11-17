@@ -1,14 +1,14 @@
 # ABSTRACT: Serializer for handling Dumper data
 
 package Dancer2::Serializer::Dumper;
-$Dancer2::Serializer::Dumper::VERSION = '0.153002';
+$Dancer2::Serializer::Dumper::VERSION = '0.154000';
 use Moo;
 use Carp 'croak';
 use Data::Dumper;
 
 with 'Dancer2::Core::Role::Serializer';
 
-has '+content_type' => (default => 'text/x-data-dumper');
+has '+content_type' => ( default => sub {'text/x-data-dumper'} );
 
 # helpers
 sub from_dumper {
@@ -22,8 +22,6 @@ sub to_dumper {
 }
 
 # class definition
-sub loaded {1}
-
 sub serialize {
     my ( $self, $entity ) = @_;
 
@@ -55,7 +53,7 @@ Dancer2::Serializer::Dumper - Serializer for handling Dumper data
 
 =head1 VERSION
 
-version 0.153002
+version 0.154000
 
 =head1 DESCRIPTION
 
