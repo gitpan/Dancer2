@@ -6,7 +6,7 @@ use warnings;
 
 use Test::More;
 
-plan tests => 59 + ($ENV{AUTHOR_TESTING} ? 1 : 0);
+plan tests => 58 + ($ENV{AUTHOR_TESTING} ? 1 : 0);
 
 my @module_files = (
     'Dancer2.pm',
@@ -55,7 +55,6 @@ my @module_files = (
     'Dancer2/Logger/Note.pm',
     'Dancer2/Logger/Null.pm',
     'Dancer2/Plugin.pm',
-    'Dancer2/Plugin/Ajax.pm',
     'Dancer2/Serializer/Dumper.pm',
     'Dancer2/Serializer/JSON.pm',
     'Dancer2/Serializer/Mutable.pm',

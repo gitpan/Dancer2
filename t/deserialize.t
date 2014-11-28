@@ -154,7 +154,7 @@ note "Deserialze any body content that is allowed or undefined"; {
     test_psgi $app, sub {
         my $cb = shift;
 
-        for my $method ( qw/delete patch/ ) {
+        for my $method ( qw/DELETE PATCH/ ) {
             my $request  = HTTP::Request->new(
                 $method,
                 "/from/D\x{c3}\x{bc}sseldorf", # /from/d%C3%BCsseldorf
@@ -176,7 +176,7 @@ note "Deserialze any body content that is allowed or undefined"; {
 
 note 'Check serialization errors'; {
     Dancer2->runner->apps->[0]->set_serializer_engine(
-        Dancer2::Serializer::JSON->new( logger => $logger )
+        Dancer2::Serializer::JSON->new( log_cb => sub { $logger->log(@_) } )
     );
 
     test_psgi $app, sub {

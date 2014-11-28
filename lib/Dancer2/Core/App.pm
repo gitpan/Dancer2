@@ -1,6 +1,6 @@
 # ABSTRACT: encapsulation of Dancer2 packages
 package Dancer2::Core::App;
-$Dancer2::Core::App::VERSION = '0.154000';
+$Dancer2::Core::App::VERSION = '0.155000';
 use Moo;
 use Carp               'croak';
 use Scalar::Util       'blessed';
@@ -183,16 +183,14 @@ sub _build_session_engine {
     my $engine_options =
           $self->_get_config_for_engine( session => $value, $config );
 
+    Scalar::Util::weaken( my $weak_self = $self );
+
     return $self->_factory->create(
         session         => $value,
         %{$engine_options},
         postponed_hooks => $self->get_postponed_hooks,
 
-        # do NOT change to Enterprise operator
-        # because it will call the builder
-        $self->has_logger_engine         ?
-      ( logger => $self->logger_engine ) :
-        (),
+        log_cb => sub { $weak_self->logger->log(@_) },
     );
 }
 
@@ -218,16 +216,14 @@ sub _build_template_engine {
     $engine_attrs->{views}  ||= $config->{views}
         || path( $self->location, 'views' );
 
+    Scalar::Util::weaken( my $weak_self = $self );
+
     return $self->_factory->create(
         template        => $value,
         %{$engine_attrs},
         postponed_hooks => $self->get_postponed_hooks,
 
-        # do NOT change to Enterprise operator
-        # because it will call the builder
-        $self->has_logger_engine         ?
-      ( logger => $self->logger_engine ) :
-        (),
+        log_cb => sub { $weak_self->logger->log(@_) },
     );
 }
 
@@ -245,16 +241,14 @@ sub _build_serializer_engine {
     my $engine_options =
         $self->_get_config_for_engine( serializer => $value, $config );
 
+    Scalar::Util::weaken( my $weak_self = $self );
+
     return $self->_factory->create(
         serializer      => $value,
         config          => $engine_options,
         postponed_hooks => $self->get_postponed_hooks,
 
-        # do NOT change to Enterprise operator
-        # because it will call the builder
-        $self->has_logger_engine         ?
-      ( logger => $self->logger_engine ) :
-        (),
+        log_cb => sub { $weak_self->logger_engine->log(@_) },
     );
 }
 
@@ -298,8 +292,9 @@ has route_handlers => (
 );
 
 has name => (
-    is  => 'ro',
-    isa => Str,
+    is      => 'ro',
+    isa     => Str,
+    default => sub { (caller(1))[0] },
 );
 
 has request => (
@@ -1000,7 +995,7 @@ sub make_forward_to {
     my $new_params = _merge_params( scalar( $request->params ), $params || {} );
 
     exists $options->{method} and
-        $new_request->method( $options->{method} );
+        $new_request->env->{'REQUEST_METHOD'} = $options->{method};
 
     # Copy params (these are already decoded)
     $new_request->{_params}       = $new_params;
@@ -1316,7 +1311,7 @@ Dancer2::Core::App - encapsulation of Dancer2 packages
 
 =head1 VERSION
 
-version 0.154000
+version 0.155000
 
 =head1 DESCRIPTION
 

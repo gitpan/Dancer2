@@ -1,3 +1,33 @@
+0.155000  2014-11-28 01:18:39+01:00 Europe/Amsterdam
+
+    [ BUG FIXES ]
+    * GH #773, #775: AutoPage handler no longer renders layouts.
+      (Dávid Kovács, Sawyer X)
+    * GH #770: Prevent crazy race condition between the logger engine and
+      other engines. This means engines now call "log_cb" to log.
+      (Sawyer X)
+    * App now has default name to caller package. (Sawyer X)
+    * Serializers will not try to serialize empty content. (Sawyer X)
+    * Lots of cleanups in Core::Request in favor of Plack::Request.
+      (Sawyer X)
+
+    [ ENHANCEMENTS ]
+    * Layouts directory can be configured using 'layout_dir'.
+      (Sawyer X)
+    * GH #648, #760: Logger format now supports 'h', 'u', 'U', 'h', 'i'.
+      They are documented but weren't really available.
+      (Lennart Hengstmengel)
+    * Serializers having errors will not fail if there is no logger.
+      (Sawyer X)
+    * Create a request object with a single argument of $env, like
+      Plack::Request. (Sawyer X)
+
+    [ DOCUMENTATION ]
+    * Remove documented hack for static content because we use the middleware
+      now anyway. (Sawyer X)
+    * Document further the difference between splat and megasplat.
+      (Dávid Kovács)
+
 0.154000  2014-11-17 15:36:31+01:00 Europe/Amsterdam
 
     [ BUG FIXES ]

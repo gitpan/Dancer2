@@ -1,6 +1,6 @@
 package Dancer2::Core::Role::Logger;
 # ABSTRACT: Role for logger engines
-$Dancer2::Core::Role::Logger::VERSION = '0.154000';
+$Dancer2::Core::Role::Logger::VERSION = '0.155000';
 use Dancer2::Core::Types;
 
 use Moo::Role;
@@ -71,16 +71,23 @@ sub format_message {
     my ( $self, $level, $message ) = @_;
     chomp $message;
 
-    $level = sprintf( '%5s', $level );
     $message = Encode::encode( $self->auto_encoding_charset, $message )
       if $self->auto_encoding_charset;
 
     my @stack = caller(6);
+    my $request = $self->request;
+    my $config = $self->config;
 
     my $block_handler = sub {
         my ( $block, $type ) = @_;
         if ( $type eq 't' ) {
-            return "[" . strftime( $block, localtime(time) ) . "]";
+            return Encode::decode(
+                $config->{'charset'} || 'UTF-8',
+                POSIX::strftime( $block, localtime(time) )
+            );
+        }
+        elsif ( $type eq 'h' ) {
+            return $request->header( $block ) || '-';
         }
         else {
             Carp::carp("{$block}$type not supported");
@@ -92,16 +99,25 @@ sub format_message {
         a => sub { $self->app_name },
         t => sub {
             Encode::decode(
-                setting('charset'),
+                $config->{'charset'} || 'UTF-8',
                 POSIX::strftime( "%d/%b/%Y %H:%M:%S", localtime(time) )
             );
         },
         T => sub { POSIX::strftime( "%Y-%m-%d %H:%M:%S", localtime(time) ) },
+        u => sub {
+            Encode::decode(
+                $config->{'charset'} || 'UTF-8',
+                POSIX::strftime( "%d/%b/%Y %H:%M:%S", gmtime(time) )
+            );
+        },
+        U => sub { POSIX::strftime( "%Y-%m-%d %H:%M:%S", gmtime(time) ) },
         P => sub {$$},
         L => sub {$level},
         m => sub {$message},
         f => sub { $stack[1] || '-' },
         l => sub { $stack[2] || '-' },
+        h => sub { $request->remote_host || $request->address || '-' },
+        i => sub { $request->id || '-' },
     };
 
     my $char_mapping = sub {
@@ -177,7 +193,7 @@ Dancer2::Core::Role::Logger - Role for logger engines
 
 =head1 VERSION
 
-version 0.154000
+version 0.155000
 
 =head1 DESCRIPTION
 

@@ -1,6 +1,6 @@
 # ABSTRACT: A gentle introduction to Dancer2
 package Dancer2::Manual;
-$Dancer2::Manual::VERSION = '0.154000';
+$Dancer2::Manual::VERSION = '0.155000';
 __END__
 
 =pod
@@ -13,7 +13,7 @@ Dancer2::Manual - A gentle introduction to Dancer2
 
 =head1 VERSION
 
-version 0.154000
+version 0.155000
 
 =head1 DESCRIPTION
 
@@ -184,6 +184,9 @@ ArrayRef:
         my ( $entry_id, $tags ) = splat;
         my @tags = @{$tags};
     };
+
+The splat keyword in the above example for the route '/entry/1/tags/one/two'
+would set $entry_id to 1 and $tags to ['one', 'two']
 
 =head3 Mixed named and wildcard matching
 

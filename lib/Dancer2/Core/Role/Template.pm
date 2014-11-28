@@ -1,7 +1,7 @@
 # ABSTRACT: Role for template engines
 
 package Dancer2::Core::Role::Template;
-$Dancer2::Core::Role::Template::VERSION = '0.154000';
+$Dancer2::Core::Role::Template::VERSION = '0.155000';
 use Dancer2::Core::Types;
 use Dancer2::FileUtils qw'path';
 use Carp 'croak';
@@ -23,11 +23,10 @@ sub _build_type {'Template'}
 
 requires 'render';
 
-has logger => (
-    is        => 'ro',
-    isa       => Object['Dancer2::Core::Logger'],
-    handles   => ['log'],
-    predicate => 'has_logger',
+has log_cb => (
+    is      => 'ro',
+    isa     => CodeRef,
+    default => sub { sub {1} },
 );
 
 has name => (
@@ -78,6 +77,12 @@ has settings => (
     writer  => 'set_settings',
 );
 
+has layout_dir => (
+    is      => 'ro',
+    isa     => Str,
+    default => sub {'layouts'},
+);
+
 sub _template_name {
     my ( $self, $view ) = @_;
     my $def_tmpl_ext = $self->default_tmpl_ext();
@@ -94,8 +99,12 @@ sub view_pathname {
 
 sub layout_pathname {
     my ( $self, $layout ) = @_;
-    $layout = $self->_template_name($layout);
-    return path( $self->views, 'layouts', $layout );
+
+    return path(
+        $self->views,
+        $self->layout_dir,
+        $self->_template_name($layout),
+    );
 }
 
 sub render_layout {
@@ -214,7 +223,7 @@ Dancer2::Core::Role::Template - Role for template engines
 
 =head1 VERSION
 
-version 0.154000
+version 0.155000
 
 =head1 DESCRIPTION
 
@@ -254,6 +263,12 @@ Path to the directory containing the views.
 =head2 layout
 
 Path to the directory containing the layouts.
+
+=head2 layout_dir
+
+Relative path to the layout directory.
+
+Default: B<layouts>.
 
 =head2 engine
 

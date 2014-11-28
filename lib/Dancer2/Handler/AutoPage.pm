@@ -1,6 +1,6 @@
 package Dancer2::Handler::AutoPage;
 # ABSTRACT: Class for handling the AutoPage feature
-$Dancer2::Handler::AutoPage::VERSION = '0.154000';
+$Dancer2::Handler::AutoPage::VERSION = '0.155000';
 use Moo;
 use Carp 'croak';
 use Dancer2::Core::Types;
@@ -27,10 +27,15 @@ sub code {
         my $app    = shift;
         my $prefix = shift;
 
-        my $page = $app->request->path_info;
-
         my $template = $app->engine('template');
         if ( !defined $template ) {
+            $app->response->has_passed(1);
+            return;
+        }
+
+        my $page       = $app->request->path;
+        my $layout_dir = $template->layout_dir;
+        if ( $page =~ m{^/\Q$layout_dir\E/} ) {
             $app->response->has_passed(1);
             return;
         }
@@ -66,7 +71,7 @@ Dancer2::Handler::AutoPage - Class for handling the AutoPage feature
 
 =head1 VERSION
 
-version 0.154000
+version 0.155000
 
 =head1 DESCRIPTION
 

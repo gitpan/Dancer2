@@ -1,7 +1,7 @@
 # ABSTRACT: Role for handling headers
 
 package Dancer2::Core::Role::Headers;
-$Dancer2::Core::Role::Headers::VERSION = '0.154000';
+$Dancer2::Core::Role::Headers::VERSION = '0.155000';
 use Moo::Role;
 use Dancer2::Core::Types;
 use HTTP::Headers;
@@ -18,33 +18,8 @@ has headers => (
     default => sub {
         HTTP::Headers->new();
     },
+    handles => [qw<header push_header>],
 );
-
-sub header {
-    my $self   = shift;
-    my $header = shift;
-
-    if (@_) {
-        $self->headers->header( $header => @_ );
-    }
-    else {
-        return $self->headers->header($header);
-    }
-}
-
-sub push_header {
-    my $self   = shift;
-    my $header = shift;
-
-    if (@_) {
-        foreach my $h (@_) {
-            $self->headers->push_header( $header => $h );
-        }
-    }
-    else {
-        return $self->headers->header($header);
-    }
-}
 
 sub headers_to_array {
     my $self = shift;
@@ -77,7 +52,7 @@ Dancer2::Core::Role::Headers - Role for handling headers
 
 =head1 VERSION
 
-version 0.154000
+version 0.155000
 
 =head1 DESCRIPTION
 

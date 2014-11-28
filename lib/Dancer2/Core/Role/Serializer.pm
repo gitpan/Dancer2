@@ -1,6 +1,6 @@
 package Dancer2::Core::Role::Serializer;
 # ABSTRACT: Role for Serializer engines
-$Dancer2::Core::Role::Serializer::VERSION = '0.154000';
+$Dancer2::Core::Role::Serializer::VERSION = '0.155000';
 use Moo::Role;
 use Try::Tiny;
 use Dancer2::Core::Types;
@@ -19,11 +19,10 @@ sub _build_type {'Serializer'}
 requires 'serialize';
 requires 'deserialize';
 
-has logger => (
-    is        => 'ro',
-    isa       => Object['Dancer2::Core::Logger'],
-    handles   => ['log'],
-    predicate => 'has_logger',
+has log_cb => (
+    is      => 'ro',
+    isa     => CodeRef,
+    default => sub { sub {1} },
 );
 
 has content_type => (
@@ -38,13 +37,15 @@ around serialize => sub {
 
     $self->execute_hook( 'engine.serializer.before', $content );
 
-    my $data = try {
-        $self->$orig($content, $options);
-    } catch {
-        $self->log( core => "Failed to serialize the request: $_" );
-    };
+    my $data;
+    try {
+        $data = length $content ? $self->$orig($content, $options)
+                                : $content;
 
-    $data and $self->execute_hook( 'engine.serializer.after', $data );
+        $self->execute_hook( 'engine.serializer.after', $data );
+    } catch {
+        $self->log_cb->( core => "Failed to serialize the request: $_" );
+    };
 
     return $data;
 };
@@ -52,10 +53,12 @@ around serialize => sub {
 around deserialize => sub {
     my ( $orig, $self, $content, $options ) = @_;
 
-    my $data = try {
-        $self->$orig($content, $options);
+    my $data;
+    try {
+        $data = length $content ? $self->$orig($content, $options)
+                                : $content;
     } catch {
-        $self->log( core => "Failed to deserialize the request: $_" );
+        $self->log_cb->( core => "Failed to deserialize the request: $_" );
     };
 
     return $data;
@@ -85,7 +88,7 @@ Dancer2::Core::Role::Serializer - Role for Serializer engines
 
 =head1 VERSION
 
-version 0.154000
+version 0.155000
 
 =head1 DESCRIPTION
 
