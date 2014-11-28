@@ -1,6 +1,6 @@
 package Dancer2::Core::Request::Upload;
 # ABSTRACT: Class representing file upload requests
-$Dancer2::Core::Request::Upload::VERSION = '0.155000';
+$Dancer2::Core::Request::Upload::VERSION = '0.155001';
 use Moo;
 
 use Carp;
@@ -91,7 +91,7 @@ Dancer2::Core::Request::Upload - Class representing file upload requests
 
 =head1 VERSION
 
-version 0.155000
+version 0.155001
 
 =head1 DESCRIPTION
 

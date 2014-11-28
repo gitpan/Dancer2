@@ -1,6 +1,6 @@
 package Dancer2::Handler::AutoPage;
 # ABSTRACT: Class for handling the AutoPage feature
-$Dancer2::Handler::AutoPage::VERSION = '0.155000';
+$Dancer2::Handler::AutoPage::VERSION = '0.155001';
 use Moo;
 use Carp 'croak';
 use Dancer2::Core::Types;
@@ -71,7 +71,7 @@ Dancer2::Handler::AutoPage - Class for handling the AutoPage feature
 
 =head1 VERSION
 
-version 0.155000
+version 0.155001
 
 =head1 DESCRIPTION
 

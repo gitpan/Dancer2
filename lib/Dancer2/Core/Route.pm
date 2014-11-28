@@ -1,7 +1,7 @@
 # ABSTRACT: Dancer2's route handler
 
 package Dancer2::Core::Route;
-$Dancer2::Core::Route::VERSION = '0.155000';
+$Dancer2::Core::Route::VERSION = '0.155001';
 use strict;
 use warnings;
 
@@ -227,7 +227,7 @@ Dancer2::Core::Route - Dancer2's route handler
 
 =head1 VERSION
 
-version 0.155000
+version 0.155001
 
 =head1 ATTRIBUTES
 
