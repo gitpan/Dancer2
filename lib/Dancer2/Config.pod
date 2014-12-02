@@ -1,6 +1,6 @@
 package Dancer2::Config;
 # ABSTRACT: Configure Dancer2 to suit your needs
-$Dancer2::Config::VERSION = '0.155001';
+$Dancer2::Config::VERSION = '0.155002';
 __END__
 
 =pod
@@ -13,7 +13,7 @@ Dancer2::Config - Configure Dancer2 to suit your needs
 
 =head1 VERSION
 
-version 0.155001
+version 0.155002
 
 =head1 DESCRIPTION
 

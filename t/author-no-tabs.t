@@ -221,6 +221,7 @@ my @files = (
     't/session_in_template.t',
     't/session_lifecycle.t',
     't/session_object.t',
+    't/sessions/VHn4AwAAeqSFHaNXDX6JwQwBRgCo_Q9u.yml',
     't/shared_engines.t',
     't/template.t',
     't/template_default_tokens.t',
