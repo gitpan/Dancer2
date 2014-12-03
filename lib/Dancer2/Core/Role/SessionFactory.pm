@@ -1,6 +1,6 @@
 package Dancer2::Core::Role::SessionFactory;
 #ABSTRACT: Role for session factories
-$Dancer2::Core::Role::SessionFactory::VERSION = '0.155002';
+$Dancer2::Core::Role::SessionFactory::VERSION = '0.155003';
 use strict;
 use warnings;
 use Carp 'croak';
@@ -260,7 +260,7 @@ Dancer2::Core::Role::SessionFactory - Role for session factories
 
 =head1 VERSION
 
-version 0.155002
+version 0.155003
 
 =head1 DESCRIPTION
 

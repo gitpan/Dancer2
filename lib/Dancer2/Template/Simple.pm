@@ -1,6 +1,6 @@
 package Dancer2::Template::Simple;
 # ABSTRACT: Pure Perl 5 template engine for Dancer2
-$Dancer2::Template::Simple::VERSION = '0.155002';
+$Dancer2::Template::Simple::VERSION = '0.155003';
 use strict;
 use warnings;
 use Moo;
@@ -156,7 +156,7 @@ Dancer2::Template::Simple - Pure Perl 5 template engine for Dancer2
 
 =head1 VERSION
 
-version 0.155002
+version 0.155003
 
 =head1 SYNOPSIS
 
