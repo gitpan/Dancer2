@@ -1,6 +1,6 @@
 package Dancer2::Core::Error;
 # ABSTRACT: Class representing fatal errors
-$Dancer2::Core::Error::VERSION = '0.155003';
+$Dancer2::Core::Error::VERSION = '0.155004';
 use Moo;
 use Carp;
 use Dancer2::Core::Types;
@@ -496,7 +496,7 @@ Dancer2::Core::Error - Class representing fatal errors
 
 =head1 VERSION
 
-version 0.155003
+version 0.155004
 
 =head1 SYNOPSIS
 

@@ -1,5 +1,5 @@
 package Dancer2::Core::Request;
-$Dancer2::Core::Request::VERSION = '0.155003';
+$Dancer2::Core::Request::VERSION = '0.155004';
 # ABSTRACT: Interface for accessing incoming requests
 
 use Moo;
@@ -545,7 +545,7 @@ sub _read_to_end {
     my $content_length = $self->content_length;
     return unless $self->_has_something_to_read();
 
-    if ( defined $content_length && $content_length > 0 ) {
+    if ( $content_length && $content_length > 0 ) {
         while ( my $buffer = $self->_read() ) {
             $self->{body} .= $buffer;
             $self->{_http_body}->add($buffer);
@@ -678,7 +678,7 @@ Dancer2::Core::Request - Interface for accessing incoming requests
 
 =head1 VERSION
 
-version 0.155003
+version 0.155004
 
 =head1 SYNOPSIS
 

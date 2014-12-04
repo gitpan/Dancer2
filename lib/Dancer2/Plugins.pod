@@ -1,6 +1,6 @@
 package Dancer2::Plugins;
 # ABSTRACT: Recommended Dancer2 plugins
-$Dancer2::Plugins::VERSION = '0.155003';
+$Dancer2::Plugins::VERSION = '0.155004';
 __END__
 
 =pod
@@ -13,7 +13,7 @@ Dancer2::Plugins - Recommended Dancer2 plugins
 
 =head1 VERSION
 
-version 0.155003
+version 0.155004
 
 =head1 DESCRIPTION
 

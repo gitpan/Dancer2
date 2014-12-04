@@ -1,6 +1,6 @@
 package Dancer2;
 # ABSTRACT: Lightweight yet powerful web application framework
-$Dancer2::VERSION = '0.155003';
+$Dancer2::VERSION = '0.155004';
 use strict;
 use warnings;
 use List::Util  'first';
@@ -15,7 +15,7 @@ our $AUTHORITY = 'SUKRIA';
 # set version in dist.ini now
 # but we still need a basic version for
 # the tests
-$Dancer2::VERSION ||= '0.155003'; # 2.150.3
+$Dancer2::VERSION ||= '0.155004'; # 2.150.4
 
 our $runner;
 
@@ -118,7 +118,7 @@ Dancer2 - Lightweight yet powerful web application framework
 
 =head1 VERSION
 
-version 0.155003
+version 0.155004
 
 =head1 DESCRIPTION
 
