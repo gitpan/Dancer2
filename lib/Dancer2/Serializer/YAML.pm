@@ -1,6 +1,6 @@
 package Dancer2::Serializer::YAML;
 # ABSTRACT: Serializer for handling YAML data
-$Dancer2::Serializer::YAML::VERSION = '0.155004';
+$Dancer2::Serializer::YAML::VERSION = '0.156000';
 use Moo;
 use Carp 'croak';
 use Encode;
@@ -49,7 +49,7 @@ Dancer2::Serializer::YAML - Serializer for handling YAML data
 
 =head1 VERSION
 
-version 0.155004
+version 0.156000
 
 =head1 DESCRIPTION
 

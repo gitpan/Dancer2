@@ -1,3 +1,26 @@
+0.156000  2014-12-07 18:04:14+01:00 Europe/Amsterdam
+
+    [ BUG FIXES ]
+    * Do not try to deserialize empty content.
+      (Lennart Hengstmengel, Sawyer X)
+    * Do not call serialization hooks when no serialization took place.
+      (Sawyer X)
+    * Be more cautious on undef output from serializer.
+      (Daniel Böhmer, Sawyer X)
+
+    [ ENHANCEMENTS ]
+    * Add cpanfile when scaffolding a new app.
+      (Dávid Kovács, Sawyer X)
+    * Response "content" attribute no longer stringifies. This should help
+      reduce warnings, odd debugging problems, etc. (Sawyer X)
+    * DSL "uri_for" no longer returns URI object. Instead just the URI.
+      (Sawyer X)
+
+    [ DOCUMENTATION ]
+    * GH #777: Fix doc for mentioning public dir.
+      (Dávid Kovács, Sawyer X)
+    * GH #787: Document all environment variables. (Sawyer X)
+
 0.155004  2014-12-04 11:51:23+01:00 Europe/Amsterdam
 
     [ BUG FIXES ]

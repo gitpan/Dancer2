@@ -1,5 +1,5 @@
 package Dancer2::Core::Request;
-$Dancer2::Core::Request::VERSION = '0.155004';
+$Dancer2::Core::Request::VERSION = '0.156000';
 # ABSTRACT: Interface for accessing incoming requests
 
 use Moo;
@@ -266,6 +266,10 @@ sub deserialize {
 
     # try to deserialize
     my $body = $self->_read_to_end();
+
+    $body && length $body > 0
+        or return;
+
     my $data = $self->serializer->deserialize($self->body);
     return if !defined $data;
 
@@ -382,7 +386,9 @@ sub uri_for {
 
     $uri->query_form($params) if $params;
 
-    return $dont_escape ? uri_unescape( $uri->canonical ) : $uri->canonical;
+    return $dont_escape
+           ? uri_unescape( ${ $uri->canonical } )
+           : ${ $uri->canonical };
 }
 
 sub params {
@@ -678,7 +684,7 @@ Dancer2::Core::Request - Interface for accessing incoming requests
 
 =head1 VERSION
 
-version 0.155004
+version 0.156000
 
 =head1 SYNOPSIS
 

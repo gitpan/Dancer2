@@ -1,6 +1,6 @@
 package Dancer2::Core::Role::Serializer;
 # ABSTRACT: Role for Serializer engines
-$Dancer2::Core::Role::Serializer::VERSION = '0.155004';
+$Dancer2::Core::Role::Serializer::VERSION = '0.156000';
 use Moo::Role;
 use Try::Tiny;
 use Dancer2::Core::Types;
@@ -35,13 +35,14 @@ has content_type => (
 around serialize => sub {
     my ( $orig, $self, $content, $options ) = @_;
 
+    $content && length $content > 0
+        or return $content;
+
     $self->execute_hook( 'engine.serializer.before', $content );
 
     my $data;
     try {
-        $data = length $content ? $self->$orig($content, $options)
-                                : $content;
-
+        $data = $self->$orig($content, $options);
         $self->execute_hook( 'engine.serializer.after', $data );
     } catch {
         $self->log_cb->( core => "Failed to serialize the request: $_" );
@@ -53,10 +54,12 @@ around serialize => sub {
 around deserialize => sub {
     my ( $orig, $self, $content, $options ) = @_;
 
+    $content && length $content > 0
+        or return $content;
+
     my $data;
     try {
-        $data = length $content ? $self->$orig($content, $options)
-                                : $content;
+        $data = $self->$orig($content, $options);
     } catch {
         $self->log_cb->( core => "Failed to deserialize the request: $_" );
     };
@@ -88,7 +91,7 @@ Dancer2::Core::Role::Serializer - Role for Serializer engines
 
 =head1 VERSION
 
-version 0.155004
+version 0.156000
 
 =head1 DESCRIPTION
 

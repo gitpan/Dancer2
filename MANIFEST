@@ -79,6 +79,7 @@ share/skel/MANIFEST.SKIP
 share/skel/Makefile.PL
 share/skel/bin/+app.pl
 share/skel/config.yml
+share/skel/cpanfile
 share/skel/environments/development.yml
 share/skel/environments/production.yml
 share/skel/lib/AppFile.pm
@@ -189,6 +190,8 @@ t/issues/gh-639/succeeds/config.yml
 t/issues/gh-639/succeeds/issue.t
 t/issues/gh-723.t
 t/issues/gh-730.t
+t/issues/gh-794.t
+t/issues/gh-797.t
 t/lib/App1.pm
 t/lib/App2.pm
 t/lib/DancerPlugin.pm
@@ -241,6 +244,20 @@ t/session_lifecycle.t
 t/session_object.t
 t/sessions/VHn4AwAAeqSFHaNXDX6JwQwBRgCo_Q9u.yml
 t/sessions/VIA4kAAAB8B8EWkTqCKjSzx0tihUUVlT.yml
+t/sessions/VIN2fAAAVBAABpTacAcxkLWoJP1iHXqT.yml
+t/sessions/VIN3aAAAVr4yWglTFzG6va15yJk3RcZB.yml
+t/sessions/VIN5TgAAW5AcdtS_Wn6KXqpFnJfyAmd3.yml
+t/sessions/VIN_ugAAYeJw_pr_OPXWm4UYeLk8I8R0.yml
+t/sessions/VINaogAADkTwNv5XMQYy_8LYNPjJ-8ll.yml
+t/sessions/VINfTwAAOCxeM1OnUIJZze52TvF4lJg-.yml
+t/sessions/VINgjgAAOl_EhCSdU9nzGcC0u7ciGh9G.yml
+t/sessions/VINm9wAAQNwNJeVpfUpME5f3-D9kCIFB.yml
+t/sessions/VINx-QAATPHsbPy0JfgMF2OSPOOEh-Dg.yml
+t/sessions/VINxuAAATBs_Kgy8rzHgGywPQvgoRCmX.yml
+t/sessions/VINylQAATxmWhwaQwYTVls-P09SzyCsc.yml
+t/sessions/VINziwAAUHovk3nfMmkf2GHI6RNrE38c.yml
+t/sessions/VIOBYgAAZD-3UeYHGxJmpPkpI8hOgUvW.yml
+t/sessions/VISIVwAASGBJcMXNsII2nVrChuLAP7pm.yml
 t/shared_engines.t
 t/template.t
 t/template_default_tokens.t

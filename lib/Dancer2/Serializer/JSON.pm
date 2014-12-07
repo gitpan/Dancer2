@@ -1,6 +1,6 @@
 package Dancer2::Serializer::JSON;
 # ABSTRACT: Serializer for handling JSON data
-$Dancer2::Serializer::JSON::VERSION = '0.155004';
+$Dancer2::Serializer::JSON::VERSION = '0.156000';
 use Moo;
 use JSON ();
 
@@ -55,7 +55,7 @@ Dancer2::Serializer::JSON - Serializer for handling JSON data
 
 =head1 VERSION
 
-version 0.155004
+version 0.156000
 
 =head1 DESCRIPTION
 

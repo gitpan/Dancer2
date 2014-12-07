@@ -1,7 +1,7 @@
 # ABSTRACT: Response object for Dancer2
 
 package Dancer2::Core::Response;
-$Dancer2::Core::Response::VERSION = '0.155004';
+$Dancer2::Core::Response::VERSION = '0.156000';
 use Moo;
 
 use Encode;
@@ -54,12 +54,8 @@ has status => (
 );
 
 has content => (
-    is      => 'rw',
-    isa     => Str,
-    coerce  => sub {
-        my $value = shift;
-        return "$value";
-    },
+    is        => 'rw',
+    isa       => Str,
     predicate => 'has_content',
     clearer   => 'clear_content',
 );
@@ -69,7 +65,8 @@ around content => sub {
     my $self = shift;
 
     if ( @_ && $self->has_serializer ) {
-        $_[0] = $self->serialize($_[0]);
+        my $content = $self->serialize( shift );
+        unshift @_, defined $content ? $content : '';
         $self->is_encoded(1); # All serializers return byte strings
     }
 
@@ -209,7 +206,7 @@ Dancer2::Core::Response - Response object for Dancer2
 
 =head1 VERSION
 
-version 0.155004
+version 0.156000
 
 =head1 ATTRIBUTES
 
