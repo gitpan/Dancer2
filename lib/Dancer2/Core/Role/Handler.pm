@@ -1,6 +1,6 @@
 package Dancer2::Core::Role::Handler;
 # ABSTRACT: Role for Handlers
-$Dancer2::Core::Role::Handler::VERSION = '0.156000';
+$Dancer2::Core::Role::Handler::VERSION = '0.156001';
 use Moo::Role;
 use Dancer2::Core::Types;
 
@@ -26,7 +26,7 @@ Dancer2::Core::Role::Handler - Role for Handlers
 
 =head1 VERSION
 
-version 0.156000
+version 0.156001
 
 =head1 ATTRIBUTES
 

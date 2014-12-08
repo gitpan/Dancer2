@@ -1,6 +1,6 @@
 # ABSTRACT: A gentle introduction to Dancer2
 package Dancer2::Manual;
-$Dancer2::Manual::VERSION = '0.156000';
+$Dancer2::Manual::VERSION = '0.156001';
 __END__
 
 =pod
@@ -13,7 +13,7 @@ Dancer2::Manual - A gentle introduction to Dancer2
 
 =head1 VERSION
 
-version 0.156000
+version 0.156001
 
 =head1 DESCRIPTION
 
@@ -579,9 +579,7 @@ Here is an example of a route handler that will return a HashRef
         }
     };
 
-As soon as the content is not a scalar - and a serializer is set, which is
-not the case by default - Dancer2 renders the response via the current
-serializer.
+Dancer2 will render the response via the current serializer.
 
 Hence, with the JSON serializer set, the route handler above would result in
 a content like the following:

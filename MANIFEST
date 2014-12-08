@@ -16,6 +16,7 @@ lib/Dancer2/CLI/Command/version.pm
 lib/Dancer2/Config.pod
 lib/Dancer2/Cookbook.pod
 lib/Dancer2/Core.pm
+lib/Dancer2/Core/.Request.pm.swp
 lib/Dancer2/Core/App.pm
 lib/Dancer2/Core/Cookie.pm
 lib/Dancer2/Core/DSL.pm
