@@ -1,6 +1,6 @@
 package Dancer2::Logger::Capture;
 # ABSTRACT: Capture dancer logs
-$Dancer2::Logger::Capture::VERSION = '0.156001';
+$Dancer2::Logger::Capture::VERSION = '0.157000';
 use Moo;
 use Dancer2::Logger::Capture::Trap;
 
@@ -17,7 +17,10 @@ sub _build_trapper { Dancer2::Logger::Capture::Trap->new }
 sub log {
     my ( $self, $level, $message ) = @_;
 
-    $self->trapper->store( $level => $message );
+    $self->trapper->store(
+        $level, $message, $self->format_message( $level => $message )
+    );
+
     return;
 }
 
@@ -35,7 +38,7 @@ Dancer2::Logger::Capture - Capture dancer logs
 
 =head1 VERSION
 
-version 0.156001
+version 0.157000
 
 =head1 SYNOPSIS
 

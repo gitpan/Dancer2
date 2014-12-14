@@ -1,16 +1,13 @@
 package Dancer2::Core::Role::SessionFactory::File;
-#ABSTRACT: Role for file-based session factories
-$Dancer2::Core::Role::SessionFactory::File::VERSION = '0.156001';
-use strict;
-use warnings;
+# ABSTRACT: Role for file-based session factories
+$Dancer2::Core::Role::SessionFactory::File::VERSION = '0.157000';
+use Moo::Role;
+with 'Dancer2::Core::Role::SessionFactory';
+
 use Carp 'croak';
 use Dancer2::Core::Types;
 use Dancer2::FileUtils qw(path set_file_mode);
 use Fcntl ':flock';
-
-use Moo::Role;
-
-with 'Dancer2::Core::Role::SessionFactory';
 
 #--------------------------------------------------------------------------#
 # Required by classes consuming this role
@@ -113,7 +110,7 @@ Dancer2::Core::Role::SessionFactory::File - Role for file-based session factorie
 
 =head1 VERSION
 
-version 0.156001
+version 0.157000
 
 =head1 DESCRIPTION
 

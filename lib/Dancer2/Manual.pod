@@ -1,6 +1,6 @@
 # ABSTRACT: A gentle introduction to Dancer2
 package Dancer2::Manual;
-$Dancer2::Manual::VERSION = '0.156001';
+$Dancer2::Manual::VERSION = '0.157000';
 __END__
 
 =pod
@@ -13,7 +13,7 @@ Dancer2::Manual - A gentle introduction to Dancer2
 
 =head1 VERSION
 
-version 0.156001
+version 0.157000
 
 =head1 DESCRIPTION
 
@@ -1610,6 +1610,10 @@ You can call it as a method on the class or as a DSL:
     # or
 
     my $app = to_app;
+
+There is a
+L<Dancer Advent Calendar article|http://advent.perldancer.org/2014/9> covering
+this keyword and its usage further.
 
 =head2 psgi_app
 

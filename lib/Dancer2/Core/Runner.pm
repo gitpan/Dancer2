@@ -1,6 +1,6 @@
 package Dancer2::Core::Runner;
 # ABSTRACT: Top-layer class to start a dancer app
-$Dancer2::Core::Runner::VERSION = '0.156001';
+$Dancer2::Core::Runner::VERSION = '0.157000';
 use Moo;
 use Carp 'croak';
 use Dancer2::Core::MIME;
@@ -93,7 +93,6 @@ sub _build_config {
     return {
         behind_proxy     => 0,
         apphandler       => ( $ENV{DANCER_APPHANDLER} || 'Standalone' ),
-        warnings         => ( $ENV{DANCER_WARNINGS}   || 0 ),
         traces           => ( $ENV{DANCER_TRACES}     || 0 ),
         host             => ( $ENV{DANCER_SERVER}     || '0.0.0.0' ),
         port             => ( $ENV{DANCER_PORT}       || '3000' ),
@@ -260,7 +259,7 @@ Dancer2::Core::Runner - Top-layer class to start a dancer app
 
 =head1 VERSION
 
-version 0.156001
+version 0.157000
 
 =head1 AUTHOR
 

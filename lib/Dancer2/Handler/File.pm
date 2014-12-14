@@ -1,6 +1,6 @@
 package Dancer2::Handler::File;
 # ABSTRACT: class for handling file content rendering
-$Dancer2::Handler::File::VERSION = '0.156001';
+$Dancer2::Handler::File::VERSION = '0.157000';
 use Carp 'croak';
 use Moo;
 use HTTP::Date;
@@ -82,14 +82,8 @@ sub code {
             $path =~ s/^\Q$prefix\E//;
         }
 
-        my @tokens =
-          File::Spec->splitdir( join '',
-            ( File::Spec->splitpath($path) )[ 1, 2 ] );
-        if ( grep $_ eq '..', @tokens ) {
-            return $self->standard_response( $app, 403 );
-        }
-
-        my $file_path = path( $self->public_dir, @tokens );
+        my $file_path = $self->merge_paths( $path, $self->public_dir );
+        return $self->standard_response( $app, 403 ) if !defined $file_path;
 
         if ( !-f $file_path ) {
             $app->response->has_passed(1);
@@ -135,6 +129,24 @@ sub code {
     };
 }
 
+sub merge_paths {
+    my ( undef, $path, $public_dir ) = @_;
+
+    my ( $volume, $dirs, $file ) = File::Spec->splitpath( $path );
+    my @tokens = File::Spec->splitdir( "$dirs$file" );
+    my $updir = File::Spec->updir;
+    return if grep $_ eq $updir, @tokens;
+
+    my ( $pub_vol, $pub_dirs, $pub_file ) = File::Spec->splitpath( $public_dir );
+    my @pub_tokens = File::Spec->splitdir( "$pub_dirs$pub_file" );
+    return if length $volume and length $pub_vol and $volume ne $pub_vol;
+
+    my @final_vol = ( length $pub_vol ? $pub_vol : length $volume ? $volume : () );
+    my @file_path = ( @final_vol, @pub_tokens, @tokens );
+    my $file_path = path( @file_path );
+    return $file_path;
+}
+
 1;
 
 __END__
@@ -149,7 +161,7 @@ Dancer2::Handler::File - class for handling file content rendering
 
 =head1 VERSION
 
-version 0.156001
+version 0.157000
 
 =head1 AUTHOR
 

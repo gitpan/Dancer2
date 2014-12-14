@@ -1,6 +1,6 @@
 package Dancer2;
 # ABSTRACT: Lightweight yet powerful web application framework
-$Dancer2::VERSION = '0.156001';
+$Dancer2::VERSION = '0.157000';
 use strict;
 use warnings;
 use List::Util  'first';
@@ -15,7 +15,7 @@ our $AUTHORITY = 'SUKRIA';
 # set version in dist.ini now
 # but we still need a basic version for
 # the tests
-$Dancer2::VERSION ||= '0.156000'; # 2.156.0
+$Dancer2::VERSION ||= '0.157000';
 
 our $runner;
 
@@ -118,7 +118,7 @@ Dancer2 - Lightweight yet powerful web application framework
 
 =head1 VERSION
 
-version 0.156001
+version 0.157000
 
 =head1 DESCRIPTION
 
@@ -182,6 +182,11 @@ complete list of all configuration options.
 Refer to L<Dancer2::Plugins> for a partial list of available Dancer2
 plugins. Note that although we try to keep this list up to date we
 expect plugin authors to tell us about new modules.
+
+=item * Dancer2 Migration guide
+
+L<Dancer2::Manual::Migration> provides the most up-to-date instruction on
+how to convert a Dancer (1) based application to Dancer2.
 
 =back
 

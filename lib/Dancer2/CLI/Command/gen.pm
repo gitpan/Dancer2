@@ -1,13 +1,13 @@
 # ABSTRACT: create new Dancer2 application
 package Dancer2::CLI::Command::gen;
-$Dancer2::CLI::Command::gen::VERSION = '0.156001';
+$Dancer2::CLI::Command::gen::VERSION = '0.157000';
 use strict;
 use warnings;
 
 use App::Cmd::Setup -command;
 
+use HTTP::Tiny;
 use File::Find;
-use LWP::UserAgent;
 use File::Path 'mkpath';
 use File::Spec::Functions;
 use File::ShareDir 'dist_dir';
@@ -259,12 +259,10 @@ Please check http://search.cpan.org/dist/Dancer2/ for updates.
 sub _send_http_request {
     my $url = shift;
 
-    my $ua = LWP::UserAgent->new;
-    $ua->timeout(5);
-    $ua->env_proxy();
+    my $ua = HTTP::Tiny->new( timeout => 5 );
 
     my $response = $ua->get($url);
-    return $response->is_success ? $response->content : undef;
+    return $response->{'success'} ? $response->{'content'} : undef;
 }
 
 1;
@@ -281,7 +279,7 @@ Dancer2::CLI::Command::gen - create new Dancer2 application
 
 =head1 VERSION
 
-version 0.156001
+version 0.157000
 
 =head1 AUTHOR
 

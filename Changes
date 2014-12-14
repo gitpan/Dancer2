@@ -1,3 +1,31 @@
+0.157000  2014-12-14 18:23:33+01:00 Europe/Amsterdam
+
+    [ BUG FIXES ]
+    * GH #799: Set current request earlier so log formats using requests
+      will work. (Sawyer X)
+    * GH #650: Provide default environment to app for templating.
+      (Dávid Kovács, Chi Trinh)
+    * GH #800: Better portability code, for different Windows situations.
+      (Christian Walde)
+    * Less littering of the test directories with session files. (Sawyer X)
+
+    [ ENHANCEMENT ]
+    * GH #810: strict && warnings in the app.pl. (Sawyer X)
+    * Use to_app keyword in skeleton. (Sawyer X)
+    * GH #801: Under production, server tokens are disabled. (Sawyer X)
+    * GH #588, #779: Remove LWP::UserAgent in favor of HTTP::Tiny.
+      (Dávid Kovács, simbabque, Sawyer X)
+    * Remove all usages of Test::TCP in favor of Plack::Test. (Sawyer X)
+
+    [ DOCUMENTATION ]
+    * GH #802: Remove indication of warnings configuration option
+      and add explanation in migration document. (Sawyer X)
+    * GH #806: Link in main docs to the migration document. (Gabor Szabo)
+    * GH #807: Update migration document with more session data,
+      changes to app.pl, and Template::Toolkit configuration. (Gabor Szabo)
+    * GH #813: Update migration document with information on encoding and
+      usage of Plack::Request internally. (Gabor Szabo, Sawyer X)
+
 0.156001  2014-12-08 23:03:43+01:00 Europe/Amsterdam
 
     [ DOCUMENTATION ]

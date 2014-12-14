@@ -1,6 +1,6 @@
 package Dancer2::Core::Role::HasLocation;
 # ABSTRACT: Role for application location "guessing"
-$Dancer2::Core::Role::HasLocation::VERSION = '0.156001';
+$Dancer2::Core::Role::HasLocation::VERSION = '0.157000';
 use Moo::Role;
 use Dancer2::Core::Types;
 use Dancer2::FileUtils;
@@ -17,6 +17,7 @@ has caller => (
     isa     => Str,
     default => quote_sub( q{
         my ( $caller, $script ) = CORE::caller;
+        $script = File::Spec->abs2rel( $script ) if File::Spec->file_name_is_absolute( $script );
         $script;
     } ),
 );
@@ -87,7 +88,7 @@ Dancer2::Core::Role::HasLocation - Role for application location "guessing"
 
 =head1 VERSION
 
-version 0.156001
+version 0.157000
 
 =head1 AUTHOR
 

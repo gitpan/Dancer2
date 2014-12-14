@@ -1,8 +1,9 @@
 package Dancer2::Core::Role::SessionFactory;
-#ABSTRACT: Role for session factories
-$Dancer2::Core::Role::SessionFactory::VERSION = '0.156001';
-use strict;
-use warnings;
+# ABSTRACT: Role for session factories
+$Dancer2::Core::Role::SessionFactory::VERSION = '0.157000';
+use Moo::Role;
+with 'Dancer2::Core::Role::Engine';
+
 use Carp 'croak';
 use Class::Load 'try_load_class';
 use Dancer2::Core::Session;
@@ -10,9 +11,6 @@ use Dancer2::Core::Types;
 use Digest::SHA 'sha1';
 use List::Util 'shuffle';
 use MIME::Base64 'encode_base64url';
-
-use Moo::Role;
-with 'Dancer2::Core::Role::Engine';
 
 sub supported_hooks {
     qw/
@@ -260,7 +258,7 @@ Dancer2::Core::Role::SessionFactory - Role for session factories
 
 =head1 VERSION
 
-version 0.156001
+version 0.157000
 
 =head1 DESCRIPTION
 

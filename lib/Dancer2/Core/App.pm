@@ -1,6 +1,6 @@
 # ABSTRACT: encapsulation of Dancer2 packages
 package Dancer2::Core::App;
-$Dancer2::Core::App::VERSION = '0.156001';
+$Dancer2::Core::App::VERSION = '0.157000';
 use Moo;
 use Carp               'croak';
 use Scalar::Util       'blessed';
@@ -531,6 +531,7 @@ sub _build_default_config {
         logger         => ( $ENV{DANCER_LOGGER}       || 'console' ),
         views          => ( $ENV{DANCER_VIEWS}
                             || path( $self->config_location, 'views' ) ),
+        environment    => $self->environment,
         appdir         => $self->location,
         public_dir     => $public,
         static_handler => ( -d $public ),
@@ -1098,6 +1099,10 @@ DISPATCH:
         my $http_method = lc $request->method;
         my $path_info   =    $request->path_info;
 
+        # Add request to app and engines
+        $self->set_request($request);
+        $_->set_request( $request ) for $self->defined_engines;
+
         $self->log( core => "looking for $http_method $path_info" );
 
         ROUTE:
@@ -1110,10 +1115,6 @@ DISPATCH:
                 or next ROUTE;
 
             $request->_set_route_params($match);
-
-            # Add request to app and engines
-            $self->set_request($request);
-            $_->set_request( $request ) for $self->defined_engines;
 
             # Add session to app *if* we have a session and the request
             # has the appropriate cookie header for _this_ app.
@@ -1311,7 +1312,7 @@ Dancer2::Core::App - encapsulation of Dancer2 packages
 
 =head1 VERSION
 
-version 0.156001
+version 0.157000
 
 =head1 DESCRIPTION
 

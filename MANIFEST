@@ -16,7 +16,6 @@ lib/Dancer2/CLI/Command/version.pm
 lib/Dancer2/Config.pod
 lib/Dancer2/Cookbook.pod
 lib/Dancer2/Core.pm
-lib/Dancer2/Core/.Request.pm.swp
 lib/Dancer2/Core/App.pm
 lib/Dancer2/Core/Cookie.pm
 lib/Dancer2/Core/DSL.pm
@@ -189,10 +188,13 @@ t/issues/gh-639/fails/issue.t
 t/issues/gh-639/succeeds/.dancer
 t/issues/gh-639/succeeds/config.yml
 t/issues/gh-639/succeeds/issue.t
+t/issues/gh-650/gh-650.t
+t/issues/gh-650/views/environment_setting.tt
 t/issues/gh-723.t
 t/issues/gh-730.t
 t/issues/gh-794.t
 t/issues/gh-797.t
+t/issues/gh-799.t
 t/lib/App1.pm
 t/lib/App2.pm
 t/lib/DancerPlugin.pm
@@ -209,7 +211,6 @@ t/log_die_before_hook.t
 t/log_levels.t
 t/logger.t
 t/logger_console.t
-t/lwp-protocol-psgi.t
 t/memory_cycles.t
 t/mime.t
 t/multi_apps.t
@@ -259,6 +260,14 @@ t/sessions/VINylQAATxmWhwaQwYTVls-P09SzyCsc.yml
 t/sessions/VINziwAAUHovk3nfMmkf2GHI6RNrE38c.yml
 t/sessions/VIOBYgAAZD-3UeYHGxJmpPkpI8hOgUvW.yml
 t/sessions/VISIVwAASGBJcMXNsII2nVrChuLAP7pm.yml
+t/sessions/VIlt7wAAceLduiKWlnAkCQpsRFe9RwmE.yml
+t/sessions/VIltdAAAcGUtpuNeagm8uMqOmg1iO5BG.yml
+t/sessions/VIxX-gAAaW6BYt4htdZy0O9_g5J3WdHM.yml
+t/sessions/VIxY0wAAan1F1Maz4h8_pCnhMdtstSHX.yml
+t/sessions/VIxi3AAAfpilI1rk9Tg_5c29HVaYBclB.yml
+t/sessions/VIxiTQAAfYHVHQ5txQKuXTwZ7alch-Gc.yml
+t/sessions/VIxj4wAAAakb1qv0OYF9_oA_WrIqImY7.yml
+t/sessions/VIxkLgAABBzH8FV-MYjgAOQrJuLhWOkM.yml
 t/shared_engines.t
 t/template.t
 t/template_default_tokens.t
