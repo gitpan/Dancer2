@@ -1,6 +1,6 @@
 # ABSTRACT: A gentle introduction to Dancer2
 package Dancer2::Manual;
-$Dancer2::Manual::VERSION = '0.157000';
+$Dancer2::Manual::VERSION = '0.157001';
 __END__
 
 =pod
@@ -13,7 +13,7 @@ Dancer2::Manual - A gentle introduction to Dancer2
 
 =head1 VERSION
 
-version 0.157000
+version 0.157001
 
 =head1 DESCRIPTION
 
@@ -51,7 +51,7 @@ Create a web application using the dancer script:
 
 And voilà! You can now run the web application:
 
-    bin/app.pl
+    plackup bin/app.psgi
 
 View the web application at:
 
@@ -60,7 +60,7 @@ View the web application at:
 Note that as Dancer2 supports the L<PSGI> specification, you can also use
 the C<plackup> tool (provided by L<Plack>) for launching the application:
 
-    plackup ./bin/app.pl -p 5000
+    plackup -p 5000 bin/app.psgi
 
 =head1 USAGE
 

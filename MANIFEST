@@ -77,7 +77,7 @@ lib/Dancer2/Tutorial.pod
 script/dancer2
 share/skel/MANIFEST.SKIP
 share/skel/Makefile.PL
-share/skel/bin/+app.pl
+share/skel/bin/+app.psgi
 share/skel/config.yml
 share/skel/cpanfile
 share/skel/environments/development.yml
