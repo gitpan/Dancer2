@@ -1,6 +1,6 @@
 package Dancer2::Handler::AutoPage;
 # ABSTRACT: Class for handling the AutoPage feature
-$Dancer2::Handler::AutoPage::VERSION = '0.157001';
+$Dancer2::Handler::AutoPage::VERSION = '0.158000';
 use Moo;
 use Carp 'croak';
 use Dancer2::Core::Types;
@@ -71,7 +71,7 @@ Dancer2::Handler::AutoPage - Class for handling the AutoPage feature
 
 =head1 VERSION
 
-version 0.157001
+version 0.158000
 
 =head1 DESCRIPTION
 
@@ -118,7 +118,7 @@ Dancer Core Developers
 
 =head1 COPYRIGHT AND LICENSE
 
-This software is copyright (c) 2014 by Alexis Sukrieh.
+This software is copyright (c) 2015 by Alexis Sukrieh.
 
 This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.

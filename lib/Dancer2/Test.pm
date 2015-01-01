@@ -1,6 +1,6 @@
 package Dancer2::Test;
 # ABSTRACT: Useful routines for testing Dancer2 apps
-$Dancer2::Test::VERSION = '0.157001';
+$Dancer2::Test::VERSION = '0.158000';
 use strict;
 use warnings;
 
@@ -621,7 +621,7 @@ Dancer2::Test - Useful routines for testing Dancer2 apps
 
 =head1 VERSION
 
-version 0.157001
+version 0.158000
 
 =head1 SYNOPSIS
 
@@ -959,7 +959,7 @@ Dancer Core Developers
 
 =head1 COPYRIGHT AND LICENSE
 
-This software is copyright (c) 2014 by Alexis Sukrieh.
+This software is copyright (c) 2015 by Alexis Sukrieh.
 
 This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.

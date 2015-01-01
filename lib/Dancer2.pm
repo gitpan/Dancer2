@@ -1,10 +1,11 @@
 package Dancer2;
 # ABSTRACT: Lightweight yet powerful web application framework
-$Dancer2::VERSION = '0.157001';
+$Dancer2::VERSION = '0.158000';
 use strict;
 use warnings;
 use List::Util  'first';
 use Class::Load 'load_class';
+use Import::Into;
 use Dancer2::Core;
 use Dancer2::Core::App;
 use Dancer2::Core::Runner;
@@ -15,7 +16,7 @@ our $AUTHORITY = 'SUKRIA';
 # set version in dist.ini now
 # but we still need a basic version for
 # the tests
-$Dancer2::VERSION ||= '0.157001';
+$Dancer2::VERSION ||= '0.158000';
 
 our $runner;
 
@@ -26,9 +27,7 @@ sub import {
     my ( $class,  @args   ) = @_;
     my ( $caller, $script ) = caller;
 
-    strict->import;
-    warnings->import;
-    utf8->import;
+    $_->import::into($caller) for qw(strict warnings utf8);
 
     my @final_args;
     foreach my $arg (@args) {
@@ -118,7 +117,7 @@ Dancer2 - Lightweight yet powerful web application framework
 
 =head1 VERSION
 
-version 0.157001
+version 0.158000
 
 =head1 DESCRIPTION
 
@@ -297,7 +296,7 @@ Dancer Core Developers
 
 =head1 COPYRIGHT AND LICENSE
 
-This software is copyright (c) 2014 by Alexis Sukrieh.
+This software is copyright (c) 2015 by Alexis Sukrieh.
 
 This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.

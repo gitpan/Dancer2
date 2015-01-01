@@ -1,6 +1,6 @@
 package Dancer2::Core::Dispatcher;
 # ABSTRACT: Class for dispatching request to the appropriate route handler
-$Dancer2::Core::Dispatcher::VERSION = '0.157001';
+$Dancer2::Core::Dispatcher::VERSION = '0.158000';
 use Moo;
 
 use Dancer2::Core::Types;
@@ -70,7 +70,7 @@ Dancer2::Core::Dispatcher - Class for dispatching request to the appropriate rou
 
 =head1 VERSION
 
-version 0.157001
+version 0.158000
 
 =head1 SYNOPSIS
 
@@ -131,7 +131,7 @@ Dancer Core Developers
 
 =head1 COPYRIGHT AND LICENSE
 
-This software is copyright (c) 2014 by Alexis Sukrieh.
+This software is copyright (c) 2015 by Alexis Sukrieh.
 
 This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.

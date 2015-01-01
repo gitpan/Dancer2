@@ -20,7 +20,7 @@ my %module_build_args = (
     "Dancer Core Developers"
   ],
   "dist_name" => "Dancer2",
-  "dist_version" => "0.157001",
+  "dist_version" => "0.158000",
   "license" => "perl",
   "module_name" => "Dancer2",
   "recommends" => {
@@ -62,6 +62,7 @@ my %module_build_args = (
     "HTTP::Tiny" => 0,
     "Hash::Merge::Simple" => 0,
     "IO::File" => 0,
+    "Import::Into" => 0,
     "JSON" => 0,
     "List::Util" => 0,
     "MIME::Base64" => "3.13",

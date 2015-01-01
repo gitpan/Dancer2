@@ -57,6 +57,7 @@ my %WriteMakefileArgs = (
     "HTTP::Tiny" => 0,
     "Hash::Merge::Simple" => 0,
     "IO::File" => 0,
+    "Import::Into" => 0,
     "JSON" => 0,
     "List::Util" => 0,
     "MIME::Base64" => "3.13",
@@ -119,7 +120,7 @@ my %WriteMakefileArgs = (
     "utf8" => 0,
     "vars" => 0
   },
-  "VERSION" => "0.157001",
+  "VERSION" => "0.158000",
   "test" => {
     "TESTS" => "t/*.t t/classes/Dancer2-Core-Factory/*.t t/classes/Dancer2-Core-Hook/*.t t/classes/Dancer2-Core-Request/*.t t/classes/Dancer2-Core-Response/*.t t/classes/Dancer2-Core-Role-Engine/*.t t/classes/Dancer2-Core-Role-Handler/*.t t/classes/Dancer2-Core-Role-HasLocation/*.t t/classes/Dancer2-Core-Role-Headers/*.t t/classes/Dancer2-Core-Role-Serializer/*.t t/classes/Dancer2-Core-Role-StandardResponses/*.t t/classes/Dancer2-Core-Route/*.t t/classes/Dancer2-Core-Runner/*.t t/classes/Dancer2-Core/*.t t/classes/Dancer2/*.t t/dsl/*.t t/issues/*.t t/issues/gh-639/fails/*.t t/issues/gh-639/succeeds/*.t t/issues/gh-650/*.t t/roles/*.t t/route-pod-coverage/*.t t/scope_problems/*.t t/template_tiny/*.t"
   }
@@ -161,6 +162,7 @@ my %FallbackPrereqs = (
   "IO::File" => 0,
   "IO::Handle" => 0,
   "IPC::Open3" => 0,
+  "Import::Into" => 0,
   "JSON" => 0,
   "List::Util" => 0,
   "MIME::Base64" => "3.13",

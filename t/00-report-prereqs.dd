@@ -58,6 +58,7 @@ do { my $x = {
                                       'HTTP::Tiny' => '0',
                                       'Hash::Merge::Simple' => '0',
                                       'IO::File' => '0',
+                                      'Import::Into' => '0',
                                       'JSON' => '0',
                                       'List::Util' => '0',
                                       'MIME::Base64' => '3.13',

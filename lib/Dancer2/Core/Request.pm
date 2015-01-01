@@ -1,5 +1,5 @@
 package Dancer2::Core::Request;
-$Dancer2::Core::Request::VERSION = '0.157001';
+$Dancer2::Core::Request::VERSION = '0.158000';
 # ABSTRACT: Interface for accessing incoming requests
 
 use Moo;
@@ -554,8 +554,8 @@ sub _read_to_end {
     if ( $content_length && $content_length > 0 ) {
         while ( my $buffer = $self->_read() ) {
             $self->{body} .= $buffer;
-            $self->{_http_body}->add($buffer);
         }
+        $self->{_http_body}->add( $self->{body} );
     }
 
     return $self->{body};
@@ -684,7 +684,7 @@ Dancer2::Core::Request - Interface for accessing incoming requests
 
 =head1 VERSION
 
-version 0.157001
+version 0.158000
 
 =head1 SYNOPSIS
 
@@ -1035,7 +1035,7 @@ Dancer Core Developers
 
 =head1 COPYRIGHT AND LICENSE
 
-This software is copyright (c) 2014 by Alexis Sukrieh.
+This software is copyright (c) 2015 by Alexis Sukrieh.
 
 This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.

@@ -1,6 +1,6 @@
 package Dancer2::Cookbook;
 # ABSTRACT: Example-driven quick-start to the Dancer2 web framework
-$Dancer2::Cookbook::VERSION = '0.157001';
+$Dancer2::Cookbook::VERSION = '0.158000';
 __END__
 
 =pod
@@ -13,7 +13,7 @@ Dancer2::Cookbook - Example-driven quick-start to the Dancer2 web framework
 
 =head1 VERSION
 
-version 0.157001
+version 0.158000
 
 =head1 DESCRIPTION
 
@@ -28,7 +28,7 @@ Dancer2 has been designed to be easy to work with - it's trivial to write a
 simple web app, but still has the power to work with larger projects. To
 start with, let's make an incredibly simple "Hello World" example:
 
-    #!/usr/bin/perl
+    #!/usr/bin/env perl
 
     use Dancer2;
 
@@ -246,14 +246,14 @@ So, instead of having the following code:
 
 you can have
 
-    get '/user/:user' => sub {
-        template users, {...}
+    ajax '/user/:user' => sub {
+         to_xml({...}, RootName => undef);
     }
 
 and
 
-    ajax '/user/:user' => sub {
-         to_xml({...}, RootName => undef);
+    get '/user/:user' => sub {
+        template users, {...}
     }
 
 Because it's an Ajax query, you know you need to return XML content, so
@@ -1408,7 +1408,7 @@ Dancer Core Developers
 
 =head1 COPYRIGHT AND LICENSE
 
-This software is copyright (c) 2014 by Alexis Sukrieh.
+This software is copyright (c) 2015 by Alexis Sukrieh.
 
 This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.

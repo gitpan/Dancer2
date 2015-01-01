@@ -1,6 +1,6 @@
 package Dancer2::Core::Error;
 # ABSTRACT: Class representing fatal errors
-$Dancer2::Core::Error::VERSION = '0.157001';
+$Dancer2::Core::Error::VERSION = '0.158000';
 use Moo;
 use Carp;
 use Dancer2::Core::Types;
@@ -85,8 +85,7 @@ sub _build_static_page {
 
     # TODO there must be a better way to get it
     my $public_dir = $ENV{DANCER_PUBLIC}
-      || ( $self->has_app
-        && path( $self->app->config_location, 'public' ) );
+      || ( $self->has_app && $self->app->config->{public_dir} );
 
     my $filename = sprintf "%s/%d.html", $public_dir, $self->status;
 
@@ -496,7 +495,7 @@ Dancer2::Core::Error - Class representing fatal errors
 
 =head1 VERSION
 
-version 0.157001
+version 0.158000
 
 =head1 SYNOPSIS
 
@@ -606,7 +605,7 @@ Dancer Core Developers
 
 =head1 COPYRIGHT AND LICENSE
 
-This software is copyright (c) 2014 by Alexis Sukrieh.
+This software is copyright (c) 2015 by Alexis Sukrieh.
 
 This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.

@@ -8,7 +8,6 @@ MANIFEST
 META.json
 META.yml
 Makefile.PL
-README.md
 lib/Dancer2.pm
 lib/Dancer2/CLI.pm
 lib/Dancer2/CLI/Command/gen.pm
@@ -161,6 +160,7 @@ t/dsl.t
 t/dsl/any.t
 t/dsl/app.t
 t/dsl/content.t
+t/dsl/error_template.t
 t/dsl/extend.t
 t/dsl/extend_config/config.yml
 t/dsl/halt.t
@@ -170,7 +170,6 @@ t/dsl/splat.t
 t/dsl/to_app.t
 t/engine.t
 t/error.t
-t/error_template.t
 t/factory.t
 t/file_utils.t
 t/forward.t
